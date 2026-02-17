@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useI18n } from "@/components/I18nProvider";
 
 interface CombinedAnalysisProps {
   analysis: string | null;
@@ -13,6 +14,8 @@ export default function CombinedAnalysis({
   isLoading,
   onRetry,
 }: CombinedAnalysisProps) {
+  const { t } = useI18n();
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -32,22 +35,19 @@ export default function CombinedAnalysis({
   if (!analysis) {
     return (
       <div className="text-center py-8">
-        <p className="text-cream/40 mb-4">
-          The AI analysis couldn&apos;t be generated at this time.
-        </p>
+        <p className="text-cream/40 mb-4">{t.analysis.errorMessage}</p>
         {onRetry && (
           <button
             onClick={onRetry}
             className="px-6 py-2.5 rounded-xl bg-gold/10 text-gold border border-gold/30 hover:bg-gold/20 transition-all text-sm font-medium"
           >
-            Try Again
+            {t.analysis.tryAgain}
           </button>
         )}
       </div>
     );
   }
 
-  // Split analysis into paragraphs
   const paragraphs = analysis.split("\n\n").filter((p) => p.trim());
 
   return (

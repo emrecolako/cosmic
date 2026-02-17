@@ -10,6 +10,7 @@ import ChineseZodiacCard from "@/components/ChineseZodiacCard";
 import NatalChartVisual from "@/components/NatalChartVisual";
 import CombinedAnalysis from "@/components/CombinedAnalysis";
 import CosmicToolkit from "@/components/CosmicToolkit";
+import { useI18n } from "@/components/I18nProvider";
 import type { NumerologyProfile } from "@/lib/numerology";
 import type { WesternAstrologyProfile } from "@/lib/western-astrology";
 import type { ChineseZodiacProfile } from "@/lib/chinese-zodiac";
@@ -74,6 +75,7 @@ function SkeletonSection() {
 function ResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { t, locale, setLocale } = useI18n();
   const [data, setData] = useState<ReadingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -81,6 +83,43 @@ function ResultsContent() {
   const name = searchParams.get("name");
   const dob = searchParams.get("dob");
   const stage = searchParams.get("stage");
+  const langParam = searchParams.get("lang");
+
+  // Sync locale from URL lang parameter
+  useEffect(() => {
+    if (langParam && (langParam === "en" || langParam === "tr") && langParam !== locale) {
+      setLocale(langParam);
+    }
+  }, [langParam, locale, setLocale]);
+
+  /**
+   * Helper to get numerology interpretation based on locale.
+   * When locale is "tr", returns Turkish interpretations from t.interpretations.
+   * When locale is "en", returns the original English data from the API response.
+   */
+  const getNumerologyInterp = useCallback(
+    (
+      type: "lifePath" | "expression" | "soulUrge" | "personality" | "personalYear",
+      num: number,
+      fallback: { title: string; brief: string; keywords: string[] }
+    ): { title: string; brief: string; keywords: string[] } => {
+      if (locale === "tr" && t.interpretations) {
+        const interpCategory = t.interpretations[type] as
+          | Record<number, { title: string; brief: string; keywords: readonly string[] }>
+          | undefined;
+        if (interpCategory && interpCategory[num]) {
+          const entry = interpCategory[num];
+          return {
+            title: entry.title,
+            brief: entry.brief,
+            keywords: [...entry.keywords],
+          };
+        }
+      }
+      return fallback;
+    },
+    [locale, t.interpretations]
+  );
 
   const fetchReading = useCallback(async () => {
     if (!name || !dob || !stage) {
@@ -111,11 +150,11 @@ function ResultsContent() {
       const result = await response.json();
       setData(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(err instanceof Error ? err.message : t.results.errorTitle);
     } finally {
       setIsLoading(false);
     }
-  }, [name, dob, stage, searchParams, router]);
+  }, [name, dob, stage, searchParams, router, t.results.errorTitle]);
 
   useEffect(() => {
     fetchReading();
@@ -134,14 +173,14 @@ function ResultsContent() {
             className="text-2xl font-bold text-cream mb-4"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            Something went wrong
+            {t.results.errorTitle}
           </h2>
           <p className="text-cream/50 mb-6">{error}</p>
           <button
             onClick={() => router.push("/")}
             className="px-6 py-2.5 rounded-xl bg-gold text-navy font-semibold hover:bg-gold-dim transition-all"
           >
-            Start Over
+            {t.results.startOver}
           </button>
         </div>
       </div>
@@ -159,6 +198,30 @@ function ResultsContent() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
+          {/* Language toggle */}
+          <div className="flex justify-center gap-1 mb-4">
+            <button
+              onClick={() => setLocale("en")}
+              className={`px-2.5 py-1 rounded-lg text-xs transition-all ${
+                locale === "en"
+                  ? "bg-gold/20 text-gold border border-gold/30"
+                  : "text-cream/30 hover:text-cream/50"
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLocale("tr")}
+              className={`px-2.5 py-1 rounded-lg text-xs transition-all ${
+                locale === "tr"
+                  ? "bg-gold/20 text-gold border border-gold/30"
+                  : "text-cream/30 hover:text-cream/50"
+              }`}
+            >
+              TR
+            </button>
+          </div>
+
           <button
             onClick={() => router.push("/")}
             className="inline-flex items-center gap-1.5 text-xs text-cream/40 hover:text-cream/60 transition-colors mb-8"
@@ -166,17 +229,17 @@ function ResultsContent() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
-            New Reading
+            {t.results.newReading}
           </button>
 
           <h1
             className="text-4xl sm:text-5xl font-bold mb-2 glow-gold"
             style={{ fontFamily: "var(--font-heading)" }}
           >
-            <span className="text-gold">Cosmic Blueprint</span>
+            <span className="text-gold">{t.results.title}</span>
           </h1>
           <p className="text-cream/50">
-            for{" "}
+            {t.results.forPerson}{" "}
             <span className="text-cream font-medium">{name}</span>
           </p>
         </motion.div>
@@ -194,7 +257,7 @@ function ResultsContent() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                <span className="text-cream/60">Mapping your cosmic blueprint...</span>
+                <span className="text-cream/60">{t.results.loadingMessage}</span>
               </div>
             </motion.div>
             <SkeletonSection />
@@ -224,14 +287,14 @@ function ResultsContent() {
                         </span>
                         <span className="text-cream/30">|</span>
                         <span className="text-lg text-cream" style={{ fontFamily: "var(--font-heading)" }}>
-                          {data.westernAstro.sunSign.sign}
+                          {t.zodiacSigns[data.westernAstro.sunSign.sign as keyof typeof t.zodiacSigns] || data.westernAstro.sunSign.sign}
                         </span>
                         <span className="text-cream/30">|</span>
                         <span className="text-lg">
                           {data.chineseZodiac.emoji}
                         </span>
                       </div>
-                      <div className="text-xs text-cream/40">Your Cosmic Snapshot</div>
+                      <div className="text-xs text-cream/40">{t.results.cosmicSnapshotLabel}</div>
                     </div>
                   </div>
                   <p className="text-cream/70 leading-relaxed italic" style={{ fontFamily: "var(--font-heading)" }}>
@@ -245,52 +308,77 @@ function ResultsContent() {
             <section>
               <SectionHeader
                 number="01"
-                title="The Numbers"
-                subtitle="Your numerology profile reveals the mathematical signature of your life"
+                title={t.sections.numbersTitle}
+                subtitle={t.sections.numbersSubtitle}
               />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <NumerologyCard
-                  label="Life Path"
-                  number={data.numerology.lifePath.number}
-                  title={data.numerology.lifePath.interpretation.title}
-                  brief={data.numerology.lifePath.interpretation.brief}
-                  keywords={data.numerology.lifePath.interpretation.keywords}
-                  delay={0}
-                />
-                <NumerologyCard
-                  label="Expression"
-                  number={data.numerology.expression.number}
-                  title={data.numerology.expression.interpretation.title}
-                  brief={data.numerology.expression.interpretation.brief}
-                  keywords={data.numerology.expression.interpretation.keywords}
-                  delay={0.1}
-                />
-                <NumerologyCard
-                  label="Soul Urge"
-                  number={data.numerology.soulUrge.number}
-                  title={data.numerology.soulUrge.interpretation.title}
-                  brief={data.numerology.soulUrge.interpretation.brief}
-                  keywords={data.numerology.soulUrge.interpretation.keywords}
-                  delay={0.2}
-                />
-                <NumerologyCard
-                  label="Personality"
-                  number={data.numerology.personality.number}
-                  title={data.numerology.personality.interpretation.title}
-                  brief={data.numerology.personality.interpretation.brief}
-                  keywords={data.numerology.personality.interpretation.keywords}
-                  delay={0.3}
-                />
+                {(() => {
+                  const lp = getNumerologyInterp("lifePath", data.numerology.lifePath.number, data.numerology.lifePath.interpretation);
+                  return (
+                    <NumerologyCard
+                      label={t.numerology.lifePath}
+                      number={data.numerology.lifePath.number}
+                      title={lp.title}
+                      brief={lp.brief}
+                      keywords={lp.keywords}
+                      delay={0}
+                    />
+                  );
+                })()}
+                {(() => {
+                  const expr = getNumerologyInterp("expression", data.numerology.expression.number, data.numerology.expression.interpretation);
+                  return (
+                    <NumerologyCard
+                      label={t.numerology.expression}
+                      number={data.numerology.expression.number}
+                      title={expr.title}
+                      brief={expr.brief}
+                      keywords={expr.keywords}
+                      delay={0.1}
+                    />
+                  );
+                })()}
+                {(() => {
+                  const su = getNumerologyInterp("soulUrge", data.numerology.soulUrge.number, data.numerology.soulUrge.interpretation);
+                  return (
+                    <NumerologyCard
+                      label={t.numerology.soulUrge}
+                      number={data.numerology.soulUrge.number}
+                      title={su.title}
+                      brief={su.brief}
+                      keywords={su.keywords}
+                      delay={0.2}
+                    />
+                  );
+                })()}
+                {(() => {
+                  const pers = getNumerologyInterp("personality", data.numerology.personality.number, data.numerology.personality.interpretation);
+                  return (
+                    <NumerologyCard
+                      label={t.numerology.personality}
+                      number={data.numerology.personality.number}
+                      title={pers.title}
+                      brief={pers.brief}
+                      keywords={pers.keywords}
+                      delay={0.3}
+                    />
+                  );
+                })()}
               </div>
               <div className="mt-4">
-                <NumerologyCard
-                  label="Personal Year (2026)"
-                  number={data.numerology.personalYear.number}
-                  title={data.numerology.personalYear.interpretation.title}
-                  brief={data.numerology.personalYear.interpretation.brief}
-                  keywords={data.numerology.personalYear.interpretation.keywords}
-                  delay={0.4}
-                />
+                {(() => {
+                  const py = getNumerologyInterp("personalYear", data.numerology.personalYear.number, data.numerology.personalYear.interpretation);
+                  return (
+                    <NumerologyCard
+                      label={`${t.numerology.personalYear} (2026)`}
+                      number={data.numerology.personalYear.number}
+                      title={py.title}
+                      brief={py.brief}
+                      keywords={py.keywords}
+                      delay={0.4}
+                    />
+                  );
+                })()}
               </div>
             </section>
 
@@ -298,8 +386,8 @@ function ResultsContent() {
             <section>
               <SectionHeader
                 number="02"
-                title="Your Star Map"
-                subtitle="Western astrology reveals your celestial identity"
+                title={t.sections.starMapTitle}
+                subtitle={t.sections.starMapSubtitle}
               />
               <WesternAstroCard profile={data.westernAstro} />
 
@@ -309,7 +397,7 @@ function ResultsContent() {
                     className="text-lg font-semibold text-cream mb-4 text-center"
                     style={{ fontFamily: "var(--font-heading)" }}
                   >
-                    Natal Chart
+                    {t.western.natalChart}
                   </h3>
                   <NatalChartVisual
                     sunSign={data.westernAstro.sunSign.sign}
@@ -319,7 +407,7 @@ function ResultsContent() {
                   />
                   {!data.westernAstro.moonSign && (
                     <p className="text-xs text-cream/30 text-center mt-3 italic">
-                      Solar chart — provide birth time for full natal chart with moon and rising sign
+                      {t.western.solarChartNote}
                     </p>
                   )}
                 </div>
@@ -330,8 +418,8 @@ function ResultsContent() {
             <section>
               <SectionHeader
                 number="03"
-                title="Your Eastern Mirror"
-                subtitle="Chinese astrology reflects your cosmic animal nature"
+                title={t.sections.easternMirrorTitle}
+                subtitle={t.sections.easternMirrorSubtitle}
               />
               <ChineseZodiacCard profile={data.chineseZodiac} />
             </section>
@@ -340,8 +428,8 @@ function ResultsContent() {
             <section>
               <SectionHeader
                 number="04"
-                title="The Unified Reading"
-                subtitle="Where all your cosmic threads weave together"
+                title={t.sections.unifiedReadingTitle}
+                subtitle={t.sections.unifiedReadingSubtitle}
               />
               <div className="glass-card p-8">
                 <CombinedAnalysis
@@ -357,8 +445,8 @@ function ResultsContent() {
               <section>
                 <SectionHeader
                   number="05"
-                  title="This Season For You"
-                  subtitle="What the cosmos is activating in your life right now"
+                  title={t.sections.currentSeasonTitle}
+                  subtitle={t.sections.currentSeasonSubtitle}
                 />
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -374,10 +462,13 @@ function ResultsContent() {
                     </div>
                     <div>
                       <div className="text-sm font-medium text-cream">
-                        Personal Year {data.numerology.personalYear.number}
+                        {t.analysis.personalYear} {data.numerology.personalYear.number}
                       </div>
                       <div className="text-xs text-cream/40">
-                        {data.numerology.personalYear.interpretation.title}
+                        {(() => {
+                          const py = getNumerologyInterp("personalYear", data.numerology.personalYear.number, data.numerology.personalYear.interpretation);
+                          return py.title;
+                        })()}
                       </div>
                     </div>
                   </div>
@@ -393,8 +484,8 @@ function ResultsContent() {
               <section>
                 <SectionHeader
                   number="06"
-                  title="Your Cosmic Toolkit"
-                  subtitle="Practical takeaways from your complete cosmic profile"
+                  title={t.sections.cosmicToolkitTitle}
+                  subtitle={t.sections.cosmicToolkitSubtitle}
                 />
                 <CosmicToolkit
                   items={data.cosmicToolkit}
@@ -415,13 +506,13 @@ function ResultsContent() {
                 className="text-cream/30 text-sm mb-6"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
-                May this map serve your journey well.
+                {t.results.closingMessage}
               </p>
               <button
                 onClick={() => router.push("/")}
                 className="px-8 py-3 rounded-xl bg-navy-light border border-navy-border text-cream/60 hover:text-cream hover:border-cream/30 transition-all text-sm font-medium"
               >
-                Generate Another Reading
+                {t.results.generateAnother}
               </button>
             </motion.div>
           </div>

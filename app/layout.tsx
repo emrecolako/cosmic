@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { I18nProvider } from "@/components/I18nProvider";
 
 export const metadata: Metadata = {
   title: "Cosmic Blueprint — Your Complete Cosmic Profile",
@@ -31,7 +32,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-navy antialiased">{children}</body>
+      <body className="min-h-screen bg-navy antialiased">
+        <I18nProvider>{children}</I18nProvider>
+      </body>
     </html>
   );
 }
