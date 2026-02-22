@@ -140,28 +140,37 @@ export async function POST(request: NextRequest) {
 
       const textContent = message.content.find((c) => c.type === "text");
       if (textContent && textContent.type === "text") {
+        // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
+        let rawText = textContent.text.trim();
+        if (rawText.startsWith("```")) {
+          rawText = rawText.replace(/^```(?:json)?\s*\n?/, "").replace(/\n?\s*```$/, "");
+        }
+
+        let parsed: Record<string, unknown> | null = null;
+
+        // Try direct JSON parse
         try {
-          const parsed = JSON.parse(textContent.text);
+          parsed = JSON.parse(rawText);
+        } catch {
+          // Try extracting JSON object from the text
+          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            try {
+              parsed = JSON.parse(jsonMatch[0]);
+            } catch {
+              // Final fallback
+            }
+          }
+        }
+
+        if (parsed) {
           responseData.combinedAnalysis = parsed.unifiedReading || null;
           responseData.cosmicSnapshot = parsed.cosmicSnapshot || null;
           responseData.currentSeason = parsed.currentSeason || null;
           responseData.cosmicToolkit = parsed.cosmicToolkit || null;
-        } catch {
-          // If JSON parsing fails, try to extract the JSON from the text
-          const jsonMatch = textContent.text.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            try {
-              const parsed = JSON.parse(jsonMatch[0]);
-              responseData.combinedAnalysis = parsed.unifiedReading || null;
-              responseData.cosmicSnapshot = parsed.cosmicSnapshot || null;
-              responseData.currentSeason = parsed.currentSeason || null;
-              responseData.cosmicToolkit = parsed.cosmicToolkit || null;
-            } catch {
-              responseData.combinedAnalysis = textContent.text;
-            }
-          } else {
-            responseData.combinedAnalysis = textContent.text;
-          }
+        } else {
+          // Could not parse JSON at all — use raw text as combined analysis
+          responseData.combinedAnalysis = rawText;
         }
       }
     } catch (apiError) {
