@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useI18n } from "@/components/I18nProvider";
 
 interface NatalChartVisualProps {
   sunSign: string;
@@ -25,6 +26,7 @@ export default function NatalChartVisual({
   moonSign,
   risingSign,
 }: NatalChartVisualProps) {
+  const { t } = useI18n();
   const size = 320;
   const center = size / 2;
   const outerRadius = 140;
@@ -151,7 +153,7 @@ export default function NatalChartVisual({
                 fill="#d4a853"
                 fontWeight="600"
               >
-                SUN
+                {t.western.chartSun}
               </text>
             </motion.g>
           );
@@ -184,7 +186,7 @@ export default function NatalChartVisual({
                   fill="#6c5ce7"
                   fontWeight="600"
                 >
-                  MOON
+                  {t.western.chartMoon}
                 </text>
               </motion.g>
             );
@@ -210,7 +212,7 @@ export default function NatalChartVisual({
                   fill="#00b894"
                   fontWeight="600"
                 >
-                  ASC
+                  {t.western.chartAsc}
                 </text>
               </motion.g>
             );

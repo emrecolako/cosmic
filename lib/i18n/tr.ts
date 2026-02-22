@@ -105,6 +105,9 @@ export const tr = {
     element: "Element",
     modality: "Modalite",
     rulingPlanet: "Yönetici Gezegen",
+    chartSun: "GÜNEŞ",
+    chartMoon: "AY",
+    chartAsc: "YÜK",
   },
 
   // Chinese zodiac

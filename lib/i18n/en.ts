@@ -105,6 +105,9 @@ export const en = {
     element: "Element",
     modality: "Modality",
     rulingPlanet: "Ruling Planet",
+    chartSun: "SUN",
+    chartMoon: "MOON",
+    chartAsc: "ASC",
   },
 
   // Chinese zodiac

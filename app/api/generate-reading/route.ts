@@ -5,6 +5,7 @@ import { getChineseZodiac } from "@/lib/chinese-zodiac";
 import { calculateWesternProfile } from "@/lib/western-astrology";
 import { classifyLifeStage, calculateAge, LifeStageOption } from "@/lib/life-stages";
 import { buildAnalysisPrompt, SYSTEM_PROMPT, CosmicProfile } from "@/lib/analysis-prompt";
+import { geocodePlace } from "@/lib/geocode";
 
 // Simple in-memory cache (will reset on deploy, which is fine)
 const cache = new Map<string, { data: unknown; timestamp: number }>();
@@ -17,6 +18,7 @@ function getCacheKey(body: Record<string, unknown>): string {
     stage: body.lifeStage,
     time: body.birthTime,
     place: body.birthPlace,
+    locale: body.locale,
   });
   // Simple hash
   let hash = 0;
@@ -55,6 +57,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(cached.data);
     }
 
+    // Geocode birth place to get coordinates and timezone
+    let latitude: number | undefined;
+    let longitude: number | undefined;
+    let timezoneOffsetHours: number | undefined;
+
+    if (body.birthPlace) {
+      const geo = await geocodePlace(body.birthPlace);
+      if (geo) {
+        latitude = geo.latitude;
+        longitude = geo.longitude;
+        timezoneOffsetHours = geo.timezoneOffsetHours;
+      }
+    }
+
     // Run all calculations
     const age = calculateAge(dateOfBirth);
     const numerology = calculateNumerologyProfile(body.fullName, dateOfBirth);
@@ -62,8 +78,9 @@ export async function POST(request: NextRequest) {
     const westernAstro = calculateWesternProfile(
       dateOfBirth,
       body.birthTime || undefined,
-      body.latitude,
-      body.longitude
+      latitude,
+      longitude,
+      timezoneOffsetHours
     );
     const lifeStageContext = classifyLifeStage(
       age,
@@ -79,6 +96,7 @@ export async function POST(request: NextRequest) {
       whatsOnYourMind: body.whatsOnYourMind,
       gender: body.gender,
       age,
+      locale: body.locale || "en",
       numerology,
       westernAstro,
       chineseZodiac,

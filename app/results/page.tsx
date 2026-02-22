@@ -142,6 +142,7 @@ function ResultsContent() {
           lifeStage: stage,
           whatsOnYourMind: searchParams.get("mind") || undefined,
           gender: searchParams.get("gender") || undefined,
+          locale: locale,
         }),
       });
 
@@ -370,7 +371,7 @@ function ResultsContent() {
                   const py = getNumerologyInterp("personalYear", data.numerology.personalYear.number, data.numerology.personalYear.interpretation);
                   return (
                     <NumerologyCard
-                      label={`${t.numerology.personalYear} (2026)`}
+                      label={`${t.numerology.personalYear} (${new Date().getFullYear()})`}
                       number={data.numerology.personalYear.number}
                       title={py.title}
                       brief={py.brief}
@@ -527,7 +528,12 @@ export default function ResultsPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center">
-          <div className="text-cream/50">Loading...</div>
+          <div className="text-cream/50">
+            <svg className="animate-spin h-5 w-5 text-gold mx-auto" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+          </div>
         </div>
       }
     >

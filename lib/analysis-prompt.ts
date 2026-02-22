@@ -19,6 +19,7 @@ export interface CosmicProfile {
   whatsOnYourMind?: string;
   gender?: string;
   age: number;
+  locale?: string;
   numerology: NumerologyProfile;
   westernAstro: WesternAstrologyProfile;
   chineseZodiac: ChineseZodiacProfile;
@@ -94,7 +95,12 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
 
   const dataPayload = sections.join("\n\n");
 
-  return `Based on the following cosmic profile data, generate a unified reading. Your response MUST be valid JSON with exactly these fields:
+  const isTurkish = data.locale === "tr";
+  const languageInstruction = isTurkish
+    ? "\n\nIMPORTANT: You MUST write ALL content in Turkish (Türkçe). Every field in the JSON response must be in Turkish. Use natural, fluent Turkish — not machine-translated text.\n\n"
+    : "\n\n";
+
+  return `Based on the following cosmic profile data, generate a unified reading.${languageInstruction}Your response MUST be valid JSON with exactly these fields:
 
 {
   "cosmicSnapshot": "A compelling 2-3 sentence executive summary that captures the essence of this person's cosmic profile. This should feel like the most insightful paragraph in the reading — the one they'd share with a friend.",
