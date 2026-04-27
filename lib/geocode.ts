@@ -101,6 +101,25 @@ const CITY_LOOKUP: Record<string, GeoResult> = {
   "karachi": { latitude: 24.8607, longitude: 67.0011, timezoneOffsetHours: 5 },
   "jakarta": { latitude: -6.2088, longitude: 106.8456, timezoneOffsetHours: 7 },
   "manila": { latitude: 14.5995, longitude: 120.9842, timezoneOffsetHours: 8 },
+  // India (UTC+5:30)
+  "kolkata": { latitude: 22.5726, longitude: 88.3639, timezoneOffsetHours: 5.5 },
+  "calcutta": { latitude: 22.5726, longitude: 88.3639, timezoneOffsetHours: 5.5 },
+  "bangalore": { latitude: 12.9716, longitude: 77.5946, timezoneOffsetHours: 5.5 },
+  "bengaluru": { latitude: 12.9716, longitude: 77.5946, timezoneOffsetHours: 5.5 },
+  "chennai": { latitude: 13.0827, longitude: 80.2707, timezoneOffsetHours: 5.5 },
+  "hyderabad": { latitude: 17.3850, longitude: 78.4867, timezoneOffsetHours: 5.5 },
+  "ahmedabad": { latitude: 23.0225, longitude: 72.5714, timezoneOffsetHours: 5.5 },
+  "pune": { latitude: 18.5204, longitude: 73.8567, timezoneOffsetHours: 5.5 },
+  "jaipur": { latitude: 26.9124, longitude: 75.7873, timezoneOffsetHours: 5.5 },
+  // Other half-hour/45-min timezone cities
+  "kathmandu": { latitude: 27.7172, longitude: 85.3240, timezoneOffsetHours: 5.75 },
+  "kabul": { latitude: 34.5553, longitude: 69.2075, timezoneOffsetHours: 4.5 },
+  "yangon": { latitude: 16.8661, longitude: 96.1951, timezoneOffsetHours: 6.5 },
+  "colombo": { latitude: 6.9271, longitude: 79.8612, timezoneOffsetHours: 5.5 },
+  "isfahan": { latitude: 32.6546, longitude: 51.6680, timezoneOffsetHours: 3.5 },
+  "shiraz": { latitude: 29.5918, longitude: 52.5837, timezoneOffsetHours: 3.5 },
+  "adelaide": { latitude: -34.9285, longitude: 138.6007, timezoneOffsetHours: 9.5 },
+  "darwin": { latitude: -12.4634, longitude: 130.8456, timezoneOffsetHours: 9.5 },
   // Americas
   "mexico city": { latitude: 19.4326, longitude: -99.1332, timezoneOffsetHours: -6 },
   "toronto": { latitude: 43.6532, longitude: -79.3832, timezoneOffsetHours: -5 },
@@ -200,7 +219,9 @@ export async function geocodePlace(place: string): Promise<GeoResult | null> {
 
     if (isNaN(lat) || isNaN(lon)) return null;
 
-    // Approximate timezone from longitude (rough but reasonable for astrology)
+    // Approximate timezone from longitude. Half-hour zones (India, Iran, etc.)
+    // are covered by the city lookup table; the fallback uses integer offsets
+    // since most real timezones align to full hours.
     const tzOffset = Math.round(lon / 15);
 
     return {

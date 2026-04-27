@@ -42,10 +42,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const dateOfBirth = new Date(body.dateOfBirth);
-    if (isNaN(dateOfBirth.getTime())) {
+    // Parse date string explicitly to avoid timezone shifting
+    // (new Date("YYYY-MM-DD") parses as UTC midnight, but local-time getters shift the day)
+    const dateParts = String(body.dateOfBirth).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (!dateParts) {
+      return NextResponse.json(
+        { error: "Invalid date of birth format. Expected YYYY-MM-DD." },
+        { status: 400 }
+      );
+    }
+    const parsedYear = parseInt(dateParts[1], 10);
+    const parsedMonth = parseInt(dateParts[2], 10);
+    const parsedDay = parseInt(dateParts[3], 10);
+    if (parsedMonth < 1 || parsedMonth > 12 || parsedDay < 1 || parsedDay > 31) {
       return NextResponse.json(
         { error: "Invalid date of birth" },
+        { status: 400 }
+      );
+    }
+    const dateOfBirth = new Date(parsedYear, parsedMonth - 1, parsedDay);
+    if (
+      isNaN(dateOfBirth.getTime()) ||
+      dateOfBirth.getFullYear() !== parsedYear ||
+      dateOfBirth.getMonth() !== parsedMonth - 1 ||
+      dateOfBirth.getDate() !== parsedDay
+    ) {
+      return NextResponse.json(
+        { error: "Invalid date of birth" },
+        { status: 400 }
+      );
+    }
+
+    // Validate name contains at least one alphabetic character
+    if (!/[a-zA-ZÀ-ɏ]/.test(body.fullName)) {
+      return NextResponse.json(
+        { error: "Name must contain at least one letter." },
         { status: 400 }
       );
     }
@@ -72,8 +103,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Run all calculations
+    const currentYear = new Date().getUTCFullYear();
     const age = calculateAge(dateOfBirth);
-    const numerology = calculateNumerologyProfile(body.fullName, dateOfBirth);
+    const numerology = calculateNumerologyProfile(body.fullName, dateOfBirth, currentYear);
     const chineseZodiac = getChineseZodiac(dateOfBirth);
     const westernAstro = calculateWesternProfile(
       dateOfBirth,

@@ -100,7 +100,7 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
     ? "\n\nIMPORTANT: You MUST write ALL content in Turkish (Türkçe). Every field in the JSON response must be in Turkish. Use natural, fluent Turkish — not machine-translated text.\n\n"
     : "\n\n";
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getUTCFullYear();
 
   return `The current year is ${currentYear}.
 
