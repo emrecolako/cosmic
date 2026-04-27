@@ -409,7 +409,7 @@ export function getMoonSign(
   if (!birthTime) return null;
 
   const [hours, minutes] = birthTime.split(":").map(Number);
-  if (hours === undefined || minutes === undefined) return null;
+  if (isNaN(hours) || isNaN(minutes)) return null;
 
   // Create a UTC date from local birth time
   const tzOffset = timezoneOffsetHours ?? 0;
@@ -452,7 +452,7 @@ export function getRisingSign(
   if (!birthTime) return null;
 
   const [hours, minutes] = birthTime.split(":").map(Number);
-  if (hours === undefined || minutes === undefined) return null;
+  if (isNaN(hours) || isNaN(minutes)) return null;
 
   // Convert local time to UTC
   const tzOffset = timezoneOffsetHours ?? 0;

@@ -181,7 +181,12 @@ function getChineseZodiacYear(dateOfBirth: Date): number {
 
   const lny = LUNAR_NEW_YEAR_DATES[calendarYear];
   if (!lny) {
-    // Fallback: just use calendar year
+    // Out of lookup table range (before 1924 or after 2044).
+    // LNY typically falls Jan 21 - Feb 20. Use conservative heuristic:
+    // if born before Feb 5, assume previous zodiac year.
+    if (month === 1 || (month === 2 && day < 5)) {
+      return calendarYear - 1;
+    }
     return calendarYear;
   }
 

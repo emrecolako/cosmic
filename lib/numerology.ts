@@ -19,6 +19,10 @@ const PYTHAGOREAN_VALUES: Record<string, number> = {
 
 const VOWELS = new Set(["A", "E", "I", "O", "U"]);
 
+function normalizeName(name: string): string {
+  return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 /**
  * Reduce a number to a single digit, preserving master numbers (11, 22, 33).
  */
@@ -35,7 +39,7 @@ function reduceToSingleDigit(num: number): number {
  * Sum the Pythagorean values of letters in a string.
  */
 function sumLetterValues(letters: string): number {
-  return letters
+  return normalizeName(letters)
     .toUpperCase()
     .split("")
     .filter((ch) => PYTHAGOREAN_VALUES[ch] !== undefined)
@@ -84,7 +88,7 @@ export function calculateExpression(fullName: string): number {
  * @returns The Soul Urge Number (1-9, 11, 22, or 33)
  */
 export function calculateSoulUrge(fullName: string): number {
-  const vowels = fullName
+  const vowels = normalizeName(fullName)
     .toUpperCase()
     .split("")
     .filter((ch) => VOWELS.has(ch))
@@ -99,7 +103,7 @@ export function calculateSoulUrge(fullName: string): number {
  * @returns The Personality Number (1-9, 11, 22, or 33)
  */
 export function calculatePersonality(fullName: string): number {
-  const consonants = fullName
+  const consonants = normalizeName(fullName)
     .toUpperCase()
     .split("")
     .filter((ch) => PYTHAGOREAN_VALUES[ch] !== undefined && !VOWELS.has(ch))
@@ -114,15 +118,15 @@ export function calculatePersonality(fullName: string): number {
  * @param dateOfBirth - The person's date of birth
  * @returns The Personal Year Number (1-9, 11, 22, or 33)
  */
-export function calculatePersonalYear(dateOfBirth: Date): number {
+export function calculatePersonalYear(dateOfBirth: Date, currentYear?: number): number {
   const month = dateOfBirth.getMonth() + 1;
   const day = dateOfBirth.getDate();
-  const currentYear = new Date().getFullYear();
+  const year = currentYear ?? new Date().getUTCFullYear();
 
   const reducedMonth = reduceToSingleDigit(month);
   const reducedDay = reduceToSingleDigit(day);
   const reducedYear = reduceToSingleDigit(
-    String(currentYear)
+    String(year)
       .split("")
       .reduce((sum, d) => sum + parseInt(d), 0)
   );
@@ -526,13 +530,14 @@ export interface NumerologyProfile {
  */
 export function calculateNumerologyProfile(
   fullName: string,
-  dateOfBirth: Date
+  dateOfBirth: Date,
+  currentYear?: number
 ): NumerologyProfile {
   const lp = calculateLifePath(dateOfBirth);
   const exp = calculateExpression(fullName);
   const su = calculateSoulUrge(fullName);
   const pers = calculatePersonality(fullName);
-  const py = calculatePersonalYear(dateOfBirth);
+  const py = calculatePersonalYear(dateOfBirth, currentYear);
 
   return {
     lifePath: { number: lp, interpretation: getInterpretation("lifePath", lp) },

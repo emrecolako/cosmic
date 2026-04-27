@@ -155,7 +155,7 @@ function ResultsContent() {
     } finally {
       setIsLoading(false);
     }
-  }, [name, dob, stage, searchParams, router, t.results.errorTitle]);
+  }, [name, dob, stage, searchParams, router, t.results.errorTitle, locale]);
 
   useEffect(() => {
     fetchReading();
