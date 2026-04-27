@@ -210,8 +210,11 @@ export async function POST(request: NextRequest) {
       // Still return calculated data — only combined analysis is missing
     }
 
-    // Cache the response
-    cache.set(cacheKey, { data: responseData, timestamp: Date.now() });
+    // Cache only successful responses — never cache failures, otherwise a
+    // transient Claude error (rate limit, billing, network) gets pinned for 24h.
+    if (responseData.combinedAnalysis !== null) {
+      cache.set(cacheKey, { data: responseData, timestamp: Date.now() });
+    }
 
     return NextResponse.json(responseData);
   } catch (error) {
