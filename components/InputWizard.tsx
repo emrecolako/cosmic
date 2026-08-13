@@ -2,19 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LifeStageOption } from "@/lib/life-stages";
+import { LifeStageOption, LIFE_STAGE_ICONS } from "@/lib/life-stages";
 import { useI18n } from "@/components/I18nProvider";
-
-const LIFE_STAGE_ICONS: Record<LifeStageOption, string> = {
-  exploring: "🌱",
-  building_career: "🚀",
-  in_relationship: "💕",
-  married: "💍",
-  parent: "👨‍👩‍👧",
-  empty_nester: "🏡",
-  retired: "🌅",
-  prefer_not_to_say: "✨",
-};
 
 interface FormData {
   fullName: string;

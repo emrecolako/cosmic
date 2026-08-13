@@ -6,38 +6,95 @@ import { calculateWesternProfile } from "@/lib/western-astrology";
 import { classifyLifeStage, calculateAge, LifeStageOption } from "@/lib/life-stages";
 import { buildAnalysisPrompt, SYSTEM_PROMPT, CosmicProfile } from "@/lib/analysis-prompt";
 import { geocodePlace } from "@/lib/geocode";
+import { getTimezoneOffsetHours } from "@/lib/timezone";
 
 // Simple in-memory cache (will reset on deploy, which is fine)
 const cache = new Map<string, { data: unknown; timestamp: number }>();
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+const CACHE_MAX_ENTRIES = 500;
 
+// The full JSON string is the key — no hashing, so distinct inputs can never
+// collide and receive another person's cached reading.
 function getCacheKey(body: Record<string, unknown>): string {
-  const key = JSON.stringify({
+  return JSON.stringify({
     name: body.fullName,
     dob: body.dateOfBirth,
     stage: body.lifeStage,
     time: body.birthTime,
     place: body.birthPlace,
     locale: body.locale,
+    mind: body.whatsOnYourMind,
+    gender: body.gender,
   });
-  // Simple hash
-  let hash = 0;
-  for (let i = 0; i < key.length; i++) {
-    const char = key.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0;
+}
+
+function setCache(key: string, data: unknown): void {
+  const now = Date.now();
+  for (const [k, v] of cache) {
+    if (now - v.timestamp >= CACHE_TTL) cache.delete(k);
   }
-  return String(hash);
+  // Still over budget after sweeping: drop oldest entries (Map preserves
+  // insertion order)
+  while (cache.size >= CACHE_MAX_ENTRIES) {
+    const oldest = cache.keys().next().value;
+    if (oldest === undefined) break;
+    cache.delete(oldest);
+  }
+  cache.set(key, { data, timestamp: now });
+}
+
+// Per-IP sliding-window rate limit. In-memory, so it's per-instance — fine
+// for this deployment scale; swap for a shared store if scaling out.
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 10;
+const rateLimitHits = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (rateLimitHits.get(ip) || []).filter(
+    (t) => now - t < RATE_LIMIT_WINDOW_MS
+  );
+  if (rateLimitHits.size > 5000) rateLimitHits.clear();
+  if (hits.length >= RATE_LIMIT_MAX_REQUESTS) {
+    rateLimitHits.set(ip, hits);
+    return true;
+  }
+  hits.push(now);
+  rateLimitHits.set(ip, hits);
+  return false;
 }
 
 export async function POST(request: NextRequest) {
   try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment and try again." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
 
     // Validate required fields
     if (!body.fullName || !body.dateOfBirth || !body.lifeStage) {
       return NextResponse.json(
         { error: "Missing required fields: fullName, dateOfBirth, lifeStage" },
+        { status: 400 }
+      );
+    }
+
+    // Normalize optional fields: enforce client-side limits server-side too
+    body.locale = body.locale === "tr" ? "tr" : "en";
+    if (typeof body.whatsOnYourMind === "string") {
+      body.whatsOnYourMind = body.whatsOnYourMind.trim().slice(0, 200) || undefined;
+    } else {
+      body.whatsOnYourMind = undefined;
+    }
+    if (body.birthTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(String(body.birthTime))) {
+      return NextResponse.json(
+        { error: "Invalid birth time format. Expected HH:MM (24-hour)." },
         { status: 400 }
       );
     }
@@ -72,6 +129,12 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    if (parsedYear < 1900 || dateOfBirth.getTime() > Date.now()) {
+      return NextResponse.json(
+        { error: "Date of birth must be between 1900 and today." },
+        { status: 400 }
+      );
+    }
 
     // Validate name contains at least one alphabetic character
     if (!/[a-zA-ZÀ-ɏ]/.test(body.fullName)) {
@@ -88,7 +151,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(cached.data);
     }
 
-    // Geocode birth place to get coordinates and timezone
+    // Geocode birth place, then resolve the historically correct UTC offset
+    // (incl. DST and past timezone changes) for the birth moment
     let latitude: number | undefined;
     let longitude: number | undefined;
     let timezoneOffsetHours: number | undefined;
@@ -98,7 +162,23 @@ export async function POST(request: NextRequest) {
       if (geo) {
         latitude = geo.latitude;
         longitude = geo.longitude;
-        timezoneOffsetHours = geo.timezoneOffsetHours;
+        let birthHours: number | undefined;
+        let birthMinutes: number | undefined;
+        if (body.birthTime) {
+          const [h, m] = String(body.birthTime).split(":").map(Number);
+          birthHours = h;
+          birthMinutes = m;
+        }
+        timezoneOffsetHours =
+          getTimezoneOffsetHours(
+            geo.latitude,
+            geo.longitude,
+            parsedYear,
+            parsedMonth,
+            parsedDay,
+            birthHours,
+            birthMinutes
+          ) ?? undefined;
       }
     }
 
@@ -142,6 +222,7 @@ export async function POST(request: NextRequest) {
       chineseZodiac,
       lifeStageContext,
       age,
+      currentYear,
       combinedAnalysis: null,
       cosmicSnapshot: null,
       currentSeason: null,
@@ -159,7 +240,7 @@ export async function POST(request: NextRequest) {
       const prompt = buildAnalysisPrompt(cosmicProfile);
 
       const message = await client.messages.create({
-        model: "claude-sonnet-4-5-20250929",
+        model: "claude-sonnet-5",
         max_tokens: 4096,
         messages: [
           {
@@ -213,7 +294,7 @@ export async function POST(request: NextRequest) {
     // Cache only successful responses — never cache failures, otherwise a
     // transient Claude error (rate limit, billing, network) gets pinned for 24h.
     if (responseData.combinedAnalysis !== null) {
-      cache.set(cacheKey, { data: responseData, timestamp: Date.now() });
+      setCache(cacheKey, responseData);
     }
 
     return NextResponse.json(responseData);

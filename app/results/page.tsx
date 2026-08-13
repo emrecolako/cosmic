@@ -24,6 +24,7 @@ interface ReadingData {
   currentSeason: string | null;
   cosmicToolkit: string[] | null;
   age: number;
+  currentYear?: number;
 }
 
 function SectionHeader({
@@ -371,7 +372,7 @@ function ResultsContent() {
                   const py = getNumerologyInterp("personalYear", data.numerology.personalYear.number, data.numerology.personalYear.interpretation);
                   return (
                     <NumerologyCard
-                      label={`${t.numerology.personalYear} (${new Date().getFullYear()})`}
+                      label={`${t.numerology.personalYear} (${data.currentYear ?? new Date().getFullYear()})`}
                       number={data.numerology.personalYear.number}
                       title={py.title}
                       brief={py.brief}
