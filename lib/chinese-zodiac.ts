@@ -198,6 +198,59 @@ function getChineseZodiacYear(dateOfBirth: Date): number {
   return calendarYear;
 }
 
+/**
+ * Compatibility derived from the traditional structures, so the table is
+ * symmetric by construction (if A is a best match for B, B is one for A):
+ * - San He (三合) trines: three-animal harmony groups
+ * - Liu He (六合) secret friends: six harmonious pairs
+ * - Liu Chong (六冲) clashes: six directly opposing pairs
+ * - Liu Hai (六害) harms: six undermining pairs
+ */
+const SAN_HE_TRINES: string[][] = [
+  ["Rat", "Dragon", "Monkey"],
+  ["Ox", "Snake", "Rooster"],
+  ["Tiger", "Horse", "Dog"],
+  ["Rabbit", "Goat", "Pig"],
+];
+
+const LIU_HE_PAIRS: [string, string][] = [
+  ["Rat", "Ox"], ["Tiger", "Pig"], ["Rabbit", "Dog"],
+  ["Dragon", "Rooster"], ["Snake", "Monkey"], ["Horse", "Goat"],
+];
+
+const LIU_CHONG_PAIRS: [string, string][] = [
+  ["Rat", "Horse"], ["Ox", "Goat"], ["Tiger", "Monkey"],
+  ["Rabbit", "Rooster"], ["Dragon", "Dog"], ["Snake", "Pig"],
+];
+
+const LIU_HAI_PAIRS: [string, string][] = [
+  ["Rat", "Goat"], ["Ox", "Horse"], ["Tiger", "Snake"],
+  ["Rabbit", "Dragon"], ["Monkey", "Pig"], ["Rooster", "Dog"],
+];
+
+const COMPATIBILITY: Record<string, { best: string[]; challenging: string[] }> =
+  Object.fromEntries(ANIMALS.map((animal) => [animal, { best: [], challenging: [] }]));
+
+for (const trine of SAN_HE_TRINES) {
+  for (const a of trine) {
+    for (const b of trine) {
+      if (a !== b) COMPATIBILITY[a].best.push(b);
+    }
+  }
+}
+for (const [a, b] of LIU_HE_PAIRS) {
+  COMPATIBILITY[a].best.push(b);
+  COMPATIBILITY[b].best.push(a);
+}
+for (const [a, b] of LIU_CHONG_PAIRS) {
+  COMPATIBILITY[a].challenging.push(b);
+  COMPATIBILITY[b].challenging.push(a);
+}
+for (const [a, b] of LIU_HAI_PAIRS) {
+  COMPATIBILITY[a].challenging.push(b);
+  COMPATIBILITY[b].challenging.push(a);
+}
+
 export interface ChineseZodiacProfile {
   animal: string;
   emoji: string;
@@ -233,22 +286,6 @@ export function getChineseZodiac(dateOfBirth: Date): ChineseZodiacProfile {
   // Yin/Yang: even years are Yang, odd years are Yin
   const yinYang: "Yin" | "Yang" = zodiacYear % 2 === 0 ? "Yang" : "Yin";
 
-  // Compatibility tables (traditional)
-  const COMPATIBILITY: Record<string, { best: string[]; challenging: string[] }> = {
-    Rat: { best: ["Dragon", "Monkey", "Ox"], challenging: ["Horse", "Rooster"] },
-    Ox: { best: ["Rat", "Snake", "Rooster"], challenging: ["Tiger", "Dragon", "Horse", "Goat"] },
-    Tiger: { best: ["Dragon", "Horse", "Pig"], challenging: ["Ox", "Tiger", "Snake", "Monkey"] },
-    Rabbit: { best: ["Goat", "Monkey", "Dog", "Pig"], challenging: ["Snake", "Rooster"] },
-    Dragon: { best: ["Rooster", "Rat", "Monkey"], challenging: ["Ox", "Goat", "Dog"] },
-    Snake: { best: ["Dragon", "Rooster"], challenging: ["Tiger", "Rabbit", "Snake", "Horse", "Pig"] },
-    Horse: { best: ["Tiger", "Goat", "Rabbit"], challenging: ["Rat", "Ox", "Rooster", "Horse"] },
-    Goat: { best: ["Rabbit", "Horse", "Pig"], challenging: ["Ox", "Tiger", "Dog"] },
-    Monkey: { best: ["Ox", "Rabbit"], challenging: ["Tiger", "Pig"] },
-    Rooster: { best: ["Ox", "Snake"], challenging: ["Rat", "Rabbit", "Horse", "Rooster", "Dog", "Pig"] },
-    Dog: { best: ["Rabbit", "Tiger"], challenging: ["Dragon", "Goat", "Rooster"] },
-    Pig: { best: ["Tiger", "Rabbit", "Goat"], challenging: ["Snake", "Monkey"] },
-  };
-
   const compat = COMPATIBILITY[animal] || { best: [], challenging: [] };
 
   return {
@@ -262,20 +299,5 @@ export function getChineseZodiac(dateOfBirth: Date): ChineseZodiacProfile {
       bestWith: compat.best,
       challenging: compat.challenging,
     },
-  };
-}
-
-/**
- * Get the Chinese zodiac animal and element for the current year.
- * Useful for determining current year compatibility.
- */
-export function getCurrentYearZodiac(): { animal: string; element: string } {
-  const now = new Date();
-  const zodiacYear = getChineseZodiacYear(now);
-  const animalIndex = ((zodiacYear - 1924) % 12 + 12) % 12;
-  const elementIndex = Math.floor(((zodiacYear - 4) % 10 + 10) % 10 / 2);
-  return {
-    animal: ANIMALS[animalIndex],
-    element: ELEMENTS[elementIndex],
   };
 }

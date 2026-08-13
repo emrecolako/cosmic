@@ -17,10 +17,25 @@ const PYTHAGOREAN_VALUES: Record<string, number> = {
   I: 9, R: 9,
 };
 
+// Convention: Y is always treated as a consonant. Some Pythagorean schools
+// count Y as a vowel when it functions as one ("Yvonne"); results for such
+// names may differ from calculators using that convention.
 const VOWELS = new Set(["A", "E", "I", "O", "U"]);
 
+/** Letters that don't decompose to a base Latin letter under NFD. */
+const LETTER_SUBSTITUTIONS: Record<string, string> = {
+  "\u00f8": "o", "\u00d8": "O",
+  "\u00e6": "ae", "\u00c6": "AE",
+  "\u0153": "oe", "\u0152": "OE",
+  "\u0142": "l", "\u0141": "L",
+  "\u0111": "d", "\u0110": "D",
+};
+
 function normalizeName(name: string): string {
-  return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return name
+    .replace(/[\u00f8\u00d8\u00e6\u00c6\u0153\u0152\u0142\u0141\u0111\u0110]/g, (ch) => LETTER_SUBSTITUTIONS[ch])
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 /**

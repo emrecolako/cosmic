@@ -24,17 +24,6 @@ export type LifeStageOption =
   | "retired"
   | "prefer_not_to_say";
 
-export const LIFE_STAGE_LABELS: Record<LifeStageOption, string> = {
-  exploring: "Exploring life",
-  building_career: "Building career",
-  in_relationship: "In a relationship",
-  married: "Married",
-  parent: "Parent",
-  empty_nester: "Empty nester",
-  retired: "Retired",
-  prefer_not_to_say: "Prefer not to say",
-};
-
 export const LIFE_STAGE_ICONS: Record<LifeStageOption, string> = {
   exploring: "🌱",
   building_career: "🚀",
