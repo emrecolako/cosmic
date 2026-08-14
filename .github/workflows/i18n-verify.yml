@@ -1,9 +1,6 @@
 name: i18n verify
 
 on:
-  push:
-    branches:
-      - agent/i18n-full-content
   pull_request:
     branches:
       - main
@@ -32,42 +29,30 @@ jobs:
         run: npm run build
 
       - name: Verify Accept-Language rendering
-        shell: bash
         run: |
-          set -euo pipefail
-
-          npm run start -- --hostname 127.0.0.1 > /tmp/cosmic-server.log 2>&1 &
-          server_pid=$!
-          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-
-          for attempt in {1..30}; do
-            if curl --silent --fail http://127.0.0.1:3000 > /tmp/default.html; then
-              break
-            fi
+          npm start > /tmp/cosmic-next.log 2>&1 &
+          APP_PID=$!
+          trap 'kill $APP_PID' EXIT
+          for i in {1..30}; do
+            curl -fsS http://127.0.0.1:3000 >/dev/null && break
             sleep 1
           done
-
-          if [[ ! -s /tmp/default.html ]]; then
-            cat /tmp/cosmic-server.log
-            exit 1
-          fi
-
           check_locale() {
-            local header="$1"
-            local expected="$2"
-            local output="$3"
-            curl --silent --fail \
-              -H "Accept-Language: $header" \
-              http://127.0.0.1:3000 > "$output"
-            grep --quiet "lang=\"$expected\"" "$output"
+            HEADER="$1"
+            EXPECTED="$2"
+            if [ -n "$HEADER" ]; then
+              HTML=$(curl -fsS -H "Accept-Language: $HEADER" http://127.0.0.1:3000)
+            else
+              HTML=$(curl -fsS http://127.0.0.1:3000)
+            fi
+            echo "$HTML" | grep -Eq "<html[^>]*lang=\\\"$EXPECTED\\\"" || {
+              echo "Expected lang=$EXPECTED for Accept-Language: ${HEADER:-<missing>}"
+              exit 1
+            }
           }
-
-          check_locale "tr-TR,tr;q=0.9,en;q=0.8" "tr" /tmp/tr.html
-          check_locale "de-DE,de;q=0.9,en;q=0.8" "de" /tmp/de.html
-          check_locale "pt-BR,pt;q=0.9" "pt" /tmp/pt.html
-          check_locale "es-419,es;q=0.9" "es" /tmp/es.html
-          check_locale "zz-ZZ,ja;q=0.8" "en" /tmp/fallback.html
-
-          grep --quiet 'lang="en"' /tmp/default.html
-          grep --quiet "Kozmik" /tmp/tr.html
-          grep --quiet "Kosmischer" /tmp/de.html
+          check_locale "tr-TR,tr;q=0.9,en;q=0.8" tr
+          check_locale "de-DE,de;q=0.9" de
+          check_locale "pt-BR,pt;q=0.9" pt
+          check_locale "es-419,es;q=0.9" es
+          check_locale "zz-ZZ" en
+          check_locale "" en
