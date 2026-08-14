@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useI18n } from "@/components/I18nProvider";
+import { t } from "@/lib/i18n";
+import { textGlyph } from "@/lib/utils";
 
 interface NatalChartVisualProps {
   sunSign: string;
@@ -16,17 +17,18 @@ const SIGN_ORDER = [
 ];
 
 const SIGN_GLYPHS: Record<string, string> = {
-  Aries: "\u2648", Taurus: "\u2649", Gemini: "\u264A", Cancer: "\u264B",
-  Leo: "\u264C", Virgo: "\u264D", Libra: "\u264E", Scorpio: "\u264F",
-  Sagittarius: "\u2650", Capricorn: "\u2651", Aquarius: "\u2652", Pisces: "\u2653",
+  Aries: "♈", Taurus: "♉", Gemini: "♊", Cancer: "♋",
+  Leo: "♌", Virgo: "♍", Libra: "♎", Scorpio: "♏",
+  Sagittarius: "♐", Capricorn: "♑", Aquarius: "♒", Pisces: "♓",
 };
+
+const MONO = "var(--font-ibm-plex-mono), monospace";
 
 export default function NatalChartVisual({
   sunSign,
   moonSign,
   risingSign,
 }: NatalChartVisualProps) {
-  const { t } = useI18n();
   const size = 320;
   const center = size / 2;
   const outerRadius = 140;
@@ -47,11 +49,19 @@ export default function NatalChartVisual({
     y: center + Math.sin(angle) * radius,
   });
 
+  const chartLabel = [
+    `${t.western.chartSun}: ${sunSign}`,
+    moonSign ? `${t.western.chartMoon}: ${moonSign}` : null,
+    risingSign ? `${t.western.chartAsc}: ${risingSign}` : null,
+  ]
+    .filter(Boolean)
+    .join(", ");
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.4 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
       className="flex justify-center"
     >
       <svg
@@ -59,18 +69,22 @@ export default function NatalChartVisual({
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         className="max-w-full"
+        role="img"
+        aria-label={`${t.western.natalChart} — ${chartLabel}`}
       >
+        <title>{`${t.western.natalChart} — ${chartLabel}`}</title>
+
         {/* Outer ring */}
         <motion.circle
           cx={center}
           cy={center}
           r={outerRadius}
           fill="none"
-          stroke="#1e2249"
+          stroke="var(--border)"
           strokeWidth="1.5"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
         />
 
         {/* Inner ring */}
@@ -79,15 +93,15 @@ export default function NatalChartVisual({
           cy={center}
           r={innerRadius}
           fill="none"
-          stroke="#1e2249"
+          stroke="var(--border-muted)"
           strokeWidth="1"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
+          transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
         />
 
         {/* Center point */}
-        <circle cx={center} cy={center} r={3} fill="#d4a853" opacity={0.5} />
+        <circle cx={center} cy={center} r={2.5} fill="var(--text-muted)" />
 
         {/* House divisions */}
         {Array.from({ length: 12 }).map((_, i) => {
@@ -101,11 +115,11 @@ export default function NatalChartVisual({
               y1={inner.y}
               x2={outer.x}
               y2={outer.y}
-              stroke="#1e2249"
+              stroke="var(--border-muted)"
               strokeWidth="0.5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 + i * 0.05 }}
+              transition={{ delay: 0.4 + i * 0.04 }}
             />
           );
         })}
@@ -122,13 +136,13 @@ export default function NatalChartVisual({
               textAnchor="middle"
               dominantBaseline="central"
               fontSize="12"
-              fill={sign === sunSign ? "#d4a853" : "#4a4e7a"}
+              fill={sign === sunSign ? "var(--text)" : "var(--text-muted)"}
               fontWeight={sign === sunSign ? "bold" : "normal"}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 + i * 0.05 }}
+              transition={{ delay: 0.6 + i * 0.04 }}
             >
-              {SIGN_GLYPHS[sign]}
+              {textGlyph(SIGN_GLYPHS[sign])}
             </motion.text>
           );
         })}
@@ -141,17 +155,18 @@ export default function NatalChartVisual({
             <motion.g
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.2, type: "spring" }}
+              transition={{ delay: 1, type: "spring" }}
             >
-              <circle cx={pos.x} cy={pos.y} r={12} fill="#d4a853" opacity={0.2} />
-              <circle cx={pos.x} cy={pos.y} r={6} fill="#d4a853" />
+              <circle cx={pos.x} cy={pos.y} r={11} fill="var(--text)" opacity={0.12} />
+              <circle cx={pos.x} cy={pos.y} r={5} fill="var(--text)" />
               <text
                 x={pos.x}
-                y={pos.y - 18}
+                y={pos.y - 16}
                 textAnchor="middle"
                 fontSize="8"
-                fill="#d4a853"
-                fontWeight="600"
+                fill="var(--text)"
+                fontFamily={MONO}
+                letterSpacing="0.1em"
               >
                 {t.western.chartSun}
               </text>
@@ -168,23 +183,25 @@ export default function NatalChartVisual({
               <motion.g
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.4, type: "spring" }}
+                transition={{ delay: 1.15, type: "spring" }}
               >
+                <circle cx={pos.x} cy={pos.y} r={9} fill="var(--text-secondary)" opacity={0.12} />
                 <circle
                   cx={pos.x}
                   cy={pos.y}
-                  r={10}
-                  fill="#6c5ce7"
-                  opacity={0.2}
+                  r={4}
+                  fill="none"
+                  stroke="var(--text-secondary)"
+                  strokeWidth="1.5"
                 />
-                <circle cx={pos.x} cy={pos.y} r={5} fill="#6c5ce7" />
                 <text
                   x={pos.x}
-                  y={pos.y - 15}
+                  y={pos.y - 14}
                   textAnchor="middle"
                   fontSize="7"
-                  fill="#6c5ce7"
-                  fontWeight="600"
+                  fill="var(--text-secondary)"
+                  fontFamily={MONO}
+                  letterSpacing="0.1em"
                 >
                   {t.western.chartMoon}
                 </text>
@@ -198,19 +215,16 @@ export default function NatalChartVisual({
             const angle = getAngleForSign(risingSign);
             const pos = getPointOnCircle(angle, outerRadius + 12);
             return (
-              <motion.g
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.6 }}
-              >
+              <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>
                 <text
                   x={pos.x}
                   y={pos.y}
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontSize="8"
-                  fill="#00b894"
-                  fontWeight="600"
+                  fill="var(--text-muted)"
+                  fontFamily={MONO}
+                  letterSpacing="0.1em"
                 >
                   {t.western.chartAsc}
                 </text>

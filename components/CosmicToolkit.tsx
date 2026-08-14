@@ -1,20 +1,18 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 interface CosmicToolkitProps {
   items: string[] | null;
   isLoading: boolean;
 }
 
-const COLORS = ["#d4a853", "#6c5ce7", "#00b894", "#d4a853", "#6c5ce7"];
-
 export default function CosmicToolkit({ items, isLoading }: CosmicToolkitProps) {
   if (isLoading) {
     return (
-      <div className="grid gap-3">
+      <div className="grid gap-2">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="skeleton h-20 rounded-2xl" />
+          <Skeleton key={i} className="h-16 rounded-lg" />
         ))}
       </div>
     );
@@ -23,27 +21,18 @@ export default function CosmicToolkit({ items, isLoading }: CosmicToolkitProps) 
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="grid gap-3">
+    <div className="grid gap-2">
       {items.map((item, i) => (
-        <motion.div
+        <div
           key={i}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: i * 0.1 }}
-          className="glass-card p-5 flex items-start gap-4 hover:border-opacity-50 transition-all"
-          style={{ borderColor: `${COLORS[i % COLORS.length]}33` }}
+          className="rounded-lg bg-panel p-4 flex items-start gap-4 animate-fade-in-up opacity-0"
+          style={{ animationDelay: `${i * 0.08}s`, animationFillMode: "forwards" }}
         >
-          <div
-            className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
-            style={{
-              backgroundColor: `${COLORS[i % COLORS.length]}15`,
-              color: COLORS[i % COLORS.length],
-            }}
-          >
-            {i + 1}
+          <div className="number-mono text-xs text-ink-muted pt-0.5 shrink-0 tabular-nums">
+            {String(i + 1).padStart(2, "0")}
           </div>
-          <p className="text-sm text-cream/70 leading-relaxed">{item}</p>
-        </motion.div>
+          <p className="text-sm text-ink-secondary leading-relaxed">{item}</p>
+        </div>
       ))}
     </div>
   );

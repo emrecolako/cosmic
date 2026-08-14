@@ -19,7 +19,6 @@ export interface CosmicProfile {
   whatsOnYourMind?: string;
   gender?: string;
   age: number;
-  locale?: string;
   numerology: NumerologyProfile;
   westernAstro: WesternAstrologyProfile;
   chineseZodiac: ChineseZodiacProfile;
@@ -38,7 +37,7 @@ Your writing style:
 - Never says "the stars say" or similar woo-woo language
 - Treats these systems as lenses for self-understanding, not fortune-telling
 
-You always structure your response as valid JSON.`;
+You follow the requested output format exactly.`;
 
 /**
  * Build the full analysis prompt for the Claude API call.
@@ -95,28 +94,25 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
 
   const dataPayload = sections.join("\n\n");
 
-  const isTurkish = data.locale === "tr";
-  const languageInstruction = isTurkish
-    ? "\n\nIMPORTANT: You MUST write ALL content in Turkish (Türkçe). Every field in the JSON response must be in Turkish. Use natural, fluent Turkish — not machine-translated text.\n\n"
-    : "\n\n";
-
   const currentYear = new Date().getUTCFullYear();
 
   return `The current year is ${currentYear}.
 
-Based on the following cosmic profile data, generate a unified reading.${languageInstruction}Your response MUST be raw valid JSON only — no markdown code fences, no backticks, no \`\`\`json wrapper. Just the JSON object with exactly these fields:
+Based on the following cosmic profile data, generate a unified reading.
 
-{
-  "cosmicSnapshot": "A compelling 2-3 sentence executive summary that captures the essence of this person's cosmic profile. This should feel like the most insightful paragraph in the reading — the one they'd share with a friend.",
+Your response MUST be plain text in exactly four sections, each introduced by its marker on its own line, in this order. Output nothing before the first marker — no preamble, no markdown headers, no code fences:
 
-  "unifiedReading": "An 800-1200 word unified narrative that: (1) Finds connecting threads across numerology, Western astrology, and Chinese astrology. (2) Identifies reinforcing patterns where multiple systems agree. (3) Calls out interesting tensions where systems suggest opposing tendencies — framed as complexity, not contradiction. (4) Adapts language and focus based on their life stage. (5) Uses a warm, intelligent tone.${data.whatsOnYourMind ? " (6) Weaves in the personal context they shared naturally — don't just append it, integrate it." : ""} Use paragraph breaks for readability. Do NOT use markdown headers within the reading — it should flow as prose.",
+<<<SNAPSHOT>>>
+A compelling 2-3 sentence executive summary that captures the essence of this person's cosmic profile. This should feel like the most insightful paragraph in the reading — the one they'd share with a friend.
 
-  "currentSeason": "A 150-200 word section about what's active for them right now, based on their Personal Year number (${data.numerology.personalYear.number} — ${data.numerology.personalYear.interpretation.title}) and current cosmic transits relevant to their sun sign. This should feel timely and actionable.",
+<<<READING>>>
+An 800-1200 word unified narrative that: (1) Finds connecting threads across numerology, Western astrology, and Chinese astrology. (2) Identifies reinforcing patterns where multiple systems agree. (3) Calls out interesting tensions where systems suggest opposing tendencies — framed as complexity, not contradiction. (4) Adapts language and focus based on their life stage. (5) Uses a warm, intelligent tone.${data.whatsOnYourMind ? " (6) Weaves in the personal context they shared naturally — don't just append it, integrate it." : ""} Separate paragraphs with blank lines. Do NOT use markdown headers within the reading — it should flow as prose.
 
-  "cosmicToolkit": ["item1", "item2", "item3", "item4", "item5"]
-}
+<<<SEASON>>>
+A 150-200 word section about what's active for them right now, based on their Personal Year number (${data.numerology.personalYear.number} — ${data.numerology.personalYear.interpretation.title}) and current cosmic transits relevant to their sun sign. This should feel timely and actionable.
 
-The cosmicToolkit should be 3-5 specific, practical takeaways based on their complete profile. Each should be 1-2 sentences — not just "be more patient" but something specific to their profile combination. Think actionable micro-advice.
+<<<TOOLKIT>>>
+3-5 specific, practical takeaways based on their complete profile, one per line, each line starting with "- ". Each should be 1-2 sentences — not just "be more patient" but something specific to their profile combination. Think actionable micro-advice.
 
 ${dataPayload}`;
 }
