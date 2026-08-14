@@ -1,15 +1,11 @@
+/** English UI catalog and the structural source of truth for every locale. */
 export const en = {
   meta: {
     title: "Cosmic Blueprint — Your Complete Cosmic Profile",
-    description: "Discover your unified cosmic profile combining numerology, Western astrology, Chinese astrology, and natal chart analysis into one beautifully synthesized reading.",
+    description:
+      "Discover your unified cosmic profile combining numerology, Western astrology, Chinese astrology, and natal chart analysis into one beautifully synthesized reading.",
     ogTitle: "Cosmic Blueprint",
     ogDescription: "Your complete cosmic profile, unified.",
-  },
-  ui: {
-    errorPrefix: "ERROR:",
-    okPrefix: "OK:",
-    dismiss: "Dismiss",
-    timePlaceholder: "HH:MM",
   },
   header: {
     share: "Share",
@@ -41,7 +37,8 @@ export const en = {
     lifeStageHint: "(select all that apply)",
     whatsOnYourMindLabel: "What's on your mind?",
     whatsOnYourMindOptional: "(optional)",
-    whatsOnYourMindPlaceholder: "A sentence or two about what's happening in your life right now...",
+    whatsOnYourMindPlaceholder:
+      "A sentence or two about what's happening in your life right now...",
     genderLabel: "Gender",
     genderOptional: "(optional)",
     genderOptions: {
@@ -85,7 +82,8 @@ export const en = {
   },
   sections: {
     numbersTitle: "The Numbers",
-    numbersSubtitle: "Your numerology profile reveals the mathematical signature of your life",
+    numbersSubtitle:
+      "Your numerology profile reveals the mathematical signature of your life",
     starMapTitle: "Your Star Map",
     starMapSubtitle: "Western astrology reveals your celestial identity",
     easternMirrorTitle: "Your Eastern Mirror",
@@ -109,8 +107,10 @@ export const en = {
     moonSign: "Moon Sign",
     risingSign: "Rising Sign",
     natalChart: "Natal Chart",
-    solarChartNote: "Solar chart — provide birth time for full natal chart with moon and rising sign",
-    birthTimeNote: "Provide your birth time and place for moon sign, rising sign, and more precise readings.",
+    solarChartNote:
+      "Solar chart — provide birth time for full natal chart with moon and rising sign",
+    birthTimeNote:
+      "Provide your birth time and place for moon sign, rising sign, and more precise readings.",
     decan: "Decan",
     element: "Element",
     modality: "Modality",
@@ -120,7 +120,7 @@ export const en = {
     chartAsc: "ASC",
   },
   chinese: {
-    animalName: "The {animal}",
+    animalTitle: "The {animal}",
     bestWith: "Best With",
     challenging: "Challenging",
     elementLabel: "{element} Element",
@@ -131,13 +131,11 @@ export const en = {
     personalYear: "Personal Year",
     generating: "Writing your reading...",
   },
+  ui: {
+    errorPrefix: "ERROR:",
+    dismiss: "Dismiss",
+    timePlaceholder: "HH:MM",
+  },
 };
 
 export type Messages = typeof en;
-
-export function formatMessage(template: string, values: Record<string, string | number>): string {
-  return Object.entries(values).reduce(
-    (result, [key, value]) => result.replaceAll(`{${key}}`, String(value)),
-    template
-  );
-}

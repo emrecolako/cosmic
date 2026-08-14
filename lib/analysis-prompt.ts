@@ -1,8 +1,19 @@
-import { NumerologyProfile } from "./numerology";
-import { WesternAstrologyProfile } from "./western-astrology";
-import { ChineseZodiacProfile } from "./chinese-zodiac";
-import { LifeStageContext } from "./life-stages";
-import { LANGUAGE_NAMES, type Locale } from "./i18n/locales";
+/**
+ * OpenRouter analysis prompt builder.
+ *
+ * Dynamically constructs the analysis prompt from the English calculation
+ * payload while allowing the model's response language to vary by locale.
+ */
+
+import type { NumerologyProfile } from "./numerology";
+import type { WesternAstrologyProfile } from "./western-astrology";
+import type { ChineseZodiacProfile } from "./chinese-zodiac";
+import type { LifeStageContext } from "./life-stages";
+import {
+  DEFAULT_LOCALE,
+  LANGUAGE_NAMES,
+  type Locale,
+} from "./i18n/locales";
 
 export interface CosmicProfile {
   fullName: string;
@@ -36,6 +47,8 @@ You follow the requested output format exactly.`;
 
 export function buildAnalysisPrompt(data: CosmicProfile): string {
   const hasFullNatalData = !!data.birthTime && !!data.birthPlace;
+  const locale = data.locale ?? DEFAULT_LOCALE;
+  const language = LANGUAGE_NAMES[locale];
   const sections: string[] = [];
 
   sections.push(`## Person Profile
@@ -52,9 +65,17 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
 
   let astroSection = `## Western Astrology
 - Sun Sign: ${data.westernAstro.sunSign.sign} (${data.westernAstro.sunSign.element}, ${data.westernAstro.sunSign.modality}, ruled by ${data.westernAstro.sunSign.rulingPlanet}, Decan ${data.westernAstro.sunSign.decan})`;
-  if (data.westernAstro.moonSign) astroSection += `\n- Moon Sign: ${data.westernAstro.moonSign}`;
-  if (data.westernAstro.risingSign) astroSection += `\n- Rising Sign: ${data.westernAstro.risingSign}`;
-  if (!hasFullNatalData) astroSection += `\n- Note: Birth time${!data.birthPlace ? " and location" : ""} not provided, so moon sign, rising sign, and house placements are unavailable.`;
+
+  if (data.westernAstro.moonSign) {
+    astroSection += `\n- Moon Sign: ${data.westernAstro.moonSign}`;
+  }
+  if (data.westernAstro.risingSign) {
+    astroSection += `\n- Rising Sign: ${data.westernAstro.risingSign}`;
+  }
+  if (!hasFullNatalData) {
+    astroSection += `\n- Note: Birth time${!data.birthPlace ? " and location" : ""} not provided, so moon sign, rising sign, and house placements are unavailable.`;
+  }
+
   sections.push(astroSection);
 
   sections.push(`## Chinese Astrology
@@ -72,16 +93,14 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
 
   const dataPayload = sections.join("\n\n");
   const currentYear = new Date().getUTCFullYear();
-  const locale = data.locale ?? "en";
-  const language = LANGUAGE_NAMES[locale];
-  const languageInstruction = locale === "en"
-    ? "Write the entire response in natural, fluent English."
-    : `Write the ENTIRE response in natural, fluent ${language}. Translate all prose and toolkit advice into ${language}.`;
 
   return `The current year is ${currentYear}.
 
-${languageInstruction}
-IMPORTANT: Regardless of output language, keep the four structural markers exactly as these English ASCII strings: <<<SNAPSHOT>>> <<<READING>>> <<<SEASON>>> <<<TOOLKIT>>>. Never translate, alter, decorate, or omit them. Toolkit lines must still begin with "- ".
+LANGUAGE REQUIREMENT — NON-NEGOTIABLE:
+Write the ENTIRE response naturally and fluently in ${language}.
+Keep only these four parser markers exactly as written in English: <<<SNAPSHOT>>> <<<READING>>> <<<SEASON>>> <<<TOOLKIT>>>.
+Do not translate, alter, decorate, repeat, or add punctuation to those markers. Each marker must remain on its own line.
+Toolkit entries must still begin with the exact ASCII characters "- ", even when writing in ${language}.
 
 Based on the following cosmic profile data, generate a unified reading.
 

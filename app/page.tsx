@@ -24,15 +24,20 @@ export default function HomePage() {
   }) => {
     if (formData.lifeStages.length === 0) return;
     setIsLoading(true);
+
     saveReadingInput({
       fullName: formData.fullName.trim(),
       dateOfBirth: formData.dateOfBirth,
-      birthTime: !formData.dontKnowBirthTime && formData.birthTime ? formData.birthTime : undefined,
+      birthTime:
+        !formData.dontKnowBirthTime && formData.birthTime
+          ? formData.birthTime
+          : undefined,
       birthPlace: formData.birthPlace.trim() || undefined,
       lifeStages: formData.lifeStages,
       whatsOnYourMind: formData.whatsOnYourMind.trim() || undefined,
       gender: formData.gender || undefined,
     });
+
     router.push("/results");
   };
 
@@ -46,9 +51,13 @@ export default function HomePage() {
           <p className="tracking-wider max-w-md leading-relaxed text-ink-muted uppercase">
             {t.landing.subtitle} {t.landing.subtitle2}
           </p>
-          <p className="tracking-wider mt-2 text-ink-muted/70 uppercase">{t.landing.badge}</p>
+          <p className="tracking-wider mt-2 text-ink-muted/70 uppercase">
+            {t.landing.badge}
+          </p>
         </div>
+
         <InputWizard onSubmit={handleSubmit} isLoading={isLoading} />
+
         <p className="text-center font-mono text-xs tracking-wider uppercase text-ink-muted mt-12">
           {t.landing.privacy}
         </p>

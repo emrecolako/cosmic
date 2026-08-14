@@ -22,23 +22,27 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const locale = negotiateLocale(requestHeaders.get("accept-language"));
-  const { meta } = getMessages(locale);
+  const locale = negotiateLocale((await headers()).get("accept-language"));
+  const t = getMessages(locale);
+
   return {
-    title: meta.title,
-    description: meta.description,
+    title: t.meta.title,
+    description: t.meta.description,
     openGraph: {
-      title: meta.ogTitle,
-      description: meta.ogDescription,
+      title: t.meta.ogTitle,
+      description: t.meta.ogDescription,
       type: "website",
     },
   };
 }
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const [requestHeaders, cookieStore] = await Promise.all([headers(), cookies()]);
-  const locale = negotiateLocale(requestHeaders.get("accept-language"));
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const [headerStore, cookieStore] = await Promise.all([headers(), cookies()]);
+  const locale = negotiateLocale(headerStore.get("accept-language"));
   const theme = cookieStore.get("theme")?.value === "light" ? "light" : "dark";
 
   return (
@@ -47,7 +51,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       className={theme === "dark" ? "dark" : undefined}
       suppressHydrationWarning
     >
-      <body className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} min-h-screen antialiased font-sans`}>
+      <body
+        className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} min-h-screen antialiased font-sans`}
+      >
         <LocaleProvider locale={locale}>
           <Providers>
             <Header initialTheme={theme} />
