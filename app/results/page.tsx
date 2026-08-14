@@ -79,6 +79,7 @@ export default function ResultsPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...currentInput,
+            lifeStage: currentInput.lifeStages.map((s) => t.lifeStages[s]).join(", "),
             age: currentProfile.age,
             numerology: currentProfile.numerology,
             westernAstro: currentProfile.westernAstro,

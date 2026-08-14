@@ -24,7 +24,7 @@ export interface ReadingInput {
   dateOfBirth: string; // YYYY-MM-DD
   birthTime?: string; // HH:MM
   birthPlace?: string;
-  lifeStage: LifeStageOption;
+  lifeStages: LifeStageOption[]; // at least one
   whatsOnYourMind?: string;
   gender?: string;
 }
@@ -41,7 +41,14 @@ export function loadReadingInput(): ReadingInput | null {
     const raw = sessionStorage.getItem(READING_INPUT_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    if (!parsed.fullName || !parsed.dateOfBirth || !parsed.lifeStage) return null;
+    if (
+      !parsed.fullName ||
+      !parsed.dateOfBirth ||
+      !Array.isArray(parsed.lifeStages) ||
+      parsed.lifeStages.length === 0
+    ) {
+      return null;
+    }
     return parsed as ReadingInput;
   } catch {
     return null;
@@ -135,7 +142,7 @@ export async function computeProfile(
     ),
     lifeStageContext: classifyLifeStage(
       calculateAge(dateOfBirth),
-      input.lifeStage
+      input.lifeStages
     ),
     age: calculateAge(dateOfBirth),
     currentYear,
