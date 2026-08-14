@@ -54,6 +54,7 @@ export const t = {
     errNameRequired: "Enter your name",
     errDobRequired: "Enter your date of birth",
     errDobRange: "Date must be between 1900 and today",
+    errBirthTime: "Enter a valid time (HH:MM, 24-hour) or tick I don't know",
     errLifeStageRequired: "Select a life stage",
   },
 

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { buildAnalysisPrompt, SYSTEM_PROMPT, CosmicProfile } from "@/lib/analysis-prompt";
+import { MODEL_CHAIN, OPENROUTER_URL } from "@/lib/openrouter";
 
 /**
  * Analysis-only endpoint. All deterministic calculations happen client-side
  * (lib/profile.ts); this route receives the computed profile, builds the
- * prompt, and streams Claude's marker-delimited plain-text reading back so
+ * prompt, and streams the model's marker-delimited plain-text reading back so
  * the client can reveal it as it is written.
  */
 
@@ -138,7 +138,7 @@ export async function POST(request: NextRequest) {
       return textStream(cached.data);
     }
 
-    const apiKey = process.env.ANTHROPIC_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey || apiKey === "your_key_here") {
       return NextResponse.json(
         { error: "Analysis service not configured." },
@@ -161,40 +161,101 @@ export async function POST(request: NextRequest) {
       lifeStageContext: body.lifeStageContext,
     };
 
-    const client = new Anthropic({ apiKey });
     const prompt = buildAnalysisPrompt(cosmicProfile);
 
-    const stream = client.messages.stream({
-      model: "claude-sonnet-5",
-      max_tokens: 4096,
-      messages: [{ role: "user", content: prompt }],
-      system: SYSTEM_PROMPT,
+    const upstream = await fetch(OPENROUTER_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        // Optional OpenRouter attribution headers
+        "HTTP-Referer": "https://cosmic-blueprint.vercel.app",
+        "X-Title": "Cosmic Blueprint",
+      },
+      body: JSON.stringify({
+        models: MODEL_CHAIN,
+        max_tokens: 4096,
+        stream: true,
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          { role: "user", content: prompt },
+        ],
+      }),
     });
 
+    if (!upstream.ok || !upstream.body) {
+      const errorBody = await upstream.text().catch(() => "");
+      console.error("OpenRouter error:", upstream.status, errorBody);
+      return NextResponse.json(
+        { error: "Failed to generate reading" },
+        { status: 502 }
+      );
+    }
+
     const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    const reader = upstream.body.getReader();
+    let clientDisconnected = false;
     const readable = new ReadableStream<Uint8Array>({
       async start(controller) {
         let full = "";
+        let buffer = "";
+        let served: string | undefined;
         try {
-          for await (const event of stream) {
-            if (
-              event.type === "content_block_delta" &&
-              event.delta.type === "text_delta"
-            ) {
-              full += event.delta.text;
-              controller.enqueue(encoder.encode(event.delta.text));
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            // SSE frames are newline-delimited; keep the trailing partial line
+            const lines = buffer.split("\n");
+            buffer = lines.pop() ?? "";
+            for (const line of lines) {
+              if (!line.startsWith("data: ")) continue;
+              const data = line.slice(6).trim();
+              if (data === "[DONE]") continue;
+              let parsed;
+              try {
+                parsed = JSON.parse(data);
+              } catch {
+                continue;
+              }
+              if (parsed.error) {
+                throw new Error(
+                  `OpenRouter mid-stream error: ${JSON.stringify(parsed.error)}`
+                );
+              }
+              served = parsed.model ?? served;
+              const text = parsed.choices?.[0]?.delta?.content;
+              if (typeof text === "string" && text) {
+                full += text;
+                if (!clientDisconnected) controller.enqueue(encoder.encode(text));
+              }
             }
           }
           // Cache only complete, well-formed responses — never failures,
-          // otherwise a transient Claude error gets pinned for 24h.
+          // otherwise a transient model error gets pinned for 24h.
           if (full.includes("<<<READING>>>")) {
             setCache(cacheKey, full);
           }
-          controller.close();
+          if (served) console.log("Reading served by model:", served);
+          if (!clientDisconnected) controller.close();
         } catch (streamError) {
-          console.error("Claude stream error:", streamError);
-          controller.error(streamError);
+          console.error("OpenRouter stream error:", streamError);
+          if (!clientDisconnected) {
+            try {
+              controller.error(streamError);
+            } catch {
+              // Client already gone; nothing left to notify.
+            }
+          }
         }
+      },
+      cancel() {
+        // The client disconnected (navigation, tab close, retry). Stop
+        // touching `controller` and let the upstream OpenRouter read wind
+        // down naturally so we don't burn tokens or throw on a dead stream.
+        clientDisconnected = true;
+        reader.cancel().catch(() => {});
       },
     });
 
