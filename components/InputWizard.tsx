@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LifeStageOption } from "@/lib/life-stages";
 import { t } from "@/lib/i18n";
 import { Input, Textarea, FieldLabel, FieldError } from "@/components/ui/Field";
+import TimeInput, { isCompleteTime } from "@/components/ui/TimeInput";
+import PlaceAutocomplete from "@/components/ui/PlaceAutocomplete";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
@@ -85,11 +87,19 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
         : !dobInRange(formData.dateOfBirth)
           ? t.wizard.errDobRange
           : undefined,
+    birthTime:
+      !formData.dontKnowBirthTime &&
+      formData.birthTime !== "" &&
+      !isCompleteTime(formData.birthTime)
+        ? t.wizard.errBirthTime
+        : undefined,
     lifeStage: formData.lifeStage === "" ? t.wizard.errLifeStageRequired : undefined,
   };
 
   const stepValid = (s: number) =>
-    s === 0 ? !errors.fullName && !errors.dateOfBirth : !errors.lifeStage;
+    s === 0
+      ? !errors.fullName && !errors.dateOfBirth && !errors.birthTime
+      : !errors.lifeStage;
 
   const handleNext = () => {
     if (!stepValid(step)) {
@@ -145,7 +155,9 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
       </div>
 
       {/* Step content */}
-      <div className="card p-6 sm:p-8 overflow-hidden">
+      {/* overflow must stay visible so the place-autocomplete dropdown can
+          extend past the card edge; step transitions only fade/slide 10px */}
+      <div className="card p-6 sm:p-8">
         <AnimatePresence mode="wait" initial={false}>
           {step === 0 && (
             <motion.div
@@ -202,21 +214,19 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                     animate={{ height: "auto", opacity: 1 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <input
-                      type="time"
-                      aria-label={t.wizard.birthTimeLabel}
+                    <TimeInput
+                      ariaLabel={t.wizard.birthTimeLabel}
                       value={formData.birthTime}
-                      onChange={(e) => updateField("birthTime", e.target.value)}
-                      className="w-full bg-transparent border border-line rounded-md px-3 py-2.5 text-sm text-ink focus:outline-none focus:border-ink-muted focus-visible:ring-1 focus-visible:ring-ink-muted transition-all"
+                      onChange={(v) => updateField("birthTime", v)}
+                      error={attempted ? errors.birthTime : undefined}
                     />
                   </motion.div>
                 )}
               </div>
-              <Input
+              <PlaceAutocomplete
                 label={t.wizard.birthPlaceLabel}
-                type="text"
                 value={formData.birthPlace}
-                onChange={(e) => updateField("birthPlace", e.target.value)}
+                onChange={(v) => updateField("birthPlace", v)}
                 placeholder={t.wizard.birthPlacePlaceholder}
               />
             </motion.div>
