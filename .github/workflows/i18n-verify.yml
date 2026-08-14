@@ -30,3 +30,44 @@ jobs:
 
       - name: Verify calculations, types, and production build
         run: npm run build
+
+      - name: Verify Accept-Language rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          npm run start -- --hostname 127.0.0.1 > /tmp/cosmic-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for attempt in {1..30}; do
+            if curl --silent --fail http://127.0.0.1:3000 > /tmp/default.html; then
+              break
+            fi
+            sleep 1
+          done
+
+          if [[ ! -s /tmp/default.html ]]; then
+            cat /tmp/cosmic-server.log
+            exit 1
+          fi
+
+          check_locale() {
+            local header="$1"
+            local expected="$2"
+            local output="$3"
+            curl --silent --fail \
+              -H "Accept-Language: $header" \
+              http://127.0.0.1:3000 > "$output"
+            grep --quiet "lang=\"$expected\"" "$output"
+          }
+
+          check_locale "tr-TR,tr;q=0.9,en;q=0.8" "tr" /tmp/tr.html
+          check_locale "de-DE,de;q=0.9,en;q=0.8" "de" /tmp/de.html
+          check_locale "pt-BR,pt;q=0.9" "pt" /tmp/pt.html
+          check_locale "es-419,es;q=0.9" "es" /tmp/es.html
+          check_locale "zz-ZZ,ja;q=0.8" "en" /tmp/fallback.html
+
+          grep --quiet 'lang="en"' /tmp/default.html
+          grep --quiet "Kozmik" /tmp/tr.html
+          grep --quiet "Kosmischer" /tmp/de.html
