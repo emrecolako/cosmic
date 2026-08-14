@@ -12,7 +12,7 @@ interface FormData {
   fullName: string;
   dateOfBirth: string;
   birthTime: string;
-  knowBirthTime: boolean;
+  dontKnowBirthTime: boolean;
   birthPlace: string;
   lifeStage: LifeStageOption | "";
   whatsOnYourMind: string;
@@ -28,7 +28,7 @@ const EMPTY_FORM: FormData = {
   fullName: "",
   dateOfBirth: "",
   birthTime: "",
-  knowBirthTime: false,
+  dontKnowBirthTime: false,
   birthPlace: "",
   lifeStage: "",
   whatsOnYourMind: "",
@@ -176,25 +176,29 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               />
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <FieldLabel>{t.wizard.birthTimeLabel}</FieldLabel>
+                  <FieldLabel hint={t.wizard.birthTimeOptional}>
+                    {t.wizard.birthTimeLabel}
+                  </FieldLabel>
                   <button
                     type="button"
+                    role="checkbox"
+                    aria-checked={formData.dontKnowBirthTime}
                     onClick={() => {
-                      updateField("knowBirthTime", !formData.knowBirthTime);
-                      if (formData.knowBirthTime) updateField("birthTime", "");
+                      const next = !formData.dontKnowBirthTime;
+                      updateField("dontKnowBirthTime", next);
+                      if (next) updateField("birthTime", "");
                     }}
-                    aria-pressed={formData.knowBirthTime}
                     className={cn(
                       "font-mono text-xs tracking-wider uppercase transition-opacity hover:opacity-70 mb-2",
-                      formData.knowBirthTime ? "text-ink" : "text-ink-muted"
+                      formData.dontKnowBirthTime ? "text-ink" : "text-ink-muted"
                     )}
                   >
-                    [{formData.knowBirthTime ? t.wizard.iKnowMyBirthTime : t.wizard.iDontKnow}]
+                    [{formData.dontKnowBirthTime ? "✓" : " "}] {t.wizard.iDontKnow}
                   </button>
                 </div>
-                {formData.knowBirthTime && (
+                {!formData.dontKnowBirthTime && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
+                    initial={false}
                     animate={{ height: "auto", opacity: 1 }}
                     transition={{ duration: 0.2 }}
                   >

@@ -15,7 +15,7 @@ export default function HomePage() {
     fullName: string;
     dateOfBirth: string;
     birthTime: string;
-    knowBirthTime: boolean;
+    dontKnowBirthTime: boolean;
     birthPlace: string;
     lifeStage: LifeStageOption | "";
     whatsOnYourMind: string;
@@ -28,7 +28,7 @@ export default function HomePage() {
     saveReadingInput({
       fullName: formData.fullName.trim(),
       dateOfBirth: formData.dateOfBirth,
-      birthTime: formData.knowBirthTime && formData.birthTime ? formData.birthTime : undefined,
+      birthTime: !formData.dontKnowBirthTime && formData.birthTime ? formData.birthTime : undefined,
       birthPlace: formData.birthPlace.trim() || undefined,
       lifeStage: formData.lifeStage,
       whatsOnYourMind: formData.whatsOnYourMind.trim() || undefined,
