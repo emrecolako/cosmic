@@ -1,9 +1,16 @@
-/**
- * UI strings for Cosmic Blueprint (English only).
- */
-
-export const t = {
-  // Fixed header
+export const en = {
+  meta: {
+    title: "Cosmic Blueprint — Your Complete Cosmic Profile",
+    description: "Discover your unified cosmic profile combining numerology, Western astrology, Chinese astrology, and natal chart analysis into one beautifully synthesized reading.",
+    ogTitle: "Cosmic Blueprint",
+    ogDescription: "Your complete cosmic profile, unified.",
+  },
+  ui: {
+    errorPrefix: "ERROR:",
+    okPrefix: "OK:",
+    dismiss: "Dismiss",
+    timePlaceholder: "HH:MM",
+  },
   header: {
     share: "Share",
     shareCopied: "Link copied",
@@ -11,8 +18,6 @@ export const t = {
     themeDark: "Dark",
     themeLight: "Light",
   },
-
-  // Landing page
   landing: {
     badge: "Numerology + Western Astrology + Chinese Zodiac",
     title1: "Cosmic",
@@ -21,8 +26,6 @@ export const t = {
     subtitle2: "Three ancient systems. One personal reading.",
     privacy: "Your data stays in your browser. We don't store birth details.",
   },
-
-  // Input wizard
   wizard: {
     step1Title: "Your Birth Details",
     step2Title: "Your Life Context",
@@ -58,8 +61,6 @@ export const t = {
     errBirthTime: "Enter a valid time (HH:MM, 24-hour) or tick I don't know",
     errLifeStageRequired: "Select at least one life stage",
   },
-
-  // Life stages
   lifeStages: {
     exploring: "Exploring life",
     building_career: "Building career",
@@ -70,12 +71,10 @@ export const t = {
     retired: "Retired",
     prefer_not_to_say: "Prefer not to say",
   },
-
-  // Results page
   results: {
     newReading: "New Reading",
     title: "Cosmic Blueprint",
-    forPerson: "for",
+    forPerson: "for {name}",
     loadingMessage: "Mapping your cosmic blueprint...",
     errorTitle: "Something went wrong",
     startOver: "Start Over",
@@ -84,8 +83,6 @@ export const t = {
     closingMessage: "May this map serve your journey well.",
     geocodeWarning: "Birth place not recognized — showing solar chart",
   },
-
-  // Section headers
   sections: {
     numbersTitle: "The Numbers",
     numbersSubtitle: "Your numerology profile reveals the mathematical signature of your life",
@@ -100,8 +97,6 @@ export const t = {
     cosmicToolkitTitle: "Your Cosmic Toolkit",
     cosmicToolkitSubtitle: "Practical takeaways from your complete cosmic profile",
   },
-
-  // Numerology
   numerology: {
     lifePath: "Life Path",
     expression: "Expression",
@@ -109,8 +104,6 @@ export const t = {
     personality: "Personality",
     personalYear: "Personal Year",
   },
-
-  // Western astrology
   western: {
     sunSign: "Sun Sign",
     moonSign: "Moon Sign",
@@ -126,20 +119,25 @@ export const t = {
     chartMoon: "MOON",
     chartAsc: "ASC",
   },
-
-  // Chinese zodiac
   chinese: {
-    the: "The ",
+    animalName: "The {animal}",
     bestWith: "Best With",
     challenging: "Challenging",
-    elementLabel: "Element",
+    elementLabel: "{element} Element",
   },
-
-  // Combined analysis
   analysis: {
     errorMessage: "The AI analysis couldn't be generated at this time.",
     tryAgain: "Try Again",
     personalYear: "Personal Year",
     generating: "Writing your reading...",
   },
-} as const;
+};
+
+export type Messages = typeof en;
+
+export function formatMessage(template: string, values: Record<string, string | number>): string {
+  return Object.entries(values).reduce(
+    (result, [key, value]) => result.replaceAll(`{${key}}`, String(value)),
+    template
+  );
+}

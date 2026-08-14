@@ -4,10 +4,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run verify && npm run verify:i18n && npx tsc --noEmit && next build",
     "start": "next start",
     "lint": "next lint",
-    "verify": "tsx scripts/verify.ts"
+    "verify": "tsx scripts/verify.ts",
+    "verify:i18n": "tsx scripts/verify-i18n.ts"
   },
   "keywords": [],
   "author": "",
