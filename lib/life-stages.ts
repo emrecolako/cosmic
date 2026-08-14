@@ -36,16 +36,20 @@ export const LIFE_STAGE_ICONS: Record<LifeStageOption, string> = {
 };
 
 /**
- * Classify the user's life stage and return contextual guidance
- * for adapting the cosmic reading.
+ * Classify the user's life stage(s) and return contextual guidance for
+ * adapting the cosmic reading. Multiple stages are merged: focus areas and
+ * emphasized topics are unioned, de-emphasized topics are unioned then
+ * stripped of anything another selected stage wants emphasized (so stages
+ * never work against each other), and tone guidance is blended rather than
+ * picking a single winner.
  *
  * @param age - The person's current age
- * @param selectedStage - The life stage they selected
+ * @param selectedStages - The life stage(s) they selected (at least one)
  * @returns A LifeStageContext with focus areas, tone guidance, and topic weighting
  */
 export function classifyLifeStage(
   age: number,
-  selectedStage: LifeStageOption
+  selectedStages: LifeStageOption[]
 ): LifeStageContext {
   const getAgeRange = (age: number): string => {
     if (age < 18) return "youth";
@@ -58,10 +62,9 @@ export function classifyLifeStage(
 
   const ageRange = getAgeRange(age);
 
-  const stageContexts: Record<LifeStageOption, LifeStageContext> = {
+  const stageContexts: Record<LifeStageOption, Omit<LifeStageContext, "ageRange">> = {
     exploring: {
       stage: "Exploring Life",
-      ageRange,
       focusAreas: ["identity discovery", "potential", "personal growth", "finding direction"],
       toneGuidance:
         "Encouraging and possibility-oriented. Emphasize potential and discovery. Frame challenges as growth opportunities. Avoid prescriptive advice — invite exploration instead.",
@@ -81,7 +84,6 @@ export function classifyLifeStage(
     },
     building_career: {
       stage: "Building Career",
-      ageRange,
       focusAreas: ["professional strengths", "leadership style", "strategic timing", "work-life harmony"],
       toneGuidance:
         "Strategic and empowering. Focus on professional strengths and timing. Frame cosmic patterns as tools for career navigation. Be specific about leadership and communication styles.",
@@ -100,7 +102,6 @@ export function classifyLifeStage(
     },
     in_relationship: {
       stage: "In a Relationship",
-      ageRange,
       focusAreas: ["relational dynamics", "emotional needs", "communication style", "growth together"],
       toneGuidance:
         "Warm and relationally focused. Emphasize emotional intelligence and communication patterns. Frame personal traits in terms of how they show up in partnerships. Be sensitive and nuanced.",
@@ -119,7 +120,6 @@ export function classifyLifeStage(
     },
     married: {
       stage: "Married",
-      ageRange,
       focusAreas: ["partnership dynamics", "shared goals", "emotional depth", "evolving together"],
       toneGuidance:
         "Grounded and partnership-oriented. Acknowledge the depth of committed partnership. Focus on evolving together, maintaining individual identity within union, and deepening connection.",
@@ -138,7 +138,6 @@ export function classifyLifeStage(
     },
     parent: {
       stage: "Parent",
-      ageRange,
       focusAreas: ["nurturing style", "patience patterns", "family dynamics", "self-care balance"],
       toneGuidance:
         "Compassionate and understanding. Acknowledge the intensity of parenting. Balance focus between their role as parent and their identity as an individual. Emphasize self-compassion.",
@@ -157,7 +156,6 @@ export function classifyLifeStage(
     },
     empty_nester: {
       stage: "Empty Nester",
-      ageRange,
       focusAreas: ["rediscovery", "new chapters", "wisdom sharing", "personal renaissance"],
       toneGuidance:
         "Celebratory and forward-looking. Acknowledge the transition with respect. Emphasize the exciting opportunity for rediscovery and new pursuits. Frame wisdom as a superpower.",
@@ -176,7 +174,6 @@ export function classifyLifeStage(
     },
     retired: {
       stage: "Retired",
-      ageRange,
       focusAreas: ["wisdom integration", "legacy", "spiritual depth", "joyful living"],
       toneGuidance:
         "Respectful and wisdom-honoring. Acknowledge the depth of lived experience. Focus on integration, legacy, spiritual growth, and the freedom this chapter brings. Never patronize.",
@@ -195,7 +192,6 @@ export function classifyLifeStage(
     },
     prefer_not_to_say: {
       stage: "Universal",
-      ageRange,
       focusAreas: ["self-understanding", "personal growth", "timing awareness", "inner wisdom"],
       toneGuidance:
         "Balanced and universally applicable. Focus on self-understanding and personal growth without assumptions about life circumstances. Keep advice broadly relevant.",
@@ -210,7 +206,40 @@ export function classifyLifeStage(
     },
   };
 
-  return stageContexts[selectedStage] || stageContexts.prefer_not_to_say;
+  // "Prefer not to say" is exclusive — combining it with a real stage would
+  // just contradict itself — and an empty selection falls back to it too.
+  const stages: LifeStageOption[] =
+    selectedStages.length === 0 || selectedStages.includes("prefer_not_to_say")
+      ? ["prefer_not_to_say"]
+      : selectedStages;
+
+  const contexts = stages.map((s) => stageContexts[s] ?? stageContexts.prefer_not_to_say);
+
+  if (contexts.length === 1) {
+    return { ...contexts[0], ageRange };
+  }
+
+  const dedupe = (values: string[]) => [...new Set(values)];
+  const focusAreas = dedupe(contexts.flatMap((c) => c.focusAreas));
+  const topicsToEmphasize = dedupe(contexts.flatMap((c) => c.topicsToEmphasize));
+  // Union the de-emphasis lists, then drop anything another selected stage
+  // wants emphasized — stages should never work against each other.
+  const topicsToDeemphasize = dedupe(contexts.flatMap((c) => c.topicsToDeemphasize)).filter(
+    (topic) => !topicsToEmphasize.includes(topic)
+  );
+
+  return {
+    stage: contexts.map((c) => c.stage).join(" & "),
+    ageRange,
+    focusAreas,
+    toneGuidance: `This person is navigating multiple life dimensions at once — ${contexts
+      .map((c) => c.stage)
+      .join(", ")}. Blend these tones rather than defaulting to one: ${contexts
+      .map((c) => c.toneGuidance)
+      .join(" ")}`,
+    topicsToEmphasize,
+    topicsToDeemphasize,
+  };
 }
 
 /**

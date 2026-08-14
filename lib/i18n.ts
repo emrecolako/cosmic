@@ -35,6 +35,7 @@ export const t = {
     birthPlaceLabel: "Place of birth (city)",
     birthPlacePlaceholder: "Optional — enables rising sign calculation",
     lifeStageLabel: "Current life stage",
+    lifeStageHint: "(select all that apply)",
     whatsOnYourMindLabel: "What's on your mind?",
     whatsOnYourMindOptional: "(optional)",
     whatsOnYourMindPlaceholder: "A sentence or two about what's happening in your life right now...",
@@ -55,7 +56,7 @@ export const t = {
     errDobRequired: "Enter your date of birth",
     errDobRange: "Date must be between 1900 and today",
     errBirthTime: "Enter a valid time (HH:MM, 24-hour) or tick I don't know",
-    errLifeStageRequired: "Select a life stage",
+    errLifeStageRequired: "Select at least one life stage",
   },
 
   // Life stages

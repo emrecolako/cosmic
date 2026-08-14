@@ -16,7 +16,7 @@ interface FormData {
   birthTime: string;
   dontKnowBirthTime: boolean;
   birthPlace: string;
-  lifeStage: LifeStageOption | "";
+  lifeStages: LifeStageOption[];
   whatsOnYourMind: string;
   gender: string;
 }
@@ -32,7 +32,7 @@ const EMPTY_FORM: FormData = {
   birthTime: "",
   dontKnowBirthTime: false,
   birthPlace: "",
-  lifeStage: "",
+  lifeStages: [],
   whatsOnYourMind: "",
   gender: "",
 };
@@ -93,13 +93,14 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
       !isCompleteTime(formData.birthTime)
         ? t.wizard.errBirthTime
         : undefined,
-    lifeStage: formData.lifeStage === "" ? t.wizard.errLifeStageRequired : undefined,
+    lifeStages:
+      formData.lifeStages.length === 0 ? t.wizard.errLifeStageRequired : undefined,
   };
 
   const stepValid = (s: number) =>
     s === 0
       ? !errors.fullName && !errors.dateOfBirth && !errors.birthTime
-      : !errors.lifeStage;
+      : !errors.lifeStages;
 
   const handleNext = () => {
     if (!stepValid(step)) {
@@ -123,6 +124,22 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
     "exploring", "building_career", "in_relationship", "married",
     "parent", "empty_nester", "retired", "prefer_not_to_say",
   ];
+
+  const toggleLifeStage = (key: LifeStageOption) => {
+    const current = formData.lifeStages;
+    if (key === "prefer_not_to_say") {
+      // Exclusive — selecting it clears everything else, and re-clicking clears it.
+      updateField("lifeStages", current.includes(key) ? [] : ["prefer_not_to_say"]);
+      return;
+    }
+    const withoutExclusive = current.filter((s) => s !== "prefer_not_to_say");
+    updateField(
+      "lifeStages",
+      withoutExclusive.includes(key)
+        ? withoutExclusive.filter((s) => s !== key)
+        : [...withoutExclusive, key]
+    );
+  };
 
   const genderOptions = [
     { key: "Female", label: t.wizard.genderOptions.female },
@@ -242,21 +259,22 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               className="space-y-6"
             >
               <div>
-                <FieldLabel>{t.wizard.lifeStageLabel}</FieldLabel>
+                <FieldLabel hint={t.wizard.lifeStageHint}>{t.wizard.lifeStageLabel}</FieldLabel>
                 <div
-                  role="radiogroup"
+                  role="group"
                   aria-label={t.wizard.lifeStageLabel}
                   className="grid grid-cols-2 gap-2"
                 >
                   {lifeStageKeys.map((key) => (
                     <button
                       key={key}
-                      role="radio"
-                      aria-checked={formData.lifeStage === key}
-                      onClick={() => updateField("lifeStage", key)}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={formData.lifeStages.includes(key)}
+                      onClick={() => toggleLifeStage(key)}
                       className={cn(
                         "px-3 py-2.5 rounded-md border font-mono text-xs tracking-wider uppercase text-left transition-all duration-200",
-                        formData.lifeStage === key
+                        formData.lifeStages.includes(key)
                           ? "bg-ink text-base border-ink"
                           : "border-line text-ink-secondary hover:bg-panel hover:text-ink hover:border-ink-muted"
                       )}
@@ -265,7 +283,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                     </button>
                   ))}
                 </div>
-                <FieldError>{attempted ? errors.lifeStage : undefined}</FieldError>
+                <FieldError>{attempted ? errors.lifeStages : undefined}</FieldError>
               </div>
 
               <div>

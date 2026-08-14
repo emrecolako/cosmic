@@ -17,11 +17,11 @@ export default function HomePage() {
     birthTime: string;
     dontKnowBirthTime: boolean;
     birthPlace: string;
-    lifeStage: LifeStageOption | "";
+    lifeStages: LifeStageOption[];
     whatsOnYourMind: string;
     gender: string;
   }) => {
-    if (!formData.lifeStage) return;
+    if (formData.lifeStages.length === 0) return;
     setIsLoading(true);
 
     // Hand off via sessionStorage — birth details never enter the URL.
@@ -30,7 +30,7 @@ export default function HomePage() {
       dateOfBirth: formData.dateOfBirth,
       birthTime: !formData.dontKnowBirthTime && formData.birthTime ? formData.birthTime : undefined,
       birthPlace: formData.birthPlace.trim() || undefined,
-      lifeStage: formData.lifeStage,
+      lifeStages: formData.lifeStages,
       whatsOnYourMind: formData.whatsOnYourMind.trim() || undefined,
       gender: formData.gender || undefined,
     });
