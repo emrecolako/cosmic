@@ -1,6 +1,6 @@
 "use client";
 
-import { t } from "@/lib/i18n";
+import { useI18n } from "@/components/LocaleProvider";
 import { ParagraphSkeleton } from "@/components/ui/Skeleton";
 import Button from "@/components/ui/Button";
 
@@ -17,6 +17,8 @@ export default function CombinedAnalysis({
   hasError,
   onRetry,
 }: CombinedAnalysisProps) {
+  const { t } = useI18n();
+
   if (!analysis) {
     if (hasError) {
       return (
@@ -40,14 +42,14 @@ export default function CombinedAnalysis({
     );
   }
 
-  const paragraphs = analysis.split("\n\n").filter((p) => p.trim());
+  const paragraphs = analysis.split("\n\n").filter((paragraph) => paragraph.trim());
 
   return (
     <div className="space-y-5">
-      {paragraphs.map((paragraph, i) => (
-        <p key={i} className="text-ink-secondary leading-relaxed text-[15px]">
+      {paragraphs.map((paragraph, index) => (
+        <p key={index} className="text-ink-secondary leading-relaxed text-[15px]">
           {paragraph}
-          {isStreaming && i === paragraphs.length - 1 && (
+          {isStreaming && index === paragraphs.length - 1 && (
             <span className="inline-block w-2 h-4 bg-ink-muted ml-0.5 animate-pulse align-text-bottom" />
           )}
         </p>

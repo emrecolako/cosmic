@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { t } from "@/lib/i18n";
+import { useI18n } from "@/components/LocaleProvider";
+import type { LocaleContent, SignName } from "@/lib/i18n/content";
 import { textGlyph } from "@/lib/utils";
 
 interface NatalChartVisualProps {
@@ -9,17 +10,37 @@ interface NatalChartVisualProps {
   sunGlyph: string;
   moonSign: string | null;
   risingSign: string | null;
+  content: LocaleContent;
 }
 
-const SIGN_ORDER = [
-  "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
-  "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
+const SIGN_ORDER: SignName[] = [
+  "Aries",
+  "Taurus",
+  "Gemini",
+  "Cancer",
+  "Leo",
+  "Virgo",
+  "Libra",
+  "Scorpio",
+  "Sagittarius",
+  "Capricorn",
+  "Aquarius",
+  "Pisces",
 ];
 
-const SIGN_GLYPHS: Record<string, string> = {
-  Aries: "♈", Taurus: "♉", Gemini: "♊", Cancer: "♋",
-  Leo: "♌", Virgo: "♍", Libra: "♎", Scorpio: "♏",
-  Sagittarius: "♐", Capricorn: "♑", Aquarius: "♒", Pisces: "♓",
+const SIGN_GLYPHS: Record<SignName, string> = {
+  Aries: "♈",
+  Taurus: "♉",
+  Gemini: "♊",
+  Cancer: "♋",
+  Leo: "♌",
+  Virgo: "♍",
+  Libra: "♎",
+  Scorpio: "♏",
+  Sagittarius: "♐",
+  Capricorn: "♑",
+  Aquarius: "♒",
+  Pisces: "♓",
 };
 
 const MONO = "var(--font-ibm-plex-mono), monospace";
@@ -28,17 +49,22 @@ export default function NatalChartVisual({
   sunSign,
   moonSign,
   risingSign,
+  content,
 }: NatalChartVisualProps) {
+  const { t } = useI18n();
   const size = 320;
   const center = size / 2;
   const outerRadius = 140;
   const innerRadius = 100;
   const labelRadius = 120;
 
+  const displaySign = (sign: string): string =>
+    content.signNames[sign as SignName] ?? sign;
+
   const getAngleForSign = (sign: string): number => {
-    const index = SIGN_ORDER.indexOf(sign);
+    const index = SIGN_ORDER.indexOf(sign as SignName);
     if (index === -1) return 0;
-    return (index * 30 - 90) * (Math.PI / 180); // Start from top
+    return (index * 30 - 90) * (Math.PI / 180);
   };
 
   const getPointOnCircle = (
@@ -50,9 +76,9 @@ export default function NatalChartVisual({
   });
 
   const chartLabel = [
-    `${t.western.chartSun}: ${sunSign}`,
-    moonSign ? `${t.western.chartMoon}: ${moonSign}` : null,
-    risingSign ? `${t.western.chartAsc}: ${risingSign}` : null,
+    `${t.western.chartSun}: ${displaySign(sunSign)}`,
+    moonSign ? `${t.western.chartMoon}: ${displaySign(moonSign)}` : null,
+    risingSign ? `${t.western.chartAsc}: ${displaySign(risingSign)}` : null,
   ]
     .filter(Boolean)
     .join(", ");
@@ -74,7 +100,6 @@ export default function NatalChartVisual({
       >
         <title>{`${t.western.natalChart} — ${chartLabel}`}</title>
 
-        {/* Outer ring */}
         <motion.circle
           cx={center}
           cy={center}
@@ -87,7 +112,6 @@ export default function NatalChartVisual({
           transition={{ duration: 1.2, ease: "easeInOut" }}
         />
 
-        {/* Inner ring */}
         <motion.circle
           cx={center}
           cy={center}
@@ -100,17 +124,15 @@ export default function NatalChartVisual({
           transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
         />
 
-        {/* Center point */}
         <circle cx={center} cy={center} r={2.5} fill="var(--text-muted)" />
 
-        {/* House divisions */}
-        {Array.from({ length: 12 }).map((_, i) => {
-          const angle = (i * 30 - 90) * (Math.PI / 180);
+        {Array.from({ length: 12 }).map((_, index) => {
+          const angle = (index * 30 - 90) * (Math.PI / 180);
           const inner = getPointOnCircle(angle, innerRadius);
           const outer = getPointOnCircle(angle, outerRadius);
           return (
             <motion.line
-              key={`house-${i}`}
+              key={`house-${index}`}
               x1={inner.x}
               y1={inner.y}
               x2={outer.x}
@@ -119,20 +141,19 @@ export default function NatalChartVisual({
               strokeWidth="0.5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 + i * 0.04 }}
+              transition={{ delay: 0.4 + index * 0.04 }}
             />
           );
         })}
 
-        {/* Sign glyphs around the chart */}
-        {SIGN_ORDER.map((sign, i) => {
-          const angle = ((i * 30 + 15) - 90) * (Math.PI / 180);
-          const pos = getPointOnCircle(angle, labelRadius);
+        {SIGN_ORDER.map((sign, index) => {
+          const angle = (index * 30 + 15 - 90) * (Math.PI / 180);
+          const position = getPointOnCircle(angle, labelRadius);
           return (
             <motion.text
               key={sign}
-              x={pos.x}
-              y={pos.y}
+              x={position.x}
+              y={position.y}
               textAnchor="middle"
               dominantBaseline="central"
               fontSize="12"
@@ -140,28 +161,34 @@ export default function NatalChartVisual({
               fontWeight={sign === sunSign ? "bold" : "normal"}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 + i * 0.04 }}
+              transition={{ delay: 0.6 + index * 0.04 }}
+              aria-label={displaySign(sign)}
             >
               {textGlyph(SIGN_GLYPHS[sign])}
             </motion.text>
           );
         })}
 
-        {/* Sun position */}
         {(() => {
           const angle = getAngleForSign(sunSign) + (15 * Math.PI) / 180;
-          const pos = getPointOnCircle(angle, innerRadius * 0.6);
+          const position = getPointOnCircle(angle, innerRadius * 0.6);
           return (
             <motion.g
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1, type: "spring" }}
             >
-              <circle cx={pos.x} cy={pos.y} r={11} fill="var(--text)" opacity={0.12} />
-              <circle cx={pos.x} cy={pos.y} r={5} fill="var(--text)" />
+              <circle
+                cx={position.x}
+                cy={position.y}
+                r={11}
+                fill="var(--text)"
+                opacity={0.12}
+              />
+              <circle cx={position.x} cy={position.y} r={5} fill="var(--text)" />
               <text
-                x={pos.x}
-                y={pos.y - 16}
+                x={position.x}
+                y={position.y - 16}
                 textAnchor="middle"
                 fontSize="8"
                 fill="var(--text)"
@@ -174,29 +201,34 @@ export default function NatalChartVisual({
           );
         })()}
 
-        {/* Moon position */}
         {moonSign &&
           (() => {
             const angle = getAngleForSign(moonSign) + (15 * Math.PI) / 180;
-            const pos = getPointOnCircle(angle, innerRadius * 0.45);
+            const position = getPointOnCircle(angle, innerRadius * 0.45);
             return (
               <motion.g
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.15, type: "spring" }}
               >
-                <circle cx={pos.x} cy={pos.y} r={9} fill="var(--text-secondary)" opacity={0.12} />
                 <circle
-                  cx={pos.x}
-                  cy={pos.y}
+                  cx={position.x}
+                  cy={position.y}
+                  r={9}
+                  fill="var(--text-secondary)"
+                  opacity={0.12}
+                />
+                <circle
+                  cx={position.x}
+                  cy={position.y}
                   r={4}
                   fill="none"
                   stroke="var(--text-secondary)"
                   strokeWidth="1.5"
                 />
                 <text
-                  x={pos.x}
-                  y={pos.y - 14}
+                  x={position.x}
+                  y={position.y - 14}
                   textAnchor="middle"
                   fontSize="7"
                   fill="var(--text-secondary)"
@@ -209,16 +241,19 @@ export default function NatalChartVisual({
             );
           })()}
 
-        {/* Rising sign marker */}
         {risingSign &&
           (() => {
             const angle = getAngleForSign(risingSign);
-            const pos = getPointOnCircle(angle, outerRadius + 12);
+            const position = getPointOnCircle(angle, outerRadius + 12);
             return (
-              <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>
+              <motion.g
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.3 }}
+              >
                 <text
-                  x={pos.x}
-                  y={pos.y}
+                  x={position.x}
+                  y={position.y}
                   textAnchor="middle"
                   dominantBaseline="central"
                   fontSize="8"

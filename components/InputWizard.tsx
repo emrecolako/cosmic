@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LifeStageOption } from "@/lib/life-stages";
-import { t } from "@/lib/i18n";
+import type { LifeStageOption } from "@/lib/life-stages";
+import { useI18n } from "@/components/LocaleProvider";
 import { Input, Textarea, FieldLabel, FieldError } from "@/components/ui/Field";
 import TimeInput, { isCompleteTime } from "@/components/ui/TimeInput";
 import PlaceAutocomplete from "@/components/ui/PlaceAutocomplete";
@@ -48,17 +48,17 @@ function todayISO(): string {
 }
 
 export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
+  const { t } = useI18n();
   const [step, setStep] = useState(0);
   const [attempted, setAttempted] = useState(false);
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
 
-  // Restore a previously entered form (survives "start over" and errors).
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem(FORM_STORAGE_KEY);
       if (saved) setFormData({ ...EMPTY_FORM, ...JSON.parse(saved) });
     } catch {
-      // ignore corrupt storage
+      // Ignore corrupt storage.
     }
   }, []);
 
@@ -69,7 +69,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
         try {
           sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(next));
         } catch {
-          // storage full/unavailable — persistence is best-effort
+          // Persistence is best-effort when storage is unavailable.
         }
         return next;
       });
@@ -97,8 +97,8 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
       formData.lifeStages.length === 0 ? t.wizard.errLifeStageRequired : undefined,
   };
 
-  const stepValid = (s: number) =>
-    s === 0
+  const stepValid = (currentStep: number) =>
+    currentStep === 0
       ? !errors.fullName && !errors.dateOfBirth && !errors.birthTime
       : !errors.lifeStages;
 
@@ -112,31 +112,38 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
     else onSubmit(formData);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Enter advances the wizard — except inside the textarea, where it types a newline.
-    if (e.key === "Enter" && !(e.target instanceof HTMLTextAreaElement)) {
-      e.preventDefault();
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" && !(event.target instanceof HTMLTextAreaElement)) {
+      event.preventDefault();
       handleNext();
     }
   };
 
   const lifeStageKeys: LifeStageOption[] = [
-    "exploring", "building_career", "in_relationship", "married",
-    "parent", "empty_nester", "retired", "prefer_not_to_say",
+    "exploring",
+    "building_career",
+    "in_relationship",
+    "married",
+    "parent",
+    "empty_nester",
+    "retired",
+    "prefer_not_to_say",
   ];
 
   const toggleLifeStage = (key: LifeStageOption) => {
     const current = formData.lifeStages;
     if (key === "prefer_not_to_say") {
-      // Exclusive — selecting it clears everything else, and re-clicking clears it.
-      updateField("lifeStages", current.includes(key) ? [] : ["prefer_not_to_say"]);
+      updateField(
+        "lifeStages",
+        current.includes(key) ? [] : ["prefer_not_to_say"]
+      );
       return;
     }
-    const withoutExclusive = current.filter((s) => s !== "prefer_not_to_say");
+    const withoutExclusive = current.filter((stage) => stage !== "prefer_not_to_say");
     updateField(
       "lifeStages",
       withoutExclusive.includes(key)
-        ? withoutExclusive.filter((s) => s !== key)
+        ? withoutExclusive.filter((stage) => stage !== key)
         : [...withoutExclusive, key]
     );
   };
@@ -148,32 +155,34 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
     { key: "Prefer not to say", label: t.wizard.genderOptions.preferNotToSay },
   ];
 
-  const STEP_TITLES = [t.wizard.step1Title, t.wizard.step2Title];
+  const stepTitles = [t.wizard.step1Title, t.wizard.step2Title];
 
   return (
     <div className="w-full max-w-xl mx-auto" onKeyDown={handleKeyDown}>
-      {/* Step indicator */}
       <div className="flex items-center justify-center gap-6 mb-8 font-mono text-xs tracking-wider uppercase">
-        {[0, 1].map((i) => (
+        {[0, 1].map((index) => (
           <button
-            key={i}
-            onClick={() => i < step && setStep(i)}
-            disabled={i > step}
-            aria-current={i === step ? "step" : undefined}
+            key={index}
+            onClick={() => index < step && setStep(index)}
+            disabled={index > step}
+            aria-current={index === step ? "step" : undefined}
             className={cn(
               "flex items-center gap-2 transition-opacity",
-              i === step ? "text-ink" : i < step ? "text-ink-muted hover:opacity-70" : "text-ink-muted/50"
+              index === step
+                ? "text-ink"
+                : index < step
+                  ? "text-ink-muted hover:opacity-70"
+                  : "text-ink-muted/50"
             )}
           >
-            <span className="number-mono">{i < step ? "[✓]" : `0${i + 1}`}</span>
-            <span className="hidden sm:inline">{STEP_TITLES[i]}</span>
+            <span className="number-mono">
+              {index < step ? "[✓]" : `0${index + 1}`}
+            </span>
+            <span className="hidden sm:inline">{stepTitles[index]}</span>
           </button>
         ))}
       </div>
 
-      {/* Step content */}
-      {/* overflow must stay visible so the place-autocomplete dropdown can
-          extend past the card edge; step transitions only fade/slide 10px */}
       <div className="card p-6 sm:p-8">
         <AnimatePresence mode="wait" initial={false}>
           {step === 0 && (
@@ -189,7 +198,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                 label={t.wizard.fullNameLabel}
                 type="text"
                 value={formData.fullName}
-                onChange={(e) => updateField("fullName", e.target.value)}
+                onChange={(event) => updateField("fullName", event.target.value)}
                 placeholder={t.wizard.fullNamePlaceholder}
                 error={attempted ? errors.fullName : undefined}
                 autoFocus
@@ -200,7 +209,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                 min={DOB_MIN}
                 max={todayISO()}
                 value={formData.dateOfBirth}
-                onChange={(e) => updateField("dateOfBirth", e.target.value)}
+                onChange={(event) => updateField("dateOfBirth", event.target.value)}
                 error={attempted ? errors.dateOfBirth : undefined}
               />
               <div>
@@ -234,7 +243,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                     <TimeInput
                       ariaLabel={t.wizard.birthTimeLabel}
                       value={formData.birthTime}
-                      onChange={(v) => updateField("birthTime", v)}
+                      onChange={(value) => updateField("birthTime", value)}
                       error={attempted ? errors.birthTime : undefined}
                     />
                   </motion.div>
@@ -243,7 +252,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               <PlaceAutocomplete
                 label={t.wizard.birthPlaceLabel}
                 value={formData.birthPlace}
-                onChange={(v) => updateField("birthPlace", v)}
+                onChange={(value) => updateField("birthPlace", value)}
                 placeholder={t.wizard.birthPlacePlaceholder}
               />
             </motion.div>
@@ -259,7 +268,9 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               className="space-y-6"
             >
               <div>
-                <FieldLabel hint={t.wizard.lifeStageHint}>{t.wizard.lifeStageLabel}</FieldLabel>
+                <FieldLabel hint={t.wizard.lifeStageHint}>
+                  {t.wizard.lifeStageLabel}
+                </FieldLabel>
                 <div
                   role="group"
                   aria-label={t.wizard.lifeStageLabel}
@@ -291,7 +302,9 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                   label={t.wizard.whatsOnYourMindLabel}
                   hint={t.wizard.whatsOnYourMindOptional}
                   value={formData.whatsOnYourMind}
-                  onChange={(e) => updateField("whatsOnYourMind", e.target.value)}
+                  onChange={(event) =>
+                    updateField("whatsOnYourMind", event.target.value)
+                  }
                   placeholder={t.wizard.whatsOnYourMindPlaceholder}
                   rows={3}
                   maxLength={200}
@@ -302,26 +315,33 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               </div>
 
               <div>
-                <FieldLabel hint={t.wizard.genderOptional}>{t.wizard.genderLabel}</FieldLabel>
+                <FieldLabel hint={t.wizard.genderOptional}>
+                  {t.wizard.genderLabel}
+                </FieldLabel>
                 <div
                   role="radiogroup"
                   aria-label={t.wizard.genderLabel}
                   className="flex gap-2 flex-wrap"
                 >
-                  {genderOptions.map((g) => (
+                  {genderOptions.map((option) => (
                     <button
-                      key={g.key}
+                      key={option.key}
                       role="radio"
-                      aria-checked={formData.gender === g.key}
-                      onClick={() => updateField("gender", formData.gender === g.key ? "" : g.key)}
+                      aria-checked={formData.gender === option.key}
+                      onClick={() =>
+                        updateField(
+                          "gender",
+                          formData.gender === option.key ? "" : option.key
+                        )
+                      }
                       className={cn(
                         "px-3 py-2 rounded-md border font-mono text-xs tracking-wider uppercase transition-all",
-                        formData.gender === g.key
+                        formData.gender === option.key
                           ? "bg-ink text-base border-ink"
                           : "border-line text-ink-secondary hover:bg-panel hover:text-ink"
                       )}
                     >
-                      {g.label}
+                      {option.label}
                     </button>
                   ))}
                 </div>
@@ -331,7 +351,6 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
         </AnimatePresence>
       </div>
 
-      {/* Navigation */}
       <div className="flex items-center justify-between mt-6">
         <button
           onClick={() => {
@@ -346,7 +365,11 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
           [← {t.wizard.back}]
         </button>
         <Button onClick={handleNext} disabled={isLoading} size="lg">
-          {isLoading ? t.wizard.loading : step === 1 ? t.wizard.reveal : t.wizard.continue}
+          {isLoading
+            ? t.wizard.loading
+            : step === 1
+              ? t.wizard.reveal
+              : t.wizard.continue}
         </Button>
       </div>
     </div>

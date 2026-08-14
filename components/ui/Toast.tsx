@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useState, createContext, useContext, useCallback } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  useCallback,
+} from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useI18n } from "@/components/LocaleProvider";
 
 type ToastType = "success" | "error" | "info";
 
@@ -30,11 +37,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   const toast = useCallback((message: string, type: ToastType = "info") => {
     const id = Math.random().toString(36).substring(7);
-    setToasts((prev) => [...prev, { id, message, type }]);
+    setToasts((previous) => [...previous, { id, message, type }]);
   }, []);
 
   const removeToast = useCallback((id: string) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+    setToasts((previous) => previous.filter((item) => item.id !== id));
   }, []);
 
   return (
@@ -42,8 +49,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
         <AnimatePresence>
-          {toasts.map((t) => (
-            <ToastItem key={t.id} toast={t} onRemove={removeToast} />
+          {toasts.map((item) => (
+            <ToastItem key={item.id} toast={item} onRemove={removeToast} />
           ))}
         </AnimatePresence>
       </div>
@@ -58,6 +65,8 @@ function ToastItem({
   toast: Toast;
   onRemove: (id: string) => void;
 }) {
+  const { t } = useI18n();
+
   useEffect(() => {
     const timer = setTimeout(() => onRemove(toast.id), 3000);
     return () => clearTimeout(timer);
@@ -72,12 +81,14 @@ function ToastItem({
       role="status"
       className="px-4 py-2 font-mono text-xs tracking-wider bg-base border border-line"
     >
-      <span className="text-ink-muted">{toast.type === "error" ? "ERROR:" : "OK:"}</span>{" "}
+      <span className="text-ink-muted">
+        {toast.type === "error" ? t.ui.errorPrefix : "OK:"}
+      </span>{" "}
       <span className="text-ink-secondary uppercase">{toast.message}</span>
       <button
         onClick={() => onRemove(toast.id)}
         className="ml-4 text-ink-muted hover:opacity-70"
-        aria-label="Dismiss"
+        aria-label={t.ui.dismiss}
       >
         [×]
       </button>

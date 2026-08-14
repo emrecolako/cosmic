@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { t } from "@/lib/i18n";
+import { useI18n } from "@/components/LocaleProvider";
 import { useToast } from "@/components/ui/Toast";
 
 export default function Header({ initialTheme }: { initialTheme: "dark" | "light" }) {
+  const { t } = useI18n();
   const { toast } = useToast();
   const [isDark, setIsDark] = useState(initialTheme === "dark");
 

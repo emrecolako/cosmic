@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildAnalysisPrompt, SYSTEM_PROMPT, CosmicProfile } from "@/lib/analysis-prompt";
+import {
+  buildAnalysisPrompt,
+  SYSTEM_PROMPT,
+  type CosmicProfile,
+} from "@/lib/analysis-prompt";
+import {
+  DEFAULT_LOCALE,
+  isLocale,
+  type Locale,
+} from "@/lib/i18n/locales";
 import { MODEL_CHAIN, OPENROUTER_URL } from "@/lib/openrouter";
 
-/**
- * Analysis-only endpoint. All deterministic calculations happen client-side
- * (lib/profile.ts); this route receives the computed profile, builds the
- * prompt, and streams the model's marker-delimited plain-text reading back so
- * the client can reveal it as it is written.
- */
-
-// Simple in-memory cache (will reset on deploy, which is fine)
 const cache = new Map<string, { data: string; timestamp: number }>();
-const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+const CACHE_TTL = 24 * 60 * 60 * 1000;
 const CACHE_MAX_ENTRIES = 500;
 
-// The full JSON string is the key — no hashing, so distinct inputs can never
-// collide and receive another person's cached reading.
 function getCacheKey(body: Record<string, unknown>): string {
   return JSON.stringify({
     name: body.fullName,
@@ -25,16 +24,15 @@ function getCacheKey(body: Record<string, unknown>): string {
     place: body.birthPlace,
     mind: body.whatsOnYourMind,
     gender: body.gender,
+    locale: body.locale,
   });
 }
 
 function setCache(key: string, data: string): void {
   const now = Date.now();
-  for (const [k, v] of cache) {
-    if (now - v.timestamp >= CACHE_TTL) cache.delete(k);
+  for (const [existingKey, value] of cache) {
+    if (now - value.timestamp >= CACHE_TTL) cache.delete(existingKey);
   }
-  // Still over budget after sweeping: drop oldest entries (Map preserves
-  // insertion order)
   while (cache.size >= CACHE_MAX_ENTRIES) {
     const oldest = cache.keys().next().value;
     if (oldest === undefined) break;
@@ -43,8 +41,6 @@ function setCache(key: string, data: string): void {
   cache.set(key, { data, timestamp: now });
 }
 
-// Per-IP sliding-window rate limit. In-memory, so it's per-instance — fine
-// for this deployment scale; swap for a shared store if scaling out.
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 10;
 const rateLimitHits = new Map<string, number[]>();
@@ -52,7 +48,7 @@ const rateLimitHits = new Map<string, number[]>();
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const hits = (rateLimitHits.get(ip) || []).filter(
-    (t) => now - t < RATE_LIMIT_WINDOW_MS
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
   );
   if (rateLimitHits.size > 5000) rateLimitHits.clear();
   if (hits.length >= RATE_LIMIT_MAX_REQUESTS) {
@@ -73,7 +69,8 @@ function textStream(text: string): Response {
 export async function POST(request: NextRequest) {
   try {
     const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "unknown";
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { error: "Too many requests. Please wait a moment and try again." },
@@ -83,7 +80,6 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    // Validate required raw inputs
     if (!body.fullName || !body.dateOfBirth || !body.lifeStage) {
       return NextResponse.json(
         { error: "Missing required fields: fullName, dateOfBirth, lifeStage" },
@@ -97,26 +93,53 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json({ error: "Invalid name." }, { status: 400 });
     }
+    if (
+      typeof body.lifeStage !== "string" ||
+      body.lifeStage.length > 500
+    ) {
+      return NextResponse.json(
+        { error: "Invalid life stage." },
+        { status: 400 }
+      );
+    }
     if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(String(body.dateOfBirth))) {
       return NextResponse.json(
         { error: "Invalid date of birth format. Expected YYYY-MM-DD." },
         { status: 400 }
       );
     }
-    if (body.birthTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(String(body.birthTime))) {
+    if (
+      body.birthTime &&
+      !/^([01]\d|2[0-3]):[0-5]\d$/.test(String(body.birthTime))
+    ) {
       return NextResponse.json(
         { error: "Invalid birth time format. Expected HH:MM (24-hour)." },
         { status: 400 }
       );
     }
 
-    // Validate the client-computed profile payload
+    if (body.locale !== undefined && !isLocale(body.locale)) {
+      return NextResponse.json(
+        { error: "Unsupported locale." },
+        { status: 400 }
+      );
+    }
+    const locale: Locale = isLocale(body.locale)
+      ? body.locale
+      : DEFAULT_LOCALE;
+    body.locale = locale;
+
     if (
       typeof body.numerology !== "object" ||
+      body.numerology === null ||
       typeof body.westernAstro !== "object" ||
+      body.westernAstro === null ||
       typeof body.chineseZodiac !== "object" ||
+      body.chineseZodiac === null ||
       typeof body.lifeStageContext !== "object" ||
-      typeof body.age !== "number"
+      body.lifeStageContext === null ||
+      typeof body.age !== "number" ||
+      !Number.isFinite(body.age)
     ) {
       return NextResponse.json(
         { error: "Missing calculated profile data." },
@@ -124,14 +147,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Normalize optional fields: enforce client-side limits server-side too
     if (typeof body.whatsOnYourMind === "string") {
-      body.whatsOnYourMind = body.whatsOnYourMind.trim().slice(0, 200) || undefined;
+      body.whatsOnYourMind =
+        body.whatsOnYourMind.trim().slice(0, 200) || undefined;
     } else {
       body.whatsOnYourMind = undefined;
     }
 
-    // Check cache
     const cacheKey = getCacheKey(body);
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
@@ -159,6 +181,7 @@ export async function POST(request: NextRequest) {
       westernAstro: body.westernAstro,
       chineseZodiac: body.chineseZodiac,
       lifeStageContext: body.lifeStageContext,
+      locale,
     };
 
     const prompt = buildAnalysisPrompt(cosmicProfile);
@@ -168,7 +191,6 @@ export async function POST(request: NextRequest) {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        // Optional OpenRouter attribution headers
         "HTTP-Referer": "https://cosmic-blueprint.vercel.app",
         "X-Title": "Cosmic Blueprint",
       },
@@ -196,44 +218,50 @@ export async function POST(request: NextRequest) {
     const decoder = new TextDecoder();
     const reader = upstream.body.getReader();
     let clientDisconnected = false;
+
     const readable = new ReadableStream<Uint8Array>({
       async start(controller) {
         let full = "";
         let buffer = "";
         let served: string | undefined;
+
         try {
           for (;;) {
             const { done, value } = await reader.read();
             if (done) break;
             buffer += decoder.decode(value, { stream: true });
-            // SSE frames are newline-delimited; keep the trailing partial line
             const lines = buffer.split("\n");
             buffer = lines.pop() ?? "";
+
             for (const line of lines) {
               if (!line.startsWith("data: ")) continue;
               const data = line.slice(6).trim();
               if (data === "[DONE]") continue;
+
               let parsed;
               try {
                 parsed = JSON.parse(data);
               } catch {
                 continue;
               }
+
               if (parsed.error) {
                 throw new Error(
                   `OpenRouter mid-stream error: ${JSON.stringify(parsed.error)}`
                 );
               }
+
               served = parsed.model ?? served;
               const text = parsed.choices?.[0]?.delta?.content;
               if (typeof text === "string" && text) {
                 full += text;
-                if (!clientDisconnected) controller.enqueue(encoder.encode(text));
+                if (!clientDisconnected) {
+                  controller.enqueue(encoder.encode(text));
+                }
               }
             }
           }
-          // Cache only complete, well-formed responses — never failures,
-          // otherwise a transient model error gets pinned for 24h.
+
           if (full.includes("<<<READING>>>")) {
             setCache(cacheKey, full);
           }
@@ -245,15 +273,12 @@ export async function POST(request: NextRequest) {
             try {
               controller.error(streamError);
             } catch {
-              // Client already gone; nothing left to notify.
+              // The client has already disconnected.
             }
           }
         }
       },
       cancel() {
-        // The client disconnected (navigation, tab close, retry). Stop
-        // touching `controller` and let the upstream OpenRouter read wind
-        // down naturally so we don't burn tokens or throw on a dead stream.
         clientDisconnected = true;
         reader.cancel().catch(() => {});
       },

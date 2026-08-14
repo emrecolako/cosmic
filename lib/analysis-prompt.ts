@@ -1,14 +1,19 @@
 /**
- * Claude API Prompt Builder
+ * OpenRouter analysis prompt builder.
  *
- * Dynamically constructs the analysis prompt based on available data,
- * life stage, and user context.
+ * Dynamically constructs the analysis prompt from the English calculation
+ * payload while allowing the model's response language to vary by locale.
  */
 
-import { NumerologyProfile } from "./numerology";
-import { WesternAstrologyProfile } from "./western-astrology";
-import { ChineseZodiacProfile } from "./chinese-zodiac";
-import { LifeStageContext } from "./life-stages";
+import type { NumerologyProfile } from "./numerology";
+import type { WesternAstrologyProfile } from "./western-astrology";
+import type { ChineseZodiacProfile } from "./chinese-zodiac";
+import type { LifeStageContext } from "./life-stages";
+import {
+  DEFAULT_LOCALE,
+  LANGUAGE_NAMES,
+  type Locale,
+} from "./i18n/locales";
 
 export interface CosmicProfile {
   fullName: string;
@@ -23,6 +28,7 @@ export interface CosmicProfile {
   westernAstro: WesternAstrologyProfile;
   chineseZodiac: ChineseZodiacProfile;
   lifeStageContext: LifeStageContext;
+  locale?: Locale;
 }
 
 export const SYSTEM_PROMPT = `You are a master astrologer and numerologist who synthesizes multiple cosmic systems into unified, practical wisdom. You write with warmth and intelligence — never vague, never preachy. You acknowledge that these are interpretive frameworks, not deterministic predictions. You adapt your advice to the person's actual life context.
@@ -39,17 +45,10 @@ Your writing style:
 
 You follow the requested output format exactly.`;
 
-/**
- * Build the full analysis prompt for the Claude API call.
- * Dynamically adjusts based on available data and life context.
- *
- * @param data - The complete cosmic profile data
- * @returns The formatted user prompt string for the Claude API
- */
 export function buildAnalysisPrompt(data: CosmicProfile): string {
   const hasFullNatalData = !!data.birthTime && !!data.birthPlace;
-
-  // Build the data payload
+  const locale = data.locale ?? DEFAULT_LOCALE;
+  const language = LANGUAGE_NAMES[locale];
   const sections: string[] = [];
 
   sections.push(`## Person Profile
@@ -93,10 +92,15 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
 - Emphasize: ${data.lifeStageContext.topicsToEmphasize.join(", ")}${data.lifeStageContext.topicsToDeemphasize.length > 0 ? `\n- De-emphasize: ${data.lifeStageContext.topicsToDeemphasize.join(", ")}` : ""}`);
 
   const dataPayload = sections.join("\n\n");
-
   const currentYear = new Date().getUTCFullYear();
 
   return `The current year is ${currentYear}.
+
+LANGUAGE REQUIREMENT — NON-NEGOTIABLE:
+Write the ENTIRE response naturally and fluently in ${language}.
+Keep only these four parser markers exactly as written in English: <<<SNAPSHOT>>> <<<READING>>> <<<SEASON>>> <<<TOOLKIT>>>.
+Do not translate, alter, decorate, repeat, or add punctuation to those markers. Each marker must remain on its own line.
+Toolkit entries must still begin with the exact ASCII characters "- ", even when writing in ${language}.
 
 Based on the following cosmic profile data, generate a unified reading.
 
