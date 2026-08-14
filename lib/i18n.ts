@@ -1,8 +1,17 @@
 /**
- * English translations for Cosmic Blueprint (default)
+ * UI strings for Cosmic Blueprint (English only).
  */
 
-export const en = {
+export const t = {
+  // Fixed header
+  header: {
+    share: "Share",
+    shareCopied: "Link copied",
+    shareFailed: "Copy failed",
+    themeDark: "Dark",
+    themeLight: "Light",
+  },
+
   // Landing page
   landing: {
     badge: "Numerology + Western Astrology + Chinese Zodiac",
@@ -21,8 +30,8 @@ export const en = {
     fullNamePlaceholder: "Enter your full birth name",
     dobLabel: "Date of birth",
     birthTimeLabel: "Time of birth",
+    birthTimeOptional: "(if known)",
     iDontKnow: "I don't know",
-    iKnowMyBirthTime: "I know my birth time",
     birthPlaceLabel: "Place of birth (city)",
     birthPlacePlaceholder: "Optional — enables rising sign calculation",
     lifeStageLabel: "Current life stage",
@@ -41,6 +50,11 @@ export const en = {
     continue: "Continue",
     reveal: "Reveal My Cosmic Blueprint",
     loading: "Mapping your blueprint...",
+    step: "Step",
+    errNameRequired: "Enter your name",
+    errDobRequired: "Enter your date of birth",
+    errDobRange: "Date must be between 1900 and today",
+    errLifeStageRequired: "Select a life stage",
   },
 
   // Life stages
@@ -66,6 +80,7 @@ export const en = {
     cosmicSnapshotLabel: "Your Cosmic Snapshot",
     generateAnother: "Generate Another Reading",
     closingMessage: "May this map serve your journey well.",
+    geocodeWarning: "Birth place not recognized — showing solar chart",
   },
 
   // Section headers
@@ -123,64 +138,6 @@ export const en = {
     errorMessage: "The AI analysis couldn't be generated at this time.",
     tryAgain: "Try Again",
     personalYear: "Personal Year",
+    generating: "Writing your reading...",
   },
-
-  // Zodiac sign translations (same in English)
-  zodiacSigns: {
-    Aries: "Aries",
-    Taurus: "Taurus",
-    Gemini: "Gemini",
-    Cancer: "Cancer",
-    Leo: "Leo",
-    Virgo: "Virgo",
-    Libra: "Libra",
-    Scorpio: "Scorpio",
-    Sagittarius: "Sagittarius",
-    Capricorn: "Capricorn",
-    Aquarius: "Aquarius",
-    Pisces: "Pisces",
-  },
-
-  elements: {
-    Fire: "Fire",
-    Water: "Water",
-    Earth: "Earth",
-    Air: "Air",
-    Wood: "Wood",
-    Metal: "Metal",
-  },
-
-  modalities: {
-    Cardinal: "Cardinal",
-    Fixed: "Fixed",
-    Mutable: "Mutable",
-  },
-
-  animals: {
-    Rat: "Rat",
-    Ox: "Ox",
-    Tiger: "Tiger",
-    Rabbit: "Rabbit",
-    Dragon: "Dragon",
-    Snake: "Snake",
-    Horse: "Horse",
-    Goat: "Goat",
-    Monkey: "Monkey",
-    Rooster: "Rooster",
-    Dog: "Dog",
-    Pig: "Pig",
-  },
-
-  yinYang: {
-    Yin: "Yin",
-    Yang: "Yang",
-  },
-
-  // Interpretations - will use the originals from lib/numerology.ts
-  interpretations: null as null,
-
-  animalDescriptions: null as null,
-  elementDescriptions: null as null,
-  signDescriptions: null as null,
-  signTraits: null as null,
 } as const;

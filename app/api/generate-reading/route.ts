@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { calculateNumerologyProfile } from "@/lib/numerology";
-import { getChineseZodiac } from "@/lib/chinese-zodiac";
-import { calculateWesternProfile } from "@/lib/western-astrology";
-import { classifyLifeStage, calculateAge, LifeStageOption } from "@/lib/life-stages";
 import { buildAnalysisPrompt, SYSTEM_PROMPT, CosmicProfile } from "@/lib/analysis-prompt";
-import { geocodePlace } from "@/lib/geocode";
-import { getTimezoneOffsetHours } from "@/lib/timezone";
+
+/**
+ * Analysis-only endpoint. All deterministic calculations happen client-side
+ * (lib/profile.ts); this route receives the computed profile, builds the
+ * prompt, and streams Claude's marker-delimited plain-text reading back so
+ * the client can reveal it as it is written.
+ */
 
 // Simple in-memory cache (will reset on deploy, which is fine)
-const cache = new Map<string, { data: unknown; timestamp: number }>();
+const cache = new Map<string, { data: string; timestamp: number }>();
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
 const CACHE_MAX_ENTRIES = 500;
 
@@ -22,13 +23,12 @@ function getCacheKey(body: Record<string, unknown>): string {
     stage: body.lifeStage,
     time: body.birthTime,
     place: body.birthPlace,
-    locale: body.locale,
     mind: body.whatsOnYourMind,
     gender: body.gender,
   });
 }
 
-function setCache(key: string, data: unknown): void {
+function setCache(key: string, data: string): void {
   const now = Date.now();
   for (const [k, v] of cache) {
     if (now - v.timestamp >= CACHE_TTL) cache.delete(k);
@@ -64,6 +64,12 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
+function textStream(text: string): Response {
+  return new Response(text, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const ip =
@@ -77,20 +83,25 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    // Validate required fields
+    // Validate required raw inputs
     if (!body.fullName || !body.dateOfBirth || !body.lifeStage) {
       return NextResponse.json(
         { error: "Missing required fields: fullName, dateOfBirth, lifeStage" },
         { status: 400 }
       );
     }
-
-    // Normalize optional fields: enforce client-side limits server-side too
-    body.locale = body.locale === "tr" ? "tr" : "en";
-    if (typeof body.whatsOnYourMind === "string") {
-      body.whatsOnYourMind = body.whatsOnYourMind.trim().slice(0, 200) || undefined;
-    } else {
-      body.whatsOnYourMind = undefined;
+    if (
+      typeof body.fullName !== "string" ||
+      body.fullName.length > 200 ||
+      !/[a-zA-ZÀ-ɏ]/.test(body.fullName)
+    ) {
+      return NextResponse.json({ error: "Invalid name." }, { status: 400 });
+    }
+    if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(String(body.dateOfBirth))) {
+      return NextResponse.json(
+        { error: "Invalid date of birth format. Expected YYYY-MM-DD." },
+        { status: 400 }
+      );
     }
     if (body.birthTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(String(body.birthTime))) {
       return NextResponse.json(
@@ -99,105 +110,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse date string explicitly to avoid timezone shifting
-    // (new Date("YYYY-MM-DD") parses as UTC midnight, but local-time getters shift the day)
-    const dateParts = String(body.dateOfBirth).match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-    if (!dateParts) {
-      return NextResponse.json(
-        { error: "Invalid date of birth format. Expected YYYY-MM-DD." },
-        { status: 400 }
-      );
-    }
-    const parsedYear = parseInt(dateParts[1], 10);
-    const parsedMonth = parseInt(dateParts[2], 10);
-    const parsedDay = parseInt(dateParts[3], 10);
-    if (parsedMonth < 1 || parsedMonth > 12 || parsedDay < 1 || parsedDay > 31) {
-      return NextResponse.json(
-        { error: "Invalid date of birth" },
-        { status: 400 }
-      );
-    }
-    const dateOfBirth = new Date(parsedYear, parsedMonth - 1, parsedDay);
+    // Validate the client-computed profile payload
     if (
-      isNaN(dateOfBirth.getTime()) ||
-      dateOfBirth.getFullYear() !== parsedYear ||
-      dateOfBirth.getMonth() !== parsedMonth - 1 ||
-      dateOfBirth.getDate() !== parsedDay
+      typeof body.numerology !== "object" ||
+      typeof body.westernAstro !== "object" ||
+      typeof body.chineseZodiac !== "object" ||
+      typeof body.lifeStageContext !== "object" ||
+      typeof body.age !== "number"
     ) {
       return NextResponse.json(
-        { error: "Invalid date of birth" },
-        { status: 400 }
-      );
-    }
-    if (parsedYear < 1900 || dateOfBirth.getTime() > Date.now()) {
-      return NextResponse.json(
-        { error: "Date of birth must be between 1900 and today." },
+        { error: "Missing calculated profile data." },
         { status: 400 }
       );
     }
 
-    // Validate name contains at least one alphabetic character
-    if (!/[a-zA-ZÀ-ɏ]/.test(body.fullName)) {
-      return NextResponse.json(
-        { error: "Name must contain at least one letter." },
-        { status: 400 }
-      );
+    // Normalize optional fields: enforce client-side limits server-side too
+    if (typeof body.whatsOnYourMind === "string") {
+      body.whatsOnYourMind = body.whatsOnYourMind.trim().slice(0, 200) || undefined;
+    } else {
+      body.whatsOnYourMind = undefined;
     }
 
     // Check cache
     const cacheKey = getCacheKey(body);
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return NextResponse.json(cached.data);
+      return textStream(cached.data);
     }
 
-    // Geocode birth place, then resolve the historically correct UTC offset
-    // (incl. DST and past timezone changes) for the birth moment
-    let latitude: number | undefined;
-    let longitude: number | undefined;
-    let timezoneOffsetHours: number | undefined;
-
-    if (body.birthPlace) {
-      const geo = await geocodePlace(body.birthPlace);
-      if (geo) {
-        latitude = geo.latitude;
-        longitude = geo.longitude;
-        let birthHours: number | undefined;
-        let birthMinutes: number | undefined;
-        if (body.birthTime) {
-          const [h, m] = String(body.birthTime).split(":").map(Number);
-          birthHours = h;
-          birthMinutes = m;
-        }
-        timezoneOffsetHours =
-          getTimezoneOffsetHours(
-            geo.latitude,
-            geo.longitude,
-            parsedYear,
-            parsedMonth,
-            parsedDay,
-            birthHours,
-            birthMinutes
-          ) ?? undefined;
-      }
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey || apiKey === "your_key_here") {
+      return NextResponse.json(
+        { error: "Analysis service not configured." },
+        { status: 503 }
+      );
     }
-
-    // Run all calculations
-    const currentYear = new Date().getUTCFullYear();
-    const age = calculateAge(dateOfBirth);
-    const numerology = calculateNumerologyProfile(body.fullName, dateOfBirth, currentYear);
-    const chineseZodiac = getChineseZodiac(dateOfBirth);
-    const westernAstro = calculateWesternProfile(
-      dateOfBirth,
-      body.birthTime || undefined,
-      latitude,
-      longitude,
-      timezoneOffsetHours
-    );
-    const lifeStageContext = classifyLifeStage(
-      age,
-      body.lifeStage as LifeStageOption
-    );
 
     const cosmicProfile: CosmicProfile = {
       fullName: body.fullName,
@@ -207,97 +154,56 @@ export async function POST(request: NextRequest) {
       lifeStage: body.lifeStage,
       whatsOnYourMind: body.whatsOnYourMind,
       gender: body.gender,
-      age,
-      locale: body.locale || "en",
-      numerology,
-      westernAstro,
-      chineseZodiac,
-      lifeStageContext,
+      age: body.age,
+      numerology: body.numerology,
+      westernAstro: body.westernAstro,
+      chineseZodiac: body.chineseZodiac,
+      lifeStageContext: body.lifeStageContext,
     };
 
-    // Base response with calculated data
-    const responseData: Record<string, unknown> = {
-      numerology,
-      westernAstro,
-      chineseZodiac,
-      lifeStageContext,
-      age,
-      currentYear,
-      combinedAnalysis: null,
-      cosmicSnapshot: null,
-      currentSeason: null,
-      cosmicToolkit: null,
-    };
+    const client = new Anthropic({ apiKey });
+    const prompt = buildAnalysisPrompt(cosmicProfile);
 
-    // Try Claude API for combined analysis
-    try {
-      const apiKey = process.env.ANTHROPIC_API_KEY;
-      if (!apiKey || apiKey === "your_key_here") {
-        throw new Error("ANTHROPIC_API_KEY not configured");
-      }
+    const stream = client.messages.stream({
+      model: "claude-sonnet-5",
+      max_tokens: 4096,
+      messages: [{ role: "user", content: prompt }],
+      system: SYSTEM_PROMPT,
+    });
 
-      const client = new Anthropic({ apiKey });
-      const prompt = buildAnalysisPrompt(cosmicProfile);
-
-      const message = await client.messages.create({
-        model: "claude-sonnet-5",
-        max_tokens: 4096,
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        system: SYSTEM_PROMPT,
-      });
-
-      const textContent = message.content.find((c) => c.type === "text");
-      if (textContent && textContent.type === "text") {
-        // Strip markdown code fences if present (```json ... ``` or ``` ... ```)
-        let rawText = textContent.text.trim();
-        if (rawText.startsWith("```")) {
-          rawText = rawText.replace(/^```(?:json)?\s*\n?/, "").replace(/\n?\s*```$/, "");
-        }
-
-        let parsed: Record<string, unknown> | null = null;
-
-        // Try direct JSON parse
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream<Uint8Array>({
+      async start(controller) {
+        let full = "";
         try {
-          parsed = JSON.parse(rawText);
-        } catch {
-          // Try extracting JSON object from the text
-          const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            try {
-              parsed = JSON.parse(jsonMatch[0]);
-            } catch {
-              // Final fallback
+          for await (const event of stream) {
+            if (
+              event.type === "content_block_delta" &&
+              event.delta.type === "text_delta"
+            ) {
+              full += event.delta.text;
+              controller.enqueue(encoder.encode(event.delta.text));
             }
           }
+          // Cache only complete, well-formed responses — never failures,
+          // otherwise a transient Claude error gets pinned for 24h.
+          if (full.includes("<<<READING>>>")) {
+            setCache(cacheKey, full);
+          }
+          controller.close();
+        } catch (streamError) {
+          console.error("Claude stream error:", streamError);
+          controller.error(streamError);
         }
+      },
+    });
 
-        if (parsed) {
-          responseData.combinedAnalysis = parsed.unifiedReading || null;
-          responseData.cosmicSnapshot = parsed.cosmicSnapshot || null;
-          responseData.currentSeason = parsed.currentSeason || null;
-          responseData.cosmicToolkit = parsed.cosmicToolkit || null;
-        } else {
-          // Could not parse JSON at all — use raw text as combined analysis
-          responseData.combinedAnalysis = rawText;
-        }
-      }
-    } catch (apiError) {
-      console.error("Claude API error:", apiError);
-      // Still return calculated data — only combined analysis is missing
-    }
-
-    // Cache only successful responses — never cache failures, otherwise a
-    // transient Claude error (rate limit, billing, network) gets pinned for 24h.
-    if (responseData.combinedAnalysis !== null) {
-      setCache(cacheKey, responseData);
-    }
-
-    return NextResponse.json(responseData);
+    return new Response(readable, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
+    });
   } catch (error) {
     console.error("Generate reading error:", error);
     return NextResponse.json(

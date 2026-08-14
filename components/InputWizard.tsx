@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LifeStageOption, LIFE_STAGE_ICONS } from "@/lib/life-stages";
-import { useI18n } from "@/components/I18nProvider";
+import { LifeStageOption } from "@/lib/life-stages";
+import { t } from "@/lib/i18n";
+import { Input, Textarea, FieldLabel, FieldError } from "@/components/ui/Field";
+import Button from "@/components/ui/Button";
+import { cn } from "@/lib/utils";
 
 interface FormData {
   fullName: string;
   dateOfBirth: string;
   birthTime: string;
-  knowBirthTime: boolean;
+  dontKnowBirthTime: boolean;
   birthPlace: string;
   lifeStage: LifeStageOption | "";
   whatsOnYourMind: string;
@@ -21,51 +24,89 @@ interface InputWizardProps {
   isLoading: boolean;
 }
 
-export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
-  const { t } = useI18n();
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    dateOfBirth: "",
-    birthTime: "",
-    knowBirthTime: false,
-    birthPlace: "",
-    lifeStage: "",
-    whatsOnYourMind: "",
-    gender: "",
-  });
+const EMPTY_FORM: FormData = {
+  fullName: "",
+  dateOfBirth: "",
+  birthTime: "",
+  dontKnowBirthTime: false,
+  birthPlace: "",
+  lifeStage: "",
+  whatsOnYourMind: "",
+  gender: "",
+};
 
-  const STEP_TITLES = [t.wizard.step1Title, t.wizard.step2Title];
+const FORM_STORAGE_KEY = "cosmic-form";
+const DOB_MIN = "1900-01-01";
+
+function todayISO(): string {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
+export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
+  const [step, setStep] = useState(0);
+  const [attempted, setAttempted] = useState(false);
+  const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
+
+  // Restore a previously entered form (survives "start over" and errors).
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(FORM_STORAGE_KEY);
+      if (saved) setFormData({ ...EMPTY_FORM, ...JSON.parse(saved) });
+    } catch {
+      // ignore corrupt storage
+    }
+  }, []);
 
   const updateField = useCallback(
     <K extends keyof FormData>(field: K, value: FormData[K]) => {
-      setFormData((prev) => ({ ...prev, [field]: value }));
+      setFormData((prev) => {
+        const next = { ...prev, [field]: value };
+        try {
+          sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(next));
+        } catch {
+          // storage full/unavailable — persistence is best-effort
+        }
+        return next;
+      });
     },
     []
   );
 
-  const canProceed = () => {
-    if (step === 0) return formData.fullName.trim() !== "" && formData.dateOfBirth !== "";
-    if (step === 1) return formData.lifeStage !== "";
-    return true;
+  const dobInRange = (dob: string) => dob >= DOB_MIN && dob <= todayISO();
+
+  const errors = {
+    fullName: formData.fullName.trim() === "" ? t.wizard.errNameRequired : undefined,
+    dateOfBirth:
+      formData.dateOfBirth === ""
+        ? t.wizard.errDobRequired
+        : !dobInRange(formData.dateOfBirth)
+          ? t.wizard.errDobRange
+          : undefined,
+    lifeStage: formData.lifeStage === "" ? t.wizard.errLifeStageRequired : undefined,
   };
 
+  const stepValid = (s: number) =>
+    s === 0 ? !errors.fullName && !errors.dateOfBirth : !errors.lifeStage;
+
   const handleNext = () => {
+    if (!stepValid(step)) {
+      setAttempted(true);
+      return;
+    }
+    setAttempted(false);
     if (step < 1) setStep(step + 1);
     else onSubmit(formData);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && canProceed()) {
+    // Enter advances the wizard — except inside the textarea, where it types a newline.
+    if (e.key === "Enter" && !(e.target instanceof HTMLTextAreaElement)) {
       e.preventDefault();
       handleNext();
     }
-  };
-
-  const slideVariants = {
-    enter: (direction: number) => ({ x: direction > 0 ? 100 : -100, opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (direction: number) => ({ x: direction > 0 ? -100 : 100, opacity: 0 }),
   };
 
   const lifeStageKeys: LifeStageOption[] = [
@@ -80,89 +121,178 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
     { key: "Prefer not to say", label: t.wizard.genderOptions.preferNotToSay },
   ];
 
+  const STEP_TITLES = [t.wizard.step1Title, t.wizard.step2Title];
+
   return (
     <div className="w-full max-w-xl mx-auto" onKeyDown={handleKeyDown}>
-      {/* Progress indicator */}
-      <div className="flex items-center justify-center gap-3 mb-10">
+      {/* Step indicator */}
+      <div className="flex items-center justify-center gap-6 mb-8 font-mono text-xs tracking-wider uppercase">
         {[0, 1].map((i) => (
           <button
             key={i}
             onClick={() => i < step && setStep(i)}
-            className={`flex items-center gap-2 transition-all duration-300 ${i <= step ? "opacity-100" : "opacity-40"}`}
             disabled={i > step}
+            aria-current={i === step ? "step" : undefined}
+            className={cn(
+              "flex items-center gap-2 transition-opacity",
+              i === step ? "text-ink" : i < step ? "text-ink-muted hover:opacity-70" : "text-ink-muted/50"
+            )}
           >
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
-              i === step ? "bg-gold text-navy" : i < step ? "bg-gold/20 text-gold border border-gold/30" : "bg-navy-light text-cream/50 border border-navy-border"
-            }`}>
-              {i < step ? "✓" : i + 1}
-            </div>
-            <span className={`text-sm hidden sm:inline ${i === step ? "text-gold font-medium" : "text-cream/50"}`}>
-              {STEP_TITLES[i]}
-            </span>
+            <span className="number-mono">{i < step ? "[✓]" : `0${i + 1}`}</span>
+            <span className="hidden sm:inline">{STEP_TITLES[i]}</span>
           </button>
         ))}
       </div>
 
       {/* Step content */}
-      <div className="glass-card p-8 relative overflow-hidden min-h-[380px]">
-        <AnimatePresence mode="wait" custom={step}>
+      <div className="card p-6 sm:p-8 overflow-hidden">
+        <AnimatePresence mode="wait" initial={false}>
           {step === 0 && (
-            <motion.div key="step-0" custom={1} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: "easeInOut" }} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-cream/70 mb-2">{t.wizard.fullNameLabel}</label>
-                <input type="text" value={formData.fullName} onChange={(e) => updateField("fullName", e.target.value)} placeholder={t.wizard.fullNamePlaceholder} className="w-full bg-navy/60 border border-navy-border rounded-xl px-4 py-3 text-cream placeholder:text-cream/30 focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all" autoFocus />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-cream/70 mb-2">{t.wizard.dobLabel}</label>
-                <input type="date" value={formData.dateOfBirth} onChange={(e) => updateField("dateOfBirth", e.target.value)} className="w-full bg-navy/60 border border-navy-border rounded-xl px-4 py-3 text-cream focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all [color-scheme:dark]" />
-              </div>
+            <motion.div
+              key="step-0"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <Input
+                label={t.wizard.fullNameLabel}
+                type="text"
+                value={formData.fullName}
+                onChange={(e) => updateField("fullName", e.target.value)}
+                placeholder={t.wizard.fullNamePlaceholder}
+                error={attempted ? errors.fullName : undefined}
+                autoFocus
+              />
+              <Input
+                label={t.wizard.dobLabel}
+                type="date"
+                min={DOB_MIN}
+                max={todayISO()}
+                value={formData.dateOfBirth}
+                onChange={(e) => updateField("dateOfBirth", e.target.value)}
+                error={attempted ? errors.dateOfBirth : undefined}
+              />
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium text-cream/70">{t.wizard.birthTimeLabel}</label>
-                  <button type="button" onClick={() => { updateField("knowBirthTime", !formData.knowBirthTime); if (formData.knowBirthTime) updateField("birthTime", ""); }} className={`text-xs px-3 py-1 rounded-full transition-all ${!formData.knowBirthTime ? "bg-navy-border text-cream/50" : "bg-gold/20 text-gold border border-gold/30"}`}>
-                    {formData.knowBirthTime ? t.wizard.iKnowMyBirthTime : t.wizard.iDontKnow}
+                  <FieldLabel hint={t.wizard.birthTimeOptional}>
+                    {t.wizard.birthTimeLabel}
+                  </FieldLabel>
+                  <button
+                    type="button"
+                    role="checkbox"
+                    aria-checked={formData.dontKnowBirthTime}
+                    onClick={() => {
+                      const next = !formData.dontKnowBirthTime;
+                      updateField("dontKnowBirthTime", next);
+                      if (next) updateField("birthTime", "");
+                    }}
+                    className={cn(
+                      "font-mono text-xs tracking-wider uppercase transition-opacity hover:opacity-70 mb-2",
+                      formData.dontKnowBirthTime ? "text-ink" : "text-ink-muted"
+                    )}
+                  >
+                    [{formData.dontKnowBirthTime ? "✓" : " "}] {t.wizard.iDontKnow}
                   </button>
                 </div>
-                {formData.knowBirthTime && (
-                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
-                    <input type="time" value={formData.birthTime} onChange={(e) => updateField("birthTime", e.target.value)} className="w-full bg-navy/60 border border-navy-border rounded-xl px-4 py-3 text-cream focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all [color-scheme:dark]" />
+                {!formData.dontKnowBirthTime && (
+                  <motion.div
+                    initial={false}
+                    animate={{ height: "auto", opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <input
+                      type="time"
+                      aria-label={t.wizard.birthTimeLabel}
+                      value={formData.birthTime}
+                      onChange={(e) => updateField("birthTime", e.target.value)}
+                      className="w-full bg-transparent border border-line rounded-md px-3 py-2.5 text-sm text-ink focus:outline-none focus:border-ink-muted focus-visible:ring-1 focus-visible:ring-ink-muted transition-all"
+                    />
                   </motion.div>
                 )}
               </div>
-              <div>
-                <label className="block text-sm font-medium text-cream/70 mb-2">{t.wizard.birthPlaceLabel}</label>
-                <input type="text" value={formData.birthPlace} onChange={(e) => updateField("birthPlace", e.target.value)} placeholder={t.wizard.birthPlacePlaceholder} className="w-full bg-navy/60 border border-navy-border rounded-xl px-4 py-3 text-cream placeholder:text-cream/30 focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all" />
-              </div>
+              <Input
+                label={t.wizard.birthPlaceLabel}
+                type="text"
+                value={formData.birthPlace}
+                onChange={(e) => updateField("birthPlace", e.target.value)}
+                placeholder={t.wizard.birthPlacePlaceholder}
+              />
             </motion.div>
           )}
 
           {step === 1 && (
-            <motion.div key="step-1" custom={1} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: "easeInOut" }} className="space-y-6">
+            <motion.div
+              key="step-1"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="space-y-6"
+            >
               <div>
-                <label className="block text-sm font-medium text-cream/70 mb-3">{t.wizard.lifeStageLabel}</label>
-                <div className="grid grid-cols-2 gap-3">
+                <FieldLabel>{t.wizard.lifeStageLabel}</FieldLabel>
+                <div
+                  role="radiogroup"
+                  aria-label={t.wizard.lifeStageLabel}
+                  className="grid grid-cols-2 gap-2"
+                >
                   {lifeStageKeys.map((key) => (
-                    <button key={key} onClick={() => updateField("lifeStage", key)} className={`flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left ${formData.lifeStage === key ? "border-gold/50 bg-gold/10 text-gold" : "border-navy-border bg-navy/40 text-cream/70 hover:border-cream/20 hover:bg-navy/60"}`}>
-                      <span className="text-xl">{LIFE_STAGE_ICONS[key]}</span>
-                      <span className="text-sm font-medium">{t.lifeStages[key]}</span>
+                    <button
+                      key={key}
+                      role="radio"
+                      aria-checked={formData.lifeStage === key}
+                      onClick={() => updateField("lifeStage", key)}
+                      className={cn(
+                        "px-3 py-2.5 rounded-md border font-mono text-xs tracking-wider uppercase text-left transition-all duration-200",
+                        formData.lifeStage === key
+                          ? "bg-ink text-base border-ink"
+                          : "border-line text-ink-secondary hover:bg-panel hover:text-ink hover:border-ink-muted"
+                      )}
+                    >
+                      {t.lifeStages[key]}
                     </button>
                   ))}
                 </div>
+                <FieldError>{attempted ? errors.lifeStage : undefined}</FieldError>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-cream/70 mb-2">
-                  {t.wizard.whatsOnYourMindLabel} <span className="text-cream/30">{t.wizard.whatsOnYourMindOptional}</span>
-                </label>
-                <textarea value={formData.whatsOnYourMind} onChange={(e) => updateField("whatsOnYourMind", e.target.value)} placeholder={t.wizard.whatsOnYourMindPlaceholder} rows={3} maxLength={200} className="w-full bg-navy/60 border border-navy-border rounded-xl px-4 py-3 text-cream placeholder:text-cream/30 focus:outline-none focus:border-gold/50 focus:ring-1 focus:ring-gold/20 transition-all resize-none" />
-                <span className="text-xs text-cream/30 mt-1 block text-right">{formData.whatsOnYourMind.length}/200</span>
+                <Textarea
+                  label={t.wizard.whatsOnYourMindLabel}
+                  hint={t.wizard.whatsOnYourMindOptional}
+                  value={formData.whatsOnYourMind}
+                  onChange={(e) => updateField("whatsOnYourMind", e.target.value)}
+                  placeholder={t.wizard.whatsOnYourMindPlaceholder}
+                  rows={3}
+                  maxLength={200}
+                />
+                <span className="font-mono text-xs text-ink-muted mt-1.5 block text-right number-mono">
+                  {formData.whatsOnYourMind.length}/200
+                </span>
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-cream/70 mb-2">
-                  {t.wizard.genderLabel} <span className="text-cream/30">{t.wizard.genderOptional}</span>
-                </label>
-                <div className="flex gap-3 flex-wrap">
+                <FieldLabel hint={t.wizard.genderOptional}>{t.wizard.genderLabel}</FieldLabel>
+                <div
+                  role="radiogroup"
+                  aria-label={t.wizard.genderLabel}
+                  className="flex gap-2 flex-wrap"
+                >
                   {genderOptions.map((g) => (
-                    <button key={g.key} onClick={() => updateField("gender", g.key)} className={`px-4 py-2 rounded-xl text-sm border transition-all ${formData.gender === g.key ? "border-gold/50 bg-gold/10 text-gold" : "border-navy-border bg-navy/40 text-cream/60 hover:border-cream/20"}`}>
+                    <button
+                      key={g.key}
+                      role="radio"
+                      aria-checked={formData.gender === g.key}
+                      onClick={() => updateField("gender", formData.gender === g.key ? "" : g.key)}
+                      className={cn(
+                        "px-3 py-2 rounded-md border font-mono text-xs tracking-wider uppercase transition-all",
+                        formData.gender === g.key
+                          ? "bg-ink text-base border-ink"
+                          : "border-line text-ink-secondary hover:bg-panel hover:text-ink"
+                      )}
+                    >
                       {g.label}
                     </button>
                   ))}
@@ -173,22 +303,23 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
         </AnimatePresence>
       </div>
 
-      {/* Navigation buttons */}
+      {/* Navigation */}
       <div className="flex items-center justify-between mt-6">
-        <button onClick={() => setStep(step - 1)} className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${step === 0 ? "opacity-0 pointer-events-none" : "text-cream/60 hover:text-cream border border-navy-border hover:border-cream/30"}`}>
-          {t.wizard.back}
+        <button
+          onClick={() => {
+            setAttempted(false);
+            setStep(step - 1);
+          }}
+          className={cn(
+            "font-mono text-xs tracking-wider uppercase text-ink-muted hover:opacity-70 transition-opacity",
+            step === 0 && "opacity-0 pointer-events-none"
+          )}
+        >
+          [← {t.wizard.back}]
         </button>
-        <button onClick={handleNext} disabled={!canProceed() || isLoading} className={`px-8 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${canProceed() && !isLoading ? "bg-gold text-navy hover:bg-gold-dim shadow-lg shadow-gold/20" : "bg-navy-border text-cream/30 cursor-not-allowed"}`}>
-          {isLoading ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              {t.wizard.loading}
-            </span>
-          ) : step === 1 ? t.wizard.reveal : t.wizard.continue}
-        </button>
+        <Button onClick={handleNext} disabled={isLoading} size="lg">
+          {isLoading ? t.wizard.loading : step === 1 ? t.wizard.reveal : t.wizard.continue}
+        </Button>
       </div>
     </div>
   );

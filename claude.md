@@ -12,7 +12,7 @@ This is NOT a generic horoscope site. It's a **personal synthesis engine** — t
 
 - **Framework:** Next.js 14+ (App Router)
 - **Styling:** Tailwind CSS + Framer Motion for animations
-- **AI Backend:** Anthropic Claude API (claude-sonnet-4-5-20250929) for combined analysis generation
+- **AI Backend:** Anthropic Claude API (claude-sonnet-5) for combined analysis generation, streamed
 - **Astrology Calculations:** Use `astronomia` or `swisseph` npm packages for natal chart math. Fallback: pre-computed lookup tables for sun/moon/rising if ephemeris is too heavy.
 - **Numerology:** Pure math — implement from scratch (no library needed)
 - **Chinese Zodiac:** Lookup table with Lunar New Year date boundaries
@@ -127,18 +127,21 @@ The report should flow like this:
 
 ## Design Guidelines
 
-### Visual Identity
-- **Palette:** Deep navy/indigo (#0a0e27) background, gold (#d4a853) accents, soft white text, subtle purple (#6c5ce7) and teal (#00b894) for data viz
-- **Typography:** Serif heading font (e.g., Playfair Display or Cormorant Garamond), clean sans-serif body (Inter or DM Sans)
-- **Aesthetic:** Celestial but modern. Think: if Stripe designed an astrology app. No clip-art moons. No Comic Sans. No generic galaxy backgrounds.
-- **Animations:** Subtle constellation-like particle effects on landing. Cards fade/slide in on scroll. Chart wheel draws in with animation.
+### Visual Identity (bezos-1000 design system)
+
+The app uses the exact monochrome terminal aesthetic of https://github.com/emrecolako/bezos-1000 — a data-sheet look, not a decorative one.
+
+- **Palette:** Strict monochrome. Theme tokens are CSS variables (light default in `:root`, dark under `.dark`): `--bg` (#fff / #000), `--bg-secondary` (#f4f4f5 / #18181b), `--text` (#000 / #fff), `--text-secondary` (#27272a / #d4d4d8), `--text-muted` (#52525b / #a1a1aa), `--border` (#d4d4d8 / #3f3f46), `--border-muted` (#e4e4e7 / #27272a). Exposed as Tailwind colors via `@theme inline`: `base`, `panel`, `ink`, `ink-secondary`, `ink-muted`, `line`, `line-muted`. No gold, purple, teal, or any hue anywhere.
+- **Typography:** IBM Plex Sans (body) + IBM Plex Mono (all labels, numbers, buttons, headers) via `next/font`. Labels are `font-mono text-xs uppercase tracking-wider`. Numbers always `tabular-nums`.
+- **Signature patterns:** Fixed 40px mono header with `[BRACKETED]` uppercase text actions; "PARAMETERS"-style stat blocks (`bg-panel rounded-lg p-4`, muted label column + tabular values); ghost cards (no border/bg) with a bordered `.card` variant; inverted primary buttons (`bg-ink text-base`); bottom-right mono toasts with `OK:`/`ERROR:` prefixes; no box shadows.
+- **Animations:** `fade-in` / `fade-in-up` 0.5s ease-out, `count-up` 0.6s for stats, `shimmer` for skeletons. Nothing bouncy, nothing slower than 0.6s, everything respects `prefers-reduced-motion`.
 
 ### UX Principles
-- The input form should feel like a ritual, not a survey — use transitions, micro-animations
-- Results should be progressively revealed (skeleton loading → sections appear as generated)
+- Results are progressively revealed: all calculated sections render instantly client-side; only the AI reading streams in
 - Mobile-first — the report must read beautifully on phone
-- Include share functionality (generate OG image with cosmic snapshot summary)
-- Dark mode by default (it's a cosmic app), optional light mode
+- Share = header `[SHARE]` copy-link with toast (OG image generation is v2)
+- Dark mode by default (it's a cosmic app), light mode via header toggle (`.dark` class + cookie)
+- No PII in URLs — form data hands off to /results via sessionStorage
 
 ---
 
