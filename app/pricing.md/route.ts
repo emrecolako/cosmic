@@ -62,6 +62,29 @@ The full reading is for one person's submitted details. It is not a subscription
 ${checkout}
 There is no subscription, account requirement, or recurring charge. The price applies to one full personal reading.
 
+### Price comparison
+
+- The fictional sample costs $0 and does not require any personal details.
+- The personal calculated profile costs $0.
+- The personal interpretation preview costs $0.
+- The full interpretation costs ${paid ? fullPrice : "$0 at present"}.
+- There is no monthly plan, annual plan, trial renewal, or usage-based charge.
+- No account is needed to read the sample, view the preview, or receive the full reading.
+
+### What each option omits
+
+- The fictional sample is about invented birth details and is not a personal reading.
+- The personal preview is shorter than the full interpretation.
+- The full interpretation does not add professional ephemeris calculations or planetary transits.
+- Neither option includes compatibility between two people, saved accounts, or recurring horoscopes.
+
+### Checkout conditions
+
+- ${paid ? "A one-time Stripe Checkout session is available for the full reading." : "Checkout is off on this deployment, so no payment is required."}
+- If checkout is enabled later, the site and Stripe show the price before a visitor confirms payment.
+- Payment details, when checkout is enabled, are entered into Stripe rather than the reading form.
+- Agents should not collect card data or complete checkout on a visitor's behalf.
+
 ## Scope and limitations
 
 The reading combines numerology, Western zodiac signs, the Chinese zodiac, and selected life-stage context. The natal chart is an approximate sign-level diagram. Houses, planetary aspects, and current transits are not calculated. This is for reflection, not scientific diagnosis or prediction.
