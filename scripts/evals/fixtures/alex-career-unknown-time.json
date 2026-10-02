@@ -1,0 +1,12 @@
+{
+  "scope": "full",
+  "locale": "en",
+  "birthTimeKnown": false,
+  "facts": {
+    "lifePath": 7,
+    "sunSign": "Scorpio",
+    "chineseAnimal": "Horse",
+    "personalYear": 7
+  },
+  "lifeStageTerms": ["career", "work", "leadership"]
+}

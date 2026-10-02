@@ -108,6 +108,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         models: MODEL_CHAIN,
         max_tokens: mode === "full" ? 4096 : 400,
+        reasoning: { effort: "low" },
         stream: true,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
