@@ -6,6 +6,7 @@ import { Providers } from "@/components/Providers";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import Header from "@/components/Header";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
+import { SITE_URL } from "@/lib/site";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin", "latin-ext"],
@@ -28,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = getMessages(locale);
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: t.meta.title,
     description: t.meta.description,
     openGraph: {
