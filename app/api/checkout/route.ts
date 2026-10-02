@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { validateReadingBody } from "@/lib/reading-request";
 import { readingHash } from "@/lib/reading-hash";
-import { createCheckoutSession, paywallEnabled } from "@/lib/stripe";
+import { createCheckoutSession, paymentsConfigured, paywallEnabled } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
   if (!paywallEnabled()) {
     return NextResponse.json({ error: "Payments are not enabled." }, { status: 404 });
+  }
+  if (!paymentsConfigured()) {
+    return NextResponse.json({ error: "Payments are temporarily unavailable." }, { status: 503 });
   }
   if (isRateLimited(clientIp(request), "checkout")) {
     return NextResponse.json(

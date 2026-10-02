@@ -6,13 +6,14 @@ import { LocaleProvider } from "@/components/LocaleProvider";
 import Header from "@/components/Header";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
 import { paywallEnabled } from "@/lib/stripe";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = negotiateLocale((await headers()).get("accept-language"));
   const t = getMessages(locale);
 
   return {
-    metadataBase: new URL("https://unifiedreading.com"),
+    metadataBase: new URL(SITE_URL),
     title: t.meta.title,
     description: t.meta.description,
     openGraph: {
