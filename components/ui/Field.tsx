@@ -3,8 +3,9 @@
 import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef, useId } from "react";
 import { cn } from "@/lib/utils";
 
-const inputStyles =
-  "w-full bg-transparent border border-line rounded-md px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-ink-muted focus-visible:ring-1 focus-visible:ring-ink-muted transition-all";
+// 16px on mobile so iOS Safari doesn't zoom on focus; 44px min tap height.
+export const inputStyles =
+  "w-full min-h-11 bg-transparent border border-line rounded-md px-3 py-2.5 text-base sm:text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:border-ink focus-visible:ring-2 focus-visible:ring-ink/40 transition-colors";
 
 export function FieldLabel({
   htmlFor,
@@ -21,7 +22,7 @@ export function FieldLabel({
       className="block font-mono text-xs uppercase tracking-wider text-ink-muted mb-2"
     >
       {children}
-      {hint && <span className="ml-1 opacity-60 normal-case">{hint}</span>}
+      {hint && <span className="ml-1 normal-case">{hint}</span>}
     </label>
   );
 }
@@ -29,8 +30,9 @@ export function FieldLabel({
 export function FieldError({ id, children }: { id?: string; children?: React.ReactNode }) {
   if (!children) return null;
   return (
-    <p id={id} role="alert" className="font-mono text-xs uppercase tracking-wider text-ink mt-1.5">
-      ! {children}
+    <p id={id} role="alert" className="text-sm text-ink mt-1.5 flex items-start gap-1.5">
+      <span aria-hidden="true" className="font-mono">×</span>
+      <span>{children}</span>
     </p>
   );
 }

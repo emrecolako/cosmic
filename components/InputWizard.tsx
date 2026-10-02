@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { LifeStageOption } from "@/lib/life-stages";
 import { useI18n } from "@/components/LocaleProvider";
@@ -52,6 +52,15 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
   const [step, setStep] = useState(0);
   const [attempted, setAttempted] = useState(false);
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
+  const nameRef = useRef<HTMLInputElement>(null);
+
+  // Autofocus only with a fine pointer: on phones it would pop the keyboard
+  // over the hero before the visitor has read what the product is.
+  useEffect(() => {
+    if (window.matchMedia("(pointer: fine)").matches) {
+      nameRef.current?.focus({ preventScroll: true });
+    }
+  }, []);
 
   useEffect(() => {
     try {
@@ -112,11 +121,11 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
     else onSubmit(formData);
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === "Enter" && !(event.target instanceof HTMLTextAreaElement)) {
-      event.preventDefault();
-      handleNext();
-    }
+  // Native form submission: Enter in a text field advances/submits, while
+  // Enter/Space on tile buttons keeps its normal toggle behaviour.
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!isLoading) handleNext();
   };
 
   const lifeStageKeys: LifeStageOption[] = [
@@ -158,11 +167,12 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
   const stepTitles = [t.wizard.step1Title, t.wizard.step2Title];
 
   return (
-    <div className="w-full max-w-xl mx-auto" onKeyDown={handleKeyDown}>
+    <form className="w-full max-w-xl mx-auto" onSubmit={handleFormSubmit} noValidate>
       <div className="flex items-center justify-center gap-6 mb-8 font-mono text-xs tracking-wider uppercase">
         {[0, 1].map((index) => (
           <button
             key={index}
+            type="button"
             onClick={() => index < step && setStep(index)}
             disabled={index > step}
             aria-current={index === step ? "step" : undefined}
@@ -195,13 +205,17 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               className="space-y-6"
             >
               <Input
+                ref={nameRef}
                 label={t.wizard.fullNameLabel}
                 type="text"
                 value={formData.fullName}
                 onChange={(event) => updateField("fullName", event.target.value)}
                 placeholder={t.wizard.fullNamePlaceholder}
                 error={attempted ? errors.fullName : undefined}
-                autoFocus
+                autoComplete="name"
+                autoCapitalize="words"
+                spellCheck={false}
+                enterKeyHint="next"
               />
               <Input
                 label={t.wizard.dobLabel}
@@ -326,6 +340,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                   {genderOptions.map((option) => (
                     <button
                       key={option.key}
+                      type="button"
                       role="radio"
                       aria-checked={formData.gender === option.key}
                       onClick={() =>
@@ -353,6 +368,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
 
       <div className="flex items-center justify-between mt-6">
         <button
+          type="button"
           onClick={() => {
             setAttempted(false);
             setStep(step - 1);
@@ -364,7 +380,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
         >
           [← {t.wizard.back}]
         </button>
-        <Button onClick={handleNext} disabled={isLoading} size="lg">
+        <Button type="submit" disabled={isLoading} size="lg">
           {isLoading
             ? t.wizard.loading
             : step === 1
@@ -372,6 +388,6 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
               : t.wizard.continue}
         </Button>
       </div>
-    </div>
+    </form>
   );
 }

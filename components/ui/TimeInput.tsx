@@ -3,10 +3,8 @@
 import { useId } from "react";
 import { useI18n } from "@/components/LocaleProvider";
 import { cn } from "@/lib/utils";
-import { FieldError } from "@/components/ui/Field";
+import { FieldError, inputStyles } from "@/components/ui/Field";
 
-const inputStyles =
-  "w-full bg-transparent border border-line rounded-md px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-ink-muted focus-visible:ring-1 focus-visible:ring-ink-muted transition-all number-mono";
 
 export function formatTimeDigits(raw: string): string {
   let digits = raw.replace(/\D/g, "");
@@ -46,12 +44,13 @@ export default function TimeInput({
         autoComplete="off"
         placeholder={t.ui.timePlaceholder}
         maxLength={5}
+        enterKeyHint="next"
         aria-label={ariaLabel}
         aria-invalid={!!error || undefined}
         aria-describedby={error ? errorId : undefined}
         value={value}
         onChange={(event) => onChange(formatTimeDigits(event.target.value))}
-        className={cn(inputStyles, error && "border-ink")}
+        className={cn(inputStyles, "number-mono", error && "border-ink")}
       />
       <FieldError id={errorId}>{error}</FieldError>
     </div>

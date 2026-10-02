@@ -3,11 +3,9 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useI18n } from "@/components/LocaleProvider";
 import { cn } from "@/lib/utils";
-import { FieldLabel } from "@/components/ui/Field";
+import { FieldLabel, inputStyles } from "@/components/ui/Field";
 import { searchPlaces, type PlaceSuggestion } from "@/lib/place-search";
 
-const inputStyles =
-  "w-full bg-transparent border border-line rounded-md px-3 py-2.5 text-sm text-ink placeholder:text-ink-muted/60 focus:outline-none focus:border-ink-muted focus-visible:ring-1 focus-visible:ring-ink-muted transition-all";
 
 const DEBOUNCE_MS = 250;
 
@@ -109,6 +107,7 @@ export default function PlaceAutocomplete({
           activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined
         }
         autoComplete="off"
+        enterKeyHint="next"
         value={value}
         placeholder={placeholder}
         onChange={(event) => {
