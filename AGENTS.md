@@ -127,18 +127,25 @@ The report should flow like this:
 
 ## Design Guidelines
 
-### Visual Identity
-- **Palette:** Deep navy/indigo (#0a0e27) background, gold (#d4a853) accents, soft white text, subtle purple (#6c5ce7) and teal (#00b894) for data viz
-- **Typography:** Serif heading font (e.g., Playfair Display or Cormorant Garamond), clean sans-serif body (Inter or DM Sans)
-- **Aesthetic:** Celestial but modern. Think: if Stripe designed an astrology app. No clip-art moons. No Comic Sans. No generic galaxy backgrounds.
-- **Animations:** Subtle constellation-like particle effects on landing. Cards fade/slide in on scroll. Chart wheel draws in with animation.
+### Visual Identity (monochrome data-sheet system)
+
+Monochrome, IBM Plex, data-sheet aesthetic (adapted from https://github.com/emrecolako/bezos-1000). This replaces the earlier navy/gold/Playfair direction.
+
+- **Palette:** Strict monochrome. Theme tokens are CSS variables in `app/globals.css` (light in `:root`, dark under `.dark`): `--bg` (#fff / #000), `--bg-secondary` (#f4f4f5 / #18181b), `--text` (#000 / #fff), `--text-secondary` (#27272a / #d4d4d8), `--text-muted` (#52525b / #a1a1aa), `--border` (#d4d4d8 / #3f3f46), `--border-muted` (#e4e4e7 / #27272a). Exposed as Tailwind colors: `base`, `panel`, `ink`, `ink-secondary`, `ink-muted`, `line`, `line-muted`. No hues. Never put opacity modifiers on text tokens (`text-ink-muted/60`): `ink-muted` is the AA floor.
+- **Typography:** IBM Plex Sans + IBM Plex Mono via `next/font` (weights 300/400/500 only). Headlines and body copy are sans, sentence case (hero `font-light`, large). Mono uppercase `text-xs tracking-wider` is for small labels, numbers, buttons and the header only. Numbers always `tabular-nums`.
+- **Signature patterns:** Fixed 48px header with `[BRACKETED]` uppercase text actions (44px hit areas, safe-area aware); stat tiles (`bg-panel rounded-lg`); bordered `.card`; inverted primary buttons (`bg-ink text-base`); mono toasts with `OK:`/`ERROR:` prefixes (bottom, full-width on phones); no decorative shadows.
+- **Animations:** CSS `fade-in` / `fade-in-up` 0.5s, `count-up` 0.6s. framer-motion is only used for the natal chart (keep it off the landing bundle). Everything respects `prefers-reduced-motion`.
 
 ### UX Principles
-- The input form should feel like a ritual, not a survey — use transitions, micro-animations
-- Results should be progressively revealed (skeleton loading → sections appear as generated)
-- Mobile-first — the report must read beautifully on phone
-- Include share functionality (generate OG image with cosmic snapshot summary)
-- Dark mode by default (it's a cosmic app), optional light mode
+- Landing: one job — start the form. Value prop, what you get and "free / no sign-up / ~1 min" above the fold; how-it-works, a labelled sample result and the privacy note below it. No competing CTAs. Social proof lives in `lib/social-proof.ts` and must be real data (ships `null`).
+- Form: minimum required input (name, date of birth, life stage). Inputs are 16px (no iOS zoom), 44px targets, real `<form>` semantics, `autocomplete` tokens, inline errors that never clear input. "Required" errors appear on Continue, not on blur (blur errors shifted the layout mid-click).
+- Results: lead with the payoff (Life Path / Sun / Chinese sign) which renders instantly and never depends on the AI. The unified reading comes next. Every AI failure (rate limit, timeout, cut-off stream) has a designed state with retry that keeps the input.
+- Share: Web Share sheet / clipboard with headline signs only — never birth details. Results are `noindex`.
+- No PII in URLs — form data hands off to /results via sessionStorage (`lib/reading-input.ts`).
+- Mobile-first: test at 360, 390, 768, 1024 and 1440+; no horizontal scroll.
+
+### Funnel & analytics
+`lib/analytics.ts` wraps Vercel Web Analytics (cookieless). Events: `landing_view{ref}`, `form_start`, `cta_click{step}`, `field_error{field}`, `form_step_complete{step}`, `form_submit`, `result_view`, `reading_ready{seconds}`, `reading_error{kind}`, `result_action{action}`. Props are counts, booleans and enums only — never PII.
 
 ---
 

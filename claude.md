@@ -128,21 +128,25 @@ The report should flow like this:
 
 ## Design Guidelines
 
-### Visual Identity (bezos-1000 design system)
+### Visual Identity (monochrome data-sheet system)
 
-The app uses the exact monochrome terminal aesthetic of https://github.com/emrecolako/bezos-1000 — a data-sheet look, not a decorative one.
+Monochrome, IBM Plex, data-sheet aesthetic (adapted from https://github.com/emrecolako/bezos-1000). This replaces the earlier navy/gold/Playfair direction.
 
-- **Palette:** Strict monochrome. Theme tokens are CSS variables (light default in `:root`, dark under `.dark`): `--bg` (#fff / #000), `--bg-secondary` (#f4f4f5 / #18181b), `--text` (#000 / #fff), `--text-secondary` (#27272a / #d4d4d8), `--text-muted` (#52525b / #a1a1aa), `--border` (#d4d4d8 / #3f3f46), `--border-muted` (#e4e4e7 / #27272a). Exposed as Tailwind colors via `@theme inline`: `base`, `panel`, `ink`, `ink-secondary`, `ink-muted`, `line`, `line-muted`. No gold, purple, teal, or any hue anywhere.
-- **Typography:** IBM Plex Sans (body) + IBM Plex Mono (all labels, numbers, buttons, headers) via `next/font`. Labels are `font-mono text-xs uppercase tracking-wider`. Numbers always `tabular-nums`.
-- **Signature patterns:** Fixed 40px mono header with `[BRACKETED]` uppercase text actions; "PARAMETERS"-style stat blocks (`bg-panel rounded-lg p-4`, muted label column + tabular values); ghost cards (no border/bg) with a bordered `.card` variant; inverted primary buttons (`bg-ink text-base`); bottom-right mono toasts with `OK:`/`ERROR:` prefixes; no box shadows.
-- **Animations:** `fade-in` / `fade-in-up` 0.5s ease-out, `count-up` 0.6s for stats, `shimmer` for skeletons. Nothing bouncy, nothing slower than 0.6s, everything respects `prefers-reduced-motion`.
+- **Palette:** Strict monochrome. Theme tokens are CSS variables in `app/globals.css` (light in `:root`, dark under `.dark`): `--bg` (#fff / #000), `--bg-secondary` (#f4f4f5 / #18181b), `--text` (#000 / #fff), `--text-secondary` (#27272a / #d4d4d8), `--text-muted` (#52525b / #a1a1aa), `--border` (#d4d4d8 / #3f3f46), `--border-muted` (#e4e4e7 / #27272a). Exposed as Tailwind colors: `base`, `panel`, `ink`, `ink-secondary`, `ink-muted`, `line`, `line-muted`. No hues. Never put opacity modifiers on text tokens (`text-ink-muted/60`): `ink-muted` is the AA floor.
+- **Typography:** IBM Plex Sans + IBM Plex Mono via `next/font` (weights 300/400/500 only). Headlines and body copy are sans, sentence case (hero `font-light`, large). Mono uppercase `text-xs tracking-wider` is for small labels, numbers, buttons and the header only. Numbers always `tabular-nums`.
+- **Signature patterns:** Fixed 48px header with `[BRACKETED]` uppercase text actions (44px hit areas, safe-area aware); stat tiles (`bg-panel rounded-lg`); bordered `.card`; inverted primary buttons (`bg-ink text-base`); mono toasts with `OK:`/`ERROR:` prefixes (bottom, full-width on phones); no decorative shadows.
+- **Animations:** CSS `fade-in` / `fade-in-up` 0.5s, `count-up` 0.6s. framer-motion is only used for the natal chart (keep it off the landing bundle). Everything respects `prefers-reduced-motion`.
 
 ### UX Principles
-- Results are progressively revealed: all calculated sections render instantly client-side; only the AI reading streams in
-- Mobile-first — the report must read beautifully on phone
-- Share = header `[SHARE]` copy-link with toast (OG image generation is v2)
-- Dark mode by default (it's a cosmic app), light mode via header toggle (`.dark` class + cookie)
-- No PII in URLs — form data hands off to /results via sessionStorage
+- Landing: one job — start the form. Value prop, what you get and "free / no sign-up / ~1 min" above the fold; how-it-works, a labelled sample result and the privacy note below it. No competing CTAs. Social proof lives in `lib/social-proof.ts` and must be real data (ships `null`).
+- Form: minimum required input (name, date of birth, life stage). Inputs are 16px (no iOS zoom), 44px targets, real `<form>` semantics, `autocomplete` tokens, inline errors that never clear input. "Required" errors appear on Continue, not on blur (blur errors shifted the layout mid-click).
+- Results: lead with the payoff (Life Path / Sun / Chinese sign) which renders instantly and never depends on the AI. The unified reading comes next. Every AI failure (rate limit, timeout, cut-off stream) has a designed state with retry that keeps the input.
+- Share: Web Share sheet / clipboard with headline signs only — never birth details. Results are `noindex`.
+- No PII in URLs — form data hands off to /results via sessionStorage (`lib/reading-input.ts`).
+- Mobile-first: test at 360, 390, 768, 1024 and 1440+; no horizontal scroll.
+
+### Funnel & analytics
+`lib/analytics.ts` wraps Vercel Web Analytics (cookieless). Events: `landing_view{ref}`, `form_start`, `cta_click{step}`, `field_error{field}`, `form_step_complete{step}`, `form_submit`, `result_view`, `reading_ready{seconds}`, `reading_error{kind}`, `result_action{action}`. Props are counts, booleans and enums only — never PII.
 
 ---
 
