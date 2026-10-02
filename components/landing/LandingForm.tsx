@@ -1,17 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import InputWizard, { type WizardData } from "@/components/InputWizard";
 import { saveReadingInput } from "@/lib/reading-input";
+import { track } from "@/lib/analytics";
 
 export default function LandingForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    track("landing_view", { ref: ref ? ref.slice(0, 32) : null });
+  }, []);
+
   const handleSubmit = (formData: WizardData) => {
     if (formData.lifeStages.length === 0 || isLoading) return;
     setIsLoading(true);
+    track("form_submit", {
+      hasTime: !formData.dontKnowBirthTime && !!formData.birthTime,
+      hasPlace: !!formData.birthPlace.trim(),
+      pickedPlace: !!formData.birthCoords,
+      stages: formData.lifeStages.length,
+      hasNote: !!formData.whatsOnYourMind.trim(),
+      hasGender: !!formData.gender,
+    });
 
     saveReadingInput({
       fullName: formData.fullName.trim(),

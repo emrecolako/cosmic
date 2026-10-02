@@ -27,6 +27,7 @@ import {
   type CalculatedProfile,
 } from "@/lib/profile";
 import { parseAnalysis } from "@/lib/analysis-stream";
+import { track } from "@/lib/analytics";
 
 /** Abort when the stream goes quiet this long (upstream hung). */
 const STALL_TIMEOUT_MS = 30_000;
@@ -81,6 +82,10 @@ export default function ResultsPage() {
       return;
     }
     setProfile(instant);
+    track("result_view", {
+      hasTime: !!input.birthTime,
+      hasPlace: !!input.birthPlace,
+    });
 
     if (needsGeocode(input)) {
       setChartPending(true);
@@ -115,6 +120,7 @@ export default function ResultsPage() {
       setAiStatus("streaming");
       setErrorKind(null);
       setAiText("");
+      const startedAt = performance.now();
 
       let timedOut = false;
       let stallTimer: ReturnType<typeof setTimeout> | undefined;
@@ -132,6 +138,7 @@ export default function ResultsPage() {
       armStall();
 
       let accumulated = "";
+      let rateLimited = false;
       try {
         const { birthCoords: _coords, ...requestInput } = currentInput;
         void _coords;
@@ -154,7 +161,7 @@ export default function ResultsPage() {
         });
 
         if (response.status === 429) {
-          setErrorKind("busy");
+          rateLimited = true;
           throw new Error("Rate limited");
         }
         if (!response.ok || !response.body) {
@@ -179,12 +186,21 @@ export default function ResultsPage() {
           throw new Error("Incomplete analysis");
         }
         setAiStatus("done");
+        track("reading_ready", {
+          seconds: Math.round((performance.now() - startedAt) / 1000),
+        });
       } catch {
         if (controller.signal.aborted && !timedOut) return;
-        setErrorKind((kind) =>
-          kind ?? (timedOut ? "timeout" : accumulated ? "truncated" : "generic")
-        );
+        const kind: AiErrorKind = rateLimited
+          ? "busy"
+          : timedOut
+            ? "timeout"
+            : accumulated
+              ? "truncated"
+              : "generic";
+        setErrorKind(kind);
         setAiStatus("error");
+        track("reading_error", { kind });
       } finally {
         clearTimeout(stallTimer);
         clearTimeout(totalTimer);
@@ -206,6 +222,7 @@ export default function ResultsPage() {
   const ai = useMemo(() => parseAnalysis(aiText), [aiText]);
 
   const retry = () => {
+    track("result_action", { action: "retry" });
     if (input && profile) void startAnalysis(input, profile);
   };
 
@@ -231,6 +248,7 @@ export default function ResultsPage() {
       text: formatMessage(t.results.shareText, signs),
       url: `${window.location.origin}/?ref=share`,
     });
+    track("result_action", { action: `share_${outcome}` });
     if (outcome === "copied") toast(t.results.shareCopied, "success");
     else if (outcome === "failed") toast(t.results.copyFailed, "error");
   }, [signs, t, toast]);
@@ -244,6 +262,7 @@ export default function ResultsPage() {
 
   const handleCopy = async () => {
     if (!input || !signs) return;
+    track("result_action", { action: "copy" });
     const sections = [
       `${input.fullName} — ${t.results.title}`,
       `${t.results.lifePathShort} ${signs.lifePath} · ${signs.sun} · ${signs.animal}`,
@@ -295,7 +314,7 @@ export default function ResultsPage() {
                   canCopy={!!ai.combinedAnalysis}
                   onShare={handleShare}
                   onCopy={handleCopy}
-                  onNewReading={() => {}}
+                  onNewReading={() => track("result_action", { action: "new_reading" })}
                 />
               }
             />

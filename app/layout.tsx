@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { cookies, headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { LocaleProvider } from "@/components/LocaleProvider";
@@ -75,6 +76,8 @@ export default async function RootLayout({
             {children}
           </Providers>
         </LocaleProvider>
+        {/* Vercel serves the analytics script; elsewhere it would 404. */}
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   );

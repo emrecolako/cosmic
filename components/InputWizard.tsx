@@ -10,6 +10,7 @@ import PlaceAutocomplete from "@/components/ui/PlaceAutocomplete";
 import DateOfBirthInput, { isCompleteDob, isRealDate } from "@/components/ui/DateOfBirthInput";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 export interface WizardData {
   fullName: string;
@@ -79,6 +80,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
   const nameRef = useRef<HTMLInputElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const stepChanged = useRef(false);
+  const startedRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -112,6 +114,10 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
 
   const updateField = useCallback(
     <K extends keyof WizardData>(field: K, value: WizardData[K]) => {
+      if (!startedRef.current) {
+        startedRef.current = true;
+        track("form_start", { field });
+      }
       setFormData((prev) => {
         const next = { ...prev, [field]: value };
         try {
@@ -152,10 +158,18 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
       formData.lifeStages.length === 0 ? t.wizard.errLifeStageRequired : undefined,
   };
 
-  // Show an error once the user has left the field or tried to continue —
-  // never while they're still typing for the first time.
+  const hasInput: Record<FieldKey, boolean> = {
+    fullName: formData.fullName.trim() !== "",
+    dateOfBirth: formData.dateOfBirth.replace(/-/g, "") !== "",
+    birthTime: formData.birthTime !== "",
+    lifeStages: formData.lifeStages.length > 0,
+  };
+
+  // Format errors show when the user leaves a field they've typed in;
+  // "required" errors wait for Continue. Flagging an empty field on blur
+  // shifted the layout mid-click, so the first Continue click missed.
   const shownError = (field: FieldKey) =>
-    attempted || touched[field] ? errors[field] : undefined;
+    attempted || (touched[field] && hasInput[field]) ? errors[field] : undefined;
 
   const stepFields: FieldKey[][] = [
     ["fullName", "dateOfBirth", "birthTime"],
@@ -171,8 +185,12 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
   };
 
   const handleNext = () => {
+    track("cta_click", { step: step + 1 });
     if (!stepValid(step)) {
       setAttempted(true);
+      for (const field of stepFields[step]) {
+        if (errors[field]) track("field_error", { field, step: step + 1 });
+      }
       // Focus the first invalid control so the user lands on the problem.
       requestAnimationFrame(() => {
         const firstInvalid = formRef.current?.querySelector<HTMLElement>(
@@ -182,6 +200,7 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
       });
       return;
     }
+    track("form_step_complete", { step: step + 1 });
     if (step < TOTAL_STEPS - 1) goToStep(step + 1);
     else onSubmit(formData);
   };
