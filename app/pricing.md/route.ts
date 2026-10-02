@@ -71,6 +71,19 @@ There is no subscription, account requirement, or recurring charge. The price ap
 - There is no monthly plan, annual plan, trial renewal, or usage-based charge.
 - No account is needed to read the sample, view the preview, or receive the full reading.
 
+### Feature comparison
+
+| Feature | Fictional sample | Personal preview | Full personal reading |
+| --- | --- | --- | --- |
+| Current price | $0 | $0 | ${paid ? fullPrice : "$0"} |
+| Visitor's birth details | Not needed | Entered in the browser | Uses the same submitted details |
+| Calculated numerology | Fictional example | Included | Included |
+| Western zodiac and Chinese zodiac | Fictional example | Included | Included |
+| Combined interpretation | Fictional example | Short preview | Longer synthesis |
+| Life-stage framing | Fictional example | Preview | Included |
+| Practical takeaways | Fictional example | Preview | Included |
+| Account or subscription | None | None | None |
+
 ### What each option omits
 
 - The fictional sample is about invented birth details and is not a personal reading.
