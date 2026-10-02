@@ -1,3 +1,6 @@
+import { atlasCopy } from "../lib/i18n/atlas";
+import { paywallCopy } from "../lib/i18n/paywall";
+import { getSampleAnalysis } from "../lib/sample";
 import {
   en,
   getMessages,
@@ -64,6 +67,11 @@ async function main(): Promise<void> {
   const englishShape = JSON.stringify(keyShape(en));
   for (const locale of SUPPORTED_LOCALES) {
     const messages = getMessages(locale);
+    check(`atlas catalog shape ${locale}`, JSON.stringify(keyShape(atlasCopy[locale])), JSON.stringify(keyShape(atlasCopy.en)));
+    check(`paywall catalog shape ${locale}`, JSON.stringify(keyShape(paywallCopy[locale])), JSON.stringify(keyShape(paywallCopy.en)));
+    assert(`paywall cta price slot ${locale}`, paywallCopy[locale].cta.includes("{price}"));
+    assert(`sample narrative ${locale}`, !!getSampleAnalysis(locale).combinedAnalysis);
+    check(`sample toolkit count ${locale}`, getSampleAnalysis(locale).cosmicToolkit?.length, 3);
     check(
       `catalog shape ${locale}`,
       JSON.stringify(keyShape(messages)),

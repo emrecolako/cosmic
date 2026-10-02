@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import CosmicProfile, { type AiStatus } from "@/components/CosmicProfile";
+import { paywallCopy } from "@/lib/i18n/paywall";
 import { useI18n } from "@/components/LocaleProvider";
-import { en, formatMessage } from "@/lib/i18n";
+import { en } from "@/lib/i18n";
 import { loadContent, type LocaleContent } from "@/lib/i18n/content";
 import { useToast } from "@/components/ui/Toast";
 import { Skeleton, StatCardSkeleton } from "@/components/ui/Skeleton";
@@ -17,6 +17,29 @@ import {
 } from "@/lib/profile";
 import { parseAnalysis } from "@/lib/analysis-stream";
 
+const CHECKOUT_SESSION_KEY = "cosmic:checkout-session";
+
+function storedCheckoutSession(): string | null {
+  try {
+    return sessionStorage.getItem(CHECKOUT_SESSION_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function readingPayload(input: ReadingInput, profile: CalculatedProfile, locale: string) {
+  return {
+    ...input,
+    lifeStage: input.lifeStages.map((stage) => en.lifeStages[stage]).join(", "),
+    locale,
+    age: profile.age,
+    numerology: profile.numerology,
+    westernAstro: profile.westernAstro,
+    chineseZodiac: profile.chineseZodiac,
+    lifeStageContext: profile.lifeStageContext,
+  };
+}
+
 export default function ResultsPage() {
   const router = useRouter();
   const { locale, t } = useI18n();
@@ -27,10 +50,30 @@ export default function ResultsPage() {
   const [content, setContent] = useState<LocaleContent | null>(null);
   const [aiText, setAiText] = useState("");
   const [aiStatus, setAiStatus] = useState<AiStatus>("streaming");
+  // Set from the X-Paywall response header; null means the full reading is shown.
+  const [paywallPrice, setPaywallPrice] = useState<string | null>(null);
+  const [unlocking, setUnlocking] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
   const startedRef = useRef(false);
   const geocodeWarnedRef = useRef(false);
+
+  // Stripe returns here with ?session_id=… or ?checkout=canceled. Keep the
+  // session in this tab's storage and strip it from the URL.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+    if (sessionId) {
+      try {
+        sessionStorage.setItem(CHECKOUT_SESSION_KEY, sessionId);
+      } catch {}
+    }
+    if (params.get("checkout") === "canceled") {
+      toast(paywallCopy[locale].canceled, "error");
+    }
+    if (sessionId || params.has("checkout")) router.replace("/results");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const stored = loadReadingInput();
@@ -77,6 +120,8 @@ export default function ResultsPage() {
       const controller = new AbortController();
       abortRef.current = controller;
 
+      const checkoutSessionId = storedCheckoutSession();
+      const mode = checkoutSessionId ? "full" : "teaser";
       setAiStatus("streaming");
       setAiText("");
 
@@ -85,23 +130,30 @@ export default function ResultsPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ...currentInput,
-            lifeStage: currentInput.lifeStages
-              .map((stage) => en.lifeStages[stage])
-              .join(", "),
-            locale,
-            age: currentProfile.age,
-            numerology: currentProfile.numerology,
-            westernAstro: currentProfile.westernAstro,
-            chineseZodiac: currentProfile.chineseZodiac,
-            lifeStageContext: currentProfile.lifeStageContext,
+            ...readingPayload(currentInput, currentProfile, locale),
+            mode,
+            checkoutSessionId,
           }),
           signal: controller.signal,
         });
 
+        if (response.status === 402) {
+          // Session unpaid, expired, or bought for different details.
+          try {
+            sessionStorage.removeItem(CHECKOUT_SESSION_KEY);
+          } catch {}
+          toast(paywallCopy[locale].invalid, "error");
+          void startAnalysis(currentInput, currentProfile);
+          return;
+        }
         if (!response.ok || !response.body) {
           throw new Error("Failed to generate reading");
         }
+        const teaser =
+          mode === "teaser" && response.headers.get("X-Paywall") === "1";
+        setPaywallPrice(
+          teaser ? response.headers.get("X-Paywall-Price") || "" : null
+        );
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -115,7 +167,8 @@ export default function ResultsPage() {
         accumulated += decoder.decode();
         setAiText(accumulated);
 
-        if (!parseAnalysis(accumulated).combinedAnalysis) {
+        const parsed = parseAnalysis(accumulated);
+        if (!(teaser ? parsed.cosmicSnapshot : parsed.combinedAnalysis)) {
           throw new Error("Incomplete analysis");
         }
         setAiStatus("done");
@@ -124,8 +177,26 @@ export default function ResultsPage() {
         setAiStatus("error");
       }
     },
-    [locale]
+    [locale, toast]
   );
+
+  const unlock = useCallback(async () => {
+    if (!input || !profile) return;
+    setUnlocking(true);
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(readingPayload(input, profile, locale)),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || typeof data.url !== "string") throw new Error();
+      window.location.href = data.url;
+    } catch {
+      setUnlocking(false);
+      toast(paywallCopy[locale].failed, "error");
+    }
+  }, [input, profile, locale, toast]);
 
   useEffect(() => {
     if (input && profile && !startedRef.current) {
@@ -143,25 +214,8 @@ export default function ResultsPage() {
   };
 
   return (
-    <main className="min-h-screen pt-10">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
-        <div className="mb-12 font-mono text-xs tracking-wider animate-fade-in">
-          <Link
-            href="/"
-            className="text-ink-muted hover:opacity-70 transition-opacity uppercase"
-          >
-            [← {t.results.newReading}]
-          </Link>
-          <h1 className="text-2xl sm:text-3xl tracking-wider text-ink mt-6 uppercase">
-            {t.results.title}
-          </h1>
-          {input && (
-            <p className="text-ink-muted mt-1 uppercase">
-              {formatMessage(t.results.forPerson, { name: input.fullName })}
-            </p>
-          )}
-        </div>
-
+    <main id="main" className="atlas-shell">
+      <div className="report-shell">
         {(!profile || !content) && (
           <div className="space-y-8">
             <Skeleton className="h-24 rounded-lg" />
@@ -177,10 +231,16 @@ export default function ResultsPage() {
         {profile && content && (
           <CosmicProfile
             profile={profile}
+            name={input?.fullName}
             content={content}
             ai={ai}
             aiStatus={aiStatus}
             onRetry={retry}
+            paywall={
+              paywallPrice !== null
+                ? { price: paywallPrice, onUnlock: unlock, unlocking }
+                : null
+            }
           />
         )}
       </div>
