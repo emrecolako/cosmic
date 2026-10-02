@@ -58,6 +58,12 @@ export const tr: Messages = {
     errDobRange: "Tarih 1900 ile bugün arasında olmalıdır",
     errBirthTime: "Geçerli bir saat girin (SS:DD, 24 saat) veya Bilmiyorum'u işaretleyin",
     errLifeStageRequired: "En az bir yaşam dönemi seçin",
+    dobDay: "Gün",
+    dobMonth: "Ay",
+    dobYear: "Yıl",
+    dobMonthPlaceholder: "Ay",
+    errDobIncomplete: "Gün, ay ve yılı girin",
+    errDobInvalid: "Böyle bir tarih yok — günü ve ayı kontrol edin",
   },
   lifeStages: {
     exploring: "Hayatı keşfediyorum",

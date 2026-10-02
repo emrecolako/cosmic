@@ -7,6 +7,7 @@ import { useI18n } from "@/components/LocaleProvider";
 import { Input, Textarea, FieldLabel, FieldError } from "@/components/ui/Field";
 import TimeInput, { isCompleteTime } from "@/components/ui/TimeInput";
 import PlaceAutocomplete from "@/components/ui/PlaceAutocomplete";
+import DateOfBirthInput, { isCompleteDob, isRealDate } from "@/components/ui/DateOfBirthInput";
 import Button from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
@@ -91,11 +92,15 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
   const errors = {
     fullName: formData.fullName.trim() === "" ? t.wizard.errNameRequired : undefined,
     dateOfBirth:
-      formData.dateOfBirth === ""
+      formData.dateOfBirth.replace(/-/g, "") === ""
         ? t.wizard.errDobRequired
-        : !dobInRange(formData.dateOfBirth)
-          ? t.wizard.errDobRange
-          : undefined,
+        : !isCompleteDob(formData.dateOfBirth)
+          ? t.wizard.errDobIncomplete
+          : !isRealDate(formData.dateOfBirth)
+            ? t.wizard.errDobInvalid
+            : !dobInRange(formData.dateOfBirth)
+              ? t.wizard.errDobRange
+              : undefined,
     birthTime:
       !formData.dontKnowBirthTime &&
       formData.birthTime !== "" &&
@@ -217,13 +222,10 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
                 spellCheck={false}
                 enterKeyHint="next"
               />
-              <Input
+              <DateOfBirthInput
                 label={t.wizard.dobLabel}
-                type="date"
-                min={DOB_MIN}
-                max={todayISO()}
                 value={formData.dateOfBirth}
-                onChange={(event) => updateField("dateOfBirth", event.target.value)}
+                onChange={(value) => updateField("dateOfBirth", value)}
                 error={attempted ? errors.dateOfBirth : undefined}
               />
               <div>

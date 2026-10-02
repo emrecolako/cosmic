@@ -58,6 +58,12 @@ export const pt: Messages = {
     errDobRange: "A data deve estar entre 1900 e hoje",
     errBirthTime: "Digite um horário válido (HH:MM, formato de 24 horas) ou marque Não sei",
     errLifeStageRequired: "Selecione pelo menos uma fase da vida",
+    dobDay: "Dia",
+    dobMonth: "Mês",
+    dobYear: "Ano",
+    dobMonthPlaceholder: "Mês",
+    errDobIncomplete: "Informe dia, mês e ano",
+    errDobInvalid: "Essa data não existe — confira o dia e o mês",
   },
   lifeStages: {
     exploring: "Explorando a vida",

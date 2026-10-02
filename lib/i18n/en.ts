@@ -57,6 +57,12 @@ export const en = {
     errDobRange: "Date must be between 1900 and today",
     errBirthTime: "Enter a valid time (HH:MM, 24-hour) or tick I don't know",
     errLifeStageRequired: "Select at least one life stage",
+    dobDay: "Day",
+    dobMonth: "Month",
+    dobYear: "Year",
+    dobMonthPlaceholder: "Month",
+    errDobIncomplete: "Enter day, month and year",
+    errDobInvalid: "That date doesn't exist — check the day and month",
   },
   lifeStages: {
     exploring: "Exploring life",

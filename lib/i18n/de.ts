@@ -58,6 +58,12 @@ export const de: Messages = {
     errDobRange: "Das Datum muss zwischen 1900 und heute liegen",
     errBirthTime: "Gib eine gültige Zeit ein (HH:MM, 24-Stunden-Format) oder markiere Ich weiß es nicht",
     errLifeStageRequired: "Wähle mindestens eine Lebensphase aus",
+    dobDay: "Tag",
+    dobMonth: "Monat",
+    dobYear: "Jahr",
+    dobMonthPlaceholder: "Monat",
+    errDobIncomplete: "Gib Tag, Monat und Jahr ein",
+    errDobInvalid: "Dieses Datum gibt es nicht – prüfe Tag und Monat",
   },
   lifeStages: {
     exploring: "Das Leben erkunden",
