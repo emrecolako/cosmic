@@ -20,13 +20,42 @@ last-updated: 2026-10-02
 
 The [HTML pricing page](https://unifiedreading.com/pricing) is the human-readable source for this deployment. These options describe the same current offering.
 
-## Reading options
+## Option 1: fictional sample
 
-| Option | Current price | What is included |
-| --- | --- | --- |
-| Fictional sample | Free | A public example of the report; no birth details, account, or checkout. |
-| Personal profile and preview | Free | Calculated numerology and zodiac profile plus a preview of the generated interpretation. |
-| Full personal reading | ${fullPrice} | The longer combined interpretation, life-stage framing, and practical takeaways. |
+Price: Free.
+
+Includes:
+
+- A complete fictional report showing the layout and style.
+- Example numerology, Western zodiac, Chinese zodiac, and synthesis sections.
+- No birth details, account, or checkout.
+
+Open the [sample reading](https://unifiedreading.com/sample).
+
+## Option 2: personal profile and preview
+
+Price: Free.
+
+Includes:
+
+- Calculated numerology numbers from the birth name and date.
+- Western Sun sign and Chinese zodiac profile.
+- Moon and rising signs when enough birth data is available.
+- A preview of the generated combined interpretation.
+
+Start at the [reading form](https://unifiedreading.com/#details).
+
+## Option 3: full personal reading
+
+Price: ${fullPrice}.
+
+Includes everything in the personal preview, plus:
+
+- A longer combined interpretation across the available traditions.
+- Framing for the selected life stage.
+- Practical reflection prompts and takeaways.
+
+The full reading is for one person's submitted details. It is not a subscription or compatibility report.
 
 ## Payment and access
 
