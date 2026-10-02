@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import NumerologyCard from "@/components/NumerologyCard";
 import WesternAstroCard from "@/components/WesternAstroCard";
 import ChineseZodiacCard from "@/components/ChineseZodiacCard";
 import NatalChartVisual from "@/components/NatalChartVisual";
 import CombinedAnalysis from "@/components/CombinedAnalysis";
 import CosmicToolkit from "@/components/CosmicToolkit";
-import Button from "@/components/ui/Button";
+import ResultsHero from "@/components/ResultsHero";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useI18n } from "@/components/LocaleProvider";
 import {
@@ -22,34 +21,51 @@ import type { CalculatedProfile } from "@/lib/profile";
 import type { ParsedAnalysis } from "@/lib/analysis-stream";
 
 export type AiStatus = "streaming" | "done" | "error";
+export type AiErrorKind = "busy" | "timeout" | "truncated" | "generic";
 
 interface CosmicProfileProps {
+  name: string;
   profile: CalculatedProfile;
   content: LocaleContent;
   ai: ParsedAnalysis;
   aiStatus: AiStatus;
+  errorKind: AiErrorKind | null;
+  chartPending: boolean;
   onRetry: () => void;
+  /** Rendered after the report: share / copy / new reading. */
+  actions?: React.ReactNode;
 }
 
 function SectionHeader({
+  id,
   number,
   title,
   subtitle,
 }: {
+  id: string;
   number: string;
   title: string;
   subtitle: string;
 }) {
   return (
     <div className="mb-6">
-      <div className="flex items-center gap-3 font-mono text-xs tracking-wider uppercase">
+      <h2 id={id} className="flex items-center gap-3 font-mono text-xs tracking-wider uppercase">
         <span className="number-mono text-ink-muted">{number}</span>
         <span className="text-ink">{title}</span>
-        <div className="h-px flex-1 bg-line-muted" />
-      </div>
-      <p className="text-xs text-ink-muted mt-1.5">{subtitle}</p>
+        <span aria-hidden="true" className="h-px flex-1 bg-line-muted" />
+      </h2>
+      <p className="text-sm text-ink-muted mt-1.5">{subtitle}</p>
     </div>
   );
+}
+
+/** Placeholder for an AI section: skeleton while streaming, note on error. */
+function PendingNote({ failed, text }: { failed: boolean; text: string }) {
+  return failed ? (
+    <p className="rounded-lg border border-dashed border-line px-5 py-4 text-sm text-ink-muted">
+      {text}
+    </p>
+  ) : null;
 }
 
 function interpretationFor(
@@ -62,11 +78,15 @@ function interpretationFor(
 }
 
 export default function CosmicProfile({
+  name,
   profile,
   content,
   ai,
   aiStatus,
+  errorKind,
+  chartPending,
   onRetry,
+  actions,
 }: CosmicProfileProps) {
   const { t } = useI18n();
   const { numerology, westernAstro, chineseZodiac } = profile;
@@ -83,50 +103,60 @@ export default function CosmicProfile({
   ];
 
   const isStreaming = aiStatus === "streaming";
-  const sunSign = westernAstro.sunSign.sign as SignName;
-  const animal = chineseZodiac.animal as AnimalName;
-  const localizedSunSign = content.signNames[sunSign] ?? westernAstro.sunSign.sign;
-  const localizedAnimal = content.animalNames[animal] ?? chineseZodiac.animal;
+  const hasError = aiStatus === "error";
+  const lifePathCopy = interpretationFor(content, "lifePath", numerology.lifePath.number);
   const personalYearCopy = interpretationFor(
     content,
     "personalYear",
     numerology.personalYear.number
   );
+  const errorMessage =
+    errorKind === "busy"
+      ? t.analysis.errorBusy
+      : errorKind === "timeout"
+        ? t.analysis.errorTimeout
+        : errorKind === "truncated"
+          ? t.analysis.errorTruncated
+          : t.analysis.errorMessage;
 
+  // Order: payoff (hero) → the core product (unified reading) → the
+  // calculated detail → timing and practical takeaways.
   return (
     <div className="space-y-16">
-      {(ai.cosmicSnapshot || isStreaming) && (
-        <section className="card p-6">
-          <div className="font-mono text-xs tracking-wider uppercase text-ink-muted mb-3">
-            {t.results.cosmicSnapshotLabel}
-          </div>
-          <div className="flex items-center gap-3 font-mono text-sm tracking-wider mb-4">
-            <span className="number-mono text-xl text-ink">
-              {numerology.lifePath.number}
-            </span>
-            <span className="text-ink-muted">·</span>
-            <span className="text-ink uppercase">{localizedSunSign}</span>
-            <span className="text-ink-muted">·</span>
-            <span className="grayscale" role="img" aria-label={localizedAnimal}>
-              {chineseZodiac.emoji}
-            </span>
-          </div>
-          {ai.cosmicSnapshot ? (
-            <p className="text-ink-secondary leading-relaxed text-[15px]">
-              {ai.cosmicSnapshot}
-            </p>
-          ) : (
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-[85%]" />
-            </div>
-          )}
-        </section>
-      )}
+      <ResultsHero
+        name={name}
+        profile={profile}
+        content={content}
+        lifePathTitle={lifePathCopy.title}
+        ai={ai}
+        aiStatus={aiStatus}
+        errorKind={errorKind}
+        chartPending={chartPending}
+        onRetry={onRetry}
+      />
 
-      <section>
+      <section id="reading" aria-labelledby="reading-title" className="scroll-mt-20">
         <SectionHeader
+          id="reading-title"
           number="01"
+          title={t.sections.unifiedReadingTitle}
+          subtitle={t.sections.unifiedReadingSubtitle}
+        />
+        <div className="card p-5 sm:p-8">
+          <CombinedAnalysis
+            analysis={ai.combinedAnalysis}
+            isStreaming={isStreaming}
+            hasError={hasError}
+            errorMessage={errorMessage}
+            onRetry={onRetry}
+          />
+        </div>
+      </section>
+
+      <section aria-labelledby="numbers-title">
+        <SectionHeader
+          id="numbers-title"
+          number="02"
           title={t.sections.numbersTitle}
           subtitle={t.sections.numbersSubtitle}
         />
@@ -158,15 +188,16 @@ export default function CosmicProfile({
         </div>
       </section>
 
-      <section>
+      <section aria-labelledby="stars-title">
         <SectionHeader
-          number="02"
+          id="stars-title"
+          number="03"
           title={t.sections.starMapTitle}
           subtitle={t.sections.starMapSubtitle}
         />
         <WesternAstroCard profile={westernAstro} content={content} />
 
-        <div className="mt-6 card p-6">
+        <div className="mt-6 card p-5 sm:p-6">
           <h3 className="font-mono text-xs tracking-wider uppercase text-ink-muted text-center mb-4">
             {t.western.natalChart}
           </h3>
@@ -178,97 +209,77 @@ export default function CosmicProfile({
             content={content}
           />
           {!westernAstro.moonSign && (
-            <p className="font-mono text-xs tracking-wider uppercase text-ink-muted text-center mt-3">
-              {t.western.solarChartNote}
+            <p className="text-sm text-ink-muted text-center mt-3">
+              {chartPending ? t.results.chartPending : t.western.solarChartNote}
             </p>
           )}
         </div>
       </section>
 
-      <section>
+      <section aria-labelledby="eastern-title">
         <SectionHeader
-          number="03"
+          id="eastern-title"
+          number="04"
           title={t.sections.easternMirrorTitle}
           subtitle={t.sections.easternMirrorSubtitle}
         />
         <ChineseZodiacCard profile={chineseZodiac} content={content} />
       </section>
 
-      <section>
+      <section aria-labelledby="season-title">
         <SectionHeader
-          number="04"
-          title={t.sections.unifiedReadingTitle}
-          subtitle={t.sections.unifiedReadingSubtitle}
+          id="season-title"
+          number="05"
+          title={t.sections.currentSeasonTitle}
+          subtitle={t.sections.currentSeasonSubtitle}
         />
-        <div className="card p-6 sm:p-8">
-          <CombinedAnalysis
-            analysis={ai.combinedAnalysis}
-            isStreaming={isStreaming}
-            hasError={aiStatus === "error"}
-            onRetry={onRetry}
-          />
+        <div className="rounded-lg bg-panel p-5 sm:p-6">
+          <div className="flex items-center gap-3 mb-4 font-mono text-xs tracking-wider uppercase">
+            <span className="number-mono text-lg text-ink">
+              {numerology.personalYear.number}
+            </span>
+            <div>
+              <div className="text-ink">
+                {t.analysis.personalYear} {numerology.personalYear.number}
+              </div>
+              <div className="text-ink-muted normal-case">
+                {personalYearCopy.title}
+              </div>
+            </div>
+          </div>
+          {ai.currentSeason ? (
+            <p className="text-ink-secondary leading-relaxed text-base">
+              {ai.currentSeason}
+            </p>
+          ) : isStreaming ? (
+            <div className="space-y-2" aria-hidden="true">
+              <Skeleton className="h-4 w-full bg-base/50" />
+              <Skeleton className="h-4 w-[90%] bg-base/50" />
+              <Skeleton className="h-4 w-[70%] bg-base/50" />
+            </div>
+          ) : (
+            <p className="text-sm text-ink-muted">{t.analysis.unavailableSection}</p>
+          )}
         </div>
       </section>
 
-      {(ai.currentSeason || isStreaming) && (
-        <section>
-          <SectionHeader
-            number="05"
-            title={t.sections.currentSeasonTitle}
-            subtitle={t.sections.currentSeasonSubtitle}
-          />
-          <div className="rounded-lg bg-panel p-6">
-            <div className="flex items-center gap-3 mb-4 font-mono text-xs tracking-wider uppercase">
-              <span className="number-mono text-lg text-ink">
-                {numerology.personalYear.number}
-              </span>
-              <div>
-                <div className="text-ink">
-                  {t.analysis.personalYear} {numerology.personalYear.number}
-                </div>
-                <div className="text-ink-muted normal-case">
-                  {personalYearCopy.title}
-                </div>
-              </div>
-            </div>
-            {ai.currentSeason ? (
-              <p className="text-ink-secondary leading-relaxed text-[15px]">
-                {ai.currentSeason}
-              </p>
-            ) : (
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-full bg-base/50" />
-                <Skeleton className="h-4 w-[90%] bg-base/50" />
-                <Skeleton className="h-4 w-[70%] bg-base/50" />
-              </div>
-            )}
-          </div>
-        </section>
-      )}
+      <section aria-labelledby="toolkit-title">
+        <SectionHeader
+          id="toolkit-title"
+          number="06"
+          title={t.sections.cosmicToolkitTitle}
+          subtitle={t.sections.cosmicToolkitSubtitle}
+        />
+        <CosmicToolkit
+          items={ai.cosmicToolkit}
+          isLoading={isStreaming && !ai.cosmicToolkit}
+        />
+        {!ai.cosmicToolkit && !isStreaming && (
+          <PendingNote failed text={t.analysis.unavailableSection} />
+        )}
+      </section>
 
-      {(ai.cosmicToolkit || isStreaming) && (
-        <section>
-          <SectionHeader
-            number="06"
-            title={t.sections.cosmicToolkitTitle}
-            subtitle={t.sections.cosmicToolkitSubtitle}
-          />
-          <CosmicToolkit
-            items={ai.cosmicToolkit}
-            isLoading={isStreaming && !ai.cosmicToolkit}
-          />
-        </section>
-      )}
-
-      <div className="text-center pt-4 pb-12">
-        <div className="h-px bg-line-muted mb-10" />
-        <p className="font-mono text-xs tracking-wider uppercase text-ink-muted mb-6">
-          {t.results.closingMessage}
-        </p>
-        <Link href="/">
-          <Button variant="outline">{t.results.generateAnother}</Button>
-        </Link>
-      </div>
+      {actions}
     </div>
   );
 }

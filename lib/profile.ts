@@ -104,44 +104,36 @@ function validCoords(
   );
 }
 
-export async function computeProfile(
-  input: ReadingInput
-): Promise<CalculatedProfile | null> {
-  const dateOfBirth = parseDateOfBirth(input.dateOfBirth);
-  if (!dateOfBirth) return null;
+/** True when the birth place still needs a network geocode lookup. */
+export function needsGeocode(input: ReadingInput): boolean {
+  return !!input.birthPlace && !validCoords(input.birthCoords);
+}
 
-  let latitude: number | undefined;
-  let longitude: number | undefined;
+function buildProfile(
+  input: ReadingInput,
+  dateOfBirth: Date,
+  geo: { latitude: number; longitude: number } | null,
+  geocodeFailed: boolean
+): CalculatedProfile {
   let timezoneOffsetHours: number | undefined;
-  let geocodeFailed = false;
-
-  if (input.birthPlace) {
-    const geo = validCoords(input.birthCoords)
-      ? input.birthCoords
-      : await geocodePlace(input.birthPlace);
-    if (geo) {
-      latitude = geo.latitude;
-      longitude = geo.longitude;
-      let birthHours: number | undefined;
-      let birthMinutes: number | undefined;
-      if (input.birthTime) {
-        const [h, m] = String(input.birthTime).split(":").map(Number);
-        birthHours = h;
-        birthMinutes = m;
-      }
-      timezoneOffsetHours =
-        getTimezoneOffsetHours(
-          geo.latitude,
-          geo.longitude,
-          dateOfBirth.getFullYear(),
-          dateOfBirth.getMonth() + 1,
-          dateOfBirth.getDate(),
-          birthHours,
-          birthMinutes
-        ) ?? undefined;
-    } else {
-      geocodeFailed = true;
+  if (geo) {
+    let birthHours: number | undefined;
+    let birthMinutes: number | undefined;
+    if (input.birthTime) {
+      const [h, m] = String(input.birthTime).split(":").map(Number);
+      birthHours = h;
+      birthMinutes = m;
     }
+    timezoneOffsetHours =
+      getTimezoneOffsetHours(
+        geo.latitude,
+        geo.longitude,
+        dateOfBirth.getFullYear(),
+        dateOfBirth.getMonth() + 1,
+        dateOfBirth.getDate(),
+        birthHours,
+        birthMinutes
+      ) ?? undefined;
   }
 
   const currentYear = new Date().getUTCFullYear();
@@ -152,8 +144,8 @@ export async function computeProfile(
     westernAstro: calculateWesternProfile(
       dateOfBirth,
       input.birthTime || undefined,
-      latitude,
-      longitude,
+      geo?.latitude,
+      geo?.longitude,
       timezoneOffsetHours
     ),
     lifeStageContext: classifyLifeStage(
@@ -164,4 +156,32 @@ export async function computeProfile(
     currentYear,
     geocodeFailed,
   };
+}
+
+/**
+ * Synchronous profile for instant rendering. Uses picked autocomplete
+ * coordinates when available; otherwise renders without location (solar
+ * chart) until `computeProfile` resolves the place.
+ */
+export function computeInstantProfile(input: ReadingInput): CalculatedProfile | null {
+  const dateOfBirth = parseDateOfBirth(input.dateOfBirth);
+  if (!dateOfBirth) return null;
+  const coords = input.birthPlace && validCoords(input.birthCoords) ? input.birthCoords : null;
+  return buildProfile(input, dateOfBirth, coords, false);
+}
+
+export async function computeProfile(
+  input: ReadingInput
+): Promise<CalculatedProfile | null> {
+  const dateOfBirth = parseDateOfBirth(input.dateOfBirth);
+  if (!dateOfBirth) return null;
+
+  let geo: { latitude: number; longitude: number } | null = null;
+  if (input.birthPlace) {
+    geo = validCoords(input.birthCoords)
+      ? input.birthCoords
+      : await geocodePlace(input.birthPlace);
+  }
+
+  return buildProfile(input, dateOfBirth, geo, !!input.birthPlace && !geo);
 }

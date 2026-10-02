@@ -3,19 +3,27 @@
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import CosmicProfile, { type AiStatus } from "@/components/CosmicProfile";
+import CosmicProfile, { type AiStatus, type AiErrorKind } from "@/components/CosmicProfile";
 import { useI18n } from "@/components/LocaleProvider";
-import { en, formatMessage } from "@/lib/i18n";
+import { en } from "@/lib/i18n";
 import { loadContent, type LocaleContent } from "@/lib/i18n/content";
 import { useToast } from "@/components/ui/Toast";
+import Button from "@/components/ui/Button";
 import { Skeleton, StatCardSkeleton } from "@/components/ui/Skeleton";
 import {
   loadReadingInput,
   computeProfile,
+  computeInstantProfile,
+  needsGeocode,
   type ReadingInput,
   type CalculatedProfile,
 } from "@/lib/profile";
 import { parseAnalysis } from "@/lib/analysis-stream";
+
+/** Abort when the stream goes quiet this long (upstream hung). */
+const STALL_TIMEOUT_MS = 30_000;
+/** Hard cap on a single reading request. */
+const TOTAL_TIMEOUT_MS = 90_000;
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -24,9 +32,11 @@ export default function ResultsPage() {
 
   const [input, setInput] = useState<ReadingInput | null>(null);
   const [profile, setProfile] = useState<CalculatedProfile | null>(null);
+  const [chartPending, setChartPending] = useState(false);
   const [content, setContent] = useState<LocaleContent | null>(null);
   const [aiText, setAiText] = useState("");
   const [aiStatus, setAiStatus] = useState<AiStatus>("streaming");
+  const [errorKind, setErrorKind] = useState<AiErrorKind | null>(null);
 
   const abortRef = useRef<AbortController | null>(null);
   const startedRef = useRef(false);
@@ -42,27 +52,44 @@ export default function ResultsPage() {
   }, [router]);
 
   useEffect(() => {
+    let cancelled = false;
+    void loadContent(locale).then((loaded) => {
+      if (!cancelled) setContent(loaded);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
+
+  // Render everything that needs no network immediately; resolve the birth
+  // place (moon / rising) in the background and upgrade the chart after.
+  useEffect(() => {
     if (!input) return;
     let cancelled = false;
 
-    void Promise.all([computeProfile(input), loadContent(locale)])
-      .then(([computed, localizedContent]) => {
-        if (cancelled) return;
-        if (!computed) {
-          router.replace("/");
-          return;
-        }
-        setProfile(computed);
-        setContent(localizedContent);
-      })
-      .catch(() => {
-        if (!cancelled) router.replace("/");
-      });
+    const instant = computeInstantProfile(input);
+    if (!instant) {
+      router.replace("/");
+      return;
+    }
+    setProfile(instant);
+
+    if (needsGeocode(input)) {
+      setChartPending(true);
+      void computeProfile(input)
+        .then((full) => {
+          if (cancelled || !full) return;
+          setProfile(full);
+        })
+        .finally(() => {
+          if (!cancelled) setChartPending(false);
+        });
+    }
 
     return () => {
       cancelled = true;
     };
-  }, [input, locale, router]);
+  }, [input, router]);
 
   useEffect(() => {
     if (profile?.geocodeFailed && !geocodeWarnedRef.current) {
@@ -78,14 +105,33 @@ export default function ResultsPage() {
       abortRef.current = controller;
 
       setAiStatus("streaming");
+      setErrorKind(null);
       setAiText("");
 
+      let timedOut = false;
+      let stallTimer: ReturnType<typeof setTimeout> | undefined;
+      const armStall = () => {
+        clearTimeout(stallTimer);
+        stallTimer = setTimeout(() => {
+          timedOut = true;
+          controller.abort();
+        }, STALL_TIMEOUT_MS);
+      };
+      const totalTimer = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, TOTAL_TIMEOUT_MS);
+      armStall();
+
+      let accumulated = "";
       try {
+        const { birthCoords: _coords, ...requestInput } = currentInput;
+        void _coords;
         const response = await fetch("/api/generate-reading", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ...currentInput,
+            ...requestInput,
             lifeStage: currentInput.lifeStages
               .map((stage) => en.lifeStages[stage])
               .join(", "),
@@ -99,40 +145,53 @@ export default function ResultsPage() {
           signal: controller.signal,
         });
 
+        if (response.status === 429) {
+          setErrorKind("busy");
+          throw new Error("Rate limited");
+        }
         if (!response.ok || !response.body) {
           throw new Error("Failed to generate reading");
         }
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
-        let accumulated = "";
         for (;;) {
           const { done, value } = await reader.read();
           if (done) break;
+          armStall();
           accumulated += decoder.decode(value, { stream: true });
           setAiText(accumulated);
         }
         accumulated += decoder.decode();
         setAiText(accumulated);
 
-        if (!parseAnalysis(accumulated).combinedAnalysis) {
+        // A stream that closes before the last section is a cut-off reading.
+        const parsed = parseAnalysis(accumulated);
+        if (!parsed.combinedAnalysis || !parsed.cosmicToolkit) {
           throw new Error("Incomplete analysis");
         }
         setAiStatus("done");
       } catch {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted && !timedOut) return;
+        setErrorKind((kind) =>
+          kind ?? (timedOut ? "timeout" : accumulated ? "truncated" : "generic")
+        );
         setAiStatus("error");
+      } finally {
+        clearTimeout(stallTimer);
+        clearTimeout(totalTimer);
       }
     },
     [locale]
   );
 
+  // The AI gets the full profile, so wait for geocoding before starting.
   useEffect(() => {
-    if (input && profile && !startedRef.current) {
+    if (input && profile && !chartPending && !startedRef.current) {
       startedRef.current = true;
       void startAnalysis(input, profile);
     }
-  }, [input, profile, startAnalysis]);
+  }, [input, profile, chartPending, startAnalysis]);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
@@ -144,45 +203,49 @@ export default function ResultsPage() {
 
   return (
     <main className="min-h-dvh pt-12">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
-        <div className="mb-12 font-mono text-xs tracking-wider animate-fade-in">
-          <Link
-            href="/"
-            className="text-ink-muted hover:opacity-70 transition-opacity uppercase"
-          >
-            [← {t.results.newReading}]
-          </Link>
-          <h1 className="text-2xl sm:text-3xl tracking-wider text-ink mt-6 uppercase">
-            {t.results.title}
-          </h1>
-          {input && (
-            <p className="text-ink-muted mt-1 uppercase">
-              {formatMessage(t.results.forPerson, { name: input.fullName })}
-            </p>
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-16 sm:pt-10">
+        <Link
+          href="/"
+          className="min-h-11 -ml-2 px-2 inline-flex items-center font-mono text-xs tracking-wider uppercase text-ink-muted hover:text-ink transition-colors rounded-md"
+        >
+          ← {t.results.newReading}
+        </Link>
+
+        <div className="mt-4">
+          {(!profile || !content || !input) && (
+            <div className="space-y-8" aria-busy="true">
+              <Skeleton className="h-64 rounded-lg" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <StatCardSkeleton />
+                <StatCardSkeleton />
+              </div>
+            </div>
+          )}
+
+          {profile && content && input && (
+            <CosmicProfile
+              name={input.fullName}
+              profile={profile}
+              content={content}
+              ai={ai}
+              aiStatus={aiStatus}
+              errorKind={errorKind}
+              chartPending={chartPending}
+              onRetry={retry}
+              actions={
+                <div className="text-center pt-4 pb-12">
+                  <div className="h-px bg-line-muted mb-10" />
+                  <p className="font-mono text-xs tracking-wider uppercase text-ink-muted mb-6">
+                    {t.results.closingMessage}
+                  </p>
+                  <Link href="/">
+                    <Button variant="outline">{t.results.generateAnother}</Button>
+                  </Link>
+                </div>
+              }
+            />
           )}
         </div>
-
-        {(!profile || !content) && (
-          <div className="space-y-8">
-            <Skeleton className="h-24 rounded-lg" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <StatCardSkeleton />
-              <StatCardSkeleton />
-              <StatCardSkeleton />
-              <StatCardSkeleton />
-            </div>
-          </div>
-        )}
-
-        {profile && content && (
-          <CosmicProfile
-            profile={profile}
-            content={content}
-            ai={ai}
-            aiStatus={aiStatus}
-            onRetry={retry}
-          />
-        )}
       </div>
     </main>
   );
