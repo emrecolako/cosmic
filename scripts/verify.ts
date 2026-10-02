@@ -8,6 +8,7 @@
  */
 
 import {
+  calculateWesternProfile,
   getSunSign,
   getMoonSign,
   getRisingSign,
@@ -18,6 +19,7 @@ import {
   calculateExpression,
   calculateSoulUrge,
 } from "../lib/numerology";
+import { SAMPLE_INPUT } from "../lib/sample";
 import { getTimezoneOffsetHours } from "../lib/timezone";
 
 let failures = 0;
@@ -142,5 +144,40 @@ check("soul urge Søren = Soren", calculateSoulUrge("Søren"), calculateSoulUrge
 check("expression Aydın", calculateExpression("Aydın"), 8);
 
 // ---------------------------------------------------------------------------
+// Unknown time must omit even a Moon sign that is stable throughout the day.
+const unknownTime = calculateWesternProfile(new Date(2024, 0, 25), undefined, 51.5, 0, 0);
+check("unknown-time Moon omitted", unknownTime.moonSign, null);
+check("unknown-time rising omitted", unknownTime.risingSign, null);
+check("known-time Moon retained", calculateWesternProfile(new Date(2024, 0, 25), "17:54", 51.5, 0, 0).moonSign, "Leo");
+check("sample life path", calculateLifePath(new Date(1990, 10, 4)), 7);
+check("sample master expression", calculateExpression("Alex Morgan"), 11);
+check("sample Chinese animal", getChineseZodiac(new Date(1990, 10, 4)).animal, "Horse");
+// Hand-computed component-reduction life paths; sexagenary cycle fixtures.
+// June 15 avoids sun-sign and Lunar New Year boundaries (covered separately above).
+const birthFixtures: Array<[number, number, string, string]> = [
+  [1984,7,'Rat','Wood'], [1985,8,'Ox','Wood'], [1986,9,'Tiger','Fire'],
+  [1987,1,'Rabbit','Fire'], [1988,2,'Dragon','Earth'], [1989,3,'Snake','Earth'],
+  [1990,4,'Horse','Metal'], [1991,5,'Goat','Metal'], [1992,6,'Monkey','Water'],
+  [1993,7,'Rooster','Water'], [1994,8,'Dog','Wood'], [1995,9,'Pig','Wood'],
+  [1996,1,'Rat','Fire'], [1997,2,'Ox','Fire'], [1998,3,'Tiger','Earth'],
+  [1999,4,'Rabbit','Earth'], [2000,5,'Dragon','Metal'], [2001,6,'Snake','Metal'],
+  [2002,7,'Horse','Water'], [2003,8,'Goat','Water'], [2004,9,'Monkey','Wood'],
+  [2005,1,'Rooster','Wood'], [2006,2,'Dog','Fire'], [2007,3,'Pig','Fire'],
+];
+for (const [year, lifePath, animal, element] of birthFixtures) {
+  const birth = new Date(year, 5, 15);
+  check(`${year}-06-15 sun`, getSunSign(birth).sign, 'Gemini');
+  check(`${year}-06-15 life path`, calculateLifePath(birth), lifePath);
+  check(`${year}-06-15 animal`, getChineseZodiac(birth).animal, animal);
+  check(`${year}-06-15 element`, getChineseZodiac(birth).element, element);
+}
+const [sy, sm, sd] = SAMPLE_INPUT.dateOfBirth.split('-').map(Number);
+const sampleDate = new Date(sy, sm - 1, sd);
+check('actual sample input sun', getSunSign(sampleDate).sign, 'Scorpio');
+check('actual sample input life path', calculateLifePath(sampleDate), 7);
+check('actual sample input expression', calculateExpression(SAMPLE_INPUT.fullName), 11);
+check('actual sample input soul urge', calculateSoulUrge(SAMPLE_INPUT.fullName), 4);
+check('actual sample input animal', getChineseZodiac(sampleDate).animal, 'Horse');
+check('actual sample input element', getChineseZodiac(sampleDate).element, 'Metal');
 console.log(`\n${passes} passed, ${failures} failed`);
 if (failures > 0) process.exit(1);

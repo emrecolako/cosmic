@@ -12,7 +12,7 @@ import { textGlyph } from "@/lib/utils";
 
 function ParamRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid grid-cols-[minmax(7rem,10rem)_1fr] gap-4">
+    <div className="grid grid-cols-[minmax(6rem,8rem)_1fr] gap-4 py-3 border-b border-line-muted">
       <span className="text-ink-muted uppercase">{label}</span>
       <span className="text-ink tabular-nums min-w-0 break-words">{value}</span>
     </div>
@@ -45,7 +45,7 @@ export default function WesternAstroCard({
 
   return (
     <div className="animate-fade-in-up">
-      <div className="rounded-lg bg-panel p-4 font-mono text-xs tracking-wider mb-6">
+      <div className="text-sm mb-6">
         <div className="space-y-1.5">
           <ParamRow
             label={t.western.sunSign}
@@ -63,7 +63,7 @@ export default function WesternAstroCard({
         </div>
       </div>
 
-      <div className="card p-5">
+      <div className="pt-2">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-3xl text-ink" role="img" aria-label={localizedSign}>
             {textGlyph(sunSign.glyph)}
@@ -71,7 +71,7 @@ export default function WesternAstroCard({
           <h3 className="text-lg font-medium text-ink">{localizedSign}</h3>
         </div>
 
-        <p className="text-sm text-ink-secondary leading-relaxed mb-3">
+        <p className="text-base text-ink-secondary leading-8 mb-3">
           {copy.description}
         </p>
 

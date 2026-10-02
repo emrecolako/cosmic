@@ -61,10 +61,12 @@ export default function NatalChartVisual({
   const displaySign = (sign: string): string =>
     content.signNames[sign as SignName] ?? sign;
 
+  const rotation = !moonSign ? 180 - (SIGN_ORDER.indexOf(sunSign as SignName) * 30 + 15) : -90;
+
   const getAngleForSign = (sign: string): number => {
     const index = SIGN_ORDER.indexOf(sign as SignName);
     if (index === -1) return 0;
-    return (index * 30 - 90) * (Math.PI / 180);
+    return (index * 30 + rotation) * (Math.PI / 180);
   };
 
   const getPointOnCircle = (
@@ -105,7 +107,7 @@ export default function NatalChartVisual({
           cy={center}
           r={outerRadius}
           fill="none"
-          stroke="var(--border)"
+          stroke="var(--gold)"
           strokeWidth="1.5"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: 1 }}
@@ -127,7 +129,7 @@ export default function NatalChartVisual({
         <circle cx={center} cy={center} r={2.5} fill="var(--text-muted)" />
 
         {Array.from({ length: 12 }).map((_, index) => {
-          const angle = (index * 30 - 90) * (Math.PI / 180);
+          const angle = (index * 30 + rotation) * (Math.PI / 180);
           const inner = getPointOnCircle(angle, innerRadius);
           const outer = getPointOnCircle(angle, outerRadius);
           return (
@@ -147,7 +149,7 @@ export default function NatalChartVisual({
         })}
 
         {SIGN_ORDER.map((sign, index) => {
-          const angle = (index * 30 + 15 - 90) * (Math.PI / 180);
+          const angle = (index * 30 + 15 + rotation) * (Math.PI / 180);
           const position = getPointOnCircle(angle, labelRadius);
           return (
             <motion.text
@@ -215,7 +217,7 @@ export default function NatalChartVisual({
                   cx={position.x}
                   cy={position.y}
                   r={9}
-                  fill="var(--text-secondary)"
+                  fill="var(--moon)"
                   opacity={0.12}
                 />
                 <circle
@@ -223,7 +225,7 @@ export default function NatalChartVisual({
                   cy={position.y}
                   r={4}
                   fill="none"
-                  stroke="var(--text-secondary)"
+                  stroke="var(--moon)"
                   strokeWidth="1.5"
                 />
                 <text
@@ -231,7 +233,7 @@ export default function NatalChartVisual({
                   y={position.y - 14}
                   textAnchor="middle"
                   fontSize="7"
-                  fill="var(--text-secondary)"
+                  fill="var(--moon)"
                   fontFamily={MONO}
                   letterSpacing="0.1em"
                 >
