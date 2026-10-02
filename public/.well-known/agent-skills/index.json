@@ -6,7 +6,7 @@
       "type": "skill-md",
       "description": "Help a person decide whether to use Cosmic Blueprint and direct them to the right public page without collecting birth details in chat.",
       "url": "/.well-known/agent-skills/cosmic-blueprint/SKILL.md",
-      "digest": "sha256:f5d69b6900463f4cb1025c51a29780dd876404a17aea147cdd381def4f4c85c5"
+      "digest": "sha256:50616ea9edf76baf8838df0aa63088815b021f78e07110934616787bfd49b4e4"
     }
   ]
 }
