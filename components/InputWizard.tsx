@@ -106,7 +106,8 @@ export default function InputWizard({ onSubmit, isLoading }: InputWizardProps) {
   useEffect(() => {
     if (!stepChanged.current) return;
     headingRef.current?.focus({ preventScroll: true });
-    formRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    formRef.current?.scrollIntoView({ block: "start", behavior: reduceMotion ? "auto" : "smooth" });
   }, [step]);
 
   const updateField = useCallback(

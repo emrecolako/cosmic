@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import InputWizard, { type WizardData } from "@/components/InputWizard";
-import { saveReadingInput } from "@/lib/profile";
+import { saveReadingInput } from "@/lib/reading-input";
 
 export default function LandingForm() {
   const router = useRouter();

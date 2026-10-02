@@ -7,7 +7,6 @@ import {
   useContext,
   useCallback,
 } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useI18n } from "@/components/LocaleProvider";
 
 type ToastType = "success" | "error" | "info";
@@ -47,12 +46,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ toast }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
-        <AnimatePresence>
-          {toasts.map((item) => (
-            <ToastItem key={item.id} toast={item} onRemove={removeToast} />
-          ))}
-        </AnimatePresence>
+      <div
+        aria-live="polite"
+        className="fixed z-50 flex flex-col gap-2 left-4 right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-sm"
+      >
+        {toasts.map((item) => (
+          <ToastItem key={item.id} toast={item} onRemove={removeToast} />
+        ))}
       </div>
     </ToastContext.Provider>
   );
@@ -73,25 +73,24 @@ function ToastItem({
   }, [toast.id, onRemove]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      transition={{ duration: 0.15 }}
+    <div
       role="status"
-      className="px-4 py-2 font-mono text-xs tracking-wider bg-base border border-line"
+      className="flex items-center justify-between gap-3 pl-4 pr-1 py-1 font-mono text-xs tracking-wider bg-base border border-line rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.4)] animate-fade-in-up"
     >
-      <span className="text-ink-muted">
-        {toast.type === "error" ? t.ui.errorPrefix : "OK:"}
-      </span>{" "}
-      <span className="text-ink-secondary uppercase">{toast.message}</span>
+      <span>
+        <span className="text-ink-muted">
+          {toast.type === "error" ? t.ui.errorPrefix : "OK:"}
+        </span>{" "}
+        <span className="text-ink-secondary uppercase">{toast.message}</span>
+      </span>
       <button
+        type="button"
         onClick={() => onRemove(toast.id)}
-        className="ml-4 text-ink-muted hover:opacity-70"
+        className="min-h-11 min-w-11 shrink-0 text-ink-muted hover:opacity-70"
         aria-label={t.ui.dismiss}
       >
         [×]
       </button>
-    </motion.div>
+    </div>
   );
 }

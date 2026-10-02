@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, MotionConfig } from "framer-motion";
 import { useI18n } from "@/components/LocaleProvider";
 import type { LocaleContent, SignName } from "@/lib/i18n/content";
 import { textGlyph } from "@/lib/utils";
@@ -84,6 +84,7 @@ export default function NatalChartVisual({
     .join(", ");
 
   return (
+    <MotionConfig reducedMotion="user">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -268,5 +269,6 @@ export default function NatalChartVisual({
           })()}
       </svg>
     </motion.div>
+    </MotionConfig>
   );
 }

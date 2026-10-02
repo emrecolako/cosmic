@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
@@ -8,18 +8,33 @@ import Header from "@/components/Header";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
 
 const ibmPlexSans = IBM_Plex_Sans({
-  subsets: ["latin", "latin-ext"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  // Only Latin is preloaded; latin-ext (Turkish, German…) still loads on
+  // demand via unicode-range.
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   variable: "--font-ibm-plex-sans",
   display: "swap",
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin", "latin-ext"],
-  weight: ["300", "400", "500", "600"],
+  // Only Latin is preloaded; latin-ext (Turkish, German…) still loads on
+  // demand via unicode-range.
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
   variable: "--font-ibm-plex-mono",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  // Lets the header and sticky CTA use env(safe-area-inset-*) on notched phones.
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+  ],
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = negotiateLocale((await headers()).get("accept-language"));
@@ -52,7 +67,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} min-h-screen antialiased font-sans`}
+        className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} min-h-dvh antialiased font-sans`}
       >
         <LocaleProvider locale={locale}>
           <Providers>
