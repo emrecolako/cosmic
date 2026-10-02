@@ -1,9 +1,9 @@
 /** English UI catalog and the structural source of truth for every locale. */
 export const en = {
   meta: {
-    title: "Cosmic Blueprint — Your Complete Cosmic Profile",
+    title: "Cosmic Blueprint — Free Numerology, Astrology & Chinese Zodiac Reading",
     description:
-      "Discover your unified cosmic profile combining numerology, Western astrology, Chinese astrology, and natal chart analysis into one beautifully synthesized reading.",
+      "Enter your birth date and get your Life Path number, sun, moon and rising signs, Chinese zodiac animal — and one personal reading that connects them. Free, no sign-up.",
     ogTitle: "Cosmic Blueprint",
     ogDescription: "Your complete cosmic profile, unified.",
   },

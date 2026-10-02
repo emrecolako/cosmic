@@ -2,9 +2,9 @@ import type { Messages } from "./en";
 
 export const tr: Messages = {
   meta: {
-    title: "Kozmik Harita — Eksiksiz Kozmik Profiliniz",
+    title: "Kozmik Harita — Ücretsiz Numeroloji, Astroloji ve Çin Burcu Okuması",
     description:
-      "Numeroloji, Batı astrolojisi, Çin astrolojisi ve doğum haritası analizini tek bir özenle sentezlenmiş okumada birleştiren kozmik profilinizi keşfedin.",
+      "Doğum tarihinizi girin; yaşam yolu sayınızı, güneş, ay ve yükselen burçlarınızı, Çin burcunuzu ve hepsini birleştiren kişisel bir okumayı alın. Ücretsiz, üyelik yok.",
     ogTitle: "Kozmik Harita",
     ogDescription: "Eksiksiz kozmik profiliniz, tek bir okumada.",
   },

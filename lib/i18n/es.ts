@@ -2,9 +2,9 @@ import type { Messages } from "./en";
 
 export const es: Messages = {
   meta: {
-    title: "Mapa Cósmico — Tu perfil cósmico completo",
+    title: "Cosmic Blueprint — Lectura gratis de numerología, astrología y zodiaco chino",
     description:
-      "Descubre tu perfil cósmico unificado, combinando numerología, astrología occidental, astrología china y análisis de la carta natal en una lectura cuidadosamente sintetizada.",
+      "Introduce tu fecha de nacimiento y obtén tu número de camino de vida, tus signos solar, lunar y ascendente, tu animal chino y una lectura personal que los une. Gratis, sin registro.",
     ogTitle: "Mapa Cósmico",
     ogDescription: "Tu perfil cósmico completo, unificado.",
   },

@@ -2,9 +2,9 @@ import type { Messages } from "./en";
 
 export const de: Messages = {
   meta: {
-    title: "Kosmischer Bauplan — Dein vollständiges kosmisches Profil",
+    title: "Cosmic Blueprint — Kostenlose Deutung: Numerologie, Astrologie & chinesisches Horoskop",
     description:
-      "Entdecke dein vereintes kosmisches Profil aus Numerologie, westlicher Astrologie, chinesischer Astrologie und Geburtshoroskop-Analyse in einer sorgfältig zusammengeführten Deutung.",
+      "Gib dein Geburtsdatum ein und erhalte Lebenszahl, Sonnen-, Mond- und Aszendentenzeichen, dein chinesisches Tier – und eine persönliche Deutung, die alles verbindet. Kostenlos, ohne Anmeldung.",
     ogTitle: "Kosmischer Bauplan",
     ogDescription: "Dein vollständiges kosmisches Profil, vereint.",
   },

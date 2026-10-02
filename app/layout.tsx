@@ -26,6 +26,10 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "https://cosmic-jet.vercel.app";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -42,12 +46,22 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = getMessages(locale);
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: t.meta.title,
     description: t.meta.description,
+    alternates: { canonical: "/" },
     openGraph: {
       title: t.meta.ogTitle,
-      description: t.meta.ogDescription,
+      description: t.meta.description,
       type: "website",
+      siteName: "Cosmic Blueprint",
+      url: "/",
+      locale,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t.meta.ogTitle,
+      description: t.meta.description,
     },
   };
 }
