@@ -2,12 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useI18n } from "@/components/LocaleProvider";
-import { useToast } from "@/components/ui/Toast";
+
+/** Fired by the header's Share action; the results page shares the reading. */
+export const SHARE_EVENT = "cosmic:share";
+
+const actionStyles =
+  "min-h-11 min-w-11 px-2 -mx-2 inline-flex items-center justify-center tracking-wider uppercase transition-opacity hover:opacity-70 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ink";
 
 export default function Header({ initialTheme }: { initialTheme: "dark" | "light" }) {
   const { t } = useI18n();
-  const { toast } = useToast();
+  const pathname = usePathname();
   const [isDark, setIsDark] = useState(initialTheme === "dark");
 
   const toggleTheme = () => {
@@ -17,38 +23,37 @@ export default function Header({ initialTheme }: { initialTheme: "dark" | "light
     document.cookie = `theme=${next ? "dark" : "light"};path=/;max-age=31536000;samesite=lax`;
   };
 
-  const handleShare = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.origin);
-      toast(t.header.shareCopied, "success");
-    } catch {
-      toast(t.header.shareFailed, "error");
-    }
-  };
+  // On the landing page the only action should be starting the form, so
+  // Share only appears on results, where there is something worth sharing.
+  const showShare = pathname === "/results";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-base">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="flex h-10 items-center justify-between font-mono text-xs">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-base/90 backdrop-blur border-b border-line-muted pt-[env(safe-area-inset-top)]">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]">
+        <div className="flex h-12 items-center justify-between font-mono text-xs">
           <Link
             href="/"
-            className="tracking-wider text-ink-secondary hover:opacity-70 transition-opacity"
+            className={`${actionStyles} text-ink-secondary`}
           >
             COSMIC-BLUEPRINT
           </Link>
-          <div className="flex items-center gap-6 text-ink-muted">
+          <div className="flex items-center gap-4 text-ink-muted">
             <button
+              type="button"
               onClick={toggleTheme}
-              className="hover:opacity-70 transition-opacity tracking-wider uppercase text-ink-secondary"
+              className={actionStyles}
             >
               [{isDark ? t.header.themeLight : t.header.themeDark}]
             </button>
-            <button
-              onClick={handleShare}
-              className="hover:opacity-70 transition-opacity tracking-wider uppercase"
-            >
-              [{t.header.share}]
-            </button>
+            {showShare && (
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event(SHARE_EVENT))}
+                className={`${actionStyles} text-ink-secondary`}
+              >
+                [{t.header.share}]
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -143,7 +143,7 @@ export default function ResultsPage() {
   };
 
   return (
-    <main className="min-h-screen pt-10">
+    <main className="min-h-dvh pt-12">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
         <div className="mb-12 font-mono text-xs tracking-wider animate-fade-in">
           <Link
