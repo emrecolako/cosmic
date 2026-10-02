@@ -13,7 +13,11 @@
       "url": "https://unifiedreading.com/.well-known/agent-skills/cosmic-blueprint/SKILL.md",
       "description": "Guide a person to a combined numerology and astrology reflection reading or its public sample.",
       "tags": ["numerology", "western-astrology", "chinese-zodiac", "reflection"],
-      "representativeQueries": ["show me a combined numerology and astrology reading", "what does Cosmic Blueprint do", "show a sample cosmic reading"]
+      "representativeQueries": ["show me a combined numerology and astrology reading", "what does Cosmic Blueprint do", "show a sample cosmic reading"],
+      "trustManifest": {
+        "identity": "https://unifiedreading.com/.well-known/agent-skills/cosmic-blueprint/SKILL.md",
+        "identityType": "https"
+      }
     }
   ]
 }
