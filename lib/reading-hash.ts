@@ -1,8 +1,8 @@
 import { createHmac } from "node:crypto";
 
 /**
- * Stable keyed hash of the user-entered reading inputs. It binds a Stripe
- * Checkout Session to one reading without sending birth details to Stripe.
+ * Stable keyed hash of every input used to generate a reading. It binds a
+ * Stripe Checkout Session to one profile without sending it to Stripe.
  * Locale is deliberately excluded so a paid reading survives a language switch.
  */
 export function readingHash(body: Record<string, unknown>): string {
@@ -16,6 +16,11 @@ export function readingHash(body: Record<string, unknown>): string {
     body.lifeStage,
     body.whatsOnYourMind || null,
     body.gender || null,
+    body.age,
+    body.numerology,
+    body.westernAstro,
+    body.chineseZodiac,
+    body.lifeStageContext,
   ]);
   return createHmac("sha256", secret).update(canonical).digest("hex");
 }

@@ -21,6 +21,7 @@ import {
 } from "../lib/numerology";
 import { SAMPLE_INPUT } from "../lib/sample";
 import { getTimezoneOffsetHours } from "../lib/timezone";
+import { readingHash } from "../lib/reading-hash";
 
 let failures = 0;
 let passes = 0;
@@ -179,5 +180,34 @@ check('actual sample input expression', calculateExpression(SAMPLE_INPUT.fullNam
 check('actual sample input soul urge', calculateSoulUrge(SAMPLE_INPUT.fullName), 4);
 check('actual sample input animal', getChineseZodiac(sampleDate).animal, 'Horse');
 check('actual sample input element', getChineseZodiac(sampleDate).element, 'Metal');
+
+// A paid Checkout Session must only unlock the calculated profile purchased.
+const previousHashSecret = process.env.READING_HASH_SECRET;
+process.env.READING_HASH_SECRET = 'verification-only-secret';
+const paidReading = {
+  fullName: 'Alex Morgan',
+  dateOfBirth: '1990-11-04',
+  lifeStage: 'Building career',
+  age: 35,
+  numerology: { lifePath: { number: 7 } },
+  westernAstro: { sunSign: { sign: 'Scorpio' } },
+  chineseZodiac: { animal: 'Horse' },
+  lifeStageContext: { stage: 'career' },
+  locale: 'en',
+};
+const purchasedHash = readingHash(paidReading);
+check('paid reading survives locale switch', readingHash({ ...paidReading, locale: 'tr' }), purchasedHash);
+for (const [field, changedValue] of Object.entries({
+  age: 36,
+  numerology: { lifePath: { number: 8 } },
+  westernAstro: { sunSign: { sign: 'Aries' } },
+  chineseZodiac: { animal: 'Dog' },
+  lifeStageContext: { stage: 'parent' },
+})) {
+  check(`paid reading binds ${field}`, readingHash({ ...paidReading, [field]: changedValue }) === purchasedHash, false);
+}
+if (previousHashSecret === undefined) delete process.env.READING_HASH_SECRET;
+else process.env.READING_HASH_SECRET = previousHashSecret;
+
 console.log(`\n${passes} passed, ${failures} failed`);
 if (failures > 0) process.exit(1);
