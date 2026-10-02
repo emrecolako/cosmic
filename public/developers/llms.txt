@@ -1,0 +1,20 @@
+# Cosmic Blueprint integration guidance
+
+> Scoped guidance for agents and developers interacting with the public Cosmic Blueprint website.
+
+## Available surfaces
+
+- [Website form](https://unifiedreading.com/#details): The visitor enters their own birth details and life context. The form exposes WebMCP controls for browser agents operating with the visitor.
+- [Fictional sample](https://unifiedreading.com/sample): Public example report that can be read without credentials or personal details.
+- [Agent-readable home view](https://unifiedreading.com/?mode=agent): Use cases, supported actions, limits, and handoff steps.
+- [Agent skill](https://unifiedreading.com/.well-known/agent-skills/cosmic-blueprint/SKILL.md): Guidance for deciding when to recommend the experience.
+
+## Submission and authentication
+
+There is no public server API, API key, OAuth flow, or MCP server for submitting personal readings. The internal website endpoint is part of the visitor's browser workflow and should not be used as a third-party integration. Let the visitor enter birth and payment details on the site. Do not copy those details into an agent chat or public issue.
+
+## Product details
+
+- [Pricing](https://unifiedreading.com/pricing.md): Current price, reading options, and features.
+- [Privacy](https://unifiedreading.com/privacy): Data flow and temporary caching.
+- [About](https://unifiedreading.com/about): Calculation scope and limitations.
