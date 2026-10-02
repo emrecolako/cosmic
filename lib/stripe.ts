@@ -7,12 +7,19 @@
 const STRIPE_API = "https://api.stripe.com/v1";
 const PAID_SESSION_MAX_AGE_S = 24 * 60 * 60;
 
-export function paywallEnabled(): boolean {
+export function paymentsConfigured(): boolean {
   return Boolean(
     process.env.STRIPE_SECRET_KEY &&
       process.env.STRIPE_PRICE_ID &&
-      process.env.READING_HASH_SECRET
+      process.env.READING_HASH_SECRET &&
+      (process.env.VERCEL_ENV !== "production" ||
+        process.env.STRIPE_SECRET_KEY.startsWith("sk_live_"))
   );
+}
+
+/** A missing or test key must never make a production reading free. */
+export function paywallEnabled(): boolean {
+  return process.env.VERCEL_ENV === "production" || paymentsConfigured();
 }
 
 export function priceLabel(): string {

@@ -11,7 +11,7 @@ import { readingCacheKey, cachedReading, cacheReading } from '@/lib/reading-cach
 import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { validateReadingBody } from "@/lib/reading-request";
 import { readingHash } from "@/lib/reading-hash";
-import { isPaidSession, paywallEnabled, priceLabel } from "@/lib/stripe";
+import { isPaidSession, paymentsConfigured, paywallEnabled, priceLabel } from "@/lib/stripe";
 
 type ReadingMode = "teaser" | "full";
 
@@ -37,10 +37,13 @@ export async function POST(request: NextRequest) {
     if (invalid) return NextResponse.json({ error: invalid }, { status: 400 });
     const locale = body.locale as Locale;
 
-    // Without Stripe configured the full reading stays free (local dev, previews).
+    // Local development can be free, but production always requires payment.
     const paywall = paywallEnabled();
     const mode: ReadingMode = !paywall || body.mode === "full" ? "full" : "teaser";
     if (paywall && mode === "full") {
+      if (!paymentsConfigured()) {
+        return NextResponse.json({ error: "Payments are temporarily unavailable." }, { status: 503 });
+      }
       const sessionId = typeof body.checkoutSessionId === "string" ? body.checkoutSessionId : "";
       if (!(await isPaidSession(sessionId, readingHash(body)))) {
         return NextResponse.json({ error: "Payment required." }, { status: 402 });
