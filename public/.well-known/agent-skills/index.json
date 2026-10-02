@@ -2,11 +2,11 @@
   "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
   "skills": [
     {
-      "name": "cosmic-blueprint",
+      "name": "unified-reading",
       "type": "skill-md",
-      "description": "Help a person decide whether to use Cosmic Blueprint and direct them to the right public page without collecting birth details in chat.",
-      "url": "/.well-known/agent-skills/cosmic-blueprint/SKILL.md",
-      "digest": "sha256:ed4bdc506d86b72e5e3c742969a8b4fc32070bd854b5dfa75afd7e29b4a1eff3"
+      "description": "Help a person decide whether to use Unified Reading and direct them to the right public page without collecting birth details in chat.",
+      "url": "/.well-known/agent-skills/unified-reading/SKILL.md",
+      "digest": "sha256:d33344793bd3ec1007e44e347f4995ab5a57969a9165e210d80c7175fb6a7a48"
     }
   ]
 }

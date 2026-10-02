@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://unifiedreading.com",
-        "X-Title": "Cosmic Blueprint",
+        "X-Title": "Unified Reading",
       },
       body: JSON.stringify({
         models: MODEL_CHAIN,

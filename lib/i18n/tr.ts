@@ -2,10 +2,10 @@ import type { Messages } from "./en";
 
 export const tr: Messages = {
   meta: {
-    title: "Kozmik Harita — Eksiksiz Kozmik Profiliniz",
+    title: "Unified Reading — Eksiksiz Kozmik Profiliniz",
     description:
       "Numeroloji, Batı astrolojisi, Çin astrolojisi ve doğum haritası analizini tek bir özenle sentezlenmiş okumada birleştiren kozmik profilinizi keşfedin.",
-    ogTitle: "Kozmik Harita",
+    ogTitle: "Unified Reading",
     ogDescription: "Eksiksiz kozmik profiliniz, tek bir okumada.",
   },
   header: {
@@ -17,8 +17,8 @@ export const tr: Messages = {
   },
   landing: {
     badge: "Numeroloji + Batı Astrolojisi + Çin Burçları",
-    title1: "Kozmik",
-    title2: "Harita",
+    title1: "Unified",
+    title2: "Reading",
     subtitle: "Eksiksiz kozmik profiliniz, tek bir okumada.",
     subtitle2: "Üç kadim sistem. Tek bir kişisel okuma.",
     privacy: "Verileriniz tarayıcınızda kalır. Doğum bilgilerinizi saklamıyoruz.",
@@ -50,7 +50,7 @@ export const tr: Messages = {
     },
     back: "Geri",
     continue: "Devam",
-    reveal: "Kozmik Haritamı Göster",
+    reveal: "Unified Reading’i Göster",
     loading: "Haritanız çıkarılıyor...",
     step: "Adım",
     errNameRequired: "Adınızı girin",
@@ -71,9 +71,9 @@ export const tr: Messages = {
   },
   results: {
     newReading: "Yeni Okuma",
-    title: "Kozmik Harita",
+    title: "Unified Reading",
     forPerson: "{name} için",
-    loadingMessage: "Kozmik haritanız çıkarılıyor...",
+    loadingMessage: "Okumanız hazırlanıyor...",
     errorTitle: "Bir sorun oluştu",
     startOver: "Baştan Başla",
     cosmicSnapshotLabel: "Kozmik Özetiniz",

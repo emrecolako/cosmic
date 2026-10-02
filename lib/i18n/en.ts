@@ -1,10 +1,10 @@
 /** English UI catalog and the structural source of truth for every locale. */
 export const en = {
   meta: {
-    title: "Cosmic Blueprint | Numerology & Astrology Reading | Unified Reading",
+    title: "Unified Reading | Numerology & Astrology",
     description:
       "Explore a personal reading that brings numerology, Western zodiac signs, and the Chinese zodiac together. See a free sample before you share your birth details.",
-    ogTitle: "Cosmic Blueprint by Unified Reading",
+    ogTitle: "Unified Reading",
     ogDescription: "One personal reading combining numerology, Western zodiac signs, and the Chinese zodiac.",
   },
   header: {
@@ -16,8 +16,8 @@ export const en = {
   },
   landing: {
     badge: "Numerology + Western Astrology + Chinese Zodiac",
-    title1: "Cosmic",
-    title2: "Blueprint",
+    title1: "Unified",
+    title2: "Reading",
     subtitle: "Your complete cosmic profile, unified.",
     subtitle2: "Three ancient systems. One personal reading.",
     privacy: "Your data stays in your browser. We don't store birth details.",
@@ -49,8 +49,8 @@ export const en = {
     },
     back: "Back",
     continue: "Continue",
-    reveal: "Reveal My Cosmic Blueprint",
-    loading: "Mapping your blueprint...",
+    reveal: "Reveal My Unified Reading",
+    loading: "Preparing your reading...",
     step: "Step",
     errNameRequired: "Enter your name",
     errDobRequired: "Enter your date of birth",
@@ -70,9 +70,9 @@ export const en = {
   },
   results: {
     newReading: "New Reading",
-    title: "Cosmic Blueprint",
+    title: "Unified Reading",
     forPerson: "for {name}",
-    loadingMessage: "Mapping your cosmic blueprint...",
+    loadingMessage: "Preparing your unified reading...",
     errorTitle: "Something went wrong",
     startOver: "Start Over",
     cosmicSnapshotLabel: "Your Cosmic Snapshot",

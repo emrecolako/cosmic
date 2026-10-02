@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -7,22 +6,6 @@ import { LocaleProvider } from "@/components/LocaleProvider";
 import Header from "@/components/Header";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
 import { paywallEnabled } from "@/lib/stripe";
-
-const ibmPlexSans = IBM_Plex_Sans({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600"],
-  variable: "--font-ibm-plex-sans",
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({ subsets: ["latin", "latin-ext"], weight: "400", style: ["normal", "italic"], variable: "--font-editorial", display: "swap" });
-
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin", "latin-ext"],
-  weight: ["400"],
-  variable: "--font-ibm-plex-mono",
-  display: "swap",
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = negotiateLocale((await headers()).get("accept-language"));
@@ -36,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: t.meta.ogTitle,
       description: t.meta.ogDescription,
       type: "website",
-      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cosmic Blueprint — one reading from three interpretive traditions" }],
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Unified Reading — one reading from three interpretive traditions" }],
     },
   };
 }
@@ -64,7 +47,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${instrumentSerif.variable} min-h-screen antialiased font-sans`}
+        className="min-h-screen antialiased font-sans"
       >
         <script
           type="application/ld+json"
@@ -74,8 +57,7 @@ export default async function RootLayout({
               {
                 "@type": "Organization",
                 "@id": "https://unifiedreading.com/#organization",
-                name: "Cosmic Blueprint",
-                alternateName: "Unified Reading",
+                name: "Unified Reading",
                 url: "https://unifiedreading.com/",
                 sameAs: ["https://github.com/emrecolako/cosmic"],
                 contactPoint: {
@@ -88,7 +70,7 @@ export default async function RootLayout({
               {
                 "@type": "WebApplication",
                 "@id": "https://unifiedreading.com/#app",
-                name: "Cosmic Blueprint",
+                name: "Unified Reading",
                 url: "https://unifiedreading.com/",
                 description: "A personal reflection reading that combines numerology, Western astrology, Chinese zodiac, and life-stage context.",
                 applicationCategory: "LifestyleApplication",
@@ -98,7 +80,7 @@ export default async function RootLayout({
               {
                 "@type": "Service",
                 "@id": "https://unifiedreading.com/#reading",
-                name: "Cosmic Blueprint personal reading",
+                name: "Personal reading from Unified Reading",
                 serviceType: "Personal numerology and astrology reflection reading",
                 description: "A unified interpretation of calculated numerology, Western zodiac, Chinese zodiac, and selected life-stage context.",
                 provider: { "@id": "https://unifiedreading.com/#organization" },
@@ -108,7 +90,7 @@ export default async function RootLayout({
               {
                 "@type": "Product",
                 "@id": "https://unifiedreading.com/#reading-product",
-                name: "Cosmic Blueprint personal reading",
+                name: "Personal reading from Unified Reading",
                 description: "A personal report combining numerology, Western astrology, Chinese zodiac, and life-stage context for reflection.",
                 category: "Personal reading",
                 brand: { "@id": "https://unifiedreading.com/#organization" },

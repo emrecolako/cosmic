@@ -1,13 +1,13 @@
 ---
-title: Cosmic Blueprint
+title: Unified Reading
 description: A combined numerology, Western astrology and Chinese zodiac reflection reading.
 canonical: https://unifiedreading.com/
 last-updated: 2026-10-02
 ---
 
-# Cosmic Blueprint
+# Unified Reading
 
-Cosmic Blueprint is a web app for a combined, personal reflection reading. It connects Pythagorean numerology, Western zodiac signs, the Chinese zodiac, and the life stage a visitor selects. The reading highlights common themes and tensions and suggests practical ways to reflect on them.
+Unified Reading is a web app for a combined, personal reflection reading. It connects Pythagorean numerology, Western zodiac signs, the Chinese zodiac, and the life stage a visitor selects. The reading highlights common themes and tensions and suggests practical ways to reflect on them.
 
 ## How it works
 

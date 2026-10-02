@@ -1,8 +1,8 @@
-# Cosmic Blueprint
+# Unified Reading
 
 > A personal reflection web app at https://unifiedreading.com/ that synthesizes numerology, Western astrology, the Chinese zodiac, and life-stage context.
 
-Cosmic Blueprint helps a person explore themes across three interpretive traditions in one reading. The free public sample requires no personal data. To create a personal reading, the visitor enters a birth name and date, optionally a birth time and place, and selects current life stages. The site calculates profile values in the browser and uses OpenRouter model providers to write the unified interpretation. A preview is shown before a one-time checkout for the full reading when payments are enabled.
+Unified Reading helps a person explore themes across three interpretive traditions in one reading. The free public sample requires no personal data. To create a personal reading, the visitor enters a birth name and date, optionally a birth time and place, and selects current life stages. The site calculates profile values in the browser and uses OpenRouter model providers to write the unified interpretation. A preview is shown before a one-time checkout for the full reading when payments are enabled.
 
 ## When to use
 

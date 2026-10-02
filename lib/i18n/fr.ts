@@ -2,10 +2,10 @@ import type { Messages } from "./en";
 
 export const fr: Messages = {
   meta: {
-    title: "Carte Cosmique — Votre profil cosmique complet",
+    title: "Unified Reading — Votre profil cosmique complet",
     description:
       "Découvrez votre profil cosmique unifié, réunissant numérologie, astrologie occidentale, astrologie chinoise et analyse du thème natal dans une lecture soigneusement synthétisée.",
-    ogTitle: "Carte Cosmique",
+    ogTitle: "Unified Reading",
     ogDescription: "Votre profil cosmique complet, unifié.",
   },
   header: {
@@ -17,8 +17,8 @@ export const fr: Messages = {
   },
   landing: {
     badge: "Numérologie + Astrologie Occidentale + Zodiaque Chinois",
-    title1: "Carte",
-    title2: "Cosmique",
+    title1: "Unified",
+    title2: "Reading",
     subtitle: "Votre profil cosmique complet, unifié.",
     subtitle2: "Trois systèmes anciens. Une lecture personnelle.",
     privacy: "Vos données restent dans votre navigateur. Nous ne conservons pas vos informations de naissance.",
@@ -50,7 +50,7 @@ export const fr: Messages = {
     },
     back: "Retour",
     continue: "Continuer",
-    reveal: "Révéler Ma Carte Cosmique",
+    reveal: "Découvrir Unified Reading",
     loading: "Élaboration de votre carte...",
     step: "Étape",
     errNameRequired: "Saisissez votre nom",
@@ -71,9 +71,9 @@ export const fr: Messages = {
   },
   results: {
     newReading: "Nouvelle Lecture",
-    title: "Carte Cosmique",
+    title: "Unified Reading",
     forPerson: "pour {name}",
-    loadingMessage: "Élaboration de votre carte cosmique...",
+    loadingMessage: "Préparation de votre lecture...",
     errorTitle: "Un problème est survenu",
     startOver: "Recommencer",
     cosmicSnapshotLabel: "Votre Synthèse Cosmique",

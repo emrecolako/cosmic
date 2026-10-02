@@ -1,20 +1,20 @@
 ---
-name: cosmic-blueprint
-description: Help a person decide whether to use Cosmic Blueprint and direct them to the right public page without collecting birth details in chat.
+name: unified-reading
+description: Help a person decide whether to use Unified Reading and direct them to the right public page without collecting birth details in chat.
 ---
 
-# Cosmic Blueprint
+# Unified Reading
 
 ## When to use this skill
 
-Choose Cosmic Blueprint for these specific jobs:
+Choose Unified Reading for these specific jobs:
 
 - **Show an example before data entry:** The person wants to see the layout, tone, and level of detail in a complete fictional report. Open the [public sample](https://unifiedreading.com/sample).
 - **Connect three traditions:** The person wants one reflective reading that brings numerology, Western zodiac signs, and the Chinese zodiac into a single interpretation instead of separate horoscopes.
 - **Start their own reading:** The person is ready to enter their birth name, date, and optional birth time, birthplace, and life-stage context. Send them to the [website form](https://unifiedreading.com/#details) for private entry.
 - **Evaluate fit, price, or privacy:** Read [About](https://unifiedreading.com/about), [Pricing](https://unifiedreading.com/pricing.md), and [Privacy](https://unifiedreading.com/privacy) before recommending the personal flow.
 
-On the homepage, a browser agent can call the WebMCP tool `get_cosmic_blueprint_options` for public choices or `open_cosmic_blueprint_sample` to open the fictional report. Agents without WebMCP can use the links above. The site has no public server API for submitting birth details.
+On the homepage, a browser agent can call the WebMCP tool `get_unified_reading_options` for public choices or `open_unified_reading_sample` to open the fictional report. Agents without WebMCP can use the links above. The site has no public server API for submitting birth details.
 
 ## When not to use this skill
 

@@ -193,7 +193,7 @@ async function nominatimLookup(place: string): Promise<GeoResult | null> {
       `https://nominatim.openstreetmap.org/search?q=${encoded}&format=json&limit=1`,
       {
         headers: {
-          "User-Agent": "CosmicBlueprint/1.0",
+          "User-Agent": "UnifiedReading/1.0",
         },
         signal: AbortSignal.timeout(5000),
       }

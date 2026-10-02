@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About Cosmic Blueprint",
-  description: "How Cosmic Blueprint combines numerology, Western astrology and the Chinese zodiac into a personal reflection reading.",
+  title: "About Unified Reading",
+  description: "How Unified Reading combines numerology, Western astrology and the Chinese zodiac into a personal reflection reading.",
   alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
   return <main id="main" lang="en" className="atlas-shell"><article className="unified-prose">
-    <Link className="atlas-link" href="/">← Cosmic Blueprint</Link>
-    <h1 className="wizard-title editorial">About Cosmic Blueprint</h1>
-    <p>Cosmic Blueprint is a web-based personal reflection experience. It combines calculated numerology, Western zodiac signs, the Chinese zodiac, and the life chapter you select into one narrative. You can inspect a <Link href="/sample">fictional sample reading</Link> before entering any personal details.</p>
+    <Link className="atlas-link" href="/">← Unified Reading</Link>
+    <h1 className="wizard-title editorial">About Unified Reading</h1>
+    <p>Unified Reading is a web-based personal reflection experience. It combines calculated numerology, Western zodiac signs, the Chinese zodiac, and the life chapter you select into one narrative. You can inspect a <Link href="/sample">fictional sample reading</Link> before entering any personal details.</p>
     <h2>What the reading uses</h2>
     <p>Your birth name and date provide the numerology numbers. Your birth date provides the Sun sign and Chinese zodiac animal, element, and polarity; the Chinese zodiac follows Lunar New Year rather than January 1. If you know your birth time, the app can include a Moon sign and, with a birthplace, a rising sign. The chart is an approximate sign-level diagram. It does not calculate houses, planetary aspects, or current transits.</p>
     <h2>How the synthesis works</h2>

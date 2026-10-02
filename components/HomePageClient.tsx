@@ -12,7 +12,7 @@ import type { LifeStageOption } from "@/lib/life-stages";
 
 const sampleToolAttributes = {
   toolname: "view_sample_reading",
-  tooldescription: "Open a public sample Cosmic Blueprint reading, with no birth details or payment required.",
+  tooldescription: "Open a public sample reading from Unified Reading, with no birth details or payment required.",
 };
 
 type BrowserTool = {
@@ -43,7 +43,7 @@ export default function HomePage() {
     const schema = { type: "object" as const, properties: {} };
     const tools: BrowserTool[] = [
       {
-        name: "get_cosmic_blueprint_options",
+        name: "get_unified_reading_options",
         description: "Explain the public sample, personal reading, price page, and privacy page without collecting anyone's birth details.",
         inputSchema: schema,
         annotations: { readOnlyHint: true },
@@ -56,7 +56,7 @@ export default function HomePage() {
         }),
       },
       {
-        name: "open_cosmic_blueprint_sample",
+        name: "open_unified_reading_sample",
         description: "Open the free fictional sample reading in this browser tab. No personal details or payment are required.",
         inputSchema: schema,
         annotations: { readOnlyHint: false },
@@ -130,7 +130,7 @@ export default function HomePage() {
           <div className="space-y-4">
             <p className="eyebrow">The method</p>
             <h2 id="about-reading" className="wizard-title editorial">One reading, three lenses.</h2>
-            <p className="hero-description">Cosmic Blueprint is a personal reflection tool. It brings together Pythagorean numerology, Western zodiac signs, and the Chinese zodiac in one reading shaped by your current life stage. The point is to notice where the traditions echo each other, where they differ, and which ideas might be useful in your life now.</p>
+            <p className="hero-description">Unified Reading is a personal reflection tool. It brings together Pythagorean numerology, Western zodiac signs, and the Chinese zodiac in one reading shaped by your current life stage. The point is to notice where the traditions echo each other, where they differ, and which ideas might be useful in your life now.</p>
           </div>
           <div className="grid gap-6 sm:grid-cols-3">
             <article className="card p-6"><h3 className="text-xl editorial mb-3">Your numbers</h3><p className="text-ink-secondary leading-relaxed">Your birth date and birth name are used to calculate a Life Path, Expression, Soul Urge, Personality, and Personal Year number. Master numbers 11, 22, and 33 stay intact.</p></article>

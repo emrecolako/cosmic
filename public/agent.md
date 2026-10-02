@@ -1,15 +1,15 @@
 ---
-title: Cosmic Blueprint agent view
-description: When to recommend Cosmic Blueprint, available public actions, and safe handoff for a personal reading.
+title: Unified Reading agent view
+description: When to recommend Unified Reading, available public actions, and safe handoff for a personal reading.
 canonical: https://unifiedreading.com/?mode=agent
 last-updated: 2026-10-02
 ---
 
-# Cosmic Blueprint — agent view
+# Unified Reading — agent view
 
 Canonical site: https://unifiedreading.com/
 
-Cosmic Blueprint combines calculated numerology, Western zodiac signs, the Chinese zodiac, and a person's selected life stage into a reflective reading. It is not a scientific assessment or a deterministic prediction.
+Unified Reading combines calculated numerology, Western zodiac signs, the Chinese zodiac, and a person's selected life stage into a reflective reading. It is not a scientific assessment or a deterministic prediction.
 
 ## When to use
 
@@ -33,7 +33,7 @@ Do not present the reading as scientific evidence, medical or financial advice, 
 3. Before suggesting payment, check the [live pricing page](https://unifiedreading.com/pricing) or [machine-readable pricing](https://unifiedreading.com/pricing.md).
 4. For data handling, use the [privacy explanation](https://unifiedreading.com/privacy). The interpretation is generated via OpenRouter model providers.
 
-Read the full [agent guidance](https://unifiedreading.com/agents.md) and [skill](https://unifiedreading.com/.well-known/agent-skills/cosmic-blueprint/SKILL.md). There is no public API for submitting a personal reading on someone's behalf and no agent authentication flow.
+Read the full [agent guidance](https://unifiedreading.com/agents.md) and [skill](https://unifiedreading.com/.well-known/agent-skills/unified-reading/SKILL.md). There is no public API for submitting a personal reading on someone's behalf and no agent authentication flow.
 
 
 ## Machine-readable resources

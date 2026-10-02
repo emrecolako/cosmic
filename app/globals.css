@@ -3,6 +3,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --font-editorial: "Iowan Old Style", Baskerville, "Palatino Linotype";
   --bg: #f3f1e7;
   --bg-secondary: #ece7dc;
   --text: #171d36;
@@ -39,8 +40,8 @@
   --color-line: var(--border);
   --color-line-muted: var(--border-muted);
 
-  --font-sans: var(--font-ibm-plex-sans), system-ui, sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), Menlo, monospace;
+  --font-sans: "Avenir Next", "Segoe UI", Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 @theme {
@@ -134,7 +135,7 @@
   }
 
   .number-mono {
-    font-family: var(--font-ibm-plex-mono), monospace;
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
 }

@@ -10,13 +10,13 @@ export function GET() {
     ? "A one-time Stripe Checkout payment unlocks the full reading. Stripe displays the final amount before purchase."
     : "Checkout is currently disabled, so the full reading is free on this deployment.";
   const markdown = `---
-title: Cosmic Blueprint pricing
+title: Unified Reading pricing
 description: Current prices, reading options, included features, and checkout terms.
 canonical: https://unifiedreading.com/pricing
 last-updated: 2026-10-02
 ---
 
-# Cosmic Blueprint pricing
+# Unified Reading pricing
 
 The [HTML pricing page](https://unifiedreading.com/pricing) is the human-readable source for this deployment. These options describe the same current offering.
 

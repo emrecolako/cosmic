@@ -2,10 +2,10 @@ import type { Messages } from "./en";
 
 export const de: Messages = {
   meta: {
-    title: "Kosmischer Bauplan — Dein vollständiges kosmisches Profil",
+    title: "Unified Reading — Dein vollständiges kosmisches Profil",
     description:
       "Entdecke dein vereintes kosmisches Profil aus Numerologie, westlicher Astrologie, chinesischer Astrologie und Geburtshoroskop-Analyse in einer sorgfältig zusammengeführten Deutung.",
-    ogTitle: "Kosmischer Bauplan",
+    ogTitle: "Unified Reading",
     ogDescription: "Dein vollständiges kosmisches Profil, vereint.",
   },
   header: {
@@ -17,8 +17,8 @@ export const de: Messages = {
   },
   landing: {
     badge: "Numerologie + Westliche Astrologie + Chinesischer Tierkreis",
-    title1: "Kosmischer",
-    title2: "Bauplan",
+    title1: "Unified",
+    title2: "Reading",
     subtitle: "Dein vollständiges kosmisches Profil, vereint.",
     subtitle2: "Drei alte Systeme. Eine persönliche Deutung.",
     privacy: "Deine Daten bleiben in deinem Browser. Wir speichern keine Geburtsangaben.",
@@ -50,8 +50,8 @@ export const de: Messages = {
     },
     back: "Zurück",
     continue: "Weiter",
-    reveal: "Meinen Kosmischen Bauplan Enthüllen",
-    loading: "Dein Bauplan wird erstellt...",
+    reveal: "Unified Reading anzeigen",
+    loading: "Deine Deutung wird erstellt...",
     step: "Schritt",
     errNameRequired: "Gib deinen Namen ein",
     errDobRequired: "Gib dein Geburtsdatum ein",
@@ -71,9 +71,9 @@ export const de: Messages = {
   },
   results: {
     newReading: "Neue Deutung",
-    title: "Kosmischer Bauplan",
+    title: "Unified Reading",
     forPerson: "für {name}",
-    loadingMessage: "Dein kosmischer Bauplan wird erstellt...",
+    loadingMessage: "Deine Deutung wird erstellt...",
     errorTitle: "Etwas ist schiefgelaufen",
     startOver: "Neu Beginnen",
     cosmicSnapshotLabel: "Deine Kosmische Momentaufnahme",
