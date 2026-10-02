@@ -32,6 +32,7 @@ interface CosmicProfileProps {
   errorKind: AiErrorKind | null;
   chartPending: boolean;
   onRetry: () => void;
+  onShare: () => void;
   /** Rendered after the report: share / copy / new reading. */
   actions?: React.ReactNode;
 }
@@ -86,6 +87,7 @@ export default function CosmicProfile({
   errorKind,
   chartPending,
   onRetry,
+  onShare,
   actions,
 }: CosmicProfileProps) {
   const { t } = useI18n();
@@ -133,6 +135,7 @@ export default function CosmicProfile({
         errorKind={errorKind}
         chartPending={chartPending}
         onRetry={onRetry}
+        onShare={onShare}
       />
 
       <section id="reading" aria-labelledby="reading-title" className="scroll-mt-20">

@@ -24,6 +24,7 @@ interface ResultsHeroProps {
   errorKind: AiErrorKind | null;
   chartPending: boolean;
   onRetry: () => void;
+  onShare: () => void;
 }
 
 /**
@@ -41,6 +42,7 @@ export default function ResultsHero({
   errorKind,
   chartPending,
   onRetry,
+  onShare,
 }: ResultsHeroProps) {
   const { t } = useI18n();
   const { numerology, westernAstro, chineseZodiac } = profile;
@@ -170,12 +172,17 @@ export default function ResultsHero({
               <span aria-hidden="true" className="font-mono">✓</span>
               {t.results.readingReady}
             </p>
-            <a
-              href="#reading"
-              className="min-h-11 inline-flex items-center font-mono text-xs tracking-wider uppercase text-ink-secondary hover:text-ink underline-offset-4 hover:underline"
-            >
-              {t.results.readIt}
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href="#reading"
+                className="min-h-11 inline-flex items-center font-mono text-xs tracking-wider uppercase text-ink-secondary hover:text-ink underline-offset-4 hover:underline"
+              >
+                {t.results.readIt}
+              </a>
+              <Button variant="outline" size="sm" onClick={onShare} className="min-h-11">
+                {t.header.share}
+              </Button>
+            </div>
           </div>
         )}
 

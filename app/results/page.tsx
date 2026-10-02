@@ -5,10 +5,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CosmicProfile, { type AiStatus, type AiErrorKind } from "@/components/CosmicProfile";
 import { useI18n } from "@/components/LocaleProvider";
-import { en } from "@/lib/i18n";
-import { loadContent, type LocaleContent } from "@/lib/i18n/content";
+import { en, formatMessage } from "@/lib/i18n";
+import {
+  loadContent,
+  type LocaleContent,
+  type SignName,
+  type AnimalName,
+  type ChineseElementName,
+} from "@/lib/i18n/content";
 import { useToast } from "@/components/ui/Toast";
-import Button from "@/components/ui/Button";
+import ResultsActions from "@/components/ResultsActions";
+import { SHARE_EVENT } from "@/components/Header";
+import { shareOrCopy, copyText } from "@/lib/share";
 import { Skeleton, StatCardSkeleton } from "@/components/ui/Skeleton";
 import {
   loadReadingInput,
@@ -201,6 +209,55 @@ export default function ResultsPage() {
     if (input && profile) void startAnalysis(input, profile);
   };
 
+  const signs = useMemo(() => {
+    if (!profile || !content) return null;
+    const { westernAstro, chineseZodiac, numerology } = profile;
+    const element =
+      content.chineseElementNames[chineseZodiac.element as ChineseElementName] ??
+      chineseZodiac.element;
+    const animal =
+      content.animalNames[chineseZodiac.animal as AnimalName] ?? chineseZodiac.animal;
+    return {
+      lifePath: numerology.lifePath.number,
+      sun: content.signNames[westernAstro.sunSign.sign as SignName] ?? westernAstro.sunSign.sign,
+      animal: `${element} ${animal}`,
+    };
+  }, [profile, content]);
+
+  const handleShare = useCallback(async () => {
+    if (!signs) return;
+    const outcome = await shareOrCopy({
+      title: t.meta.ogTitle,
+      text: formatMessage(t.results.shareText, signs),
+      url: `${window.location.origin}/?ref=share`,
+    });
+    if (outcome === "copied") toast(t.results.shareCopied, "success");
+    else if (outcome === "failed") toast(t.results.copyFailed, "error");
+  }, [signs, t, toast]);
+
+  // The header's Share button delegates to the reading-aware share above.
+  useEffect(() => {
+    const onShareEvent = () => void handleShare();
+    window.addEventListener(SHARE_EVENT, onShareEvent);
+    return () => window.removeEventListener(SHARE_EVENT, onShareEvent);
+  }, [handleShare]);
+
+  const handleCopy = async () => {
+    if (!input || !signs) return;
+    const sections = [
+      `${input.fullName} — ${t.results.title}`,
+      `${t.results.lifePathShort} ${signs.lifePath} · ${signs.sun} · ${signs.animal}`,
+      ai.cosmicSnapshot,
+      ai.combinedAnalysis && `${t.sections.unifiedReadingTitle}\n\n${ai.combinedAnalysis}`,
+      ai.currentSeason && `${t.sections.currentSeasonTitle}\n\n${ai.currentSeason}`,
+      ai.cosmicToolkit &&
+        `${t.sections.cosmicToolkitTitle}\n\n${ai.cosmicToolkit.map((item) => `- ${item}`).join("\n")}`,
+      window.location.origin,
+    ].filter(Boolean);
+    const ok = await copyText(sections.join("\n\n"));
+    toast(ok ? t.results.readingCopied : t.results.copyFailed, ok ? "success" : "error");
+  };
+
   return (
     <main className="min-h-dvh pt-12">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-6 pb-16 sm:pt-10">
@@ -232,16 +289,14 @@ export default function ResultsPage() {
               errorKind={errorKind}
               chartPending={chartPending}
               onRetry={retry}
+              onShare={handleShare}
               actions={
-                <div className="text-center pt-4 pb-12">
-                  <div className="h-px bg-line-muted mb-10" />
-                  <p className="font-mono text-xs tracking-wider uppercase text-ink-muted mb-6">
-                    {t.results.closingMessage}
-                  </p>
-                  <Link href="/">
-                    <Button variant="outline">{t.results.generateAnother}</Button>
-                  </Link>
-                </div>
+                <ResultsActions
+                  canCopy={!!ai.combinedAnalysis}
+                  onShare={handleShare}
+                  onCopy={handleCopy}
+                  onNewReading={() => {}}
+                />
               }
             />
           )}
