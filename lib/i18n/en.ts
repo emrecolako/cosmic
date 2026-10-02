@@ -63,6 +63,11 @@ export const en = {
     dobMonthPlaceholder: "Month",
     errDobIncomplete: "Enter day, month and year",
     errDobInvalid: "That date doesn't exist — check the day and month",
+    stepOf: "Step {current} of {total}",
+    reassurance: "Free · No sign-up · Your reading starts in seconds",
+    moreDetail: "Add more detail",
+    placeHint: "Pick a suggestion from the list for an exact rising sign",
+    birthTimeHelp: "Unlocks your moon and rising signs",
   },
   lifeStages: {
     exploring: "Exploring life",

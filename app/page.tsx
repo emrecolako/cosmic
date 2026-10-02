@@ -2,26 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import InputWizard from "@/components/InputWizard";
+import InputWizard, { type WizardData } from "@/components/InputWizard";
 import { useI18n } from "@/components/LocaleProvider";
 import { saveReadingInput } from "@/lib/profile";
-import type { LifeStageOption } from "@/lib/life-stages";
 
 export default function HomePage() {
   const router = useRouter();
   const { t } = useI18n();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (formData: {
-    fullName: string;
-    dateOfBirth: string;
-    birthTime: string;
-    dontKnowBirthTime: boolean;
-    birthPlace: string;
-    lifeStages: LifeStageOption[];
-    whatsOnYourMind: string;
-    gender: string;
-  }) => {
+  const handleSubmit = (formData: WizardData) => {
     if (formData.lifeStages.length === 0) return;
     setIsLoading(true);
 
@@ -33,6 +23,10 @@ export default function HomePage() {
           ? formData.birthTime
           : undefined,
       birthPlace: formData.birthPlace.trim() || undefined,
+      birthCoords:
+        formData.birthPlace.trim() && formData.birthCoords
+          ? formData.birthCoords
+          : undefined,
       lifeStages: formData.lifeStages,
       whatsOnYourMind: formData.whatsOnYourMind.trim() || undefined,
       gender: formData.gender || undefined,

@@ -14,6 +14,9 @@ interface PlaceAutocompleteProps {
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
+  /** Called with the full suggestion (incl. coordinates) when one is picked. */
+  onSelect?: (suggestion: PlaceSuggestion) => void;
+  hint?: string;
 }
 
 export default function PlaceAutocomplete({
@@ -21,10 +24,13 @@ export default function PlaceAutocomplete({
   placeholder,
   value,
   onChange,
+  onSelect,
+  hint,
 }: PlaceAutocompleteProps) {
   const { locale } = useI18n();
   const id = useId();
   const listId = `${id}-list`;
+  const hintId = `${id}-hint`;
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -69,6 +75,7 @@ export default function PlaceAutocomplete({
 
   const select = (suggestion: PlaceSuggestion) => {
     onChange(suggestion.label);
+    onSelect?.(suggestion);
     setOpen(false);
     setActiveIndex(-1);
   };
@@ -116,8 +123,14 @@ export default function PlaceAutocomplete({
         }}
         onKeyDown={handleKeyDown}
         onFocus={() => suggestions.length > 0 && setOpen(true)}
+        aria-describedby={hint ? hintId : undefined}
         className={inputStyles}
       />
+      {hint && !open && (
+        <p id={hintId} className="text-xs text-ink-muted mt-1.5">
+          {hint}
+        </p>
+      )}
       {open && (
         <ul
           id={listId}
@@ -136,7 +149,7 @@ export default function PlaceAutocomplete({
               }}
               onMouseEnter={() => setActiveIndex(index)}
               className={cn(
-                "px-3 py-2 font-mono text-xs tracking-wider cursor-pointer transition-colors",
+                "px-3 py-3 min-h-11 text-sm cursor-pointer transition-colors",
                 index === activeIndex
                   ? "bg-ink text-base"
                   : "text-ink-secondary"

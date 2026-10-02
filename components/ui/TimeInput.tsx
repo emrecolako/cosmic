@@ -22,6 +22,8 @@ interface TimeInputProps {
   value: string;
   onChange: (value: string) => void;
   ariaLabel: string;
+  onBlur?: () => void;
+  describedBy?: string;
   error?: string;
 }
 
@@ -29,6 +31,8 @@ export default function TimeInput({
   value,
   onChange,
   ariaLabel,
+  onBlur,
+  describedBy,
   error,
 }: TimeInputProps) {
   const { t } = useI18n();
@@ -47,9 +51,10 @@ export default function TimeInput({
         enterKeyHint="next"
         aria-label={ariaLabel}
         aria-invalid={!!error || undefined}
-        aria-describedby={error ? errorId : undefined}
+        aria-describedby={[error ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined}
         value={value}
         onChange={(event) => onChange(formatTimeDigits(event.target.value))}
+        onBlur={onBlur}
         className={cn(inputStyles, "number-mono", error && "border-ink")}
       />
       <FieldError id={errorId}>{error}</FieldError>

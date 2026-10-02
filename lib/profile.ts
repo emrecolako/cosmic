@@ -24,6 +24,8 @@ export interface ReadingInput {
   dateOfBirth: string; // YYYY-MM-DD
   birthTime?: string; // HH:MM
   birthPlace?: string;
+  /** Coordinates from the picked autocomplete suggestion; skips geocoding. */
+  birthCoords?: { latitude: number; longitude: number };
   lifeStages: LifeStageOption[]; // at least one
   whatsOnYourMind?: string;
   gender?: string;
@@ -90,6 +92,18 @@ export function parseDateOfBirth(dob: string): Date | null {
   return date;
 }
 
+function validCoords(
+  coords: ReadingInput["birthCoords"]
+): coords is { latitude: number; longitude: number } {
+  return (
+    !!coords &&
+    Number.isFinite(coords.latitude) &&
+    Number.isFinite(coords.longitude) &&
+    Math.abs(coords.latitude) <= 90 &&
+    Math.abs(coords.longitude) <= 180
+  );
+}
+
 export async function computeProfile(
   input: ReadingInput
 ): Promise<CalculatedProfile | null> {
@@ -102,7 +116,9 @@ export async function computeProfile(
   let geocodeFailed = false;
 
   if (input.birthPlace) {
-    const geo = await geocodePlace(input.birthPlace);
+    const geo = validCoords(input.birthCoords)
+      ? input.birthCoords
+      : await geocodePlace(input.birthPlace);
     if (geo) {
       latitude = geo.latitude;
       longitude = geo.longitude;

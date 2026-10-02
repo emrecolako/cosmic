@@ -64,6 +64,11 @@ export const tr: Messages = {
     dobMonthPlaceholder: "Ay",
     errDobIncomplete: "Gün, ay ve yılı girin",
     errDobInvalid: "Böyle bir tarih yok — günü ve ayı kontrol edin",
+    stepOf: "Adım {current} / {total}",
+    reassurance: "Ücretsiz · Üyelik yok · Okumanız saniyeler içinde başlar",
+    moreDetail: "Daha fazla ayrıntı ekle",
+    placeHint: "Kesin yükselen burç için listeden bir öneri seçin",
+    birthTimeHelp: "Ay ve yükselen burcunuzu açar",
   },
   lifeStages: {
     exploring: "Hayatı keşfediyorum",

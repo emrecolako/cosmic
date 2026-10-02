@@ -64,6 +64,11 @@ export const de: Messages = {
     dobMonthPlaceholder: "Monat",
     errDobIncomplete: "Gib Tag, Monat und Jahr ein",
     errDobInvalid: "Dieses Datum gibt es nicht – prüfe Tag und Monat",
+    stepOf: "Schritt {current} von {total}",
+    reassurance: "Kostenlos · Ohne Anmeldung · Deine Deutung startet in Sekunden",
+    moreDetail: "Weitere Angaben hinzufügen",
+    placeHint: "Wähle einen Vorschlag aus der Liste für einen exakten Aszendenten",
+    birthTimeHelp: "Schaltet Mondzeichen und Aszendent frei",
   },
   lifeStages: {
     exploring: "Das Leben erkunden",
