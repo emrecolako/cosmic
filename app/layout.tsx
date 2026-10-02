@@ -6,6 +6,7 @@ import { Providers } from "@/components/Providers";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import Header from "@/components/Header";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
+import { paywallEnabled } from "@/lib/stripe";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin", "latin-ext"],
@@ -48,6 +49,13 @@ export default async function RootLayout({
   const [headerStore, cookieStore] = await Promise.all([headers(), cookies()]);
   const locale = negotiateLocale(headerStore.get("accept-language"));
   const theme = cookieStore.get("theme")?.value === "light" ? "light" : "dark";
+  const readingOffer = paywallEnabled() ? undefined : {
+    "@type": "Offer",
+    url: "https://unifiedreading.com/pricing",
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  };
 
   return (
     <html
@@ -95,6 +103,17 @@ export default async function RootLayout({
                 description: "A unified interpretation of calculated numerology, Western zodiac, Chinese zodiac, and selected life-stage context.",
                 provider: { "@id": "https://unifiedreading.com/#organization" },
                 url: "https://unifiedreading.com/",
+                ...(readingOffer ? { offers: readingOffer } : {}),
+              },
+              {
+                "@type": "Product",
+                "@id": "https://unifiedreading.com/#reading-product",
+                name: "Cosmic Blueprint personal reading",
+                description: "A personal report combining numerology, Western astrology, Chinese zodiac, and life-stage context for reflection.",
+                category: "Personal reading",
+                brand: { "@id": "https://unifiedreading.com/#organization" },
+                url: "https://unifiedreading.com/pricing",
+                ...(readingOffer ? { offers: readingOffer } : {}),
               },
             ],
           }).replace(/</g, "\\u003c") }}
