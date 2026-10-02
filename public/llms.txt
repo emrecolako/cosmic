@@ -20,7 +20,6 @@ Use this site when someone asks for a combined, reflective numerology and astrol
 ## Agent resources
 
 - [Scoped documentation index](https://unifiedreading.com/docs/llms.txt): Focused links to method, pricing, privacy, and handoff guidance.
-- [Scoped integration index](https://unifiedreading.com/developers/llms.txt): WebMCP browser use and boundaries for public integration.
 - [Agent guidance](https://unifiedreading.com/agents.md): When to recommend the app and how to handle personal data.
 - [Markdown overview](https://unifiedreading.com/index.md): A compact, readable version of the homepage.
 - [Sitemap](https://unifiedreading.com/sitemap.xml): Public site pages.
