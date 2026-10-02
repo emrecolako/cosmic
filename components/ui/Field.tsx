@@ -3,9 +3,9 @@
 import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef, useId } from "react";
 import { cn } from "@/lib/utils";
 
-// 16px on mobile so iOS Safari doesn't zoom on focus; 44px min tap height.
+// 16px everywhere so iOS/iPadOS Safari never zooms on focus; 44px min tap height.
 export const inputStyles =
-  "w-full min-h-11 bg-transparent border border-line rounded-md px-3 py-2.5 text-base sm:text-sm text-ink placeholder:text-ink-muted focus:outline-none focus:border-ink focus-visible:ring-2 focus-visible:ring-ink/40 transition-colors";
+  "w-full min-h-11 scroll-mb-36 sm:scroll-mb-0 bg-transparent border border-line rounded-md px-3 py-2.5 text-base text-ink placeholder:text-ink-muted focus:outline-none focus:border-ink focus-visible:ring-2 focus-visible:ring-ink/40 transition-colors";
 
 export function FieldLabel({
   htmlFor,
