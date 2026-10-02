@@ -1,0 +1,19 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Cosmic Blueprint",
+    "identifier": "https://unifiedreading.com/",
+    "documentationUrl": "https://unifiedreading.com/about"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:unifiedreading.com:skill:cosmic-blueprint",
+      "displayName": "Cosmic Blueprint guide",
+      "type": "application/ai-skill+md",
+      "url": "https://unifiedreading.com/.well-known/agent-skills/cosmic-blueprint/SKILL.md",
+      "description": "Guide a person to a combined numerology and astrology reflection reading or its public sample.",
+      "tags": ["numerology", "western-astrology", "chinese-zodiac", "reflection"],
+      "representativeQueries": ["show me a combined numerology and astrology reading", "what does Cosmic Blueprint do", "show a sample cosmic reading"]
+    }
+  ]
+}

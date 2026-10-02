@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://cosmic-blueprint.vercel.app",
+        "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL || "https://unifiedreading.com",
         "X-Title": "Cosmic Blueprint",
       },
       body: JSON.stringify({

@@ -1,11 +1,11 @@
 /** English UI catalog and the structural source of truth for every locale. */
 export const en = {
   meta: {
-    title: "Cosmic Blueprint — Your Complete Cosmic Profile",
+    title: "Cosmic Blueprint | Numerology & Astrology Reading | Unified Reading",
     description:
-      "Discover your unified cosmic profile combining numerology, Western astrology, Chinese astrology, and natal chart analysis into one beautifully synthesized reading.",
-    ogTitle: "Cosmic Blueprint",
-    ogDescription: "Your complete cosmic profile, unified.",
+      "Explore a personal reading that brings numerology, Western zodiac signs, and the Chinese zodiac together. See a free sample before you share your birth details.",
+    ogTitle: "Cosmic Blueprint by Unified Reading",
+    ogDescription: "One personal reading combining numerology, Western zodiac signs, and the Chinese zodiac.",
   },
   header: {
     share: "Share",

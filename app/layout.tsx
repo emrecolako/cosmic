@@ -28,12 +28,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = getMessages(locale);
 
   return {
+    metadataBase: new URL("https://unifiedreading.com"),
     title: t.meta.title,
     description: t.meta.description,
     openGraph: {
       title: t.meta.ogTitle,
       description: t.meta.ogDescription,
       type: "website",
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Cosmic Blueprint — one reading from three interpretive traditions" }],
     },
   };
 }
@@ -56,6 +58,47 @@ export default async function RootLayout({
       <body
         className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${instrumentSerif.variable} min-h-screen antialiased font-sans`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Organization",
+                "@id": "https://unifiedreading.com/#organization",
+                name: "Cosmic Blueprint",
+                alternateName: "Unified Reading",
+                url: "https://unifiedreading.com/",
+                sameAs: ["https://github.com/emrecolako/cosmic"],
+                contactPoint: {
+                  "@type": "ContactPoint",
+                  contactType: "product support",
+                  url: "https://unifiedreading.com/contact",
+                  availableLanguage: ["English"],
+                },
+              },
+              {
+                "@type": "WebApplication",
+                "@id": "https://unifiedreading.com/#app",
+                name: "Cosmic Blueprint",
+                url: "https://unifiedreading.com/",
+                description: "A personal reflection reading that combines numerology, Western astrology, Chinese zodiac, and life-stage context.",
+                applicationCategory: "LifestyleApplication",
+                operatingSystem: "Web",
+                publisher: { "@id": "https://unifiedreading.com/#organization" },
+              },
+              {
+                "@type": "Service",
+                "@id": "https://unifiedreading.com/#reading",
+                name: "Cosmic Blueprint personal reading",
+                serviceType: "Personal numerology and astrology reflection reading",
+                description: "A unified interpretation of calculated numerology, Western zodiac, Chinese zodiac, and selected life-stage context.",
+                provider: { "@id": "https://unifiedreading.com/#organization" },
+                url: "https://unifiedreading.com/",
+              },
+            ],
+          }).replace(/</g, "\\u003c") }}
+        />
         <LocaleProvider locale={locale}>
           <Providers>
             <Header initialTheme={theme} />

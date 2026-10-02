@@ -1,5 +1,12 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { MODEL_CHAIN } from '@/lib/openrouter';
+
+export const metadata: Metadata = {
+  title: 'Privacy | Cosmic Blueprint',
+  description: 'How Cosmic Blueprint handles birth details, AI-generated readings, analytics, and checkout data.',
+  alternates: { canonical: '/privacy' },
+};
 
 export default function PrivacyPage() {
   return <main id="main" lang="en" className="atlas-shell"><article className="unified-prose">

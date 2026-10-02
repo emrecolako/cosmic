@@ -7,6 +7,15 @@ import path from "path";
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [{
+      source: "/",
+      headers: [{
+        key: "Link",
+        value: '</sitemap.xml>; rel="sitemap", </llms.txt>; rel="describedby"; type="text/plain", </index.md>; rel="alternate"; type="text/markdown"',
+      }],
+    }];
+  },
   turbopack: {
     root: projectRoot,
   },
