@@ -43,7 +43,7 @@ const SIGN_GLYPHS: Record<SignName, string> = {
   Pisces: "♓",
 };
 
-const MONO = "var(--font-ibm-plex-mono), monospace";
+const MONO = "var(--font-mono)";
 
 export default function NatalChartVisual({
   sunSign,

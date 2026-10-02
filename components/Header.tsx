@@ -35,7 +35,7 @@ export default function Header({ initialTheme }: { initialTheme: "dark" | "light
             href="/"
             className="atlas-brand"
           >
-            <AtlasSeal /> COSMIC BLUEPRINT
+            <AtlasSeal /> UNIFIED READING
           </Link>
           <div className="header-actions">
             <button

@@ -20,14 +20,14 @@ import type { CalculatedProfile } from '@/lib/profile';
 import type { ParsedAnalysis } from '@/lib/analysis-stream';
 export type AiStatus = 'streaming' | 'done' | 'error';
 export interface PaywallState { price: string; onUnlock: () => void; unlocking: boolean; }
-interface CosmicProfileProps { profile: CalculatedProfile; content: LocaleContent; ai: ParsedAnalysis; aiStatus: AiStatus; onRetry: () => void; name?: string; sample?: boolean; birthDate?: string; paywall?: PaywallState | null; }
+interface CosmicProfileProps { profile: CalculatedProfile; content: LocaleContent; ai: ParsedAnalysis; aiStatus: AiStatus; onRetry?: () => void; name?: string; sample?: boolean; birthDate?: string; paywall?: PaywallState | null; }
 function SectionHeader({ number, title, subtitle }: { number: string; title: string; subtitle: string }) {
   return <><div className="chapter-heading"><span className="eyebrow">{number}</span><h2>{title}</h2></div><p className="chapter-subtitle">{subtitle}</p></>;
 }
 function interpretationFor(content: LocaleContent, category: NumerologyCategory, number: number) {
   return content.numerology[category]?.[number as NumerologyNumber] ?? enContent.numerology[category][number as NumerologyNumber];
 }
-export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry, name = '', sample = false, birthDate, paywall = null }: CosmicProfileProps) {
+export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry = () => {}, name = '', sample = false, birthDate, paywall = null }: CosmicProfileProps) {
   const { t, locale } = useI18n();
   const copy = atlasCopy[locale];
   const { numerology, westernAstro, chineseZodiac } = profile;

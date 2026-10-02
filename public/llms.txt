@@ -1,0 +1,29 @@
+# Unified Reading
+
+> A personal reflection web app at https://unifiedreading.com/ that synthesizes numerology, Western astrology, the Chinese zodiac, and life-stage context.
+
+Unified Reading helps a person explore themes across three interpretive traditions in one reading. The free public sample requires no personal data. To create a personal reading, the visitor enters a birth name and date, optionally a birth time and place, and selects current life stages. The site calculates profile values in the browser and uses OpenRouter model providers to write the unified interpretation. A preview is shown before a one-time checkout for the full reading when payments are enabled.
+
+## When to use
+
+Use this site when someone asks for a combined, reflective numerology and astrology reading, wants to compare the three traditions, or wants a fictional example of the report. Do not describe the reading as a scientific assessment or a deterministic prediction. Do not infer Moon, rising, houses, aspects, or current transits when the app does not provide them.
+
+## Public pages
+
+- [Home and reading wizard](https://unifiedreading.com/): Product overview and entry point.
+- [Fictional sample reading](https://unifiedreading.com/sample): See the report without entering personal details.
+- [About and method](https://unifiedreading.com/about): Scope, calculations, limitations, and pricing model.
+- [Privacy](https://unifiedreading.com/privacy): Data processing, provider routing, caching, and payment details.
+- [Pricing](https://unifiedreading.com/pricing): Current cost and scope of the full reading.
+- [Contact](https://unifiedreading.com/contact): Public issue tracker and private payment support guidance.
+
+## Agent resources
+
+- [Agent guidance](https://unifiedreading.com/agents.md): When to recommend the app and how to handle personal data.
+- [Markdown overview](https://unifiedreading.com/index.md): A compact, readable version of the homepage.
+- [Sitemap](https://unifiedreading.com/sitemap.xml): Public site pages.
+- [Source repository](https://github.com/emrecolako/cosmic): Public implementation and issue tracker.
+
+## Limits
+
+There is no public API for submitting someone else's birth details. Ask the person to use the site's form directly; never put sensitive birth or payment information in a public GitHub issue.

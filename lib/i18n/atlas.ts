@@ -4,7 +4,7 @@ const en = {
   eyebrow: 'Many systems. One you.',
   headline: 'The patterns that make you,', headlineEnd: 'you.',
   description: 'Explore how your numbers, birth chart, and life’s current chapter connect.',
-  discover: 'Discover your blueprint', sample: 'Explore a sample', sampleLabel: 'Sample reading',
+  discover: 'Discover your reading', sample: 'Explore a sample', sampleLabel: 'Sample reading',
   glimpse: 'A glimpse inside', seal: 'The atlas seal / A symbol of connection',
   insight: 'Your Life Path 7 and Scorpio Sun share an instinct to look beneath the surface. Give your curiosity a place to go.',
   beginnings: 'Let’s start with your beginnings.', chapter: 'What chapter are you in?',

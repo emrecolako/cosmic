@@ -1,9 +1,16 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { MODEL_CHAIN } from '@/lib/openrouter';
+
+export const metadata: Metadata = {
+  title: 'Privacy | Unified Reading',
+  description: 'How Unified Reading handles birth details, AI-generated readings, analytics, and checkout data.',
+  alternates: { canonical: '/privacy' },
+};
 
 export default function PrivacyPage() {
   return <main id="main" lang="en" className="atlas-shell"><article className="unified-prose">
-    <Link className="atlas-link" href="/">← Cosmic Blueprint</Link>
+    <Link className="atlas-link" href="/">← Unified Reading</Link>
     <h1 className="wizard-title editorial">Your details, explained.</h1>
     <p>Last updated October 2, 2026. This page describes the current app’s data flow.</p>
     <h3>Why we ask for your birth name</h3>

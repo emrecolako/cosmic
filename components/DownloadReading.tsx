@@ -11,7 +11,7 @@ export default function DownloadReading({ profile, ai, name, markers, complete }
   const { toast } = useToast();
   function download() {
     const text = [
-      'Cosmic Blueprint', name, new Date().toISOString().slice(0,10),
+      'Unified Reading', name, new Date().toISOString().slice(0,10),
       markers.join(' · '),
       `${t.numerology.lifePath}: ${profile.numerology.lifePath.number}`,
       `${t.numerology.expression}: ${profile.numerology.expression.number}`,
@@ -27,7 +27,7 @@ export default function DownloadReading({ profile, ai, name, markers, complete }
     const url = URL.createObjectURL(new Blob([text], { type:'text/plain;charset=utf-8' }));
     try {
       const anchor = document.createElement('a');
-      anchor.href = url; anchor.download = `cosmic-blueprint-${profile.currentYear}.txt`;
+      anchor.href = url; anchor.download = `unified-reading-${profile.currentYear}.txt`;
       document.body.appendChild(anchor); anchor.click(); anchor.remove();
     } catch { toast(t.header.shareFailed, 'error'); }
     finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
