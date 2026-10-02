@@ -525,9 +525,8 @@ export function calculateWesternProfile(
   timezoneOffsetHours?: number
 ): WesternAstrologyProfile {
   const sunSign = getSunSign(dateOfBirth, birthTime, timezoneOffsetHours);
-  // Moon sign works without a birth time too, when the moon stays in one
-  // sign for the whole birth day.
-  const moonSign = getMoonSign(dateOfBirth, birthTime, timezoneOffsetHours);
+  // Unknown-time reports intentionally omit Moon, rising, and houses.
+  const moonSign = birthTime ? getMoonSign(dateOfBirth, birthTime, timezoneOffsetHours) : null;
   const risingSign =
     birthTime && latitude !== undefined && longitude !== undefined
       ? getRisingSign(dateOfBirth, birthTime, latitude, longitude, timezoneOffsetHours)

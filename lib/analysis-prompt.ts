@@ -45,8 +45,12 @@ Your writing style:
 
 You follow the requested output format exactly.`;
 
-export function buildAnalysisPrompt(data: CosmicProfile): string {
-  const hasFullNatalData = !!data.birthTime && !!data.birthPlace;
+export interface PromptOptions {
+  /** "snapshot" asks only for the free teaser section shown before payment. */
+  scope?: "snapshot" | "full";
+}
+
+export function buildAnalysisPrompt(data: CosmicProfile, { scope = "full" }: PromptOptions = {}): string {
   const locale = data.locale ?? DEFAULT_LOCALE;
   const language = LANGUAGE_NAMES[locale];
   const sections: string[] = [];
@@ -72,9 +76,12 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
   if (data.westernAstro.risingSign) {
     astroSection += `\n- Rising Sign: ${data.westernAstro.risingSign}`;
   }
-  if (!hasFullNatalData) {
-    astroSection += `\n- Note: Birth time${!data.birthPlace ? " and location" : ""} not provided, so moon sign, rising sign, and house placements are unavailable.`;
+  if (!data.birthTime) {
+    astroSection += `\n- Note: Birth time not provided. Moon, rising, and house placements are unavailable.`;
+  } else if (!data.westernAstro.risingSign) {
+    astroSection += `\n- Note: Rising sign is unavailable; location or timezone may be missing.`;
   }
+  astroSection += `\n- Precision: Only the signs listed above are available. No exact degrees, houses, planetary aspects, current transits, or personality scores are calculated. Do not invent them anywhere in the reading.`;
 
   sections.push(astroSection);
 
@@ -94,6 +101,23 @@ export function buildAnalysisPrompt(data: CosmicProfile): string {
   const dataPayload = sections.join("\n\n");
   const currentYear = new Date().getUTCFullYear();
 
+  if (scope === "snapshot") {
+    return `The current year is ${currentYear}.
+
+LANGUAGE REQUIREMENT — NON-NEGOTIABLE:
+Write the ENTIRE response naturally and fluently in ${language}.
+Keep only this parser marker exactly as written in English, on its own line: <<<SNAPSHOT>>>.
+
+Based on the following cosmic profile data, write only the opening of a unified reading.
+
+Your response MUST be plain text: the marker on its own line, followed by one section. Output nothing before the marker — no preamble or code fences:
+
+<<<SNAPSHOT>>>
+A compelling 2-3 sentence executive summary that captures the essence of this person's cosmic profile by connecting at least two of the systems. This should feel like the most insightful paragraph in the reading — the one they'd share with a friend.
+
+${dataPayload}`;
+  }
+
   return `The current year is ${currentYear}.
 
 LANGUAGE REQUIREMENT — NON-NEGOTIABLE:
@@ -104,16 +128,16 @@ Toolkit entries must still begin with the exact ASCII characters "- ", even when
 
 Based on the following cosmic profile data, generate a unified reading.
 
-Your response MUST be plain text in exactly four sections, each introduced by its marker on its own line, in this order. Output nothing before the first marker — no preamble, no markdown headers, no code fences:
+Your response MUST be plain text in exactly four sections, each introduced by its marker on its own line, in this order. Output nothing before the first marker — no preamble or code fences. Only the requested ## subheadings inside READING are allowed:
 
 <<<SNAPSHOT>>>
 A compelling 2-3 sentence executive summary that captures the essence of this person's cosmic profile. This should feel like the most insightful paragraph in the reading — the one they'd share with a friend.
 
 <<<READING>>>
-An 800-1200 word unified narrative that: (1) Finds connecting threads across numerology, Western astrology, and Chinese astrology. (2) Identifies reinforcing patterns where multiple systems agree. (3) Calls out interesting tensions where systems suggest opposing tendencies — framed as complexity, not contradiction. (4) Adapts language and focus based on their life stage. (5) Uses a warm, intelligent tone.${data.whatsOnYourMind ? " (6) Weaves in the personal context they shared naturally — don't just append it, integrate it." : ""} Separate paragraphs with blank lines. Do NOT use markdown headers within the reading — it should flow as prose.
+An 800-1200 word unified narrative that: (1) Finds connecting threads across numerology, Western astrology, and Chinese astrology. (2) Identifies reinforcing patterns where multiple systems agree. (3) Calls out interesting tensions where systems suggest opposing tendencies — framed as complexity, not contradiction. (4) Adapts language and focus based on their life stage. (5) Uses a warm, intelligent tone.${data.whatsOnYourMind ? " (6) Weaves in the personal context they shared naturally — don't just append it, integrate it." : ""} Separate paragraphs with blank lines. Add three short editorial subheadings, in the requested language, for shared themes, tensions, and practical meaning. Prefix each subheading with ## and put a blank line before and after it.
 
 <<<SEASON>>>
-A 150-200 word section about what's active for them right now, based on their Personal Year number (${data.numerology.personalYear.number} — ${data.numerology.personalYear.interpretation.title}) and current cosmic transits relevant to their sun sign. This should feel timely and actionable.
+A 150-200 word section about what's active for them right now, based on their Personal Year number (${data.numerology.personalYear.number} — ${data.numerology.personalYear.interpretation.title}) only. No current planetary transits, exact planetary degrees, houses, aspects, or personality scores have been calculated: never invent or claim them. This should feel timely and actionable.
 
 <<<TOOLKIT>>>
 3-5 specific, practical takeaways based on their complete profile, one per line, each line starting with "- ". Each should be 1-2 sentences — not just "be more patient" but something specific to their profile combination. Think actionable micro-advice.

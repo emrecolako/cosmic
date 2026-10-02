@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import FortuneCards from "@/components/FortuneCards";
+import { atlasCopy } from "@/lib/i18n/atlas";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import InputWizard from "@/components/InputWizard";
 import { useI18n } from "@/components/LocaleProvider";
@@ -9,7 +12,10 @@ import type { LifeStageOption } from "@/lib/life-stages";
 
 export default function HomePage() {
   const router = useRouter();
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
+  const copy = atlasCopy[locale];
+  const [showWizard, setShowWizard] = useState(false);
+  useEffect(() => { if (window.location.hash === "#details") setShowWizard(true); }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (formData: {
@@ -42,26 +48,28 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen pt-10">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12 lg:py-16 animate-fade-in">
-        <div className="font-mono text-xs mb-12">
-          <h1 className="text-2xl sm:text-3xl tracking-wider text-ink mb-6 uppercase">
-            {t.landing.title1} {t.landing.title2}
-          </h1>
-          <p className="tracking-wider max-w-md leading-relaxed text-ink-muted uppercase">
-            {t.landing.subtitle} {t.landing.subtitle2}
-          </p>
-          <p className="tracking-wider mt-2 text-ink-muted/70 uppercase">
-            {t.landing.badge}
-          </p>
-        </div>
-
-        <InputWizard onSubmit={handleSubmit} isLoading={isLoading} />
-
-        <p className="text-center font-mono text-xs tracking-wider uppercase text-ink-muted mt-12">
-          {t.landing.privacy}
-        </p>
-      </div>
+    <main id="main" className="atlas-shell">
+      {!showWizard ? <>
+        <section className="atlas-hero">
+          <div>
+            <p className="eyebrow">{copy.eyebrow}</p>
+            <h1 className="atlas-headline">{copy.headline}{" "}<em>{copy.headlineEnd}</em></h1>
+            <p className="hero-description">{copy.description}</p>
+            <div className="hero-actions">
+              <button className="atlas-primary" onClick={() => { setShowWizard(true); window.scrollTo(0, 0); }}>{copy.discover}<span aria-hidden="true">↗</span></button>
+              <Link className="atlas-link" href="/sample">{copy.sample}<span aria-hidden="true">→</span></Link>
+            </div>
+          </div>
+          <figure className="seal-figure"><FortuneCards labels={[t.sections.numbersTitle, t.sections.starMapTitle, t.sections.easternMirrorTitle]} /><figcaption>{copy.eyebrow}</figcaption></figure>
+        </section>
+        <aside className="sample-insight">
+          <div className="eyebrow">{copy.glimpse}<br /><span className="text-ink-muted">{copy.sampleLabel} · Alex Morgan<br />{t.numerology.lifePath} 7</span></div>
+          <blockquote>“{copy.insight}”</blockquote>
+        </aside>
+      </> : <div className="wizard-shell">
+        <InputWizard onSubmit={handleSubmit} isLoading={isLoading} onExit={() => setShowWizard(false)} />
+      </div>}
+      <footer className="atlas-footer"><p>{copy.privacy} <Link className="underline" href="/privacy">OpenRouter · Privacy</Link></p><p className="mt-2">{copy.reflection}</p></footer>
     </main>
   );
 }

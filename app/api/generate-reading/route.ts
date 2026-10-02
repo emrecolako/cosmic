@@ -4,74 +4,28 @@ import {
   SYSTEM_PROMPT,
   type CosmicProfile,
 } from "@/lib/analysis-prompt";
-import {
-  DEFAULT_LOCALE,
-  isLocale,
-  type Locale,
-} from "@/lib/i18n/locales";
+import type { Locale } from "@/lib/i18n/locales";
 import { MODEL_CHAIN, OPENROUTER_URL } from "@/lib/openrouter";
 
-const cache = new Map<string, { data: string; timestamp: number }>();
-const CACHE_TTL = 24 * 60 * 60 * 1000;
-const CACHE_MAX_ENTRIES = 500;
+import { readingCacheKey, cachedReading, cacheReading } from '@/lib/reading-cache';
+import { clientIp, isRateLimited } from "@/lib/rate-limit";
+import { validateReadingBody } from "@/lib/reading-request";
+import { readingHash } from "@/lib/reading-hash";
+import { isPaidSession, paywallEnabled, priceLabel } from "@/lib/stripe";
 
-function getCacheKey(body: Record<string, unknown>): string {
-  return JSON.stringify({
-    name: body.fullName,
-    dob: body.dateOfBirth,
-    stage: body.lifeStage,
-    time: body.birthTime,
-    place: body.birthPlace,
-    mind: body.whatsOnYourMind,
-    gender: body.gender,
-    locale: body.locale,
-  });
-}
+type ReadingMode = "teaser" | "full";
 
-function setCache(key: string, data: string): void {
-  const now = Date.now();
-  for (const [existingKey, value] of cache) {
-    if (now - value.timestamp >= CACHE_TTL) cache.delete(existingKey);
-  }
-  while (cache.size >= CACHE_MAX_ENTRIES) {
-    const oldest = cache.keys().next().value;
-    if (oldest === undefined) break;
-    cache.delete(oldest);
-  }
-  cache.set(key, { data, timestamp: now });
-}
-
-const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-const RATE_LIMIT_MAX_REQUESTS = 10;
-const rateLimitHits = new Map<string, number[]>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const hits = (rateLimitHits.get(ip) || []).filter(
-    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
-  );
-  if (rateLimitHits.size > 5000) rateLimitHits.clear();
-  if (hits.length >= RATE_LIMIT_MAX_REQUESTS) {
-    rateLimitHits.set(ip, hits);
-    return true;
-  }
-  hits.push(now);
-  rateLimitHits.set(ip, hits);
-  return false;
-}
-
-function textStream(text: string): Response {
-  return new Response(text, {
-    headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
+function readingHeaders(paywall: boolean): HeadersInit {
+  return {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Cache-Control": "no-store",
+    ...(paywall ? { "X-Paywall": "1", "X-Paywall-Price": priceLabel() } : {}),
+  };
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      "unknown";
-    if (isRateLimited(ip)) {
+    if (isRateLimited(clientIp(request))) {
       return NextResponse.json(
         { error: "Too many requests. Please wait a moment and try again." },
         { status: 429 }
@@ -79,86 +33,40 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    const invalid = validateReadingBody(body);
+    if (invalid) return NextResponse.json({ error: invalid }, { status: 400 });
+    const locale = body.locale as Locale;
 
-    if (!body.fullName || !body.dateOfBirth || !body.lifeStage) {
-      return NextResponse.json(
-        { error: "Missing required fields: fullName, dateOfBirth, lifeStage" },
-        { status: 400 }
-      );
+    // Without Stripe configured the full reading stays free (local dev, previews).
+    const paywall = paywallEnabled();
+    const mode: ReadingMode = !paywall || body.mode === "full" ? "full" : "teaser";
+    if (paywall && mode === "full") {
+      const sessionId = typeof body.checkoutSessionId === "string" ? body.checkoutSessionId : "";
+      if (!(await isPaidSession(sessionId, readingHash(body)))) {
+        return NextResponse.json({ error: "Payment required." }, { status: 402 });
+      }
     }
-    if (
-      typeof body.fullName !== "string" ||
-      body.fullName.length > 200 ||
-      !/[a-zA-ZÀ-ɏ]/.test(body.fullName)
-    ) {
-      return NextResponse.json({ error: "Invalid name." }, { status: 400 });
-    }
-    if (
-      typeof body.lifeStage !== "string" ||
-      body.lifeStage.length > 500
-    ) {
-      return NextResponse.json(
-        { error: "Invalid life stage." },
-        { status: 400 }
-      );
-    }
-    if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(String(body.dateOfBirth))) {
-      return NextResponse.json(
-        { error: "Invalid date of birth format. Expected YYYY-MM-DD." },
-        { status: 400 }
-      );
-    }
-    if (
-      body.birthTime &&
-      !/^([01]\d|2[0-3]):[0-5]\d$/.test(String(body.birthTime))
-    ) {
-      return NextResponse.json(
-        { error: "Invalid birth time format. Expected HH:MM (24-hour)." },
-        { status: 400 }
-      );
-    }
+    const headers = readingHeaders(paywall);
 
-    if (body.locale !== undefined && !isLocale(body.locale)) {
-      return NextResponse.json(
-        { error: "Unsupported locale." },
-        { status: 400 }
-      );
-    }
-    const locale: Locale = isLocale(body.locale)
-      ? body.locale
-      : DEFAULT_LOCALE;
-    body.locale = locale;
-
-    if (
-      typeof body.numerology !== "object" ||
-      body.numerology === null ||
-      typeof body.westernAstro !== "object" ||
-      body.westernAstro === null ||
-      typeof body.chineseZodiac !== "object" ||
-      body.chineseZodiac === null ||
-      typeof body.lifeStageContext !== "object" ||
-      body.lifeStageContext === null ||
-      typeof body.age !== "number" ||
-      !Number.isFinite(body.age)
-    ) {
-      return NextResponse.json(
-        { error: "Missing calculated profile data." },
-        { status: 400 }
-      );
-    }
-
-    if (typeof body.whatsOnYourMind === "string") {
-      body.whatsOnYourMind =
-        body.whatsOnYourMind.trim().slice(0, 200) || undefined;
-    } else {
-      body.whatsOnYourMind = undefined;
-    }
-
-    const cacheKey = getCacheKey(body);
-    const cached = cache.get(cacheKey);
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return textStream(cached.data);
-    }
+    const cacheKey = readingCacheKey({
+      fullName: body.fullName,
+      dateOfBirth: body.dateOfBirth,
+      birthTime: body.birthTime,
+      birthPlace: body.birthPlace,
+      lifeStage: body.lifeStage,
+      whatsOnYourMind: body.whatsOnYourMind,
+      gender: body.gender,
+      locale,
+      age: body.age,
+      numerology: body.numerology,
+      westernAstro: body.westernAstro,
+      chineseZodiac: body.chineseZodiac,
+      lifeStageContext: body.lifeStageContext,
+      mode,
+      currentYear: new Date().getUTCFullYear(),
+    });
+    const cached = cachedReading(cacheKey);
+    if (cached) return new Response(cached, { headers });
 
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey || apiKey === "your_key_here") {
@@ -184,7 +92,7 @@ export async function POST(request: NextRequest) {
       locale,
     };
 
-    const prompt = buildAnalysisPrompt(cosmicProfile);
+    const prompt = buildAnalysisPrompt(cosmicProfile, { scope: mode === "full" ? "full" : "snapshot" });
 
     const upstream = await fetch(OPENROUTER_URL, {
       method: "POST",
@@ -196,7 +104,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         models: MODEL_CHAIN,
-        max_tokens: 4096,
+        max_tokens: mode === "full" ? 4096 : 400,
         stream: true,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
@@ -206,8 +114,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!upstream.ok || !upstream.body) {
-      const errorBody = await upstream.text().catch(() => "");
-      console.error("OpenRouter error:", upstream.status, errorBody);
+      console.error("OpenRouter request failed:", upstream.status);
       return NextResponse.json(
         { error: "Failed to generate reading" },
         { status: 502 }
@@ -247,7 +154,7 @@ export async function POST(request: NextRequest) {
 
               if (parsed.error) {
                 throw new Error(
-                  `OpenRouter mid-stream error: ${JSON.stringify(parsed.error)}`
+                  "OpenRouter mid-stream error"
                 );
               }
 
@@ -262,13 +169,13 @@ export async function POST(request: NextRequest) {
             }
           }
 
-          if (full.includes("<<<READING>>>")) {
-            setCache(cacheKey, full);
+          if (full.includes(mode === "full" ? "<<<READING>>>" : "<<<SNAPSHOT>>>")) {
+            cacheReading(cacheKey, full);
           }
           if (served) console.log("Reading served by model:", served);
           if (!clientDisconnected) controller.close();
         } catch (streamError) {
-          console.error("OpenRouter stream error:", streamError);
+          console.error("OpenRouter stream failed");
           if (!clientDisconnected) {
             try {
               controller.error(streamError);
@@ -284,14 +191,9 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return new Response(readable, {
-      headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Cache-Control": "no-store",
-      },
-    });
+    return new Response(readable, { headers });
   } catch (error) {
-    console.error("Generate reading error:", error);
+    console.error("Generate reading failed");
     return NextResponse.json(
       { error: "Failed to generate reading" },
       { status: 500 }

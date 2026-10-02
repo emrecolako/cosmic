@@ -197,6 +197,16 @@ The prompt in `/lib/analysis-prompt.ts` should dynamically build based on:
 
 ---
 
+## Monetization
+
+One-time Stripe Checkout unlock per reading, without accounts or a database (`lib/stripe.ts`, `app/api/checkout/route.ts`).
+- **Free:** all calculated sections plus an AI Cosmic Snapshot (`mode: "teaser"`, snapshot-only prompt).
+- **Paid:** Unified Reading, the AI season text, the Toolkit, and Download. `/api/generate-reading` with `mode: "full"` re-verifies the Checkout Session with Stripe every time: it must be paid, under 24h old, and its `metadata.readingHash` must match `lib/reading-hash.ts`, an HMAC of the user inputs, so no PII goes to Stripe.
+- The session ID lives in tab sessionStorage (`cosmic:checkout-session`) and is stripped from the URL.
+- If `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, or `READING_HASH_SECRET` is unset, the paywall is off and the full reading is free. `/sample` is always unlocked.
+
+---
+
 ## Performance Targets
 
 - Landing page: < 1.5s LCP
@@ -211,5 +221,4 @@ The prompt in `/lib/analysis-prompt.ts` should dynamically build based on:
 - User accounts / saved readings
 - Compatibility readings (two people)
 - Daily/weekly horoscopes
-- Payment / premium tiers
 - PDF export (nice-to-have for v2)

@@ -25,13 +25,13 @@ export default function CosmicToolkit({ items, isLoading }: CosmicToolkitProps) 
       {items.map((item, i) => (
         <div
           key={i}
-          className="rounded-lg bg-panel p-4 flex items-start gap-4 animate-fade-in-up opacity-0"
+          className="border-b border-line-muted py-5 flex items-start gap-5 animate-fade-in-up opacity-0"
           style={{ animationDelay: `${i * 0.08}s`, animationFillMode: "forwards" }}
         >
-          <div className="number-mono text-xs text-ink-muted pt-0.5 shrink-0 tabular-nums">
+          <div className="number-mono text-sm text-[var(--gold)] w-8 pt-0.5 shrink-0 tabular-nums">
             {String(i + 1).padStart(2, "0")}
           </div>
-          <p className="text-sm text-ink-secondary leading-relaxed">{item}</p>
+          <p className="text-base text-ink-secondary leading-relaxed">{item}</p>
         </div>
       ))}
     </div>
