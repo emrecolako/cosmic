@@ -13,7 +13,7 @@ export function paymentsConfigured(): boolean {
       process.env.STRIPE_PRICE_ID &&
       process.env.READING_HASH_SECRET &&
       (process.env.VERCEL_ENV !== "production" ||
-        process.env.STRIPE_SECRET_KEY.startsWith("sk_live_"))
+        /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY))
   );
 }
 
