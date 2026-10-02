@@ -1,3 +1,4 @@
+import { createHash } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import {
   buildAnalysisPrompt,
@@ -15,8 +16,10 @@ const cache = new Map<string, { data: string; timestamp: number }>();
 const CACHE_TTL = 24 * 60 * 60 * 1000;
 const CACHE_MAX_ENTRIES = 500;
 
+// Keyed by a SHA-256 of the inputs so names and birth details are never
+// held in server memory in readable form.
 function getCacheKey(body: Record<string, unknown>): string {
-  return JSON.stringify({
+  const material = JSON.stringify({
     name: body.fullName,
     dob: body.dateOfBirth,
     stage: body.lifeStage,
@@ -26,6 +29,7 @@ function getCacheKey(body: Record<string, unknown>): string {
     gender: body.gender,
     locale: body.locale,
   });
+  return createHash("sha256").update(material).digest("hex");
 }
 
 function setCache(key: string, data: string): void {
@@ -262,7 +266,9 @@ export async function POST(request: NextRequest) {
             }
           }
 
-          if (full.includes("<<<READING>>>")) {
+          // Cache only complete readings, so a retry after a cut-off stream
+          // doesn't get the same cut-off text back.
+          if (full.includes("<<<READING>>>") && full.includes("<<<TOOLKIT>>>")) {
             setCache(cacheKey, full);
           }
           if (served) console.log("Reading served by model:", served);
