@@ -11,6 +11,7 @@ import {
   type Locale,
 } from "@/lib/i18n/locales";
 import { MODEL_CHAIN, OPENROUTER_URL } from "@/lib/openrouter";
+import { mockReading } from "@/lib/mock-reading";
 
 const cache = new Map<string, { data: string; timestamp: number }>();
 const CACHE_TTL = 24 * 60 * 60 * 1000;
@@ -67,6 +68,25 @@ function isRateLimited(ip: string): boolean {
 function textStream(text: string): Response {
   return new Response(text, {
     headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+function mockStream(text: string, cutOff: boolean): Response {
+  const encoder = new TextEncoder();
+  const chunkSize = Math.ceil(text.length / 40);
+  const end = cutOff ? Math.floor(text.length / 2) : text.length;
+  const readable = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      for (let i = 0; i < end; i += chunkSize) {
+        await new Promise((resolve) => setTimeout(resolve, 120));
+        controller.enqueue(encoder.encode(text.slice(i, Math.min(i + chunkSize, end))));
+      }
+      if (cutOff) controller.error(new Error("Mock stream cut off"));
+      else controller.close();
+    },
+  });
+  return new Response(readable, {
+    headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
   });
 }
 
@@ -156,6 +176,13 @@ export async function POST(request: NextRequest) {
         body.whatsOnYourMind.trim().slice(0, 200) || undefined;
     } else {
       body.whatsOnYourMind = undefined;
+    }
+
+    // Dev-only: stream a canned reading (`npm run dev:mock`) so the funnel can
+    // be previewed without an OpenRouter key. "error" cuts it off halfway.
+    const mockMode = process.env.COSMIC_MOCK_READING;
+    if (mockMode && process.env.NODE_ENV !== "production") {
+      return mockStream(mockReading(body), mockMode === "error");
     }
 
     const cacheKey = getCacheKey(body);

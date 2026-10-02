@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "dev:mock": "COSMIC_MOCK_READING=1 next dev",
     "build": "npm run verify && npm run verify:i18n && npx tsc --noEmit && next build",
     "start": "next start",
     "lint": "next lint",
