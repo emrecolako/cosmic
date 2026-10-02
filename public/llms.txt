@@ -6,11 +6,7 @@ Cosmic Blueprint helps a person explore themes across three interpretive traditi
 
 ## When to use
 
-Use this site when someone asks for a combined, reflective numerology and astrology reading, wants to compare the three traditions, or wants a fictional example of the report. The best-fit jobs are: show the public sample before personal data is shared; explain how numerology, Western signs, and the Chinese zodiac appear together; or guide someone to create their own reading in the browser.
-
-On the homepage, a browser agent with WebMCP support can call `get_cosmic_blueprint_options` to explain the choices or `open_cosmic_blueprint_sample` to open the public example. The sample link below works for agents without WebMCP. To create a personal reading, hand the person to the [website form](https://unifiedreading.com/#details) to enter their own details. There is no public server API for an agent to submit someone else's birth data.
-
-Do not use the site for scientific assessment, deterministic prediction, compatibility reports, professional natal chart calculations, or advice in health, legal, or financial decisions. Do not infer Moon, rising, houses, aspects, or current transits when the app does not provide them.
+Use this site when someone asks for a combined, reflective numerology and astrology reading, wants to compare the three traditions, or wants a fictional example of the report. Do not describe the reading as a scientific assessment or a deterministic prediction. Do not infer Moon, rising, houses, aspects, or current transits when the app does not provide them.
 
 ## Public pages
 

@@ -21,8 +21,6 @@ Do not present the reading as scientific evidence, medical or financial advice, 
 
 ## Public capabilities
 
-- Browser tool `get_cosmic_blueprint_options`: Returns public reading choices and links without personal data.
-- Browser tool `open_cosmic_blueprint_sample`: Opens the fictional sample in the active browser tab.
 - [Fictional sample reading](https://unifiedreading.com/sample): Inspect the report without birth details or payment.
 - [Personal reading form](https://unifiedreading.com/#details): The person enters their own birth details in the browser. Birth time and place are optional.
 - [Pricing](https://unifiedreading.com/pricing): Check the current one-time price and what the full reading includes.
@@ -37,12 +35,6 @@ Do not present the reading as scientific evidence, medical or financial advice, 
 
 Read the full [agent guidance](https://unifiedreading.com/agents.md) and [skill](https://unifiedreading.com/.well-known/agent-skills/cosmic-blueprint/SKILL.md). There is no public API for submitting a personal reading on someone's behalf and no agent authentication flow.
 
-## Integration facts
-
-- Public server API endpoints: none for personal reading submission.
-- Authentication for public sample and information pages: none.
-- Browser integration: two public WebMCP tools on the homepage, named above.
-- Human handoff: the website form for private birth details; Stripe Checkout if payment is enabled.
 
 ## Machine-readable resources
 
