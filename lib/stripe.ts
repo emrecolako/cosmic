@@ -225,9 +225,10 @@ export async function fetchOrder(sessionId: string): Promise<PaidOrder> {
       promoCode = code.code;
       promoPartner = promoPartnerFrom(code.metadata);
     } catch (error) {
-      // A permanent error (e.g. a restricted key without Promotion Codes read) must not block the order.
-      if (!(error instanceof StripeError) || error.status >= 500) throw error;
-      console.error(`Promotion code ${promotionCodeId} lookup failed: ${error.status}`);
+      // Retry transient failures so partner credit isn't lost; a permanent one
+      // (e.g. a restricted key without Promotion Codes read) must not block the order.
+      if (isRetryable(error)) throw error;
+      console.error(`Promotion code ${promotionCodeId} lookup failed: ${(error as StripeError).status}`);
     }
   }
   const paymentIntent = session.payment_intent;

@@ -45,9 +45,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const priceId = process.env.STRIPE_PRICE_ID;
+    if (!priceId) {
+      console.warn(`[stripe-webhook] skipped ${event.id}: STRIPE_PRICE_ID is not set`);
+      return NextResponse.json({ received: true });
+    }
     const order = await fetchOrder(sessionId);
-    if (!isReadingOrder(order, process.env.STRIPE_PRICE_ID)) {
-      console.debug(`[stripe-webhook] skipped ${event.id}: no line item with STRIPE_PRICE_ID`);
+    // A readingHash session without our Price is unexpected: misconfiguration or a changed Price.
+    if (!isReadingOrder(order, priceId)) {
+      console.warn(`[stripe-webhook] skipped ${event.id}: session has readingHash but no line item with STRIPE_PRICE_ID`);
       return NextResponse.json({ received: true });
     }
     if (!order.paid) return NextResponse.json({ received: true });

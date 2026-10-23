@@ -141,6 +141,7 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.target instanceof HTMLTextAreaElement) return;
     if (event.key === "Enter" && event.repeat) { event.preventDefault(); return; }
     if (event.key === "Enter" && event.target instanceof HTMLInputElement && event.target.type !== "checkbox" && event.target.getAttribute("role") !== "combobox") {
       event.preventDefault();
