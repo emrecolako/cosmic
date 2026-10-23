@@ -614,3 +614,5 @@ a:hover { text-decoration:underline; text-underline-offset:5px; }
 }
 .library-spokes-note { font:11px/16px var(--font-mono); text-transform:uppercase; color:var(--text-muted); margin:-4px 0 12px; }
 .library-spokes[id] { scroll-margin-top:24px; }
+.library-datebox-actions { display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; }
+.library-datebox-share { min-height:44px; font-size:15px; text-decoration:underline; text-underline-offset:5px; color:var(--text); text-align:left; }

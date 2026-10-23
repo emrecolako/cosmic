@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { useI18n } from './LocaleProvider';
 import { atlasCopy } from '@/lib/i18n/atlas';
 import { track } from '@/lib/analytics';
+import type { LibraryPageType } from '@/lib/share';
 
 type SampleCtaProps =
   | { price: string | null; position: 'top' | 'bottom'; placement?: 'sample' }
-  | { price: string | null; position: string; placement: 'library'; pageType: string; slug: string };
+  | { price: string | null; position: string; placement: 'library'; pageType: LibraryPageType; slug: string };
 
 /**
  * First/last touch were already stored by captureAttribution on landing; the
@@ -21,7 +22,7 @@ export default function SampleCta(props: SampleCtaProps) {
   const copy = atlasCopy[locale];
   const [href, setHref] = useState('/#details');
   useEffect(() => setHref(`/${window.location.search}#details`), []);
-  const context = props.placement === 'library' ? { page_type: props.pageType, slug: props.slug } : {};
+  const context = props.placement === 'library' ? { page_type: props.pageType, page_slug: props.slug } : {};
   return <div className={`sample-cta sample-cta-${position}`}>
     <Link
       className="atlas-primary"

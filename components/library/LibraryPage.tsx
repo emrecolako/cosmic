@@ -1,11 +1,11 @@
 import Link from "next/link";
 import SampleCta from "@/components/SampleCta";
-import DateBox, { type DateBoxMode } from "@/components/library/DateBox";
+import DateBox, { type DateBoxMode, type ShareTarget } from "@/components/library/DateBox";
 import { LibraryShareButton, LibraryViewTracker } from "@/components/library/LibraryClient";
 import { loadContent } from "@/lib/library/content";
 import { factsFor, sign, signDates } from "@/lib/library/facts";
 import { libraryJsonLd } from "@/lib/library/jsonld";
-import { breadcrumbsFor, linkGroupsFor, prevNextFor, relatedFor, type LibraryEntry } from "@/lib/library/registry";
+import { ANALYTICS_PAGE_TYPE, breadcrumbsFor, linkGroupsFor, prevNextFor, relatedFor, type LibraryEntry } from "@/lib/library/registry";
 import { priceLabel } from "@/lib/stripe";
 
 const SYSTEM_LABEL: Record<LibraryEntry["system"], string> = {
@@ -21,6 +21,15 @@ const CALCULATOR_MODE: Record<string, DateBoxMode> = {
   "chinese-zodiac-calculator": "chinese",
 };
 
+function shareTarget(entry: LibraryEntry): ShareTarget {
+  switch (entry.type) {
+    case "life-path-pair": return { kind: "lp", pair: entry.slug.split("-vs-") as [string, string] };
+    case "zodiac-pair": return { kind: "sign", pair: entry.label.split(" and ") as [string, string] };
+    case "chinese-zodiac-pair": return { kind: "cz", pair: entry.label.split(" and ") as [string, string] };
+    default: return { kind: entry.system === "western" ? "sign" : entry.system === "chinese" ? "cz" : "lp" };
+  }
+}
+
 const formatDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
 
@@ -32,9 +41,11 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
   const { prev, next } = prevNextFor(entry);
   const spokes = linkGroupsFor(entry);
   const calculatorMode = CALCULATOR_MODE[entry.slug];
+  const pageType = ANALYTICS_PAGE_TYPE[entry.type];
+  const target = shareTarget(entry);
 
   return <main id="main" className="atlas-shell library-shell">
-    <LibraryViewTracker pageType={entry.type} slug={entry.slug} system={entry.system} />
+    <LibraryViewTracker pageType={pageType} slug={entry.slug} system={entry.system} />
     <article className="library-article" data-review-status={content.reviewed ? "reviewed" : "pending"}>
       <nav aria-label="Breadcrumb" className="library-breadcrumb">
         <ol>{crumbs.map((crumb, i) => <li key={crumb.path}>{i === crumbs.length - 1 ? <span aria-current="page">{crumb.name}</span> : <Link href={crumb.path}>{crumb.name}</Link>}</li>)}</ol>
@@ -44,17 +55,17 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       <p data-answer className="library-answer">{content.answer}</p>
       <div className="library-byline">
         <span>By Unified Reading editorial</span>
-        <LibraryShareButton path={entry.path} title={entry.title} pageType={entry.type} slug={entry.slug} />
+        <LibraryShareButton path={entry.path} title={entry.title} pageType={pageType} slug={entry.slug} />
       </div>
 
-      {calculatorMode && <DateBox pageType={entry.type} slug={entry.slug} mode={calculatorMode} />}
+      {calculatorMode && <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} target={target} />}
 
       <section className="library-facts" aria-labelledby="key-facts">
         <h2 id="key-facts">Key facts</h2>
         <table><tbody>{facts.rows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td>{row.value}</td></tr>)}</tbody></table>
       </section>
 
-      {!calculatorMode && <DateBox pageType={entry.type} slug={entry.slug} />}
+      {!calculatorMode && <DateBox pageType={pageType} slug={entry.slug} target={target} />}
 
       <div className="library-body">
         {content.sections.map((section) => <section key={section.heading} id={section.id}>
@@ -72,7 +83,7 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       <section className="library-together" aria-labelledby="read-together">
         <h2 id="read-together">Read together</h2>
         <p>One tradition on its own gives a single angle. A Unified Reading puts your Life Path and name numbers, your Sun sign (plus Moon and rising when you know your birth time), your Chinese zodiac animal and your life stage side by side, and points out where they agree and where they pull apart. See how that looks in the <Link href="/sample">fictional sample reading</Link>, or start with the free preview and pay {priceLabel()} once only if you want the full reading.</p>
-        <SampleCta price={priceLabel()} position="read-together" placement="library" pageType={entry.type} slug={entry.slug} />
+        <SampleCta price={priceLabel()} position="read-together" placement="library" pageType={pageType} slug={entry.slug} />
       </section>
 
       {content.faq.length > 0 && <section className="library-faq" aria-labelledby="faq">

@@ -4,6 +4,7 @@
  * markdown rewrites, and it does not resolve the "@/" alias.
  */
 import { SIGN_ORDER } from "../western-astrology";
+import type { LibraryPageType } from "../share";
 import { ANIMALS, ANIMAL_BRANCHES, LIU_CHONG_PAIRS, LIU_HAI_PAIRS, LIU_HE_PAIRS, SAN_HE_TRINES } from "../chinese-zodiac";
 
 export type PageType =
@@ -27,6 +28,16 @@ export interface LibraryEntry {
   /** Short label for link lists and breadcrumbs. */
   label: string;
 }
+
+export const ANALYTICS_PAGE_TYPE: Record<PageType, LibraryPageType> = {
+  hub: "hub",
+  calculator: "calculator",
+  "life-path": "lp-number",
+  "life-path-pair": "lp-pair",
+  "zodiac-pair": "sign-pair",
+  "chinese-zodiac": "cz-animal",
+  "chinese-zodiac-pair": "cz-pair",
+};
 
 export const LIFE_PATH_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 22, 33] as const;
 export const PAIR_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
