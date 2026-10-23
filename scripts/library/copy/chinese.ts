@@ -13,7 +13,7 @@ import type { PageCopy } from "./index";
 import { ANIMAL_COPY, ANIMAL_DAILY, type AnimalCopy, ANIMAL_PAIR_MORE, ELEMENT_EVERYDAY, ELEMENT_NATURE, PAIR_RELATION_TEXT } from "./animals";
 import { CHINESE_PAIR_TEXT } from "./chinese-pairs";
 import { ANIMAL_MORE } from "./extensions";
-import { an, fitAnswer, list, para, secondVoice, withPartner } from "./util";
+import { an, fitAnswer, list, pairLine, para, secondVoice, withPartner } from "./util";
 
 const ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"];
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -191,6 +191,7 @@ export function buildChinesePair(a: string, b: string): PageCopy {
       : `In five-element terms the ${a}'s ${ANIMAL_BRANCHES[a].element} is associated with ${ELEMENT_NATURE[ANIMAL_BRANCHES[a].element]}, and the ${b}'s ${ANIMAL_BRANCHES[b].element} with ${ELEMENT_NATURE[ANIMAL_BRANCHES[b].element]}.`;
 
   return {
+    ogLine: pairLine(same ? ca.twin : traditional[0], [a, b]),
     description: `${a} and ${b} compatibility in the Chinese zodiac: ${relationLabel[primary]}, their ${ANIMAL_BRANCHES[a].element}${same ? "" : ` and ${ANIMAL_BRANCHES[b].element}`} elements, yin-yang, and what helps the pairing.`.slice(0, 200),
     answer: same
       ? `In Chinese astrology, two ${two} share the same branch, ${ANIMAL_BRANCHES[a].element} element and ${ANIMAL_BRANCHES[a].yinYang} polarity, so the match is read as a mirror. Each recognises the other's ${ca.gist}; the pairing tends to work best when the shared blind spot, ${ca.frictionShort}, is named early.`

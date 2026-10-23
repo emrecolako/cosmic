@@ -28,6 +28,8 @@ export interface PageFacts {
   about: { name: string; termSet: string };
   /** Large mark for the share image: a number, or the names in the pair. */
   mark: string;
+  /** Pair pages: both halves, drawn side by side on the share image. */
+  pair?: [string, string];
 }
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -254,6 +256,7 @@ export function factsFor(entry: LibraryEntry): PageFacts {
       const f = lifePathPairFacts(a, b);
       return {
         mark: `${a} & ${b}`,
+        pair: [String(a), String(b)],
         about: { name: `Life Path ${a} and Life Path ${b}`, termSet: "Numerology" },
         rows: [
           { label: `Life Path ${a}`, value: `${lifePathMeaning(a).title} · ${lifePathMeaning(a).keywords.join(", ")}` },
@@ -268,7 +271,8 @@ export function factsFor(entry: LibraryEntry): PageFacts {
       const [a, b] = entry.label.split(" and ");
       const f = zodiacPairFacts(a, b);
       return {
-        mark: a === b ? `${a} & ${a}` : `${a} & ${b}`,
+        mark: `${a} & ${b}`,
+        pair: [a, b],
         about: { name: `${a} and ${b}`, termSet: "Western astrology" },
         rows: [
           ...signRows(f.a, `${a} · `),
@@ -302,6 +306,7 @@ export function factsFor(entry: LibraryEntry): PageFacts {
       const element = fiveElementRelation(a, b);
       return {
         mark: `${a} & ${b}`,
+        pair: [a, b],
         about: { name: `${a} and ${b} (Chinese zodiac)`, termSet: "Chinese astrology" },
         rows: [
           { label: a, value: `${ANIMAL_BRANCHES[a].element} · ${ANIMAL_BRANCHES[a].yinYang} · branch ${ANIMAL_BRANCHES[a].branch}` },

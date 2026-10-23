@@ -41,3 +41,16 @@ export function secondVoice(text: string, pronoun: "their" | "its" = "their"): s
     .replace(/^As a teammate, /, "In turn, as a teammate, ")
     .replace(/^On first meeting/, "Meeting for the first time");
 }
+
+/**
+ * Picks the sentence of a pair-specific paragraph that best says how the two
+ * get along, for the share image. Always a verbatim sentence of the page.
+ */
+export function pairLine(paragraph: string, names: string[]): string {
+  const sentences = paragraph.match(/[^.!?]+[.!?]+(?=\s|$)/g)?.map((s) => s.trim()) ?? [paragraph];
+  // A line that names the pair reads on its own when quoted out of context.
+  const fits = sentences.filter((s) => s.length <= 170 && names.some((name) => s.includes(name)));
+  const dynamic = /\b(read as|described as|balanc|complement|meeting of|contrast|admire|tends? to|often|can )/;
+  const standalone = fits.filter((s) => !/^(They|Together|Both|Each|It)\b/.test(s));
+  return standalone.find((s) => dynamic.test(s)) ?? standalone[0] ?? fits.find((s) => dynamic.test(s)) ?? fits[0] ?? sentences[0];
+}

@@ -73,13 +73,16 @@ const sentencesOf = (text: string) => text.split(/(?<=[.!?])\s+/);
 
 function validate(entry: LibraryEntry, raw: unknown): raw is LibraryContent {
   const c = raw as Record<string, unknown>;
-  const allowed = ["description", "answer", "sections", "faq", "updatedAt", "reviewed", "reviewer"];
+  const allowed = ["description", "answer", "ogLine", "sections", "faq", "updatedAt", "reviewed", "reviewer"];
   const errors: string[] = [];
   if (typeof c !== "object" || c === null) errors.push("not an object");
   else {
     for (const key of Object.keys(c)) if (!allowed.includes(key)) errors.push(`unknown key ${key}`);
     if (typeof c.description !== "string" || c.description.length < 50 || c.description.length > 200) errors.push("description must be a 50-200 character string");
     if (typeof c.answer !== "string") errors.push("answer must be a string");
+    const isPair = ["life-path-pair", "zodiac-pair", "chinese-zodiac-pair"].includes(entry.type);
+    if (isPair && (typeof c.ogLine !== "string" || c.ogLine.length < 30 || c.ogLine.length > 180)) errors.push("pair pages need a 30-180 character ogLine");
+    if (!isPair && c.ogLine !== undefined) errors.push("ogLine is only for pair pages");
     if (!Array.isArray(c.sections) || !c.sections.every((s) => typeof s?.heading === "string" && Array.isArray(s.paragraphs) && s.paragraphs.length > 0 && s.paragraphs.every((p: unknown) => typeof p === "string" && p.length > 0) && (s.id === undefined || typeof s.id === "string"))) errors.push("sections must be [{heading, paragraphs[], id?}]");
     if (!Array.isArray(c.faq) || !c.faq.every((f) => typeof f?.question === "string" && typeof f?.answer === "string")) errors.push("faq must be [{question, answer}]");
     if (typeof c.updatedAt !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(c.updatedAt) || isNaN(Date.parse(c.updatedAt))) errors.push("updatedAt must be YYYY-MM-DD");
@@ -178,6 +181,9 @@ for (const entry of ALL_ENTRIES) {
   if (!validate(entry, raw)) continue;
   const content = raw;
   contents.set(entry.path, content);
+
+  // The share image quotes this line, so it must be the page's own words.
+  if (content.ogLine && !bodyText(content).toLowerCase().includes(content.ogLine.replace(/[.!?]$/, "").toLowerCase())) fail(entry, `ogLine is not quoted from the page copy: "${content.ogLine}"`);
 
   const answerWords = wordsOf(content.answer).length;
   if (answerWords < 40 || answerWords > 60) fail(entry, `answer has ${answerWords} words (40-60)`);

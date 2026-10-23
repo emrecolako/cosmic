@@ -121,6 +121,7 @@ export function buildLifePathPair(a: number, b: number): PageCopy {
     : para(pa.tryThis, pb.tryThis, pm(ma.question, b), pm(mb.question, a));
 
   return {
+    ogLine: `The pairing tends to work best when ${hook.gist}.`,
     description: `Life Path ${a} and ${b} compatibility in numerology: how ${titleOf(a)} and ${titleOf(b)} connect, common friction, the combined number ${f.combined} and practical ideas.`.slice(0, 200),
     answer: same
       ? `In numerology, two Life Path ${a}s (${titleOf(a)}) share ${NUMBER_COPY[a].gist}, so the bond can feel familiar quickly. The pairing tends to work best when ${hook.gist}, since the same strengths and the same blind spots show up on both sides of the relationship.`

@@ -9,6 +9,8 @@ export interface LibraryFaq { question: string; answer: string }
 export interface LibraryContent {
   description: string;
   answer: string;
+  /** Pair pages only: one line on how the pair gets along, quoted from this page's copy, for the share image. */
+  ogLine?: string;
   sections: LibrarySection[];
   faq: LibraryFaq[];
   updatedAt: string;

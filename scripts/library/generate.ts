@@ -24,9 +24,10 @@ for (const entry of ALL_ENTRIES) {
   const page = buildPage(entry);
   const previous = existsSync(file) ? (JSON.parse(readFileSync(file, "utf8")) as LibraryContent) : undefined;
   // updatedAt (and so sitemap lastmod and IndexNow) only moves when the copy itself changes.
-  const unchanged = previous && JSON.stringify({ ...previous, updatedAt: "" }) === JSON.stringify({ ...page, updatedAt: "", reviewed: false, reviewer: null });
+  const unchanged = previous && JSON.stringify({ ...previous, updatedAt: "" }) === JSON.stringify({ description: page.description, answer: page.answer, ...(page.ogLine ? { ogLine: page.ogLine } : {}), sections: page.sections, faq: page.faq, updatedAt: "", reviewed: false, reviewer: null });
   if (unchanged) continue;
-  const content: LibraryContent = { ...page, updatedAt: UPDATED_AT, reviewed: false, reviewer: null };
+  const { description, answer, ogLine, sections, faq } = page;
+  const content: LibraryContent = { description, answer, ...(ogLine ? { ogLine } : {}), sections, faq, updatedAt: UPDATED_AT, reviewed: false, reviewer: null };
   mkdirSync(path.dirname(file), { recursive: true });
   writeFileSync(file, `${JSON.stringify(content, null, 2)}\n`);
   written++;

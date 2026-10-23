@@ -2,7 +2,7 @@ import { ELEMENT_POLARITY, SIGN_ORDER, signDates, zodiacPairFacts } from "../../
 import type { PageCopy } from "./index";
 import { ZODIAC_PAIR_HOOKS } from "./zodiac-pairs";
 import { ELEMENT_TEXT, MODALITY_TEXT, RULER_TEXT, SEPARATION_PRACTICE, SEPARATION_TEXT, SIGN_COPY, SIGN_DAILY, SIGN_FIRST, ELEMENT_DAILY, MODALITY_CONFLICT } from "./signs";
-import { an, list, para, secondVoice, withPartner } from "./util";
+import { an, list, pairLine, para, secondVoice, withPartner } from "./util";
 
 const sortedKey = (x: string, y: string) => [x, y].sort().join("|");
 /** "Leos", but "Aries partners" for names already ending in s. */
@@ -55,6 +55,7 @@ export function buildZodiacPair(a: string, b: string): PageCopy {
     : `Counting from Aries, ${a} is sign ${SIGN_ORDER.indexOf(a) + 1} and ${b} is sign ${SIGN_ORDER.indexOf(b) + 1}, which is where the ${f.separation}-degree figure comes from: each sign spans 30 degrees.`;
 
   return {
+    ogLine: pairLine(same ? SIGN_COPY[a].twin : ZODIAC_PAIR_HOOKS[`${a}|${b}`], [a, b]),
     description: `${a} and ${b} compatibility in Western astrology: ${f.a.element} and ${f.b.element}, ${f.a.modality.toLowerCase()} and ${f.b.modality.toLowerCase()}, the ${f.separation}° ${f.separationName.toLowerCase()} between them, and what helps the pairing.`.slice(0, 200),
     answer: same
       ? `In Western astrology, two ${a} Suns share the same ${f.a.modality.toLowerCase()} ${f.a.element} sign ruled by ${f.a.rulingPlanet}, so the match is often read as instinctively familiar. Each recognises the other's ${list(traitsA.slice(0, 2))} nature; the pairing tends to work best when both make room for what neither naturally supplies.`
