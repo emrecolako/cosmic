@@ -131,6 +131,7 @@ async function main() {
   const teaserResponse = await generateReading(readingRequest("teaser"));
   check("teaser generation succeeds with mocked model", teaserResponse.status, 200);
   check("teaser carries paywall header", teaserResponse.headers.get("x-paywall"), "1");
+  check("configured teaser offers checkout", teaserResponse.headers.get("x-checkout-available"), "1");
   check("teaser carries readable snapshot", (await teaserResponse.text()).includes("A small preview."), true);
   check("teaser sends one mocked model request", calls.length, 1);
 
@@ -157,6 +158,25 @@ async function main() {
   check("paid reading does not carry paywall header", fullResponse.headers.get("x-paywall"), null);
   check("paid reading carries full text", (await fullResponse.text()).includes("A complete reading."), true);
   check("paid generation verifies Stripe then calls model", calls.length, 2);
+
+  delete process.env.STRIPE_SECRET_KEY;
+  delete process.env.STRIPE_PRICE_ID;
+  delete process.env.READING_HASH_SECRET;
+  calls = [];
+  globalThis.fetch = (async (url: string | URL | Request) => {
+    calls.push(String(url));
+    if (String(url).includes("openrouter.ai/api/v1/chat/completions")) return aiResponse("<<<SNAPSHOT>>>Only a preview.");
+    throw new Error("Unexpected external call");
+  }) as typeof fetch;
+  const unconfiguredTeaser = await generateReading(readingRequest("teaser"));
+  check("unconfigured hosted preview still uses paywall", unconfiguredTeaser.headers.get("x-paywall"), "1");
+  check("unconfigured preview marks checkout unavailable", unconfiguredTeaser.headers.get("x-checkout-available"), "0");
+  check("unconfigured preview serves only snapshot", (await unconfiguredTeaser.text()).includes("<<<READING>>>"), false);
+  check("unconfigured preview rejects full request", (await generateReading(readingRequest("full"))).status, 503);
+  check("unconfigured preview rejects checkout", (await checkout(new NextRequest("https://preview.example.test/api/checkout", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+  }))).status, 503);
+  check("unconfigured preview makes no Stripe request", calls.some((url) => url.includes("api.stripe.com")), false);
 }
 
 main().then(() => console.log(`${passes} isolated payment route checks passed`)).catch((error) => {

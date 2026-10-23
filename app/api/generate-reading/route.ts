@@ -15,11 +15,11 @@ import { isPaidSession, paymentsConfigured, paywallEnabled, priceLabel } from "@
 
 type ReadingMode = "teaser" | "full";
 
-function readingHeaders(paywall: boolean, hash?: string): HeadersInit {
+function readingHeaders(paywall: boolean, checkoutAvailable: boolean, hash?: string): HeadersInit {
   return {
     "Content-Type": "text/plain; charset=utf-8",
     "Cache-Control": "no-store",
-    ...(paywall ? { "X-Paywall": "1", "X-Paywall-Price": priceLabel() } : {}),
+    ...(paywall ? { "X-Paywall": "1", "X-Paywall-Price": priceLabel(), "X-Checkout-Available": checkoutAvailable ? "1" : "0" } : {}),
     ...(hash ? { "X-Reading-Hash": hash } : {}),
   };
 }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     if (invalid) return NextResponse.json({ error: invalid }, { status: 400 });
     const locale = body.locale as Locale;
 
-    // Local development can be free, but production always requires payment.
+    // Local development can be free, but hosted previews and production require payment.
     const paywall = paywallEnabled();
     const mode: ReadingMode = !paywall || body.mode === "full" ? "full" : "teaser";
     if (paywall && mode === "full") {
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
     // Lets the client key analytics to this reading without seeing the inputs' secret.
     const hash = process.env.READING_HASH_SECRET ? readingHash(body) : undefined;
-    const headers = readingHeaders(paywall && mode === "teaser", hash);
+    const headers = readingHeaders(paywall && mode === "teaser", paymentsConfigured(), hash);
 
     const cacheKey = readingCacheKey({
       fullName: body.fullName,

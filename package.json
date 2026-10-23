@@ -4,13 +4,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run verify && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npx tsc --noEmit && next build",
+    "build": "npm run verify && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npm run verify:artwork && npx tsc --noEmit && next build",
     "start": "next start",
     "lint": "eslint .",
     "verify": "tsx scripts/verify.ts",
     "verify:i18n": "tsx scripts/verify-i18n.ts",
     "verify:attribution": "tsx scripts/verify-attribution.ts",
-    "verify:payment-routes": "tsx scripts/verify-payment-routes.ts"
+    "verify:payment-routes": "tsx scripts/verify-payment-routes.ts",
+    "verify:artwork": "tsx scripts/verify-artwork.tsx"
   },
   "keywords": [],
   "author": "",

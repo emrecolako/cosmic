@@ -20,9 +20,9 @@ export function paymentsConfigured(): boolean {
   );
 }
 
-/** A missing or test key must never make a production reading free. */
+/** Missing payment settings must never make a hosted reading free. */
 export function paywallEnabled(): boolean {
-  return process.env.VERCEL_ENV === "production" || paymentsConfigured();
+  return process.env.VERCEL_ENV === "production" || process.env.VERCEL_ENV === "preview" || paymentsConfigured();
 }
 
 export function priceLabel(): string {

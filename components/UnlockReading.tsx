@@ -7,16 +7,16 @@ import type { CheckoutPlacement } from '@/lib/analytics';
 import Button from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 
-export interface PaywallState { price: string; onUnlock: (placement: CheckoutPlacement) => void; unlocking: boolean; }
+export interface PaywallState { price: string; onUnlock: (placement: CheckoutPlacement) => void; unlocking: boolean; checkoutAvailable: boolean; }
 interface UnlockReadingProps extends PaywallState { firstName: string; personalYear: number; }
 
 /** Unlock card shown right after the free snapshot, plus a sticky bar on small screens while the card is off-screen. */
-export default function UnlockReading({ price, onUnlock, unlocking, firstName, personalYear }: UnlockReadingProps) {
+export default function UnlockReading({ price, onUnlock, unlocking, checkoutAvailable, firstName, personalYear }: UnlockReadingProps) {
   const { locale } = useI18n();
   const copy = paywallCopy[locale];
   const cardRef = useRef<HTMLElement>(null);
   const [cardVisible, setCardVisible] = useState(true);
-  const cta = unlocking ? copy.unlocking : formatMessage(copy.cta, { price });
+  const cta = checkoutAvailable ? unlocking ? copy.unlocking : formatMessage(copy.cta, { price }) : copy.unavailable;
   const items = [copy.item1, copy.item2, formatMessage(copy.item3, { number: personalYear }), copy.item4];
 
   useEffect(() => {
@@ -32,12 +32,12 @@ export default function UnlockReading({ price, onUnlock, unlocking, firstName, p
       <p className="eyebrow mb-4">{copy.label}</p>
       <h2 id="unlock-title" className="editorial text-3xl mb-5">{firstName ? formatMessage(copy.title, { name: firstName }) : copy.label}</h2>
       <ul className="unlock-list mb-6">{items.map((item) => <li key={item}>{item}</li>)}</ul>
-      <Button size="lg" onClick={() => onUnlock('inline_card')} disabled={unlocking} aria-busy={unlocking} className="w-full sm:w-auto" data-attr="unlock-inline-card">{cta}</Button>
-      <p className="text-xs text-ink-muted mt-4">{formatMessage(copy.note, { price })}</p>
+      <Button size="lg" onClick={() => onUnlock('inline_card')} disabled={unlocking || !checkoutAvailable} aria-busy={unlocking} className="w-full sm:w-auto" data-attr="unlock-inline-card">{cta}</Button>
+      <p className="text-xs text-ink-muted mt-4">{checkoutAvailable ? formatMessage(copy.note, { price }) : copy.unavailableNote}</p>
     </section>
-    <div className="unlock-sticky" data-hidden={cardVisible || undefined} aria-hidden={cardVisible || undefined}>
+    {checkoutAvailable && <div className="unlock-sticky" data-hidden={cardVisible || undefined} aria-hidden={cardVisible || undefined}>
       <Button size="md" onClick={() => onUnlock('sticky_bar')} disabled={unlocking} aria-busy={unlocking} tabIndex={cardVisible ? -1 : undefined} className="w-full" data-attr="unlock-sticky-bar">{cta}</Button>
-    </div>
+    </div>}
   </>;
 }
 

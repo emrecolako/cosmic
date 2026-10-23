@@ -10,6 +10,7 @@ import {
   type YinYangName,
 } from "@/lib/i18n/content";
 import type { ChineseZodiacProfile } from "@/lib/chinese-zodiac";
+import ReadingArtwork, { animalArtwork } from "./ReadingArtwork";
 
 export default function ChineseZodiacCard({
   profile,
@@ -32,7 +33,7 @@ export default function ChineseZodiacCard({
     content.chineseElements[elementKey] ?? enContent.chineseElements[elementKey];
   return (
     <div className="eastern-composition">
-      <div><h3 className="eastern-animal editorial">{animal}</h3><p className="eyebrow mt-6">{element} / {polarity}</p></div>
+      <div className="eastern-identity"><ReadingArtwork name={animalArtwork(animalKey)} className="eastern-art" /><h3 className="eastern-animal editorial">{animal}</h3><p className="eyebrow mt-6">{element} / {polarity}</p></div>
       <div className="eastern-copy"><p>{description}</p><div className="mt-7 border-t border-line-muted pt-6"><h4 className="eyebrow mb-3">{formatMessage(t.chinese.elementLabel, { element })}</h4><p>{elementDescription}</p></div></div>
     </div>
   );
