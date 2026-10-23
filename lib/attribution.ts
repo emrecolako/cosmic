@@ -116,6 +116,14 @@ function externalReferrer(): string | undefined {
   }
 }
 
+function isSameOriginNavigation(): boolean {
+  try {
+    return new URL(document.referrer).origin === window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
 export function storedAttribution(): Attribution {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
@@ -143,8 +151,12 @@ export function captureAttribution(): void {
 
     const stored = storedAttribution();
     const visitHasUtm = hasUtm(visit);
+    // Library CTAs carry campaign tags across root layouts (a full page load).
+    // Those internal hops continue the existing touch instead of landing anew.
+    const continuesLastTouch = visitHasUtm && isSameOriginNavigation()
+      && UTM_KEYS.every((key) => visit[key] === stored.last[key]);
     const first = visitIsTouch && (Object.keys(stored.first).length === 0 || (!hasUtm(stored.first) && visitHasUtm)) ? visit : stored.first;
-    const last = visitHasUtm ? visit : stored.last;
+    const last = visitHasUtm && !continuesLastTouch ? visit : stored.last;
     // The latest share link credits its sharer; first/last touch follow their own rules above.
     const shareRef = incomingRef ?? stored.shareRef;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ first, last, ...(shareRef ? { shareRef } : {}) }));

@@ -142,10 +142,23 @@ async function verifySharing() {
   const reelTouch = { utm_source: "instagram", utm_medium: "social", utm_content: "reel-123", landing_path: "/life-path/1-vs-9" };
   check("reel link to a pair page is the first touch", storedAttribution().first, reelTouch);
   check("reel link to a pair page is the last touch", storedAttribution().last, reelTouch);
-  visit("https://unifiedreading.com/");
+  const reelLanding = "https://unifiedreading.com/life-path/1-vs-9?utm_source=instagram&utm_medium=social&utm_content=reel-123";
+  const wizardUrl = "https://unifiedreading.com/?utm_source=instagram&utm_medium=social&utm_content=reel-123#details";
+  visit(wizardUrl, reelLanding);
+  check("query-preserving wizard hand-off keeps the last touch", storedAttribution().last, reelTouch);
+  check("wizard hand-off preserves last-touch Checkout landing", flattenAttribution(storedAttribution()).last_touch_landing_path, "/life-path/1-vs-9");
   check("moving from the pair page to the wizard keeps the reel touch", storedAttribution().first.utm_content, "reel-123");
   check("reel touch reaches Checkout metadata", [flattenAttribution(storedAttribution()).first_touch_utm_source, flattenAttribution(storedAttribution()).first_touch_utm_content, flattenAttribution(storedAttribution()).first_touch_landing_path], ["instagram", "reel-123", "/life-path/1-vs-9"]);
   check("a reel is not a partner", resolveAttribution(storedAttribution()), { rule: "none" });
+
+  visit("https://unifiedreading.com/sample?utm_source=instagram&utm_medium=social&utm_content=reel-456", wizardUrl);
+  check("changed campaign tags on an internal link start a new last touch", [storedAttribution().last.utm_content, storedAttribution().last.landing_path], ["reel-456", "/sample"]);
+  visit("https://unifiedreading.com/zodiac?utm_source=instagram&utm_medium=social&utm_content=reel-456", "https://instagram.com/");
+  check("external arrival with the same campaign records its new landing", storedAttribution().last.landing_path, "/zodiac");
+  visit("https://unifiedreading.com/library?utm_source=instagram&utm_medium=social&utm_content=reel-456");
+  check("new arrival without a referrer records its landing", storedAttribution().last.landing_path, "/library");
+  visit("https://unifiedreading.com/?utm_source=instagram&utm_medium=social", "https://unifiedreading.com/library");
+  check("removing a campaign tag starts a new last touch", [storedAttribution().last.utm_content, storedAttribution().last.landing_path], [undefined, "/"]);
 
   for (const key of Object.keys(store)) delete store[key];
   visit("https://unifiedreading.com/compatibility/aries-and-leo", "https://www.google.com/");
