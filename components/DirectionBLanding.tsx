@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ReadingArtwork from './ReadingArtwork';
+import DateBox from './library/DateBox';
 import { useI18n } from './LocaleProvider';
 import { atlasCopy } from '@/lib/i18n/atlas';
 
@@ -21,8 +22,9 @@ export default function DirectionBLanding({ price, onStart }: { price: string | 
           <p className="eyebrow">A personal atlas / Built around you</p>
           <h1 className="editorial">You are<br />not one thing.</h1>
           <p>Neither is your reading. Explore your numbers, zodiac signs, and current life chapter—together.</p>
-          <div className="hero-actions"><span lang={locale}>{start('hero-start-preview', true)}</span><Link className="atlas-link" href="/sample" data-attr="hero-sample">See a sample</Link></div>
-          <p className="microcopy">{price ? `Start free / Full reading ${price} / No subscription` : 'Free preview / No account required'}</p>
+          <DateBox pageType="home" slug="home" variant="hero" compare="lp" dayFirst={locale !== 'en'} price={price} />
+          <div className="hero-actions"><Link className="atlas-link" href="/sample" data-attr="hero-sample">See a sample</Link></div>
+          <p className="microcopy">Free result in seconds / No email / No account</p>
           <ReadingArtwork name="zodiac-armillary" className="hero-art" priority />
         </div>
         <article className="dossier-preview" aria-label="Fictional sample reading for Alex Morgan">

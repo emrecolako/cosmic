@@ -39,6 +39,8 @@ export default function CompareWithFriend({ values, placement, context = {}, lab
         share_channel: channel,
         sharer_ref: sharerRef,
       });
+      // Also a share, so funnels ending in share_created count it.
+      track("share_created", { ...context, placement, share_kind: "compare", share_channel: channel, utm_content: channel, sharer_ref: sharerRef });
       onShared?.(value, channel);
       setStatus(channel === "copy" ? "copied" : "idle");
       setPicking(false);

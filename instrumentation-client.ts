@@ -1,7 +1,9 @@
 import posthog from "posthog-js";
 import { captureAttribution } from "@/lib/attribution";
+import { rememberLanding } from "@/lib/analytics";
 
 captureAttribution();
+rememberLanding();
 
 const key = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const host = process.env.NEXT_PUBLIC_POSTHOG_HOST;

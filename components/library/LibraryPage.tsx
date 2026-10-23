@@ -61,20 +61,18 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       <p className="eyebrow">{SYSTEM_LABEL[entry.system]}</p>
       <h1 className="library-title">{entry.title}</h1>
       {pairKind && facts.pair && <PairYou kind={pairKind} pair={facts.pair} />}
+      {/* Directly under the H1 so the date fields fit the first mobile screen; the copy below is unchanged. */}
+      <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} compare={compare} price={priceLabel()} />
       <p data-answer className="library-answer">{content.answer}</p>
       <div className="library-byline">
         <span>By Unified Reading editorial</span>
         <LibraryShareButton path={entry.path} title={entry.title} pageType={pageType} slug={entry.slug} />
       </div>
 
-      {calculatorMode && <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} compare={compare} />}
-
       <section className="library-facts" aria-labelledby="key-facts">
         <h2 id="key-facts">Key facts</h2>
         <table><tbody>{facts.rows.map((row) => <tr key={row.label} data-side={row.side}><th scope="row">{row.label}</th><td>{row.value}</td></tr>)}</tbody></table>
       </section>
-
-      {!calculatorMode && <DateBox pageType={pageType} slug={entry.slug} compare={compare} />}
 
       <div className="library-body">
         {content.sections.map((section) => <section key={section.heading} id={section.id}>
