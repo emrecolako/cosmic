@@ -37,6 +37,7 @@ Includes:
 - Calculated numerology numbers from the birth name and date.
 - Western Sun sign and Chinese zodiac profile.
 - Moon and rising signs when enough birth data is available.
+- Star Map preview: the rising sign, the Sun's house as a short teaser, and the titles of the locked house placements.
 - A short generated snapshot (2-3 sentences) connecting the systems.
 
 Start at the [reading form](https://unifiedreading.com/#details).
@@ -50,6 +51,7 @@ Includes everything in the personal preview, plus:
 - An 800-1,200 word reading connecting the numbers, signs, and Chinese zodiac.
 - Where the systems agree and where they pull apart, framed for the selected life stage.
 - What the person's Personal Year number means for them this year.
+- All Star Map houses and planets in houses, the chart ruler, and the full chart wheel (whole sign houses; solar chart without a birth time).
 - 3-5 practical takeaways.
 - A plain-text download of the full reading.
 
@@ -100,7 +102,7 @@ The full reading is for one person's submitted details. It is not a subscription
 
 ## Scope and limitations
 
-The reading combines numerology, Western zodiac signs, the Chinese zodiac, and selected life-stage context. The natal chart is an approximate sign-level diagram. Houses, planetary aspects, and current transits are not calculated. This is for reflection, not scientific diagnosis or prediction.
+The reading combines numerology, Western zodiac signs, the Chinese zodiac, and selected life-stage context. With a birth time and place, whole sign houses (each house is one sign, counted from the rising sign) and the chart ruler are calculated; without a birth time the app shows a solar chart counted from the Sun sign. Planetary aspects and current transits are not calculated. This is for reflection, not scientific diagnosis or prediction.
 
 The [fictional sample](https://unifiedreading.com/sample) shows the format before you enter personal details. See [About](https://unifiedreading.com/about) for the method and [Privacy](https://unifiedreading.com/privacy) for data handling. An agent should send the person to the site to enter their own birth or payment details.
 `;

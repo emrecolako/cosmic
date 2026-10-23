@@ -8,7 +8,7 @@
 - [Check current pricing](https://unifiedreading.com/pricing)
 - [Read the privacy explanation](https://unifiedreading.com/privacy)
 
-The site calculates numerology and zodiac values from the details a visitor enters. Birth time and place are optional; without enough data, Moon and rising signs are omitted. The chart is an approximate sign-level diagram. Houses, planetary aspects, and current transits are not calculated. The interpretation is for reflection, not scientific assessment or prediction.
+The site calculates numerology and zodiac values from the details a visitor enters. Birth time and place are optional; without enough data, Moon and rising signs are omitted. The chart wheel shows calculated positions. With a birth time and place, whole sign houses (each house is one sign, counted from the rising sign) and the chart ruler are calculated; without a birth time the app shows a solar chart counted from the Sun sign. Planetary aspects and current transits are not calculated. The interpretation is for reflection, not scientific assessment or prediction.
 
 ## Development
 

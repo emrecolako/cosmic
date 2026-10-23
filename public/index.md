@@ -17,7 +17,7 @@ Unified Reading is a web app for a combined, personal reflection reading. It con
 
 The public [fictional sample](https://unifiedreading.com/sample) requires no personal details. Numerology values, zodiac signs, and the Chinese zodiac are calculated in the browser. The interpretation is generated through OpenRouter model providers.
 
-The chart is approximate and sign-level. Unknown birth time omits Moon, rising, and house claims. Houses, planetary aspects, and current transits are not calculated. This is an interpretive experience for reflection, not a scientific personality test or a prediction.
+Unknown birth time omits Moon and rising and uses a solar chart. With a birth time and place, whole sign houses (each house is one sign, counted from the rising sign) and the chart ruler are calculated; without a birth time the app shows a solar chart counted from the Sun sign. Planetary aspects and current transits are not calculated. This is an interpretive experience for reflection, not a scientific personality test or a prediction.
 
 ## Links
 
