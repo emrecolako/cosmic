@@ -34,7 +34,7 @@ import {
 } from "../lib/library/registry";
 import { SIGN_ORDER } from "../lib/western-astrology";
 import { ANIMALS } from "../lib/chinese-zodiac";
-import { comparePath, parseCompare, pairEntryFor } from "../lib/compare";
+import { ALL_COMPARE_VALUES, compareCardKey, compareHeadline, compareOgImagePath, comparePath, compareVideoPath, parseCompare, parseCompareCardKey, pairEntryFor } from "../lib/compare";
 
 const failures: string[] = [];
 const fail = (entry: LibraryEntry | string, message: string) =>
@@ -295,6 +295,21 @@ const routed = [
 ];
 for (const [got, want] of routed) if (got !== want) fail("/compare", `routes to ${got}, expected canonical ${want}`);
 if (ALL_ENTRIES.some((e) => e.path === "/compare")) fail("/compare", "must stay out of the registry (and so the sitemaps)");
+// Share card and og:video: one per value, keyed by the computed value only (never a date).
+if (ALL_COMPARE_VALUES.length !== 36) fail("/compare", `expected 36 share values, got ${ALL_COMPARE_VALUES.length}`);
+for (const value of ALL_COMPARE_VALUES) {
+  const roundTrip = parseCompareCardKey(compareCardKey(value));
+  if (roundTrip?.t !== value.t || roundTrip.v !== value.v) fail("/compare", `card key ${compareCardKey(value)} does not round-trip`);
+  if (!existsSync(path.join(process.cwd(), "public", compareVideoPath(value)))) fail("/compare", `missing ${compareVideoPath(value)}; run scripts/compare-videos.ts`);
+}
+for (const key of ["generic", "lp-99", "lp-1990-11-04", "sun-Scorpio", "x"]) if (parseCompareCardKey(key)) fail("/compare", `card key ${key} should fall back to the generic card`);
+if (compareOgImagePath({ t: "lp", v: "7" }) !== "/compare/og/lp-7") fail("/compare", "share card path format changed");
+const headlines: Array<[string, string]> = [
+  [compareHeadline({ t: "lp", v: "7" }), "A Life Path 7 wants to compare with you"],
+  [compareHeadline({ t: "sun", v: "scorpio" }), "A Scorpio wants to compare with you"],
+  [compareHeadline({ t: "cz", v: "dragon" }), "A Dragon wants to compare with you"],
+];
+for (const [got, want] of headlines) if (got !== want) fail("/compare", `headline "${got}", expected "${want}"`);
 
 // ---------------------------------------------------------------------------
 

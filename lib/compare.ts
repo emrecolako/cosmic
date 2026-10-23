@@ -42,6 +42,26 @@ export function compareShareText(value: CompareValue): string {
 
 export const comparePath = ({ t, v }: CompareValue) => `/compare?t=${t}&v=${encodeURIComponent(v)}`;
 
+/** Every valid sharer value: one share card and one video loop each. */
+export const ALL_COMPARE_VALUES: CompareValue[] = (Object.keys(VALUES) as CompareType[]).flatMap((t) => VALUES[t].map((v) => ({ t, v })));
+
+/** File-name key for the share card and video: "lp-7", "sun-scorpio"; "generic" when there is no valid sharer. */
+export const compareCardKey = (value: CompareValue | null) => (value ? `${value.t}-${value.v}` : "generic");
+
+export function parseCompareCardKey(key: string): CompareValue | null {
+  const dash = key.indexOf("-");
+  return dash < 0 ? null : parseCompare(key.slice(0, dash), key.slice(dash + 1));
+}
+
+export const compareOgImagePath = (value: CompareValue | null) => `/compare/og/${compareCardKey(value)}`;
+/** Pre-rendered by scripts/compare-videos.ts; none for the generic card. */
+export const compareVideoPath = (value: CompareValue) => `/compare/video/${compareCardKey(value)}.mp4`;
+
+export function compareDescription(value: CompareValue | null): string {
+  if (!value) return "A friend wants to compare numerology or zodiac signs with you. Enter your birth date to see how you match. Free, no signup.";
+  return `Enter your birth date to see how your ${value.t === "lp" ? "numbers" : "signs"} match. Free, no signup.`;
+}
+
 export function valueFromDate(t: CompareType, date: Date): CompareValue {
   if (t === "lp") return { t, v: String(calculateLifePath(date)) };
   if (t === "sun") return { t, v: getSunSign(date).sign.toLowerCase() };

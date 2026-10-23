@@ -48,6 +48,7 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingIncludes: {
     "/*": ["./content/library/**/*.json", "./public/fonts/romana-regular.otf"],
+    "/compare/og/*": ["./public/fonts/*", "./public/artwork/*.png"],
   },
   experimental: {
     // Two root layouts ((app) and (library)) leave no shared not-found page.
