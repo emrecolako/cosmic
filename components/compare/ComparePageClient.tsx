@@ -1,31 +1,25 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import DateBox from "@/components/library/DateBox";
 import { track } from "@/lib/analytics";
 import { storedAttribution } from "@/lib/attribution";
-import { compareHeadline, parseCompare, pairEntryFor, valueFromDate, type CompareValue } from "@/lib/compare";
+import { compareHeadline, pairEntryFor, valueFromDate, type CompareValue } from "@/lib/compare";
 
 /**
- * The friend's side of "Compare with a friend". Valid ?t=&v= shows who is
+ * The friend's side of "Compare with a friend". Valid ?t=&v= (parsed on the
+ * server, so the heading and date box arrive without JavaScript) shows who is
  * asking and only the date box; anything else gets the generic date box.
  * No signup or paywall: the result is the canonical pair page with ?you=.
  */
-export default function ComparePageClient() {
+export default function ComparePageClient({ sharer }: { sharer: CompareValue | null }) {
   const router = useRouter();
-  const [state, setState] = useState<{ ready: boolean; sharer: CompareValue | null }>({ ready: false, sharer: null });
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const sharer = parseCompare(params.get("t"), params.get("v"));
-    setState({ ready: true, sharer });
     if (sharer) track("compare_landed", { t: sharer.t, v: sharer.v, share_ref: storedAttribution().shareRef });
-  }, []);
+  }, [sharer]);
 
-  if (!state.ready) return <h1 className="library-title">Compare with a friend</h1>;
-
-  const { sharer } = state;
   if (!sharer) {
     return <>
       <p className="eyebrow">Compare with a friend</p>
