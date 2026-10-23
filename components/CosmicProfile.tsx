@@ -12,6 +12,7 @@ import CosmicToolkit from './CosmicToolkit';
 import FortuneCards from './FortuneCards';
 import { animalArtwork } from './ReadingArtwork';
 import SharePreview from './SharePreview';
+import ResultCardShare from './ResultCardShare';
 import CompareWithFriend from './compare/CompareWithFriend';
 import { valueFromProfile } from '@/lib/compare';
 import DownloadReading from './DownloadReading';
@@ -53,7 +54,7 @@ export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry 
   ];
   const numbers: Array<[NumerologyCategory, string]> = [['lifePath', t.numerology.lifePath], ['expression', t.numerology.expression], ['soulUrge', t.numerology.soulUrge], ['personality', t.numerology.personality]];
   return <>
-    <div className="flex justify-between items-center gap-4 text-sm"><Link className="min-h-11 flex items-center text-ink-muted" href={sample ? '/' : '/#details'}>← {sample ? t.wizard.back : copy.edit}</Link><div className="flex flex-wrap justify-end gap-4">{aiStatus === "done" && !paywall && <DownloadReading profile={profile} ai={ai} name={name} markers={markers} complete placement={sharePlacement} />}<SharePreview markers={markers} placement={sharePlacement} sunGlyph={westernAstro.sunSign.glyph} animalArt={animalArt} />{!sample && <CompareWithFriend label={copy.compareFriend} placement={sharePlacement} values={(['lp', 'sun', 'cz'] as const).map((t) => valueFromProfile(t, { lifePath: numerology.lifePath.number, sunSign: westernAstro.sunSign.sign, animal: chineseZodiac.animal }))} />}</div></div>
+    <div className="flex justify-between items-center gap-4 text-sm"><Link className="min-h-11 flex items-center text-ink-muted" href={sample ? '/' : '/#details'}>← {sample ? t.wizard.back : copy.edit}</Link><div className="flex flex-wrap justify-end gap-4">{aiStatus === "done" && !paywall && <DownloadReading profile={profile} ai={ai} name={name} markers={markers} complete placement={sharePlacement} />}<ResultCardShare lifePath={numerology.lifePath.number} placement={sharePlacement} /><SharePreview markers={markers} placement={sharePlacement} sunGlyph={westernAstro.sunSign.glyph} animalArt={animalArt} />{!sample && <CompareWithFriend label={copy.compareFriend} placement={sharePlacement} values={(['lp', 'sun', 'cz'] as const).map((t) => valueFromProfile(t, { lifePath: numerology.lifePath.number, sunSign: westernAstro.sunSign.sign, animal: chineseZodiac.animal }))} />}</div></div>
     <section id="snapshot" className="report-cover">
       <p className="eyebrow mb-6">{t.results.cosmicSnapshotLabel}{sample ? ` / ${copy.sampleLabel}` : ''}</p>
       {sample && birthDate && <p className="text-sm text-ink-muted mb-6">{t.wizard.dobLabel}: <time dateTime={birthDate}>{new Intl.DateTimeFormat(locale, {dateStyle:'long',timeZone:'UTC'}).format(new Date(`${birthDate}T12:00:00Z`))}</time>{birthMeta && <> · {birthMeta}</>} · {profile.currentYear}</p>}

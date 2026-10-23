@@ -230,6 +230,7 @@ button:disabled { cursor: default; }
 .share-dialog { width:min(560px,calc(100% - 32px)); max-height:85dvh; overflow:auto; margin:auto; background:var(--bg); color:var(--text); border:1px solid var(--border); padding:32px; border-radius:8px; }
 .share-dialog::backdrop { background:#040718bb; backdrop-filter:blur(4px); }
 .share-preview { border:1px solid var(--border-muted); background:var(--bg-secondary); padding:28px; margin:24px 0; }
+.result-card-preview { display:block; width:auto; height:min(52dvh,480px); aspect-ratio:9/16; margin:24px auto; border:1px solid var(--border-muted); }
 @media(max-width:900px) {
  .atlas-shell { width:calc(100% - 48px); }
  .atlas-hero { gap:24px; }
