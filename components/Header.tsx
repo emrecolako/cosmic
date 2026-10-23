@@ -5,6 +5,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/components/LocaleProvider";
 import { useToast } from "@/components/ui/Toast";
+import { trackShare } from "@/lib/analytics";
+import { shareUrl } from "@/lib/share";
 
 export default function Header({ initialTheme }: { initialTheme: "dark" | "light" }) {
   const { t } = useI18n();
@@ -20,7 +22,8 @@ export default function Header({ initialTheme }: { initialTheme: "dark" | "light
 
   const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.origin);
+      await navigator.clipboard.writeText(shareUrl("copy"));
+      trackShare("header", "copy");
       toast(t.header.shareCopied, "success");
     } catch {
       toast(t.header.shareFailed, "error");

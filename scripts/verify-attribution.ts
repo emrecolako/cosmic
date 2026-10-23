@@ -11,6 +11,7 @@ import {
   storedAttribution,
 } from "../lib/attribution";
 import { isReadingOrder, promoPartnerFrom, readingCheckoutSessionId } from "../lib/stripe";
+import { shareUrl } from "../lib/share";
 
 let failures = 0;
 let passes = 0;
@@ -80,6 +81,18 @@ visit("https://unifiedreading.com/", "https://news.ycombinator.com/");
 check("referrer-only later visit changes nothing", storedAttribution().last.utm_source, "tiktok");
 const roundTrip = attributionFromMetadata(flattenAttribution(storedAttribution()));
 check("touches survive Stripe metadata round trip", roundTrip, { first: storedAttribution().first, last: { utm_source: "tiktok", utm_medium: "social", utm_term: "astro" } });
+
+// --- Share links ---
+check("share link format", shareUrl("copy"), "https://unifiedreading.com/?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=copy");
+check("share link keeps a path", shareUrl("native", "/sample"), "https://unifiedreading.com/sample?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=native");
+const shareTouch = { utm_source: "share", utm_medium: "referral", utm_campaign: "reading-share", utm_content: "native" };
+visit(shareUrl("native"));
+check("share landing keeps an earlier first touch", storedAttribution().first.utm_source, "maya");
+check("share landing becomes last touch", storedAttribution().last, shareTouch);
+check("share landing is not a partner", resolveAttribution({ first: {}, last: shareTouch }), { rule: "none" });
+for (const key of Object.keys(store)) delete store[key];
+visit(shareUrl("copy"));
+check("share landing is a first touch for a new visitor", storedAttribution().first.utm_content, "copy");
 
 console.log(`\n${passes} attribution checks passed, ${failures} failed`);
 if (failures > 0) process.exit(1);
