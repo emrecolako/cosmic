@@ -204,6 +204,14 @@ One-time Stripe Checkout unlock per reading, without accounts or a database (`li
 - **Paid:** Unified Reading, the AI season text, the Toolkit, and Download. `/api/generate-reading` with `mode: "full"` re-verifies the Checkout Session with Stripe every time: it must be paid, under 24h old, and its `metadata.readingHash` must match `lib/reading-hash.ts`, an HMAC of the user inputs, so no PII goes to Stripe.
 - The session ID lives in tab sessionStorage (`cosmic:checkout-session`) and is stripped from the URL.
 - If `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, or `READING_HASH_SECRET` is unset, the paywall is off and the full reading is free. `/sample` is always unlocked.
+- Checkout sessions set `allow_promotion_codes`, so per-partner Stripe promotion codes work without code changes.
+
+## Funnel analytics
+
+PostHog events: `reading_started` (wizard submit), `preview_viewed` (teaser finished), `checkout_started` (checkout session created), `order_paid` (server-side from `/api/stripe-webhook`, signature-checked with `STRIPE_WEBHOOK_SECRET`, deduplicated by a UUID derived from the session ID).
+- `lib/attribution.ts` stores first-touch `utm_source/medium/campaign/content` and external referrer in localStorage (`ur:attribution`). They are sent as `first_touch_*` on client events and copied, with `posthog_distinct_id`, into Checkout Session metadata so `order_paid` joins the same person.
+- UTM convention: partners `utm_source=<handle>&utm_medium=partner&utm_campaign=oct-sprint`; social `utm_medium=social`; email `utm_medium=email`.
+- Never send form answers (name, birth details, context) to PostHog.
 
 ---
 
