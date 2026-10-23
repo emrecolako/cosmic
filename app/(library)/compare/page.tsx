@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ComparePageClient from "@/components/compare/ComparePageClient";
-import { compareDescription, compareHeadline, compareOgImagePath, compareVideoPath, parseCompare } from "@/lib/compare";
+import { compareDescription, compareHeadline, compareOgImagePath, compareVideoPath, lifePathSide, parseCompare } from "@/lib/compare";
+import { lifePathReadingsFor } from "@/lib/compare-pairs";
 import { compareOgSize as ogSize } from "@/lib/compare-og";
 import { SITE_URL } from "@/lib/site";
 
@@ -41,5 +42,5 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
 
 export default async function ComparePage({ searchParams }: { searchParams: SearchParams }) {
   const sharer = await sharerFrom(searchParams);
-  return <main id="main" className="atlas-shell"><div className="compare-shell"><ComparePageClient sharer={sharer} /></div></main>;
+  return <main id="main" className="atlas-shell"><div className="compare-shell"><ComparePageClient sharer={sharer} readings={sharer?.t === "lp" ? lifePathReadingsFor(Number(lifePathSide(sharer.v))) : undefined} /></div></main>;
 }

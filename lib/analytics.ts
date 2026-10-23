@@ -15,8 +15,9 @@ export type FunnelEvent =
   | "library_viewed"
   | "library_date_entered"
   | "compare_link_created"
-  | "compare_landed"
-  | "compare_completed";
+  | "compare_opened"
+  | "compare_completed"
+  | "compare_reshared";
 export type CheckoutPlacement = "inline_card" | "sticky_bar" | "toolkit_link" | "star_map";
 
 /** Funnel events carry no form answers; first- and last-touch attribution is attached to each one. */
