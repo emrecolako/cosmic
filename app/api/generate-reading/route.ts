@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     }
     // Lets the client key analytics to this reading without seeing the inputs' secret.
     const hash = process.env.READING_HASH_SECRET ? readingHash(body) : undefined;
-    const headers = readingHeaders(paywall, hash);
+    const headers = readingHeaders(paywall && mode === "teaser", hash);
 
     const cacheKey = readingCacheKey({
       fullName: body.fullName,
@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
     });
 
     return new Response(readable, { headers });
-  } catch (error) {
+  } catch {
     console.error("Generate reading failed");
     return NextResponse.json(
       { error: "Failed to generate reading" },

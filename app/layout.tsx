@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import Header from "@/components/Header";
+import SiteFooter from "@/components/SiteFooter";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
 import { priceLabel } from "@/lib/stripe";
 import { SITE_URL } from "@/lib/site";
@@ -32,7 +33,7 @@ export default async function RootLayout({
 }>) {
   const [headerStore, cookieStore] = await Promise.all([headers(), cookies()]);
   const locale = negotiateLocale(headerStore.get("accept-language"));
-  const theme = cookieStore.get("theme")?.value === "light" ? "light" : "dark";
+  const theme = cookieStore.get("theme")?.value === "dark" ? "dark" : "light";
   const readingPrice = priceLabel().replace(/[^0-9.]/g, "");
   const readingOffer = readingPrice ? {
     "@type": "Offer",
@@ -107,6 +108,7 @@ export default async function RootLayout({
           <Providers>
             <Header initialTheme={theme} />
             {children}
+            <SiteFooter />
           </Providers>
         </LocaleProvider>
       </body>

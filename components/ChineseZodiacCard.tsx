@@ -30,13 +30,6 @@ export default function ChineseZodiacCard({
     content.chineseAnimals[animalKey] ?? enContent.chineseAnimals[animalKey];
   const elementDescription =
     content.chineseElements[elementKey] ?? enContent.chineseElements[elementKey];
-  const bestWith = profile.compatibility.bestWith.map(
-    (item) => content.animalNames[item as AnimalName] ?? item
-  );
-  const challenging = profile.compatibility.challenging.map(
-    (item) => content.animalNames[item as AnimalName] ?? item
-  );
-
   return (
     <div className="eastern-composition">
       <div><h3 className="eastern-animal editorial">{animal}</h3><p className="eyebrow mt-6">{element} / {polarity}</p></div>

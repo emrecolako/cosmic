@@ -22,7 +22,7 @@ export default function DownloadReading({ profile, ai, name, markers, complete }
       t.sections.unifiedReadingTitle, ai.combinedAnalysis || '',
       t.sections.currentSeasonTitle, ai.currentSeason || '',
       t.sections.cosmicToolkitTitle, ...(ai.cosmicToolkit || []).map((item, index) => `${index+1}. ${item}`),
-      'https://cosmic-jet.vercel.app/privacy',
+      'https://unifiedreading.com/privacy',
     ].join('\n\n');
     const url = URL.createObjectURL(new Blob([text], { type:'text/plain;charset=utf-8' }));
     try {
