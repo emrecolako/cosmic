@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SampleCta from "@/components/SampleCta";
 import DateBox, { type DateBoxMode } from "@/components/library/DateBox";
+import LibraryArtwork from "@/components/library/LibraryArtwork";
 import PairYou from "@/components/compare/PairYou";
 import type { CompareType } from "@/lib/compare";
 import { LibraryShareButton, LibraryViewTracker } from "@/components/library/LibraryClient";
@@ -60,6 +61,7 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       </nav>
       <p className="eyebrow">{SYSTEM_LABEL[entry.system]}</p>
       <h1 className="library-title">{entry.title}</h1>
+      <LibraryArtwork entry={entry} />
       {pairKind && facts.pair && <PairYou kind={pairKind} pair={facts.pair} />}
       <p data-answer className="library-answer">{content.answer}</p>
       <div className="library-byline">

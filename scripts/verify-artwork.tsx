@@ -3,9 +3,11 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { renderToStaticMarkup } from 'react-dom/server';
 import FortuneCards from '../components/FortuneCards';
+import LibraryArtwork from '../components/library/LibraryArtwork';
 import { animalArtwork, type ArtworkName } from '../components/ReadingArtwork';
 import { computeProfile, type ReadingInput } from '../lib/profile';
 import type { AnimalName } from '../lib/i18n/content';
+import { ALL_ENTRIES } from '../lib/library/registry';
 
 const animals: AnimalName[] = [
   'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake',
@@ -33,6 +35,19 @@ const cases: Array<{ input: ReadingInput; expectedAnimal: AnimalName }> = [
 ];
 
 async function main() {
+  for (const entry of ALL_ENTRIES) {
+    const html = renderToStaticMarkup(<LibraryArtwork entry={entry} />);
+    const names = [...html.matchAll(/%2Fartwork%2F([^&]+)\.png/g)].map((match) => match[1]);
+    assert.ok(names.length > 0, `No artwork on ${entry.path}`);
+    for (const name of names) assertPng(name as ArtworkName);
+    if (entry.type === 'chinese-zodiac') assert.ok(names.includes(animalArtwork(entry.label as AnimalName)), `Wrong animal on ${entry.path}`);
+    if (entry.type === 'chinese-zodiac-pair') {
+      for (const animal of entry.slug.split('-and-')) {
+        const expected = animalArtwork((animal[0].toUpperCase() + animal.slice(1)) as AnimalName);
+        assert.ok(names.includes(expected), `Missing ${expected} on ${entry.path}`);
+      }
+    }
+  }
   for (const { input, expectedAnimal } of cases) {
     const profile = await computeProfile(input);
     assert.ok(profile, `No profile for ${input.dateOfBirth}`);
@@ -45,7 +60,7 @@ async function main() {
     assert.ok(html.includes(profile.westernAstro.sunSign.glyph), `Summary card missed ${profile.westernAstro.sunSign.sign} glyph`);
     console.log(`${input.dateOfBirth}: ${profile.westernAstro.sunSign.sign} / ${expectedAnimal} / ${art}`);
   }
-  console.log(`Verified ${chapterArt.length + animals.length} artwork files and ${cases.length} profile combinations.`);
+  console.log(`Verified ${chapterArt.length + animals.length} artwork files, ${cases.length} profile combinations, and illustrations on ${ALL_ENTRIES.length} library pages.`);
 }
 
 main().catch((error) => { console.error(error); process.exitCode = 1; });
