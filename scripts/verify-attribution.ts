@@ -137,6 +137,16 @@ async function verifySharing() {
   visit("https://unifiedreading.com/zodiac");
   check("internal navigation without a touch leaves the landing path alone", storedAttribution().last.landing_path, "/life-path/1-vs-9");
   for (const key of Object.keys(store)) delete store[key];
+  visit("https://unifiedreading.com/life-path/1-vs-9?utm_source=instagram&utm_medium=social&utm_content=reel-123");
+  const reelTouch = { utm_source: "instagram", utm_medium: "social", utm_content: "reel-123", landing_path: "/life-path/1-vs-9" };
+  check("reel link to a pair page is the first touch", storedAttribution().first, reelTouch);
+  check("reel link to a pair page is the last touch", storedAttribution().last, reelTouch);
+  visit("https://unifiedreading.com/");
+  check("moving from the pair page to the wizard keeps the reel touch", storedAttribution().first.utm_content, "reel-123");
+  check("reel touch reaches Checkout metadata", [flattenAttribution(storedAttribution()).first_touch_utm_source, flattenAttribution(storedAttribution()).first_touch_utm_content, flattenAttribution(storedAttribution()).first_touch_landing_path], ["instagram", "reel-123", "/life-path/1-vs-9"]);
+  check("a reel is not a partner", resolveAttribution(storedAttribution()), { rule: "none" });
+
+  for (const key of Object.keys(store)) delete store[key];
   visit("https://unifiedreading.com/compatibility/aries-and-leo", "https://www.google.com/");
   check("organic library landing is a first touch with its path", storedAttribution().first, { referrer: "https://www.google.com", landing_path: "/compatibility/aries-and-leo" });
 
