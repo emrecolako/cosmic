@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ComparePageClient from "@/components/compare/ComparePageClient";
 import { compareDescription, compareHeadline, compareOgImagePath, compareVideoPath, parseCompare } from "@/lib/compare";
-import { ogSize } from "@/lib/library/og";
+import { compareOgSize as ogSize } from "@/lib/compare-og";
 import { SITE_URL } from "@/lib/site";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;

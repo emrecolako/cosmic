@@ -1,4 +1,4 @@
-import { compareOgImage } from "@/lib/library/og";
+import { compareOgImage } from "@/lib/compare-og";
 import { ALL_COMPARE_VALUES, compareCardKey, parseCompareCardKey } from "@/lib/compare";
 
 export const dynamic = "force-static";
