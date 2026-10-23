@@ -1,18 +1,22 @@
 import { SITE_URL } from "./site";
 
 export type ShareChannel = "native" | "copy" | "download";
-export type SharePlacement = "sample" | "preview" | "results" | "header";
+export type SharePlacement = "sample" | "preview" | "results" | "header" | "library";
+export type ShareCampaign = "reading-share" | "library-share";
 
 /**
  * Shared links always point at the canonical site, never the host they were
  * shared from, and carry UTMs so captureAttribution credits the share.
  * `ref` is the sharer's anonymous ref from shareRefFor().
  */
-export function shareUrl(channel: ShareChannel, { ref, path = "/" }: { ref?: string; path?: string } = {}): string {
+export function shareUrl(
+  channel: ShareChannel,
+  { ref, path = "/", campaign = "reading-share" }: { ref?: string; path?: string; campaign?: ShareCampaign } = {}
+): string {
   const url = new URL(path, SITE_URL);
   url.searchParams.set("utm_source", "share");
   url.searchParams.set("utm_medium", "referral");
-  url.searchParams.set("utm_campaign", "reading-share");
+  url.searchParams.set("utm_campaign", campaign);
   url.searchParams.set("utm_content", channel);
   if (ref) url.searchParams.set("ref", ref);
   return url.toString();
