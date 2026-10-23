@@ -1,0 +1,36 @@
+# Pings IndexNow after a successful Vercel production deployment with the
+# library pages whose content changed in the last 3 days. Runs as a dry run
+# unless the repository variable INDEXNOW_SUBMIT is set to "true", and uses
+# the same LIBRARY_INDEX_UNREVIEWED value as the production build.
+name: IndexNow
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      since:
+        description: "Submit pages updated on or after (YYYY-MM-DD)"
+        required: false
+
+jobs:
+  submit:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Submit changed library URLs
+        env:
+          LIBRARY_INDEX_UNREVIEWED: ${{ vars.LIBRARY_INDEX_UNREVIEWED }}
+        run: >-
+          npx tsx scripts/indexnow.ts
+          ${{ github.event.inputs.since && format('--since {0}', github.event.inputs.since) || '' }}
+          ${{ vars.INDEXNOW_SUBMIT == 'true' && '--submit' || '' }}
