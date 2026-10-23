@@ -4,12 +4,14 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run verify && npm run verify:i18n && npm run verify:attribution && npx tsc --noEmit && next build",
+    "build": "npm run verify && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npm run verify:artwork && npx tsc --noEmit && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "verify": "tsx scripts/verify.ts",
     "verify:i18n": "tsx scripts/verify-i18n.ts",
-    "verify:attribution": "tsx scripts/verify-attribution.ts"
+    "verify:attribution": "tsx scripts/verify-attribution.ts",
+    "verify:payment-routes": "tsx scripts/verify-payment-routes.ts",
+    "verify:artwork": "tsx scripts/verify-artwork.tsx"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +33,7 @@
     "@types/tz-lookup": "^6.1.2",
     "autoprefixer": "^10.4.24",
     "eslint": "^9.39.2",
+    "eslint-config-next": "^16.4.2",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.23.12",

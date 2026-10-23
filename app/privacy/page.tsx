@@ -1,3 +1,4 @@
+import ReadingArtwork from "@/components/ReadingArtwork";
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { MODEL_CHAIN } from '@/lib/openrouter';
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return <main id="main" lang="en" className="atlas-shell"><article className="unified-prose">
     <Link className="atlas-link" href="/">← Unified Reading</Link>
-    <h1 className="wizard-title editorial">Your details, explained.</h1>
+    <ReadingArtwork name="chapters-book" className="page-art" /><p className="eyebrow">Your trust matters</p><h1 className="wizard-title editorial">Your details, explained.</h1>
     <p>Last updated October 2, 2026. This page describes the current app’s data flow.</p>
     <h3>Why we ask for your birth name</h3>
     <p>Pythagorean numerology assigns numbers to letters. Your full birth name supplies the expression, soul urge, and personality calculations. This app treats Y as a consonant and normalizes supported Latin accents. These are interpretive conventions, not scientifically validated personality measures.</p>

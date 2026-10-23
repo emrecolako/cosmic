@@ -12,7 +12,7 @@ import {
   storedAttribution,
 } from "../lib/attribution";
 import { createHash } from "node:crypto";
-import { createCheckoutSession, isReadingOrder, promoPartnerFrom, readingCheckoutSessionId } from "../lib/stripe";
+import { createCheckoutSession, isPaidSession, isReadingOrder, promoPartnerFrom, readingCheckoutSessionId } from "../lib/stripe";
 import { shareRefFor, shareUrl } from "../lib/share";
 
 let failures = 0;
@@ -84,8 +84,7 @@ check("referrer-only later visit changes nothing", storedAttribution().last.utm_
 const roundTrip = attributionFromMetadata(flattenAttribution(storedAttribution()));
 check("touches survive Stripe metadata round trip", roundTrip, { first: storedAttribution().first, last: { utm_source: "tiktok", utm_medium: "social", utm_term: "astro" } });
 
-// Async: hashing and the stubbed Checkout call.
-void (async () => {
+async function verifySharing() {
   // --- Share links ---
   const ref = "0123456789ab";
   check("share link format", shareUrl("copy"), "https://unifiedreading.com/?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=copy");
@@ -126,6 +125,51 @@ void (async () => {
   check("share landing is a first touch for a new visitor", storedAttribution().first.utm_content, "copy");
   check("share landing without a ref stores none", storedAttribution().shareRef, undefined);
 
-  console.log(`\n${passes} attribution checks passed, ${failures} failed`);
-  if (failures > 0) process.exit(1);
-})();
+}
+
+async function verifyPaidSession() {
+  const originalFetch = globalThis.fetch;
+  const originalPrice = process.env.STRIPE_PRICE_ID;
+  const originalKey = process.env.STRIPE_SECRET_KEY;
+  const now = Math.floor(Date.now() / 1000);
+  process.env.STRIPE_PRICE_ID = "price_reading";
+  process.env.STRIPE_SECRET_KEY = "sk_test_verification_only";
+  let response = {
+    payment_status: "paid",
+    metadata: { readingHash: "reading-hash" },
+    created: now,
+    line_items: { data: [{ price: { id: "price_reading" } }] },
+  };
+  let calls = 0;
+  globalThis.fetch = (async () => {
+    calls++;
+    return new Response(JSON.stringify(response), { status: 200 });
+  }) as typeof fetch;
+  try {
+    check("paid reading session is accepted", await isPaidSession("cs_test_reading", "reading-hash"), true);
+    check("wrong reading hash is rejected", await isPaidSession("cs_test_reading", "other-hash"), false);
+    response = { ...response, payment_status: "unpaid" };
+    check("unpaid session is rejected", await isPaidSession("cs_test_reading", "reading-hash"), false);
+    response = { ...response, payment_status: "paid", line_items: { data: [{ price: { id: "price_other_product" } }] } };
+    check("paid session for another product is rejected", await isPaidSession("cs_test_reading", "reading-hash"), false);
+    response = { ...response, line_items: { data: [] } };
+    check("paid session without line items is rejected", await isPaidSession("cs_test_reading", "reading-hash"), false);
+    const before = calls;
+    check("invalid session ID is rejected", await isPaidSession("invalid", "reading-hash"), false);
+    check("invalid session ID avoids Stripe lookup", calls, before);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalPrice === undefined) delete process.env.STRIPE_PRICE_ID;
+    else process.env.STRIPE_PRICE_ID = originalPrice;
+    if (originalKey === undefined) delete process.env.STRIPE_SECRET_KEY;
+    else process.env.STRIPE_SECRET_KEY = originalKey;
+  }
+}
+
+verifyPaidSession().then(verifySharing).then(() => {
+  console.log(`\n${passes} attribution and payment checks passed, ${failures} failed`);
+  if (failures > 0) process.exitCode = 1;
+}).catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
