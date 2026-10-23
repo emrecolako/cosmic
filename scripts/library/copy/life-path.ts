@@ -2,6 +2,7 @@ import { lifePathExample, lifePathMeaning, lifePathPairFacts } from "../../../li
 import { MASTER_ROOTS } from "../../../lib/library/registry";
 import type { PageCopy } from "./index";
 import { LIFE_PATH_PAIR_DEPTH, LIFE_PATH_PAIR_HOOKS } from "./life-path-pairs";
+import { LIFE_PATH_PAIR_DISCLAIMER, LIFE_PATH_PAIR_OPENERS } from "./life-path-pair-openers";
 import { LIFE_PATH_MORE } from "./extensions";
 import { NUMBER_COPY, PARTNER_COPY, PARTNER_EXTRA, PARTNER_MORE } from "./numbers";
 import { list, para, secondVoice, withPartner } from "./util";
@@ -38,7 +39,7 @@ const familyPairText = (a: number, b: number) => {
 const PARITY_TEXT: Record<string, (a: number, b: number) => string> = {
   "both odd": (a, b) => `${a === b ? `Two ${a}s` : `Both ${a} and ${b}`} are odd numbers, which traditional numerology associates with active, outward and self-expressive energy. Odd-odd pairings such as ${a} with ${b} are often described as stimulating, with initiative on each side, and they can be prone to clashes of will because ${a === b ? `both partners on the path of ${t(a)}` : `${t(a)} and ${t(b)}`} would rather move than wait.`,
   "both even": (a, b) => `${a === b ? `Two ${a}s` : `Both ${a} and ${b}`} are even numbers, which traditional numerology associates with receptive, steady and relationship-minded energy. Even-even pairings such as ${a} with ${b} are often described as secure and considerate, with a shared preference for stability, and they can become cautious, with ${a === b ? `both partners on the path of ${t(a)}` : `${t(a)} and ${t(b)}`} waiting for the other to take the risk.`,
-  "one odd, one even": (a, b) => { const odd = a % 2 ? a : b; const even = a % 2 ? b : a; return `${odd} is an odd number and ${even} is an even number. Traditional numerology links odd numbers with active, outward energy and even numbers with receptive, steadying energy, so this pairing is often read as complementary: ${t(odd)} tends to initiate while ${t(even)} tends to consolidate. The balance works when the ${odd} values the ${even}'s role instead of trying to convert it, and the reverse.`; },
+  "one odd, one even": (a, b) => { const odd = a % 2 ? a : b; const even = a % 2 ? b : a; return `${odd} is an odd number and ${even} is an even number. Traditional numerology links odd numbers with active, outward energy and even numbers with receptive, steadying energy, so this pairing is often described as a balance: ${t(odd)} tends to initiate while ${t(even)} tends to consolidate. The balance works when the ${odd} values the ${even}'s role instead of trying to convert it, and the reverse.`; },
 };
 
 const titleOf = (n: number) => lifePathMeaning(n).title;
@@ -95,6 +96,7 @@ export function buildLifePathPair(a: number, b: number): PageCopy {
   const pa = PARTNER_COPY[a];
   const pb = PARTNER_COPY[b];
   const hook = LIFE_PATH_PAIR_HOOKS[`${a}-${b}`];
+  const opener = LIFE_PATH_PAIR_OPENERS[`${a}-${b}`];
   const same = a === b;
   const combinedCopy = NUMBER_COPY[f.combined];
   const sumText = `${a} + ${b} = ${a + b}${a + b === f.combined ? "" : `, which reduces to ${f.combined}`}`;
@@ -123,9 +125,7 @@ export function buildLifePathPair(a: number, b: number): PageCopy {
   return {
     ogLine: `The pairing tends to work best when ${hook.gist}.`,
     description: `Life Path ${a} and ${b} compatibility in numerology: how ${titleOf(a)} and ${titleOf(b)} connect, common friction, the combined number ${f.combined} and practical ideas.`.slice(0, 200),
-    answer: same
-      ? `In numerology, two Life Path ${a}s (${titleOf(a)}) share ${NUMBER_COPY[a].gist}, so the bond can feel familiar quickly. The pairing tends to work best when ${hook.gist}, since the same strengths and the same blind spots show up on both sides of the relationship.`
-      : `In numerology, Life Path ${a} (${titleOf(a)}) and Life Path ${b} (${titleOf(b)}) are often read as ${f.parity === "one odd, one even" ? "complementary" : f.parity === "both odd" ? "two active, outward numbers" : "two steady, receptive numbers"}. The ${a} tends to bring ${NUMBER_COPY[a].gist} and the ${b} ${NUMBER_COPY[b].gist}; the pairing tends to work best when ${hook.gist}.`,
+    answer: `In numerology, ${same ? `two Life Path ${a}s (${titleOf(a)})` : `Life Path ${a} (${titleOf(a)}) and Life Path ${b} (${titleOf(b)})`} ${opener.shared} ${opener.rub} ${LIFE_PATH_PAIR_DISCLAIMER}`,
     sections: [
       {
         heading: same ? `How two Life Path ${a}s tend to meet` : `How Life Path ${a} and Life Path ${b} tend to meet`,

@@ -12,7 +12,7 @@ import Button from "@/components/ui/Button";
 import { atlasCopy } from "@/lib/i18n/atlas";
 import { parseDateOfBirth } from "@/lib/profile";
 import { cn } from "@/lib/utils";
-import { track } from "@/lib/analytics";
+import { landingContext, track } from "@/lib/analytics";
 
 interface FormData {
   fullName: string;
@@ -143,7 +143,11 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
     else if (step < 4) setStep(step + 1);
     else {
       submittedRef.current = true;
+      const { landing_page, utm_source } = landingContext();
       track("reading_started", {
+        landing_page,
+        utm_source,
+        entry: "wizard",
         locale,
         has_birth_time: !formData.dontKnowBirthTime && Boolean(formData.birthTime),
         birth_time_unknown: formData.dontKnowBirthTime,

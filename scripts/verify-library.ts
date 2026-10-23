@@ -25,6 +25,7 @@ import {
 import {
   ALL_ENTRIES,
   FOOTER_LIBRARY_LINKS,
+  LIFE_PATH_PAIRS,
   HOME_LIBRARY_LINKS,
   breadcrumbsFor,
   linkGroupsFor,
@@ -34,7 +35,8 @@ import {
 } from "../lib/library/registry";
 import { SIGN_ORDER } from "../lib/western-astrology";
 import { ANIMALS } from "../lib/chinese-zodiac";
-import { comparePath, parseCompare, pairEntryFor } from "../lib/compare";
+import { ALL_COMPARE_VALUES, compareCardKey, compareHeadline, compareOgImagePath, comparePath, compareVideoPath, parseCompare, parseCompareCardKey, pairEntryFor } from "../lib/compare";
+import { LIFE_PATH_PAIR_DISCLAIMER, LIFE_PATH_PAIR_OPENERS } from "./library/copy/life-path-pair-openers";
 
 const failures: string[] = [];
 const fail = (entry: LibraryEntry | string, message: string) =>
@@ -249,6 +251,41 @@ for (const pages of byType.values()) {
 }
 
 // ---------------------------------------------------------------------------
+// Life Path pair openers: one per pair, all different, no stock line
+// ---------------------------------------------------------------------------
+
+const STOCK_LINE = /often read as complementary/i;
+const pairKeys = LIFE_PATH_PAIRS.map(([a, b]) => `${a}-${b}`);
+for (const key of Object.keys(LIFE_PATH_PAIR_OPENERS)) if (!pairKeys.includes(key)) fail(`life-path-pair-openers.ts`, `opener ${key} has no pair page`);
+const seenOpeners = new Map<string, string>();
+for (const key of pairKeys) {
+  const opener = LIFE_PATH_PAIR_OPENERS[key];
+  if (!opener) {
+    fail(`life-path-pair-openers.ts`, `missing opener for ${key}`);
+    continue;
+  }
+  for (const part of [opener.shared, opener.rub]) {
+    const owner = seenOpeners.get(part.toLowerCase());
+    if (owner) fail(`life-path-pair-openers.ts`, `${key} repeats ${owner}'s opener: "${part}"`);
+    seenOpeners.set(part.toLowerCase(), key);
+  }
+}
+const seenAnswers = new Map<string, string>();
+for (const entry of ALL_ENTRIES) {
+  const content = contents.get(entry.path);
+  if (!content) continue;
+  if (STOCK_LINE.test([content.description, content.ogLine ?? "", bodyText(content)].join("\n"))) fail(entry, `uses the stock line "often read as complementary"`);
+  if (entry.type !== "life-path-pair") continue;
+  const [a, b] = entry.slug.split("-vs-");
+  const opener = LIFE_PATH_PAIR_OPENERS[`${a}-${b}`];
+  if (opener && !(content.answer.includes(opener.shared) && content.answer.includes(opener.rub))) fail(entry, "answer does not use its opener from life-path-pair-openers.ts");
+  if (!content.answer.endsWith(LIFE_PATH_PAIR_DISCLAIMER)) fail(entry, `answer must end with "${LIFE_PATH_PAIR_DISCLAIMER}"`);
+  const owner = seenAnswers.get(content.answer);
+  if (owner) fail(entry, `answer duplicates ${owner}`);
+  seenAnswers.set(content.answer, entry.path);
+}
+
+// ---------------------------------------------------------------------------
 // Inbound internal links
 // ---------------------------------------------------------------------------
 
@@ -295,6 +332,21 @@ const routed = [
 ];
 for (const [got, want] of routed) if (got !== want) fail("/compare", `routes to ${got}, expected canonical ${want}`);
 if (ALL_ENTRIES.some((e) => e.path === "/compare")) fail("/compare", "must stay out of the registry (and so the sitemaps)");
+// Share card and og:video: one per value, keyed by the computed value only (never a date).
+if (ALL_COMPARE_VALUES.length !== 36) fail("/compare", `expected 36 share values, got ${ALL_COMPARE_VALUES.length}`);
+for (const value of ALL_COMPARE_VALUES) {
+  const roundTrip = parseCompareCardKey(compareCardKey(value));
+  if (roundTrip?.t !== value.t || roundTrip.v !== value.v) fail("/compare", `card key ${compareCardKey(value)} does not round-trip`);
+  if (!existsSync(path.join(process.cwd(), "public", compareVideoPath(value)))) fail("/compare", `missing ${compareVideoPath(value)}; run scripts/compare-videos.ts`);
+}
+for (const key of ["generic", "lp-99", "lp-1990-11-04", "sun-Scorpio", "x"]) if (parseCompareCardKey(key)) fail("/compare", `card key ${key} should fall back to the generic card`);
+if (compareOgImagePath({ t: "lp", v: "7" }) !== "/compare/og/lp-7") fail("/compare", "share card path format changed");
+const headlines: Array<[string, string]> = [
+  [compareHeadline({ t: "lp", v: "7" }), "A Life Path 7 wants to compare with you"],
+  [compareHeadline({ t: "sun", v: "scorpio" }), "A Scorpio wants to compare with you"],
+  [compareHeadline({ t: "cz", v: "dragon" }), "A Dragon wants to compare with you"],
+];
+for (const [got, want] of headlines) if (got !== want) fail("/compare", `headline "${got}", expected "${want}"`);
 
 // ---------------------------------------------------------------------------
 
