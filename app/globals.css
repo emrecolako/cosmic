@@ -331,6 +331,8 @@ a.fortune-card:hover { transform:translateY(-5px); }
 /* Direction B — exact Paper palette, type scale, and section proportions. */
 @font-face { font-family: Romana; src: url('/fonts/romana-regular.otf') format('opentype'); font-weight:400 500; font-style:normal; font-display:swap; }
 :root { --font-editorial:Romana, 'Times New Roman'; --bg:#f7f7f7; --bg-secondary:#ededed; --text:#575657; --text-secondary:#575657; --text-muted:#666; --border:#bdbdbd; --border-muted:#d6d6d6; --gold:#575657; --moon:#686868; --asc:#3c3c3c; }
+/* Bundled Romana lacks Turkish Ğ/ğ, Ş/ş, and İ; keep each heading in one face. */
+html[lang="tr"] { --font-editorial:'Times New Roman', Georgia; }
 .dark { --bg:#121212; --bg-secondary:#222; --text:#f7f7f7; --text-secondary:#e2e2e2; --text-muted:#c2c2c2; --border:#666; --border-muted:#393939; --gold:#f7f7f7; --moon:#c5c5c5; --asc:#eee; }
 @theme inline { --font-sans:Arial, Helvetica, sans-serif; --font-mono:'Andale Mono', 'SFMono-Regular', Consolas, monospace; }
 body { font-size:14px; line-height:20px; }

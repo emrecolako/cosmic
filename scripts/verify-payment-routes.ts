@@ -177,6 +177,16 @@ async function main() {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
   }))).status, 503);
   check("unconfigured preview makes no Stripe request", calls.some((url) => url.includes("api.stripe.com")), false);
+
+  process.env.STRIPE_SECRET_KEY = "sk_live_wrong_for_preview";
+  process.env.STRIPE_PRICE_ID = "price_reading";
+  process.env.READING_HASH_SECRET = "verification-only-hash-secret";
+  calls = [];
+  check("live key cannot enable preview checkout", (await checkout(new NextRequest("https://preview.example.test/api/checkout", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+  }))).status, 503);
+  check("live key cannot unlock preview generation", (await generateReading(readingRequest("full"))).status, 503);
+  check("rejected live key makes no external request", calls.length, 0);
 }
 
 main().then(() => console.log(`${passes} isolated payment route checks passed`)).catch((error) => {

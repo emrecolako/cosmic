@@ -11,12 +11,17 @@ const PAID_SESSION_MAX_AGE_S = 24 * 60 * 60;
 const WEBHOOK_TOLERANCE_S = 5 * 60;
 
 export function paymentsConfigured(): boolean {
+  const key = process.env.STRIPE_SECRET_KEY;
+  const environment = process.env.VERCEL_ENV;
   return Boolean(
-    process.env.STRIPE_SECRET_KEY &&
+    key &&
       process.env.STRIPE_PRICE_ID &&
       process.env.READING_HASH_SECRET &&
-      (process.env.VERCEL_ENV !== "production" ||
-        /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY))
+      (environment === "production"
+        ? /^(sk|rk)_live_/.test(key)
+        : environment === "preview"
+          ? /^(sk|rk)_test_/.test(key)
+          : true)
   );
 }
 
