@@ -54,6 +54,7 @@ export default function ResultsPage() {
   const [aiStatus, setAiStatus] = useState<AiStatus>("streaming");
   // Set from the X-Paywall response header; null means the full reading is shown.
   const [paywallPrice, setPaywallPrice] = useState<string | null>(null);
+  const [checkoutAvailable, setCheckoutAvailable] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
@@ -173,6 +174,7 @@ export default function ResultsPage() {
         setPaywallPrice(
           teaser ? response.headers.get("X-Paywall-Price") || "" : null
         );
+        setCheckoutAvailable(teaser && response.headers.get("X-Checkout-Available") === "1");
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -210,7 +212,7 @@ export default function ResultsPage() {
   );
 
   const unlock = useCallback(async (placement: CheckoutPlacement) => {
-    if (!input || !profile || unlockingRef.current) return;
+    if (!input || !profile || !checkoutAvailable || unlockingRef.current) return;
     unlockingRef.current = true;
     setUnlocking(true);
     try {
@@ -244,7 +246,7 @@ export default function ResultsPage() {
       setUnlocking(false);
       toast(paywallCopy[locale].failed, "error");
     }
-  }, [input, profile, locale, toast]);
+  }, [input, profile, locale, toast, checkoutAvailable]);
 
   // Back from Stripe via the bfcache restores the page with the button still busy.
   useEffect(() => {
@@ -297,7 +299,7 @@ export default function ResultsPage() {
             onRetry={retry}
             paywall={
               paywallPrice !== null
-                ? { price: paywallPrice, onUnlock: unlock, unlocking }
+                ? { price: paywallPrice, onUnlock: unlock, unlocking, checkoutAvailable }
                 : null
             }
           />

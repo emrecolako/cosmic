@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import Link from "next/link";
 import type { LifeStageOption } from "@/lib/life-stages";
 import { useI18n } from "@/components/LocaleProvider";
 import { Input, Textarea, FieldLabel, FieldError } from "@/components/ui/Field";
@@ -215,7 +216,7 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
                 error={attempted ? errors.fullName : undefined}
                 autoFocus
               />
-              <p className="text-sm text-ink-muted">{NAME_HELP[locale]} <a className="underline" href="/privacy">Pythagorean numerology · OpenRouter · Privacy ↗</a></p>
+              <p className="text-sm text-ink-muted">{NAME_HELP[locale]} <Link className="underline" href="/privacy">Pythagorean numerology · OpenRouter · Privacy ↗</Link></p>
               <Input
                 label={t.wizard.dobLabel}
                 type="date"

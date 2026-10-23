@@ -11,18 +11,23 @@ const PAID_SESSION_MAX_AGE_S = 24 * 60 * 60;
 const WEBHOOK_TOLERANCE_S = 5 * 60;
 
 export function paymentsConfigured(): boolean {
+  const key = process.env.STRIPE_SECRET_KEY;
+  const environment = process.env.VERCEL_ENV;
   return Boolean(
-    process.env.STRIPE_SECRET_KEY &&
+    key &&
       process.env.STRIPE_PRICE_ID &&
       process.env.READING_HASH_SECRET &&
-      (process.env.VERCEL_ENV !== "production" ||
-        /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY))
+      (environment === "production"
+        ? /^(sk|rk)_live_/.test(key)
+        : environment === "preview"
+          ? /^(sk|rk)_test_/.test(key)
+          : true)
   );
 }
 
-/** A missing or test key must never make a production reading free. */
+/** Missing payment settings must never make a hosted reading free. */
 export function paywallEnabled(): boolean {
-  return process.env.VERCEL_ENV === "production" || paymentsConfigured();
+  return process.env.VERCEL_ENV === "production" || process.env.VERCEL_ENV === "preview" || paymentsConfigured();
 }
 
 export function priceLabel(): string {
@@ -116,11 +121,14 @@ export async function createCheckoutSession(
 /** True when the session is paid, recent, and was bought for this exact reading. */
 export async function isPaidSession(sessionId: string, readingHash: string): Promise<boolean> {
   if (!/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)) return false;
+  const priceId = process.env.STRIPE_PRICE_ID;
+  if (!priceId) return false;
   try {
-    const session = await stripe<CheckoutSession>(`/checkout/sessions/${sessionId}`);
+    const session = await stripe<OrderSession>(`/checkout/sessions/${sessionId}?expand[]=line_items`);
     return (
       session.payment_status === "paid" &&
       session.metadata?.readingHash === readingHash &&
+      isReadingOrder({ priceIds: (session.line_items?.data ?? []).flatMap((item) => item.price?.id ? [item.price.id] : []) }, priceId) &&
       Date.now() / 1000 - session.created < PAID_SESSION_MAX_AGE_S
     );
   } catch {

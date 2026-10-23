@@ -7,6 +7,7 @@ import NatalChartVisual from './NatalChartVisual';
 import CombinedAnalysis from './CombinedAnalysis';
 import CosmicToolkit from './CosmicToolkit';
 import FortuneCards from './FortuneCards';
+import { animalArtwork } from './ReadingArtwork';
 import SharePreview from './SharePreview';
 import DownloadReading from './DownloadReading';
 import UnlockReading, { LockedChapter, type PaywallState } from './UnlockReading';
@@ -37,18 +38,19 @@ export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry 
   const animal = content.animalNames[chineseZodiac.animal as AnimalName];
   const element = content.chineseElementNames[chineseZodiac.element as ChineseElementName];
   const markers = [`${t.numerology.lifePath} ${numerology.lifePath.number}`, sun, `${element} ${animal}`];
+  const animalArt = animalArtwork(chineseZodiac.animal as AnimalName);
   const yearCopy = interpretationFor(content, 'personalYear', numerology.personalYear.number);
   const chapters = [
     ['numbers', t.sections.numbersTitle], ['star-map', t.sections.starMapTitle], ['eastern-mirror', t.sections.easternMirrorTitle], ['unified-reading', t.sections.unifiedReadingTitle], ['season', t.sections.currentSeasonTitle], ['toolkit', t.sections.cosmicToolkitTitle],
   ];
   const numbers: Array<[NumerologyCategory, string]> = [['lifePath', t.numerology.lifePath], ['expression', t.numerology.expression], ['soulUrge', t.numerology.soulUrge], ['personality', t.numerology.personality]];
   return <>
-    <div className="flex justify-between items-center gap-4 text-sm"><Link className="min-h-11 flex items-center text-ink-muted" href={sample ? '/' : '/#details'}>← {sample ? t.wizard.back : copy.edit}</Link><div className="flex flex-wrap justify-end gap-4">{aiStatus === "done" && !paywall && <DownloadReading profile={profile} ai={ai} name={name} markers={markers} complete />}<SharePreview markers={markers} /></div></div>
+    <div className="flex justify-between items-center gap-4 text-sm"><Link className="min-h-11 flex items-center text-ink-muted" href={sample ? '/' : '/#details'}>← {sample ? t.wizard.back : copy.edit}</Link><div className="flex flex-wrap justify-end gap-4">{aiStatus === "done" && !paywall && <DownloadReading profile={profile} ai={ai} name={name} markers={markers} complete />}<SharePreview markers={markers} sunGlyph={westernAstro.sunSign.glyph} animalArt={animalArt} /></div></div>
     <section id="snapshot" className="report-cover">
       <p className="eyebrow mb-6">{t.results.cosmicSnapshotLabel}{sample ? ` / ${copy.sampleLabel}` : ''}</p>
       {sample && birthDate && <p className="text-sm text-ink-muted mb-6">{t.wizard.dobLabel}: <time dateTime={birthDate}>{new Intl.DateTimeFormat(locale, {dateStyle:'long',timeZone:'UTC'}).format(new Date(`${birthDate}T12:00:00Z`))}</time> · {profile.currentYear}</p>}
       <div className="cover-heading"><h1 className="report-title editorial">{formatMessage(copy.atlasOf, { name: firstName })}</h1></div>
-      <FortuneCards labels={[markers[0], markers[1], markers[2]]} number={numerology.lifePath.number} interactive />
+      <FortuneCards labels={[markers[0], markers[1], markers[2]]} number={numerology.lifePath.number} sunGlyph={westernAstro.sunSign.glyph} animalArt={animalArt} interactive />
       <div className="report-snapshot">{ai.cosmicSnapshot ? <p>{ai.cosmicSnapshot}</p> : <><p>{copy.ready}</p>{isStreaming && <div className="mt-6 space-y-3" aria-label={t.analysis.generating}><Skeleton className="h-3 w-full" /><Skeleton className="h-3 w-4/5" /></div>}</>}</div>
     </section>
     {paywall && <UnlockReading {...paywall} firstName={firstName} personalYear={numerology.personalYear.number} />}
@@ -58,7 +60,7 @@ export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry 
     <section className="chapter" id="eastern-mirror"><SectionHeader number="03" title={t.sections.easternMirrorTitle} subtitle={t.sections.easternMirrorSubtitle}/><ChineseZodiacCard profile={chineseZodiac} content={content}/></section>
     <section className="chapter border-t border-line-muted pt-10" id="unified-reading"><SectionHeader number="04" title={t.sections.unifiedReadingTitle} subtitle={t.sections.unifiedReadingSubtitle}/><div className="eyebrow">{markers.join(' / ')}</div>{paywall ? <LockedChapter /> : <CombinedAnalysis analysis={ai.combinedAnalysis} isStreaming={isStreaming} hasError={aiStatus === 'error'} onRetry={onRetry}/>}</section>
     <section className="chapter" id="season"><SectionHeader number="05" title={t.sections.currentSeasonTitle} subtitle={copy.seasonNote}/><div className="season-panel"><div className="year-number editorial">{numerology.personalYear.number}</div><div><p className="eyebrow">{t.numerology.personalYear} / {profile.currentYear}</p><h3 className="editorial text-3xl my-3">{yearCopy.title}</h3><p className="text-ink-secondary leading-8">{(!paywall && ai.currentSeason) || yearCopy.brief}</p></div></div></section>
-    <section className="chapter" id="toolkit"><SectionHeader number="06" title={t.sections.cosmicToolkitTitle} subtitle={t.sections.cosmicToolkitSubtitle}/>{paywall ? <button type="button" className="atlas-link" onClick={() => paywall.onUnlock('toolkit_link')} disabled={paywall.unlocking} data-attr="unlock-toolkit-link">{formatMessage(paywallCopy[locale].cta, { price: paywall.price })} →</button> : ai.cosmicToolkit || isStreaming ? <CosmicToolkit items={ai.cosmicToolkit} isLoading={isStreaming && !ai.cosmicToolkit}/> : <p className="text-ink-muted">{copy.toolkitPending}</p>}</section>
+    <section className="chapter" id="toolkit"><SectionHeader number="06" title={t.sections.cosmicToolkitTitle} subtitle={t.sections.cosmicToolkitSubtitle}/>{paywall ? paywall.checkoutAvailable ? <button type="button" className="atlas-link" onClick={() => paywall.onUnlock('toolkit_link')} disabled={paywall.unlocking} data-attr="unlock-toolkit-link">{formatMessage(paywallCopy[locale].cta, { price: paywall.price })} →</button> : <p className="font-mono text-xs uppercase text-ink-muted" role="status">{paywallCopy[locale].unavailableNote}</p> : ai.cosmicToolkit || isStreaming ? <CosmicToolkit items={ai.cosmicToolkit} isLoading={isStreaming && !ai.cosmicToolkit}/> : <p className="text-ink-muted">{copy.toolkitPending}</p>}</section>
     <footer className="atlas-footer text-center"><p className="editorial text-3xl mb-5">{t.results.closingMessage}</p><p>{copy.reflection}</p><p className="text-sm mt-5">{copy.privacy} <Link className="underline" href="/privacy">OpenRouter · Privacy</Link></p><Link className="atlas-link mt-6" href="/#details" data-attr={sample ? 'sample-start-preview' : 'results-start-another'}>{sample ? copy.discover : t.results.generateAnother} →</Link></footer>
   </>;
 }
