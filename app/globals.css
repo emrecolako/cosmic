@@ -425,6 +425,7 @@ a:hover { text-decoration:underline; text-underline-offset:5px; }
 .wizard-form input:not([type=checkbox]),.wizard-form textarea { font-size:16px; line-height:24px; border-radius:0; }
 .wizard-form button[role=checkbox],.wizard-form button[role=radio] { border-radius:0; }
 .wizard-form .font-mono { font-family:var(--font-mono); }
+.wizard-form [data-attr="wizard-continue"],.wizard-form [data-attr="wizard-reveal-reading"] { text-transform:uppercase; }
 .report-cover { background:none; }
 .report-snapshot { font-size:30px; line-height:36px; }
 .chapter-heading h2 { font-size:30px; line-height:34px; letter-spacing:0; }
