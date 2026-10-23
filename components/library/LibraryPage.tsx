@@ -1,6 +1,8 @@
 import Link from "next/link";
 import SampleCta from "@/components/SampleCta";
-import DateBox, { type DateBoxMode, type ShareTarget } from "@/components/library/DateBox";
+import DateBox, { type DateBoxMode } from "@/components/library/DateBox";
+import PairYou from "@/components/compare/PairYou";
+import type { CompareType } from "@/lib/compare";
 import { LibraryShareButton, LibraryViewTracker } from "@/components/library/LibraryClient";
 import { loadContent } from "@/lib/library/content";
 import { factsFor, sign, signDates } from "@/lib/library/facts";
@@ -21,14 +23,19 @@ const CALCULATOR_MODE: Record<string, DateBoxMode> = {
   "chinese-zodiac-calculator": "chinese",
 };
 
-function shareTarget(entry: LibraryEntry): ShareTarget {
+/** "Compare with a friend" shows on Life Path number pages, pair pages and calculators. */
+function compareTypeFor(entry: LibraryEntry): CompareType | undefined {
   switch (entry.type) {
-    case "life-path-pair": return { kind: "lp", pair: entry.slug.split("-vs-") as [string, string] };
-    case "zodiac-pair": return { kind: "sign", pair: entry.label.split(" and ") as [string, string] };
-    case "chinese-zodiac-pair": return { kind: "cz", pair: entry.label.split(" and ") as [string, string] };
-    default: return { kind: entry.system === "western" ? "sign" : entry.system === "chinese" ? "cz" : "lp" };
+    case "life-path":
+    case "life-path-pair": return "lp";
+    case "zodiac-pair": return "sun";
+    case "chinese-zodiac-pair": return "cz";
+    case "calculator": return entry.system === "western" ? "sun" : entry.system === "chinese" ? "cz" : "lp";
+    default: return undefined;
   }
 }
+
+const PAIR_KIND: Partial<Record<LibraryEntry["type"], CompareType>> = { "life-path-pair": "lp", "zodiac-pair": "sun", "chinese-zodiac-pair": "cz" };
 
 const formatDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
@@ -42,7 +49,8 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
   const spokes = linkGroupsFor(entry);
   const calculatorMode = CALCULATOR_MODE[entry.slug];
   const pageType = ANALYTICS_PAGE_TYPE[entry.type];
-  const target = shareTarget(entry);
+  const compare = compareTypeFor(entry);
+  const pairKind = PAIR_KIND[entry.type];
 
   return <main id="main" className="atlas-shell library-shell">
     <LibraryViewTracker pageType={pageType} slug={entry.slug} system={entry.system} />
@@ -52,20 +60,21 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       </nav>
       <p className="eyebrow">{SYSTEM_LABEL[entry.system]}</p>
       <h1 className="library-title">{entry.title}</h1>
+      {pairKind && facts.pair && <PairYou kind={pairKind} pair={facts.pair} />}
       <p data-answer className="library-answer">{content.answer}</p>
       <div className="library-byline">
         <span>By Unified Reading editorial</span>
         <LibraryShareButton path={entry.path} title={entry.title} pageType={pageType} slug={entry.slug} />
       </div>
 
-      {calculatorMode && <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} target={target} />}
+      {calculatorMode && <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} compare={compare} />}
 
       <section className="library-facts" aria-labelledby="key-facts">
         <h2 id="key-facts">Key facts</h2>
-        <table><tbody>{facts.rows.map((row) => <tr key={row.label}><th scope="row">{row.label}</th><td>{row.value}</td></tr>)}</tbody></table>
+        <table><tbody>{facts.rows.map((row) => <tr key={row.label} data-side={row.side}><th scope="row">{row.label}</th><td>{row.value}</td></tr>)}</tbody></table>
       </section>
 
-      {!calculatorMode && <DateBox pageType={pageType} slug={entry.slug} target={target} />}
+      {!calculatorMode && <DateBox pageType={pageType} slug={entry.slug} compare={compare} />}
 
       <div className="library-body">
         {content.sections.map((section) => <section key={section.heading} id={section.id}>

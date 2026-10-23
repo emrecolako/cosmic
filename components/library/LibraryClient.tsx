@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { track, trackShare, useSharerRef } from "@/lib/analytics";
 import { shareUrl, type LibraryPageType, type ShareChannel } from "@/lib/share";
 
+/** library_viewed, cta_clicked and share_created must carry identical page_type and page_slug values. */
 export function LibraryViewTracker({ pageType, slug, system }: { pageType: LibraryPageType; slug: string; system: string }) {
   useEffect(() => {
     track("library_viewed", { page_type: pageType, page_slug: slug, system });
@@ -36,7 +37,7 @@ export function LibraryShareButton({ path, title, pageType, slug }: { path: stri
     try {
       const result = await shareLibraryLink({ path, title, sharerRef });
       if (!result) return;
-      trackShare(pageType, result.channel, sharerRef, { page_slug: slug });
+      trackShare(pageType, result.channel, sharerRef, { page_type: pageType, page_slug: slug });
       setStatus(result.copied ? "copied" : "idle");
     } catch {
       setStatus("failed");

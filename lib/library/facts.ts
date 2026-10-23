@@ -20,7 +20,8 @@ import {
 import { INTERPRETATIONS, calculateLifePath, reduceToSingleDigit } from "../numerology";
 import { MASTER_ROOTS, type LibraryEntry } from "./registry";
 
-export interface FactRow { label: string; value: string }
+/** `side` marks the row describing one half of a pair, so ?you= can highlight it. */
+export interface FactRow { label: string; value: string; side?: "a" | "b" }
 
 export interface PageFacts {
   rows: FactRow[];
@@ -224,11 +225,11 @@ export function wheelDistance(a: string, b: string): number {
 // Per-page facts
 // ---------------------------------------------------------------------------
 
-function signRows(meta: ZodiacMeta, prefix = ""): FactRow[] {
+function signRows(meta: ZodiacMeta, prefix = "", side?: "a" | "b"): FactRow[] {
   return [
-    { label: `${prefix}Dates (${SIGN_DATES_YEAR})`, value: signDates(meta.sign) },
-    { label: `${prefix}Element · modality`, value: `${meta.element} · ${meta.modality}` },
-    { label: `${prefix}Ruling planet`, value: meta.rulingPlanet },
+    { label: `${prefix}Dates (${SIGN_DATES_YEAR})`, value: signDates(meta.sign), side },
+    { label: `${prefix}Element · modality`, value: `${meta.element} · ${meta.modality}`, side },
+    { label: `${prefix}Ruling planet`, value: meta.rulingPlanet, side },
   ];
 }
 
@@ -259,8 +260,8 @@ export function factsFor(entry: LibraryEntry): PageFacts {
         pair: [String(a), String(b)],
         about: { name: `Life Path ${a} and Life Path ${b}`, termSet: "Numerology" },
         rows: [
-          { label: `Life Path ${a}`, value: `${lifePathMeaning(a).title} · ${lifePathMeaning(a).keywords.join(", ")}` },
-          { label: `Life Path ${b}`, value: `${lifePathMeaning(b).title} · ${lifePathMeaning(b).keywords.join(", ")}` },
+          { label: `Life Path ${a}`, value: `${lifePathMeaning(a).title} · ${lifePathMeaning(a).keywords.join(", ")}`, side: "a" },
+          ...(a === b ? [] : [{ label: `Life Path ${b}`, value: `${lifePathMeaning(b).title} · ${lifePathMeaning(b).keywords.join(", ")}`, side: "b" as const }]),
           { label: "Odd or even", value: f.parity },
           { label: "Combined number", value: `${a} + ${b} = ${a + b}${a + b === f.combined ? "" : ` → ${f.combined}`}` },
           { label: "Distance between the numbers", value: String(f.difference) },
@@ -275,8 +276,8 @@ export function factsFor(entry: LibraryEntry): PageFacts {
         pair: [a, b],
         about: { name: `${a} and ${b}`, termSet: "Western astrology" },
         rows: [
-          ...signRows(f.a, `${a} · `),
-          ...(a === b ? [] : signRows(f.b, `${b} · `)),
+          ...signRows(f.a, `${a} · `, "a"),
+          ...(a === b ? [] : signRows(f.b, `${b} · `, "b")),
           { label: "Element relationship", value: `${f.elementRelation} (${f.a.element} and ${f.b.element})` },
           { label: "Modality", value: f.sameModality ? `Both ${f.a.modality}` : `${f.a.modality} and ${f.b.modality}` },
           { label: "Angular separation", value: `${f.separation}° · ${f.separationName}` },
@@ -309,8 +310,8 @@ export function factsFor(entry: LibraryEntry): PageFacts {
         pair: [a, b],
         about: { name: `${a} and ${b} (Chinese zodiac)`, termSet: "Chinese astrology" },
         rows: [
-          { label: a, value: `${ANIMAL_BRANCHES[a].element} · ${ANIMAL_BRANCHES[a].yinYang} · branch ${ANIMAL_BRANCHES[a].branch}` },
-          ...(a === b ? [] : [{ label: b, value: `${ANIMAL_BRANCHES[b].element} · ${ANIMAL_BRANCHES[b].yinYang} · branch ${ANIMAL_BRANCHES[b].branch}` }]),
+          { label: a, value: `${ANIMAL_BRANCHES[a].element} · ${ANIMAL_BRANCHES[a].yinYang} · branch ${ANIMAL_BRANCHES[a].branch}`, side: "a" },
+          ...(a === b ? [] : [{ label: b, value: `${ANIMAL_BRANCHES[b].element} · ${ANIMAL_BRANCHES[b].yinYang} · branch ${ANIMAL_BRANCHES[b].branch}`, side: "b" as const }]),
           { label: "Traditional relationship", value: relations.map((r) => RELATION_LABELS[r]).join("; ") },
           { label: "Five elements", value: element.description },
           { label: "Distance on the wheel", value: `${wheelDistance(a, b)} of 6` },

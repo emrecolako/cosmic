@@ -13,7 +13,10 @@ export type FunnelEvent =
   | "locked_section_tapped"
   | "unlock_clicked"
   | "library_viewed"
-  | "library_date_entered";
+  | "library_date_entered"
+  | "compare_link_created"
+  | "compare_landed"
+  | "compare_completed";
 export type CheckoutPlacement = "inline_card" | "sticky_bar" | "toolkit_link" | "star_map";
 
 /** Funnel events carry no form answers; first- and last-touch attribution is attached to each one. */
