@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useI18n } from './LocaleProvider';
@@ -15,6 +15,8 @@ export default function Header({ initialTheme }: { initialTheme: 'dark' | 'light
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(initialTheme === 'dark');
   const [menuOpen, setMenuOpen] = useState(false);
+  // Static pages can't read the theme cookie on the server; an inline script sets the class first.
+  useEffect(() => setIsDark(document.documentElement.classList.contains('dark')), []);
   const toggleTheme = () => {
     const next = !isDark;
     setIsDark(next);

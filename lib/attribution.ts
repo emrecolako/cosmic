@@ -19,8 +19,9 @@ export const TOUCH_KEYS = [
   "utm_content",
   "utm_term",
   "referrer",
+  "landing_path",
 ] as const;
-const UTM_KEYS = TOUCH_KEYS.filter((key) => key !== "referrer");
+const UTM_KEYS = TOUCH_KEYS.filter((key) => key !== "referrer" && key !== "landing_path");
 
 export type Touch = Partial<Record<(typeof TOUCH_KEYS)[number], string>>;
 export interface Attribution { first: Touch; last: Touch; shareRef?: string }
@@ -115,6 +116,14 @@ function externalReferrer(): string | undefined {
   }
 }
 
+function isSameOriginNavigation(): boolean {
+  try {
+    return new URL(document.referrer).origin === window.location.origin;
+  } catch {
+    return false;
+  }
+}
+
 export function storedAttribution(): Attribution {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
@@ -135,13 +144,19 @@ export function captureAttribution(): void {
       referrer: externalReferrer(),
     });
     const incomingRef = sanitizeShareRef(params.get("ref"));
-    if (Object.keys(visit).length === 0 && !incomingRef) return;
+    const visitIsTouch = Object.keys(visit).length > 0;
+    if (!visitIsTouch && !incomingRef) return;
+    // Path only: the query string is already split into the UTM keys above.
+    if (visitIsTouch) visit.landing_path = clean(window.location.pathname);
 
     const stored = storedAttribution();
     const visitHasUtm = hasUtm(visit);
-    const visitIsTouch = Object.keys(visit).length > 0;
+    // Library CTAs carry campaign tags across root layouts (a full page load).
+    // Those internal hops continue the existing touch instead of landing anew.
+    const continuesLastTouch = visitHasUtm && isSameOriginNavigation()
+      && UTM_KEYS.every((key) => visit[key] === stored.last[key]);
     const first = visitIsTouch && (Object.keys(stored.first).length === 0 || (!hasUtm(stored.first) && visitHasUtm)) ? visit : stored.first;
-    const last = visitHasUtm ? visit : stored.last;
+    const last = visitHasUtm && !continuesLastTouch ? visit : stored.last;
     // The latest share link credits its sharer; first/last touch follow their own rules above.
     const shareRef = incomingRef ?? stored.shareRef;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ first, last, ...(shareRef ? { shareRef } : {}) }));

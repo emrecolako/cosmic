@@ -1,0 +1,70 @@
+{
+  "description": "Free Life Path number calculator: enter a birth date to see your Life Path, with every reduction step and master numbers 11, 22 and 33 kept whole.",
+  "answer": "In numerology, your Life Path number comes from your full date of birth: the month, day and year are each reduced, then added and reduced again, keeping 11, 22 and 33 whole. Enter your date below to see the number and every step; the calculation runs in your browser.",
+  "sections": [
+    {
+      "heading": "How the calculator works",
+      "paragraphs": [
+        "The calculator uses the same Pythagorean method as a Unified Reading. It takes the month and reduces it to a single digit unless it is 11, takes the day and reduces it unless it is 11 or 22, and adds the digits of the year until they reach a single digit or a master number. It then adds the three results and reduces the total, again keeping 11, 22 or 33 whole. The steps appear under the result so you can check them by hand. As a worked example, 25 December 1985 gives a month of 12, which reduces to 3, a day of 25, which reduces to 7, and a year that sums to 23 and then 5. Adding 3, 7 and 5 gives 15, which reduces to 6, so the Life Path is 6. Everything happens in your browser, and the date is never sent anywhere.",
+        "If you only want the number, it appears as soon as you finish entering the date, with a link to its page.",
+        "Behind the scenes it uses the same JavaScript module that the full reading uses, so the number shown here always matches the number in a Unified Reading for the same date. Typing a date with the keyboard or choosing it from the browser's date picker gives identical output, and the result updates immediately whenever you adjust any digit."
+      ]
+    },
+    {
+      "heading": "Why the date is reduced in three parts",
+      "paragraphs": [
+        "There are two common ways to calculate a Life Path. One adds every digit of the date in a single string; the other reduces the month, day and year separately and then combines them. They usually agree, but they can differ when a master number appears in one of the parts. A birthday on November 22, for example, contributes 11 and 22 when reduced in parts, which can lead to a master-number total that the single-string method would miss. Unified Reading follows the three-part method because it keeps those master numbers visible, and it is the convention most widely taught in Pythagorean numerology. If another calculator gives you a different number, check which method it uses, and whether it treats master numbers in the intermediate steps the same way.",
+        "The difference is small for most dates but matters for anyone hoping to compare results across different sources.",
+        "Readers who were taught the single-string method at school or in a book sometimes find their number changes here; neither method is wrong, but they are not interchangeable. Older paperback guides, magazine columns and some mobile apps favour the single-string approach because it is quicker to explain, which explains much of the confusion online."
+      ]
+    },
+    {
+      "heading": "Master numbers in the result",
+      "paragraphs": [
+        "If your total is 11, 22 or 33, the calculator keeps it as a master number rather than reducing it to 2, 4 or 6. Master numbers are read as intensified versions of their roots: 11 brings heightened intuition to the 2's sensitivity, 22 brings large-scale vision to the 4's discipline, and 33 brings teaching and service to the 6's care. Because the root number is part of the meaning, many people with a master number read both pages. The calculator also keeps 11 and 22 whole when they appear as the reduced month or day, which is why a birthday on the 11th or the 22nd can carry extra weight in the total. Master numbers appear less often than single digits, but they are not ranked above them, and every Life Path page describes strengths and growth edges in the same way.",
+        "If your result is a master number, the link takes you to its own page, which also discusses the root.",
+        "A Life Path of 11, 22 or 33 is shown with a short note confirming it is a master number, together with the root it reduces to. Grandparents, parents and children occasionally share a master number, which families sometimes enjoy discovering together."
+      ]
+    },
+    {
+      "heading": "What to do with your number",
+      "paragraphs": [
+        "Once you have your Life Path, its page describes the traditional themes for that number: what it tends to emphasise, how it shows up at work and in relationships, and the growth edges readings most often mention. If you are curious about a relationship, the pairing pages compare your number with each of the others. The Life Path is only one of the numbers a Unified Reading calculates. The full name adds Expression, Soul Urge and Personality numbers, and the current year adds a Personal Year number, so the free preview gives a fuller numerology profile alongside your Sun sign and Chinese zodiac animal. The button under your result carries the date into the preview form without putting it in the page address. Use the result as a prompt for reflection, not as a fixed description.",
+        "Nothing is saved between visits, so you can try several dates, such as a partner's or a friend's, without leaving a trace.",
+        "The Expression, Soul Urge and Personality numbers need the full birth name, so they appear only in the preview, never on this page, and the name is never requested here. Couples curious about their combination can open the pairing page for their two numbers straight from the result links."
+      ]
+    },
+    {
+      "heading": "Worked examples",
+      "paragraphs": [
+        "A few more dates show how the method handles different cases. For 15 March 1978, the month 3 stays 3, the day 15 reduces to 6, and the year 1978 sums to 25 and then 7, giving 3 plus 6 plus 7, which is 16, so Life Path 7. For 29 November 1990, the month 11 is kept as a master number, the day 29 sums to 11 and is also kept, and the year 1990 reduces to 1, so the total is 11 plus 11 plus 1, which is 23, giving Life Path 5. For 22 April 2000, the day 22 is kept whole, the month is 4 and the year 2000 reduces to 2, and 4 plus 22 plus 2 makes 28, which reduces to 10 and then 1. For 9 September 1999, the parts are 9, 9 and 28 reduced to 1, so 9 plus 9 plus 1 is 19, then 10, then 1. Entering any of these dates in the calculator shows the same working.",
+        "Spreadsheets and paper work just as well: write the month, day and year in a column, reduce each one, add them, and reduce again, pausing whenever 11, 22 or 33 appears."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is my birth date stored or sent anywhere?",
+      "answer": "No. The calculator runs entirely in your browser. The date is not sent to a server, added to the page address or included in analytics."
+    },
+    {
+      "question": "Why does another calculator give a different Life Path?",
+      "answer": "Most differences come from method: adding all digits in one string versus reducing the month, day and year separately, and whether master numbers are kept in the intermediate steps. This calculator reduces in parts and keeps 11, 22 and 33."
+    },
+    {
+      "question": "What if my Life Path is 11, 22 or 33?",
+      "answer": "Those are master numbers, kept whole in Pythagorean numerology. Read the master number's page and its root (2, 4 or 6), since both describe your number."
+    },
+    {
+      "question": "Do I need my birth time?",
+      "answer": "No. The Life Path uses only the date. A birth time matters for the Moon and rising signs in astrology, not for numerology."
+    },
+    {
+      "question": "Can I calculate a Life Path for someone else?",
+      "answer": "The arithmetic works for any date, and nothing is stored. A Unified Reading itself should be requested by the person it describes, with their own details."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

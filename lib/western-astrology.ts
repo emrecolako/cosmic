@@ -22,7 +22,7 @@ export interface ZodiacSign {
   traits: string[];
 }
 
-interface ZodiacMeta {
+export interface ZodiacMeta {
   sign: string;
   glyph: string;
   element: "Fire" | "Water" | "Earth" | "Air";
@@ -32,7 +32,7 @@ interface ZodiacMeta {
   traits: string[];
 }
 
-const ZODIAC_SIGNS: ZodiacMeta[] = [
+export const ZODIAC_SIGNS: ZodiacMeta[] = [
   {
     sign: "Aries",
     glyph: "♈",
@@ -390,7 +390,7 @@ function getMoonLongitude(jd: number): number {
   return moonLon;
 }
 
-const SIGN_ORDER = [
+export const SIGN_ORDER = [
   "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
   "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces",
 ];

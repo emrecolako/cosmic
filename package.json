@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run verify && npm run verify:houses && npm run verify:chart && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npm run verify:artwork && npm run eval:test && npx tsc --noEmit && next build && npm run verify:bundle",
+    "build": "npm run verify && npm run verify:houses && npm run verify:chart && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npm run verify:artwork && npm run eval:test && npm run verify:library && npx tsc --noEmit && next build && npm run verify:bundle",
     "start": "next start",
     "lint": "eslint .",
     "verify": "tsx scripts/verify.ts",
@@ -15,7 +15,10 @@
     "verify:payment-routes": "tsx scripts/verify-payment-routes.ts",
     "verify:artwork": "tsx scripts/verify-artwork.tsx",
     "verify:bundle": "tsx scripts/verify-bundle.ts",
-    "eval:test": "tsx scripts/evals/reading.test.ts"
+    "eval:test": "tsx scripts/evals/reading.test.ts",
+    "verify:library": "tsx scripts/verify-library.ts",
+    "library:generate": "tsx scripts/library/generate.ts",
+    "indexnow": "tsx scripts/indexnow.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,70 @@
+{
+  "description": "Free Chinese zodiac calculator: find your animal, year element and yin-yang from your birth date, with Lunar New Year boundaries from 1924 to 2044.",
+  "answer": "In Chinese astrology, your animal comes from the lunar year of your birth, which begins at Lunar New Year rather than January 1. This calculator checks your birth date against a Lunar New Year table from 1924 to 2044 and returns your animal, year element and yin-yang polarity, entirely in your browser.",
+  "sections": [
+    {
+      "heading": "How the calculator finds your animal",
+      "paragraphs": [
+        "The calculator first works out which zodiac year your birth belongs to. If your birthday falls before that calendar year's Lunar New Year, you belong to the previous zodiac year; otherwise you belong to the current one. It then counts from 1924, a Rat year, through the twelve-animal cycle of Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog and Pig to find your animal. The year element comes from the ten-year cycle of heavenly stems, and the polarity alternates between yang in even years and yin in odd years. This is the same logic a Unified Reading uses. The result links to the page for your animal, which describes its traditional character and its classical compatibility with each of the other animals.",
+        "The result shows the year element, animal and polarity together, such as Yang Metal Horse, so the full combination is clear.",
+        "Behind the scenes it uses the same module the full reading uses, so the animal shown here always matches a Unified Reading for the same date. Typing the date or picking it from the browser's calendar widget gives identical results, refreshed instantly."
+      ]
+    },
+    {
+      "heading": "The Lunar New Year boundary",
+      "paragraphs": [
+        "Lunar New Year falls on the second new moon after the winter solstice in most years, which places it between January 21 and February 20. That is why the most common mistake with the Chinese zodiac is assuming the animal changes on January 1. Someone born on February 10, 2024 is a Dragon, because Lunar New Year fell that very day, but someone born on February 9, 2024 is a Rabbit from the year that began in 2023. The calculator uses a table of exact Lunar New Year dates from 1924 to 2044 and tells you the date for the year you entered and whether your birthday falls before it. Outside that range it assumes a February 5 boundary, which is a close approximation, and says so in the result.",
+        "If your date falls in January or February, the result also states which side of the boundary it falls on.",
+        "Families often discover the boundary when comparing siblings born in the same calendar year who turn out to have different animals, or cousins born a year apart who share one. Hospital records, passports and birth certificates virtually everywhere use Gregorian dates, so the table does the translation into lunar years for you."
+      ]
+    },
+    {
+      "heading": "Year elements and yin-yang",
+      "paragraphs": [
+        "Each year carries one of five elements from the heavenly stem cycle: Wood, Fire, Earth, Metal and Water, each lasting two consecutive years, first a yang year and then a yin year. Combined with the twelve animals, that gives sixty distinct years, such as the Metal Horse of 1990 or the Wood Dragon of 2024, before the pattern repeats. The year element is read as the flavour a particular birth year adds to the animal: a Fire Horse is often described as more intense than an Earth Horse, for instance. Separately, every animal has a fixed element tied to its branch, which is the element the compatibility pages use. The calculator shows the year element and polarity because they distinguish people who share an animal, and the free preview includes them in your profile.",
+        "Sixty-year cycles are the reason a grandparent and grandchild can share both animal and element, such as two Metal Horses born sixty years apart.",
+        "Polarity follows the stems too, so the element always appears in a fixed order of Yang then Yin: Yang Fire in years ending 6, Yin Fire in years ending 7, and so on around the decade."
+      ]
+    },
+    {
+      "heading": "Beyond the animal",
+      "paragraphs": [
+        "Your animal is the best known part of Chinese astrology, but it is only one layer. Traditional practice also considers the animals of the birth month, day and hour, which are not part of this calculator or of a Unified Reading. What a Unified Reading does is place your animal, year element and polarity beside your numerology and your Western Sun sign, and point out where the three traditions agree and where they pull in different directions, framed for your current life stage. The compatibility pages compare animals through the classical San He trines, Liu He secret friends, Liu Chong clashes and Liu Hai harms, which describe tendencies rather than outcomes. The button under your result carries your birth date into the free preview without adding it to the page address, so you do not need to type it twice.",
+        "Nothing you enter here is saved or sent anywhere, so you can try several dates, such as family members' birthdays, in a row.",
+        "Month, day and hour animals belong to the fuller Four Pillars system, which needs an exact birth time and a solar-term calendar, and is outside the scope of this site. Professional practitioners consult printed almanacs, or specialised software, for those detailed calculations."
+      ]
+    },
+    {
+      "heading": "Examples near the boundary",
+      "paragraphs": [
+        "Births in late January and early February are where most mistakes happen, so a few examples help. Someone born on January 25, 2020 is a Rat, because Lunar New Year fell that very day, while someone born a day earlier is a Pig from the year that began in 2019. Someone born on February 4, 2000 is a Rabbit, as Lunar New Year 2000 fell on February 5, and someone born on February 5 is a Dragon. In 1985 the new year came unusually late, on February 20, so anyone born between January 1 and February 19 that year is a Rat rather than an Ox. And in 2023 it came early, on January 22, so a birthday on January 25, 2023 already belongs to the Rabbit. The calculator handles every one of these cases from its Lunar New Year table, and it shows the boundary date so you can see exactly why it reached its answer.",
+        "Gregorian dates before 1924 or after 2044 fall outside the table, and for those the calculator applies a February 5 rule of thumb that is right most years but occasionally off by an animal for births in the first week of February."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Why does the calculator say I am the previous year's animal?",
+      "answer": "Because your birthday falls before that year's Lunar New Year. Animal years run from one Lunar New Year to the next, not from January 1."
+    },
+    {
+      "question": "What years does the calculator cover exactly?",
+      "answer": "It uses exact Lunar New Year dates from 1924 to 2044. For years outside that range it assumes a February 5 boundary and tells you so."
+    },
+    {
+      "question": "What is the difference between my year element and my animal's element?",
+      "answer": "The year element comes from the heavenly stems and changes every two years. The animal's fixed element, such as Fire for the Horse, belongs to the animal itself."
+    },
+    {
+      "question": "Is my date stored?",
+      "answer": "No. The calculation runs in your browser, and the date is not sent to a server, added to the address bar or included in analytics."
+    },
+    {
+      "question": "What animal is 2026?",
+      "answer": "The Horse. Lunar New Year 2026 fell on February 17, so anyone born from that date until February 5, 2027 is a Fire Horse, a Yang year."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

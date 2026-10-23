@@ -53,6 +53,7 @@ const NAME_HELP = {
 };
 
 const FORM_STORAGE_KEY = "cosmic-form";
+const PREFILL_STORAGE_KEY = "ur:prefill";
 const DOB_MIN = "1900-01-01";
 
 function todayISO(): string {
@@ -77,7 +78,14 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem(FORM_STORAGE_KEY);
-      if (saved) setFormData({ ...EMPTY_FORM, ...JSON.parse(saved) });
+      const restored: FormData = saved ? { ...EMPTY_FORM, ...JSON.parse(saved) } : EMPTY_FORM;
+      // Set by the library date box; consumed once so it never outlives the hand-off.
+      const prefill = sessionStorage.getItem(PREFILL_STORAGE_KEY);
+      sessionStorage.removeItem(PREFILL_STORAGE_KEY);
+      const prefillDob = prefill && /^\d{4}-\d{2}-\d{2}$/.test(prefill) && parseDateOfBirth(prefill) ? prefill : null;
+      const next = prefillDob ? { ...restored, dateOfBirth: prefillDob } : restored;
+      if (saved || prefillDob) setFormData(next);
+      if (prefillDob) sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(next));
     } catch {
       // Ignore corrupt storage.
     }

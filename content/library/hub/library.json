@@ -1,0 +1,66 @@
+{
+  "description": "Guides to Life Path numbers, zodiac sign compatibility and the Chinese zodiac, with free calculators, from Unified Reading.",
+  "answer": "In numerology, Western astrology and Chinese astrology alike, a single number or sign is a starting point for reflection rather than a verdict. This library explains each tradition on its own terms, Life Path numbers, Sun sign pairings and the twelve animals, and shows how a Unified Reading puts them side by side.",
+  "sections": [
+    {
+      "heading": "What the library covers",
+      "paragraphs": [
+        "The library is a set of plain-language guides to the three traditions that a Unified Reading combines. The numerology section explains the twelve Life Path numbers, including the master numbers 11, 22 and 33, and every pairing of the single-digit paths from 1 and 1 to 9 and 9. The Western astrology section covers all seventy-eight Sun sign pairings, from Aries with Aries to Pisces with Pisces, using elements, modalities, ruling planets and the angle between signs. The Chinese zodiac section describes the twelve animals, their fixed elements and polarity, and all seventy-eight animal pairings through the classical San He, Liu He, Liu Chong and Liu Hai structures. Three calculators let you find your Life Path, Sun sign and Chinese animal from a birth date. Every calculation runs in your browser, and nothing you type is sent to a server.",
+        "New pages are added as the library grows, and each one is checked against the same calculation tables before it is published."
+      ]
+    },
+    {
+      "heading": "How the three traditions fit together",
+      "paragraphs": [
+        "Each tradition looks at a birth from a different angle. Pythagorean numerology turns the birth date and birth name into numbers and reads them as themes. Western astrology places the Sun, and with a birth time the Moon and rising sign, in the twelve signs of the tropical zodiac. The Chinese zodiac assigns an animal, an element and a polarity to the lunar year of birth. Because the methods are independent, they sometimes echo one another and sometimes pull in different directions. A Life Path 7 who is also a Scorpio Sun and a Snake, for example, gets three separate nudges toward depth and privacy, while a Life Path 3 Capricorn Ox holds a tension between expression and restraint. A Unified Reading is built around exactly those agreements and tensions, framed for the reader's current life stage.",
+        "None of these combinations is a verdict. They are simply the kind of pattern a reading is designed to notice and describe in plain language."
+      ]
+    },
+    {
+      "heading": "What Unified Reading calculates, and what it leaves out",
+      "paragraphs": [
+        "A Unified Reading calculates the Life Path, Expression, Soul Urge, Personality and Personal Year numbers from the birth name and date. It finds the Sun sign and decan from the Sun's actual position on the birth date, so cusp birthdays resolve correctly for the specific year. With a birth time it adds the Moon sign, and with a birth time and place it adds the rising sign. It determines the Chinese animal, year element and yin-yang using a Lunar New Year table from 1924 to 2044. With a birth time and place it also places whole sign houses, each house one sign counted from the rising sign, and the chart ruler; without a birth time it shows a solar chart counted from the Sun sign. It does not calculate planetary aspects or current transits. The free preview shows the calculated profile and a short snapshot; the full reading costs $4.99, paid once through Stripe, with no subscription.",
+        "Prices and scope are listed on the pricing page, and the fictional sample shows the full layout before you enter anything personal."
+      ]
+    },
+    {
+      "heading": "How to use these pages",
+      "paragraphs": [
+        "Each page opens with a short answer that stands on its own, followed by a table of key facts taken directly from the same calculation code the app uses. The sections that follow add interpretation, written as tendencies and questions rather than predictions. If a page describes a pairing, it covers the pairing in either order, and the reversed address redirects to the same page. Every page links to its hub, its neighbours and related pairings, so you can move from Life Path 1 to the 1 and 9 pairing, or from the Rat to the Rat and Ox. If you enter a birth date in a page's date box, the results appear instantly without leaving the page, and the button beneath them carries the date into the free preview so you do not need to type it again. Treat everything here as a framework for reflection.",
+        "If a page sparks a question about your own birth details, the free preview is the place to try it, since the library pages stay general on purpose.",
+        "Editors revise pages over time, and each one shows when it was last updated at the bottom, along with whether it has had a human review yet."
+      ]
+    },
+    {
+      "heading": "Where to start",
+      "paragraphs": [
+        "If you are new to all three traditions, the calculators are the quickest way in: enter a birth date once and you will see a Life Path number, a Sun sign and a Chinese animal, each linking to its own guide. If you already know your numbers and signs, the compatibility sections are the most popular part of the library. Life Path pairings compare two numbers through odd and even energy, the thinker, builder and creative families, and the combined number. Zodiac pairings compare elements, modalities, rulers and the angle between two signs. Chinese zodiac pairings use the classical trines, secret friends, clashes and harms along with the five-element cycles. For background, the numerology, astrology and Chinese zodiac guides explain the methods and their limits in more depth. Wherever you start, every page links onward to related pages, so it is easy to follow a thread from one tradition into another and see where the themes repeat or diverge."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is the library free?",
+      "answer": "Yes. Every guide and calculator in the library is free and needs no account. Only the full personal reading has a price: $4.99, paid once through Stripe Checkout, with no subscription."
+    },
+    {
+      "question": "Where do the facts on each page come from?",
+      "answer": "The key-facts tables are generated from the same calculation code the app uses for readings: the Pythagorean numerology tables, the zodiac sign data and the Chinese zodiac relationship tables. The prose is editorial interpretation."
+    },
+    {
+      "question": "Does the library cover compatibility between two people's full charts?",
+      "answer": "No. Pair pages compare two Life Path numbers, two Sun signs or two Chinese animals at a general level. Unified Reading does not produce two-person compatibility reports."
+    },
+    {
+      "question": "Are these readings predictions?",
+      "answer": "No. Numerology and astrology are interpretive traditions. The library describes how they are traditionally read so you can reflect on them; it does not forecast events or outcomes."
+    },
+    {
+      "question": "Who writes the library pages?",
+      "answer": "Unified Reading's editorial team writes and maintains the guides. Calculated facts come straight from the app's code; interpretation is editorial and marked for human review before it is promoted in search."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

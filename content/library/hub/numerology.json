@@ -1,0 +1,66 @@
+{
+  "description": "Pythagorean numerology explained: the letter chart, Life Path, Expression, Soul Urge and Personality numbers, Personal Year and master numbers 11, 22 and 33.",
+  "answer": "In numerology, the Pythagorean system turns a birth date and birth name into a small set of numbers, each read as a theme. The best known is the Life Path, calculated from the full birth date. Master numbers 11, 22 and 33 are kept whole, read as amplified versions of 2, 4 and 6.",
+  "sections": [
+    {
+      "heading": "What numerology is",
+      "paragraphs": [
+        "Numerology is the practice of reading meaning into numbers derived from a person's name and birth date. The version used most widely in English, and the one Unified Reading follows, is usually called Pythagorean numerology after the Greek philosopher whose school treated number as a key to the order of things, though the modern system owes as much to twentieth-century writers as to antiquity. It works by reduction: digits are added together until a single digit remains, unless the total is a master number. Each resulting number, from 1 to 9, carries a traditional character, from the self-starting 1 to the completing 9. Numerology makes no claim that can be tested like a measurement, and it is best treated as a vocabulary for reflection. Its appeal lies in how simple the arithmetic is and how much it invites people to think about the themes it names.",
+        "Many people meet numerology through a single number, usually the Life Path, and only later discover that the name numbers add a second, more personal layer."
+      ]
+    },
+    {
+      "heading": "The Pythagorean letter chart",
+      "paragraphs": [
+        "For the name-based numbers, each letter is given a value from 1 to 9 by writing the alphabet in rows of nine. A, J and S are 1; B, K and T are 2; C, L and U are 3; D, M and V are 4; E, N and W are 5; F, O and X are 6; G, P and Y are 7; H, Q and Z are 8; and I and R are 9. Unified Reading uses the full name given at birth, removes accents so that letters such as é count as their base letter, and treats Y as a consonant in every position. Some practitioners count Y as a vowel when it sounds like one, as in Lynn, so their Soul Urge and Personality numbers for such names can differ. That kind of convention is one reason two calculators may disagree, and it is worth checking which rule a source uses before comparing results.",
+        "Hyphenated and multiple given names are included in full, since the tradition treats every letter of the birth name as part of the calculation."
+      ]
+    },
+    {
+      "heading": "The core numbers in a reading",
+      "paragraphs": [
+        "A Unified Reading calculates five numbers. The Life Path comes from the birth date and is read as the broad direction of a life. The Expression number, sometimes called Destiny, adds every letter of the birth name and is read as natural talents and style. The Soul Urge, or Heart's Desire, uses only the vowels and is read as inner motivation. The Personality number uses only the consonants and is read as the impression a person tends to make on others. The Personal Year combines the birth month and day with the current calendar year and is read as the theme of the year now under way, running in a nine-year cycle. Because these numbers are calculated independently, they can agree or contrast, and the interplay between them is often more interesting than any one number on its own.",
+        "Readers who know only their date of birth can still explore the Life Path and Personal Year, while the name numbers need the full birth name.",
+        "Unified Reading reports all five numbers in the free preview, with a brief description beside each, so you can compare them before deciding whether to unlock the longer synthesis."
+      ]
+    },
+    {
+      "heading": "Master numbers 11, 22 and 33",
+      "paragraphs": [
+        "Master numbers are the doubled digits 11, 22 and 33. In Pythagorean numerology they are not reduced when they appear, so a Life Path total of 22 stays 22 instead of becoming 4. Unified Reading keeps master numbers whole both in the reduced month and day and in the final total, so a birthday on the 11th or the 22nd contributes 11 or 22 to the sum. Each master number is read as an intensified form of its root: 11 relates to 2, with heightened intuition; 22 relates to 4, with practical building on a large scale; 33 relates to 6, with care expressed as teaching and service. Readings often describe master numbers as carrying more pressure as well as more potential, and many people with a master number find it useful to read the material for its root number too.",
+        "The pages for 11, 22 and 33 explain each master number in more detail, alongside the root numbers they relate to."
+      ]
+    },
+    {
+      "heading": "Personal Year cycles",
+      "paragraphs": [
+        "The Personal Year is the only core number that changes, and it is often the most immediately practical. It is calculated from the birth month and day plus the current calendar year, reduced in the same way as a Life Path, so it moves through a cycle from 1 to 9 before starting again. A Personal Year 1 is read as a time of beginnings and initiative, 2 as patience and partnership, 3 as expression and sociability, 4 as building foundations, 5 as change, 6 as home and responsibility, 7 as reflection, 8 as achievement and authority, and 9 as completion and release. Master years 11, 22 and 33 can also appear. A Unified Reading includes the current Personal Year because it frames the rest of the reading in time, suggesting which of a person's longer-term themes may feel most active now. Like every number here, it describes a mood to notice rather than events that are bound to occur."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is Pythagorean numerology the same as Chaldean numerology?",
+      "answer": "No. Chaldean numerology uses a different letter chart, assigning values from 1 to 8 based on sound, and it treats names differently. Unified Reading uses the Pythagorean system throughout."
+    },
+    {
+      "question": "Which name should I use for numerology?",
+      "answer": "The tradition uses the full name given at birth, which is what the Unified Reading form asks for. Some people also look at a current name for comparison, but the birth name is the standard starting point."
+    },
+    {
+      "question": "Why do different numerology calculators give different results?",
+      "answer": "Usually because of conventions: whether Y is a vowel, whether master numbers are kept in intermediate steps, and whether the date is reduced in parts or as one long string. Unified Reading documents each of its choices."
+    },
+    {
+      "question": "What is the most important number in numerology?",
+      "answer": "Most practitioners treat the Life Path as the central number because it comes from the birth date, which never changes. The name numbers and Personal Year add detail around it."
+    },
+    {
+      "question": "Does numerology work with names in other alphabets?",
+      "answer": "The Pythagorean chart is defined for the Latin alphabet. Accented letters are reduced to their base letters, but names written in other scripts need a transliteration first, and results depend on which transliteration is used."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

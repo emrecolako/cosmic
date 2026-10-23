@@ -1,0 +1,66 @@
+{
+  "description": "All twelve Life Path numbers explained, 1 to 9 plus master numbers 11, 22 and 33, with every Life Path compatibility pairing from 1 and 1 to 9 and 9.",
+  "answer": "In numerology, the Life Path number is calculated from the full date of birth and read as the broad theme of a life, from the independent 1 to the compassionate 9. There are twelve possible Life Paths: the single digits 1 to 9 and the master numbers 11, 22 and 33, which are kept whole.",
+  "sections": [
+    {
+      "heading": "What a Life Path number is",
+      "paragraphs": [
+        "The Life Path is the most widely used number in numerology. It is derived from the date of birth alone, so unlike name-based numbers it cannot change, and practitioners usually treat it as the backbone of a reading. Each Life Path has a traditional title and a set of keywords: 1 is the Leader, linked with independence; 2 the Diplomat, with cooperation; 3 the Communicator, with expression; 4 the Builder, with stability; 5 the Adventurer, with freedom; 6 the Nurturer, with responsibility; 7 the Seeker, with introspection; 8 the Powerhouse, with achievement; and 9 the Humanitarian, with compassion. The master numbers add the Intuitive Master 11, the Master Builder 22 and the Master Teacher 33. These titles are shorthand for themes that tend to recur, and the individual pages describe how each one shows up at work, in relationships and as a growth edge.",
+        "Each number's page also includes a worked example date and the traditional keywords taken directly from the calculation tables the app uses."
+      ]
+    },
+    {
+      "heading": "How to calculate a Life Path",
+      "paragraphs": [
+        "The method Unified Reading uses reduces the month, the day and the year separately, then adds the three results and reduces once more. Take 4 November 1990: the month 11 stays 11 because it is a master number, the day 4 stays 4, and the year 1990 sums to 19, then to 10, then to 1. Adding 11, 4 and 1 gives 16, which reduces to 7, so the Life Path is 7. Reducing in parts matters, because adding all eight digits in one string can lose a master number that appears along the way or produce a different total. Any final total of 11, 22 or 33 is kept as a master number. The Life Path calculator on this site shows each step for any date you enter, and it performs the arithmetic in your browser so the date stays private.",
+        "Readers whose birthday falls on the 11th, 22nd or 29th, or in November, often see master numbers appear in the steps, which is one reason to check the working."
+      ]
+    },
+    {
+      "heading": "Reading Life Path compatibility",
+      "paragraphs": [
+        "Life Path compatibility compares the themes of two numbers rather than producing a score. Traditional readings look at whether both numbers are odd, both even or mixed: odd numbers are associated with active, outward energy and even numbers with receptive, steadying energy. Many modern numerologists also group the digits into three families, the thinkers 1, 5 and 7, the builders 2, 4 and 8, and the creatives 3, 6 and 9, and read pairings within a family as easy to understand and pairings across families as complementary. Some add the two Life Paths together to describe the relationship itself as a third number. The forty-five pairing pages here cover every combination of the single digits, including same-number pairs, and each one describes what the two paths tend to bring, where friction usually starts and practical ways to work with it.",
+        "Pair pages work in either order, so Life Path 9 and 1 leads to the same page as Life Path 1 and 9, and the reversed address simply redirects."
+      ]
+    },
+    {
+      "heading": "Master numbers and their roots",
+      "paragraphs": [
+        "Master numbers 11, 22 and 33 are read as intensified forms of their roots, 2, 4 and 6. Someone with Life Path 11 carries the 2's sensitivity and cooperation with an added charge of intuition and idealism. A 22 carries the 4's discipline joined to a vision of building for many people. A 33 carries the 6's care expressed through teaching and service. Because the roots are so central, many numerologists suggest that people with a master number read both pages, and the compatibility pairings for a master number are usually read through its root: a Life Path 11 looking at partnerships can start with the 2 pairings. Master numbers appear less often than the single digits because they need a precise total. They describe a style and a set of pressures, not a rank, and every Life Path has its own strengths and growth edges.",
+        "Master numbers do not have pairing pages of their own, so the root number's pairings are the natural place to start."
+      ]
+    },
+    {
+      "heading": "Life Path, name numbers and the full picture",
+      "paragraphs": [
+        "The Life Path is the centre of most numerology readings, but it rarely works alone. Two people with the same Life Path can have very different Expression, Soul Urge and Personality numbers, and those name-based numbers often explain why one Life Path 5 is a bold traveller while another channels the same restlessness into a constantly changing career. The Personal Year adds timing, describing which themes may feel active now. A Unified Reading calculates all of these from the birth name and date, then sets them beside the Western Sun sign and Chinese animal, noting where the systems reinforce each other and where they pull apart. If your Life Path and Sun sign tell similar stories, the reading leans into that agreement; if they contrast, it treats the contrast as complexity rather than contradiction. That synthesis is what the library pages point toward, one tradition at a time.",
+        "Which number resonates is ultimately personal, and some readers feel the root describes them better than the master number, or the other way round."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is the rarest Life Path number?",
+      "answer": "Life Path 33 is the least common because the reduced month, day and year must add to exactly 33. Rarity has no bearing on meaning; every Life Path is read as equally valid."
+    },
+    {
+      "question": "Can my Life Path number change?",
+      "answer": "No. It comes from the date of birth, which never changes. Name-based numbers can shift if you analyse a different name, but the Life Path stays fixed."
+    },
+    {
+      "question": "Which Life Path numbers are compatible?",
+      "answer": "Numerology does not rank pairings. Same-family numbers (1-5-7, 2-4-8, 3-6-9) are often described as easy matches, and odd-even pairings as complementary, but every pairing page describes strengths and friction rather than a verdict."
+    },
+    {
+      "question": "Is the Life Path the same as the Destiny number?",
+      "answer": "No. The Life Path comes from the birth date. The Destiny number, also called Expression, comes from all the letters of the birth name. A Unified Reading calculates both."
+    },
+    {
+      "question": "What does a Life Path number say about career?",
+      "answer": "Each Life Path page has a section on work describing the environments and roles traditionally associated with that number. These are themes to consider alongside skills, values and circumstances, not career advice."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

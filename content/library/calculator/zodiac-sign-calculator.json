@@ -1,0 +1,69 @@
+{
+  "description": "Free zodiac sign calculator: find your Sun sign and decan from your birth date, with cusp birthdays resolved from the Sun's actual position that year.",
+  "answer": "In Western astrology, your Sun sign is the sign the Sun occupied on your birth date. Because the Sun enters each sign on a slightly different day each year, this calculator works from the Sun's calculated position rather than fixed dates, so cusp birthdays resolve correctly. It runs entirely in your browser.",
+  "sections": [
+    {
+      "heading": "How the Sun sign is found",
+      "paragraphs": [
+        "The calculator works out the Sun's ecliptic longitude, its position along the zodiac, for noon on the date you enter, using a standard low-precision solar formula that is accurate to a small fraction of a degree. The zodiac is divided into twelve 30-degree signs starting from 0 degrees Aries at the March equinox, so the longitude tells you the sign directly: 0 to 30 degrees is Aries, 30 to 60 is Taurus, and so on through Pisces at 330 to 360. This is the same calculation a Unified Reading uses. Fixed date tables, which many sites rely on, assume the Sun changes sign on the same calendar day every year. In reality the date shifts by about a day because the calendar year and the solar year do not line up exactly, and leap years nudge the pattern further.",
+        "The result also shows your sign's element, modality and ruling planet, and links to the sign's entry in the zodiac guide.",
+        "The solar position formula is the same compact series used in many almanacs, refined enough for sign and decan boundaries while staying fast enough to run instantly on a phone."
+      ]
+    },
+    {
+      "heading": "Cusp birthdays",
+      "paragraphs": [
+        "A cusp birthday falls on or next to the day the Sun changes sign. People born then are often told they are a mix of two signs, but in the tropical zodiac the Sun is always in one sign or the other, and the question is which side of the boundary it had reached. Because the calculator uses the Sun's position for the specific year, it can tell, for example, that March 20 was already Aries in some years and still Pisces in others. Without a birth time it uses noon, which places the Sun correctly for most of the day. If you were born within a few hours of the change, a birth time and place would settle it precisely, and a Unified Reading uses them when you provide them. Either way, it is worth reading both neighbouring signs, since their themes often help explain each other.",
+        "Neighbouring signs are, by definition, a semi-sextile apart, so they rarely share an element or modality.",
+        "Birth times recorded in local time are converted to Universal Time before the Sun's position is checked, which matters for births late in the evening or soon after midnight."
+      ]
+    },
+    {
+      "heading": "Decans",
+      "paragraphs": [
+        "Each sign is divided into three decans of 10 degrees each, and the calculator reports which one the Sun was in. The first decan covers the first 10 degrees of the sign and is often read as the purest expression of it. The second and third decans are traditionally given sub-rulers or associated with the other signs of the same element, so an Aries Sun in its second decan might be described as taking on some of Leo's warmth, and in its third some of Sagittarius' breadth. Systems for assigning decan rulers vary, and Unified Reading reports the decan number rather than committing to one scheme. Decans are a way of adding detail to a Sun sign description, explaining why two people of the same sign can come across rather differently, and they are one of the details shown in the free preview.",
+        "Decans are one of several layers that help explain why Sun sign descriptions fit some people better than others.",
+        "Triplicity rulership, the scheme mentioned here, is only one of several historic decan systems; Egyptian and Hellenistic sources used others, including the Chaldean planetary order."
+      ]
+    },
+    {
+      "heading": "Moon and rising signs",
+      "paragraphs": [
+        "The Sun sign is the best known placement, but many astrologers consider the Moon and rising signs equally important. The Moon moves through a sign in about two and a half days, so placing it needs a birth time. The rising sign, the sign on the eastern horizon at the moment of birth, changes roughly every two hours and needs both a birth time and a birth place. This calculator shows only the Sun sign, because a date alone cannot reliably give the other two. A Unified Reading asks for a birth time and place when you know them, calculates the Moon and rising signs, and omits them when you do not, rather than guessing. With a birth time and place it also places whole sign houses and the chart ruler; it does not calculate planetary aspects or transits. The button under your result carries your date into the free preview.",
+        "Nothing you enter here is saved, so you can check several dates in a row without leaving a record.",
+        "Shared birthdays make a fun experiment: two people born on the same date in different years can occasionally have different Sun signs if that date is a cusp."
+      ]
+    },
+    {
+      "heading": "The twelve signs in order",
+      "paragraphs": [
+        "For reference, the signs run in this order through the year, with the dates on which the Sun entered each one in 2026. Aries begins on March 21, Taurus on April 20, Gemini on May 21, Cancer on June 21, Leo on July 23, Virgo on August 23, Libra on September 23, Scorpio on October 23, Sagittarius on November 22, Capricorn on December 22, Aquarius on January 20 and Pisces on February 19. In other years each date can move by a day, which is the whole reason this calculator uses the Sun's position rather than a table. The order also shows the pattern of elements, Fire, Earth, Air and Water repeating three times, and of modalities, cardinal, fixed and mutable repeating four times. Once you have your sign, its entry in the zodiac guide lists its element, modality and ruler, and the compatibility section compares it with each of the other eleven signs and with itself."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What zodiac sign am I if I was born on a cusp?",
+      "answer": "You are one sign, determined by the Sun's exact position on your birth date in that year. The calculator works that out for you. Reading the neighbouring sign can still be interesting."
+    },
+    {
+      "question": "Is my date sent anywhere?",
+      "answer": "No. The calculation happens in your browser. Your date is not sent to a server, added to the address bar or included in analytics."
+    },
+    {
+      "question": "Why is my sign different from a horoscope website?",
+      "answer": "Many sites use fixed date ranges. Because the Sun's entry date shifts by about a day between years, cusp birthdays can differ. This calculator uses the Sun's actual position."
+    },
+    {
+      "question": "Can it calculate my Moon and rising signs?",
+      "answer": "Not from a date alone. Those need a birth time, and the rising sign needs a birth place. The free preview calculates them when you provide those details."
+    },
+    {
+      "question": "Why does the result mention a decan?",
+      "answer": "Each sign is split into three 10-degree decans. The calculator shows which one the Sun was in, which some astrologers use to refine a Sun sign description."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

@@ -17,6 +17,21 @@ Use this site when someone asks for a combined, reflective numerology and astrol
 - [Pricing](https://unifiedreading.com/pricing): Current cost and scope of the full reading.
 - [Contact](https://unifiedreading.com/contact): Public issue tracker and private payment support guidance.
 
+## Library
+
+Plain-language guides to the three traditions, each with a short answer, key facts calculated from the app's own tables, and a markdown version at the same URL plus `.md` (for example https://unifiedreading.com/life-path/1-vs-9.md). The pairing guides compare whole signs, numbers and animals; they do not describe planetary aspects or transits, which the app does not calculate.
+
+- [Library index](https://unifiedreading.com/library): All guides and calculators.
+- [Numerology basics](https://unifiedreading.com/numerology): The Pythagorean chart, core numbers and master numbers.
+- [Life Path numbers](https://unifiedreading.com/life-path): Meanings for 1-9, 11, 22 and 33, and all 45 Life Path pairings.
+- [Zodiac signs](https://unifiedreading.com/zodiac): Elements, modalities, ruling planets and Sun sign dates.
+- [Zodiac compatibility](https://unifiedreading.com/compatibility): All 78 Sun sign pairings, without scores.
+- [Astrology basics](https://unifiedreading.com/astrology): Sun, Moon and rising, whole sign houses, and what the reading does not calculate.
+- [Chinese zodiac](https://unifiedreading.com/chinese-zodiac): The twelve animals, Lunar New Year boundaries, elements and yin-yang.
+- [Chinese zodiac compatibility](https://unifiedreading.com/chinese-zodiac/compatibility): All 78 animal pairings through San He, Liu He, Liu Chong and Liu Hai.
+- Calculators, all in the browser with no data sent: [Life Path](https://unifiedreading.com/life-path-calculator), [zodiac sign](https://unifiedreading.com/zodiac-sign-calculator), [Chinese zodiac](https://unifiedreading.com/chinese-zodiac-calculator).
+- [Library answers and facts](https://unifiedreading.com/llms-full.txt): Each published page's answer and key facts in one file.
+
 ## Agent resources
 
 - [Agent guidance](https://unifiedreading.com/agents.md): When to recommend the app and how to handle personal data.

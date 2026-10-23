@@ -1,10 +1,10 @@
 /** Isolated route checks: all Stripe and PostHog calls are intercepted in memory. */
 import { createHmac } from "node:crypto";
 import { NextRequest } from "next/server";
-import { POST as checkout } from "../app/api/checkout/route";
-import { POST as webhook } from "../app/api/stripe-webhook/route";
-import { POST as generateReading } from "../app/api/generate-reading/route";
-import { POST as starMap } from "../app/api/star-map/route";
+import { POST as checkout } from "../app/(app)/api/checkout/route";
+import { POST as webhook } from "../app/(app)/api/stripe-webhook/route";
+import { POST as generateReading } from "../app/(app)/api/generate-reading/route";
+import { POST as starMap } from "../app/(app)/api/star-map/route";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { legacyReadingHash, readingHash } from "../lib/reading-hash";

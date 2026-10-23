@@ -1,0 +1,70 @@
+{
+  "description": "The twelve Chinese zodiac animals explained: order, Lunar New Year boundaries, fixed and year elements, yin and yang, with a guide to each animal.",
+  "answer": "In Chinese astrology, each lunar year is assigned one of twelve animals in a fixed order, Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog and Pig, along with an element and a yin or yang polarity. The year begins at Lunar New Year, not January 1.",
+  "sections": [
+    {
+      "heading": "The twelve animals",
+      "paragraphs": [
+        "The Chinese zodiac, known as shengxiao, assigns one of twelve animals to each year in a repeating cycle. The order is Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat, Monkey, Rooster, Dog and Pig, and it is tied to the twelve earthly branches used in the traditional Chinese calendar, from Zi for the Rat to Hai for the Pig. A popular story explains the order as the result of a race to the Jade Emperor, in which the clever Rat rode on the Ox's back and leapt ahead at the finish, while the Pig arrived last after stopping to eat. Each animal has a traditional character, from the resourceful Rat to the generous Pig, and those characters are used as a lens on personality and relationships. The animal pages describe each one's character, work style, relationships and growth edges.",
+        "Folk stories differ in their details from region to region, but the fixed order of the twelve animals is the same everywhere the system is used.",
+        "Shengxiao literally refers to the animals that people are born under, and the system is woven into festivals, New Year decorations, gifts and greetings across China, Korea, Vietnam, Japan and diaspora communities worldwide."
+      ]
+    },
+    {
+      "heading": "Lunar New Year boundaries",
+      "paragraphs": [
+        "Animal years begin at Lunar New Year, which falls on a different date each year between January 21 and February 20. Anyone born in January or early February therefore needs to check the date before assuming their animal. Someone born on January 20, 1990, for instance, is a Snake rather than a Horse, because Lunar New Year that year fell on January 27, while someone born on February 1, 1990 is a Horse. Unified Reading uses a table of Lunar New Year dates from 1924 to 2044 to place each birth in the correct zodiac year. Outside that range it assumes a February 5 boundary, which is close but not exact. The Chinese zodiac calculator on this site shows the Lunar New Year date for the year you enter and whether your birthday falls before it.",
+        "The animal pages list each animal's years from 1924 to 2044, with the element attached to each year.",
+        "Lunar New Year itself is a moveable feast tied to the lunisolar calendar, so its date in the Gregorian calendar wanders by several weeks over a few years, rather than drifting slowly the way the zodiac signs do."
+      ]
+    },
+    {
+      "heading": "Fixed elements and year elements",
+      "paragraphs": [
+        "Two kinds of element appear in the Chinese zodiac, and they are easy to confuse. Each animal has a fixed element tied to its earthly branch: the Rat and Pig are Water, the Tiger and Rabbit are Wood, the Snake and Horse are Fire, the Monkey and Rooster are Metal, and the Ox, Dragon, Goat and Dog are Earth. Separately, every year has a year element from the ten-year cycle of heavenly stems, which runs Wood, Fire, Earth, Metal and Water, two years each. Combining the two cycles produces sixty unique year combinations, such as Metal Horse or Water Rabbit, before the pattern repeats. A Unified Reading reports the year element because it distinguishes people who share an animal, while the compatibility pages use the fixed elements and the generating and controlling cycles of the five elements.",
+        "Five-element relationships between animals appear on every Chinese zodiac pairing page in this library.",
+        "Some readers also notice how their year element colours their animal: a Water Tiger is often described as calmer and more strategic, a Fire Tiger as louder and quicker to act."
+      ]
+    },
+    {
+      "heading": "Yin and yang",
+      "paragraphs": [
+        "Polarity is the third layer. In the twelve-animal cycle, the animals alternate between yang and yin: the Rat, Tiger, Dragon, Horse, Monkey and Dog are yang, and the Ox, Rabbit, Snake, Goat, Rooster and Pig are yin. Years follow the same rhythm, so even-numbered years in the Western calendar are yang and odd-numbered years are yin. Yang is traditionally associated with outward, active and expanding qualities, and yin with inward, receptive and consolidating ones. Neither is better; the tradition treats them as complementary halves of a whole, each necessary to the other. Polarity helps explain why animals two branches apart share a quality, and why opposite animals on the wheel, which always share polarity, can feel both familiar and opposed. The pair pages note polarity alongside the five-element relationship and the classical harmony and clash structures.",
+        "Polarity also appears in the key-facts table on every animal page, alongside the animal's branch and fixed element.",
+        "Yin and yang are also applied to the heavenly stems, so each element has a yang year and a yin year, Yang Wood followed by Yin Wood, and so on through the cycle. Opposites therefore balance rather than cancel."
+      ]
+    },
+    {
+      "heading": "The sixty-year cycle",
+      "paragraphs": [
+        "Because the twelve animals and the ten heavenly stems advance together, a given combination of element and animal returns only every sixty years. This sexagenary cycle has been used to count years in China for well over two thousand years, and it gives each year a two-part name, a stem and a branch, that maps onto the element and animal of the zodiac. The current cycle began in 1984 with the Wood Rat and will return to it in 2044, which is also the last year in Unified Reading's Lunar New Year table. In everyday terms, the cycle explains why people sometimes say they are a particular kind of animal, a Fire Horse or a Water Rabbit, and why turning sixty is a significant birthday in many East Asian cultures: it marks the return of the year element and animal of one's birth. The animal pages list each year's element so you can find your own combination quickly.",
+        "Elders in many families still mark these anniversaries with banquets, red clothing or gifts, honouring the completion of a full cycle of stems and branches."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What is my Chinese zodiac animal?",
+      "answer": "It is the animal of the lunar year you were born in. Find your year, then check whether your birthday falls before that year's Lunar New Year; if it does, your animal is the previous one. The calculator does this for you."
+    },
+    {
+      "question": "Why is my Chinese zodiac different from what I expected?",
+      "answer": "Usually because of the Lunar New Year boundary. If you were born in January or early February, you may belong to the previous year's animal."
+    },
+    {
+      "question": "What is the difference between my animal's element and my year element?",
+      "answer": "The fixed element belongs to the animal itself, such as Water for the Rat. The year element comes from the heavenly stems and changes every two years, giving combinations such as Metal Rat or Wood Rat."
+    },
+    {
+      "question": "Are the twelve animals the same across East Asia?",
+      "answer": "Largely, with local variations. The Vietnamese zodiac, for example, has the Cat in place of the Rabbit and often the Water Buffalo in place of the Ox."
+    },
+    {
+      "question": "Which animal is the current year?",
+      "answer": "2026 is the year of the Horse, a Fire Horse, from Lunar New Year on February 17, 2026 until Lunar New Year 2027 on February 6. 2027 will be the year of the Goat."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

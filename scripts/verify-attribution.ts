@@ -73,16 +73,16 @@ visit("https://unifiedreading.com/", "https://preview-abc.vercel.app/");
 visit("https://unifiedreading.com/", "https://www.unifiedreading.com/pricing");
 check("internal referrers are ignored", storedAttribution(), { first: {}, last: {} });
 visit("https://unifiedreading.com/", "https://www.reddit.com/r/x/?share=1");
-check("referrer-only first touch drops the query", storedAttribution().first, { referrer: "https://www.reddit.com/r/x/" });
+check("referrer-only first touch drops the query", storedAttribution().first, { referrer: "https://www.reddit.com/r/x/", landing_path: "/" });
 visit("https://unifiedreading.com/?utm_source=maya&utm_medium=partner&utm_campaign=oct-sprint");
-check("UTM visit replaces referrer-only first touch", storedAttribution().first, { utm_source: "maya", utm_medium: "partner", utm_campaign: "oct-sprint" });
+check("UTM visit replaces referrer-only first touch", storedAttribution().first, { utm_source: "maya", utm_medium: "partner", utm_campaign: "oct-sprint", landing_path: "/" });
 visit("https://unifiedreading.com/?utm_source=tiktok&utm_medium=social&utm_term=astro");
 check("later UTM visit keeps first touch", storedAttribution().first.utm_source, "maya");
-check("later UTM visit updates last touch", storedAttribution().last, { utm_source: "tiktok", utm_medium: "social", utm_term: "astro" });
+check("later UTM visit updates last touch", storedAttribution().last, { utm_source: "tiktok", utm_medium: "social", utm_term: "astro", landing_path: "/" });
 visit("https://unifiedreading.com/", "https://news.ycombinator.com/");
 check("referrer-only later visit changes nothing", storedAttribution().last.utm_source, "tiktok");
 const roundTrip = attributionFromMetadata(flattenAttribution(storedAttribution()));
-check("touches survive Stripe metadata round trip", roundTrip, { first: storedAttribution().first, last: { utm_source: "tiktok", utm_medium: "social", utm_term: "astro" } });
+check("touches survive Stripe metadata round trip", roundTrip, { first: storedAttribution().first, last: { utm_source: "tiktok", utm_medium: "social", utm_term: "astro", landing_path: "/" } });
 
 async function verifySharing() {
   // --- Share links ---
@@ -92,7 +92,7 @@ async function verifySharing() {
   check("share link keeps a path", shareUrl("native", { path: "/sample" }), "https://unifiedreading.com/sample?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=native");
   check("sharer ref is the first 12 hex of SHA-256(distinct_id)", await shareRefFor("0192f0e4-7c1a-7d3e-9b2f-5a6c7d8e9f01"), createHash("sha256").update("0192f0e4-7c1a-7d3e-9b2f-5a6c7d8e9f01").digest("hex").slice(0, 12));
 
-  const shareTouch = { utm_source: "share", utm_medium: "referral", utm_campaign: "reading-share", utm_content: "native" };
+  const shareTouch = { utm_source: "share", utm_medium: "referral", utm_campaign: "reading-share", utm_content: "native", landing_path: "/" };
   visit(shareUrl("native", { ref }));
   check("share landing stores the incoming ref", storedAttribution().shareRef, ref);
   check("share landing keeps an earlier first touch", storedAttribution().first.utm_source, "maya");
@@ -124,6 +124,45 @@ async function verifySharing() {
   visit(shareUrl("copy"));
   check("share landing is a first touch for a new visitor", storedAttribution().first.utm_content, "copy");
   check("share landing without a ref stores none", storedAttribution().shareRef, undefined);
+
+  // --- Library landings ---
+  for (const key of Object.keys(store)) delete store[key];
+  visit("https://unifiedreading.com/?utm_source=maya&utm_medium=partner");
+  visit(shareUrl("copy", { path: "/life-path/1-vs-9", campaign: "library-share" }));
+  check("compare link keeps t and v and adds the compare-friend tags", shareUrl("native", { ref: "0123456789ab", path: "/compare?t=lp&v=7", campaign: "compare-friend" }), "https://unifiedreading.com/compare?t=lp&v=7&utm_source=share&utm_medium=referral&utm_campaign=compare-friend&utm_content=native&ref=0123456789ab");
+  check("library share link format", shareUrl("copy", { path: "/life-path/1-vs-9", campaign: "library-share" }), "https://unifiedreading.com/life-path/1-vs-9?utm_source=share&utm_medium=referral&utm_campaign=library-share&utm_content=copy");
+  check("library landing records its path on the last touch", storedAttribution().last.landing_path, "/life-path/1-vs-9");
+  check("library landing keeps the partner first touch", [storedAttribution().first.utm_source, storedAttribution().first.landing_path], ["maya", "/"]);
+  check("library landing does not override partner credit", resolveAttribution(storedAttribution()), { rule: "first_touch", partner: "maya" });
+  check("landing path reaches Checkout metadata", flattenAttribution(storedAttribution()).last_touch_landing_path, "/life-path/1-vs-9");
+  visit("https://unifiedreading.com/zodiac");
+  check("internal navigation without a touch leaves the landing path alone", storedAttribution().last.landing_path, "/life-path/1-vs-9");
+  for (const key of Object.keys(store)) delete store[key];
+  visit("https://unifiedreading.com/life-path/1-vs-9?utm_source=instagram&utm_medium=social&utm_content=reel-123");
+  const reelTouch = { utm_source: "instagram", utm_medium: "social", utm_content: "reel-123", landing_path: "/life-path/1-vs-9" };
+  check("reel link to a pair page is the first touch", storedAttribution().first, reelTouch);
+  check("reel link to a pair page is the last touch", storedAttribution().last, reelTouch);
+  const reelLanding = "https://unifiedreading.com/life-path/1-vs-9?utm_source=instagram&utm_medium=social&utm_content=reel-123";
+  const wizardUrl = "https://unifiedreading.com/?utm_source=instagram&utm_medium=social&utm_content=reel-123#details";
+  visit(wizardUrl, reelLanding);
+  check("query-preserving wizard hand-off keeps the last touch", storedAttribution().last, reelTouch);
+  check("wizard hand-off preserves last-touch Checkout landing", flattenAttribution(storedAttribution()).last_touch_landing_path, "/life-path/1-vs-9");
+  check("moving from the pair page to the wizard keeps the reel touch", storedAttribution().first.utm_content, "reel-123");
+  check("reel touch reaches Checkout metadata", [flattenAttribution(storedAttribution()).first_touch_utm_source, flattenAttribution(storedAttribution()).first_touch_utm_content, flattenAttribution(storedAttribution()).first_touch_landing_path], ["instagram", "reel-123", "/life-path/1-vs-9"]);
+  check("a reel is not a partner", resolveAttribution(storedAttribution()), { rule: "none" });
+
+  visit("https://unifiedreading.com/sample?utm_source=instagram&utm_medium=social&utm_content=reel-456", wizardUrl);
+  check("changed campaign tags on an internal link start a new last touch", [storedAttribution().last.utm_content, storedAttribution().last.landing_path], ["reel-456", "/sample"]);
+  visit("https://unifiedreading.com/zodiac?utm_source=instagram&utm_medium=social&utm_content=reel-456", "https://instagram.com/");
+  check("external arrival with the same campaign records its new landing", storedAttribution().last.landing_path, "/zodiac");
+  visit("https://unifiedreading.com/library?utm_source=instagram&utm_medium=social&utm_content=reel-456");
+  check("new arrival without a referrer records its landing", storedAttribution().last.landing_path, "/library");
+  visit("https://unifiedreading.com/?utm_source=instagram&utm_medium=social", "https://unifiedreading.com/library");
+  check("removing a campaign tag starts a new last touch", [storedAttribution().last.utm_content, storedAttribution().last.landing_path], [undefined, "/"]);
+
+  for (const key of Object.keys(store)) delete store[key];
+  visit("https://unifiedreading.com/compatibility/aries-and-leo", "https://www.google.com/");
+  check("organic library landing is a first touch with its path", storedAttribution().first, { referrer: "https://www.google.com", landing_path: "/compatibility/aries-and-leo" });
 
 }
 
