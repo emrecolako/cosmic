@@ -391,7 +391,7 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
         >
           ← {t.wizard.back}
         </button>
-        <Button onClick={handleNext} disabled={isLoading} size="lg">
+        <Button onClick={handleNext} disabled={isLoading} size="lg" data-attr={step === 4 ? "wizard-reveal-reading" : "wizard-continue"}>
           {isLoading
             ? t.wizard.loading
             : step === 4

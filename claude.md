@@ -211,6 +211,7 @@ One-time Stripe Checkout unlock per reading, without accounts or a database (`li
 PostHog events: `reading_started` (wizard submit), `preview_viewed` (teaser finished), `checkout_started` (checkout session created), `order_paid` (server-side from `/api/stripe-webhook`, signature-checked with `STRIPE_WEBHOOK_SECRET`, deduplicated by a UUID derived from the session ID).
 - `lib/attribution.ts` stores first-touch `utm_source/medium/campaign/content` and external referrer in localStorage (`ur:attribution`). They are sent as `first_touch_*` on client events and copied, with `posthog_distinct_id`, into Checkout Session metadata so `order_paid` joins the same person.
 - UTM convention: partners `utm_source=<handle>&utm_medium=partner&utm_campaign=oct-sprint`; social `utm_medium=social`; email `utm_medium=email`.
+- `checkout_started` has `placement`: `inline_card` (card after the snapshot), `sticky_bar` (mobile bar shown while the card is off-screen) or `toolkit_link`. CTAs carry `data-attr` labels so autocapture names them (text is masked).
 - Never send form answers (name, birth details, context) to PostHog.
 
 ---

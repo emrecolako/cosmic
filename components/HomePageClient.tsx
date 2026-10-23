@@ -3,6 +3,7 @@
 import Link from "next/link";
 import FortuneCards from "@/components/FortuneCards";
 import { atlasCopy } from "@/lib/i18n/atlas";
+import { formatMessage } from "@/lib/i18n";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import InputWizard from "@/components/InputWizard";
@@ -29,7 +30,8 @@ type WebMcpDocument = Document & {
   };
 };
 
-export default function HomePage() {
+/** `price` is null where Checkout isn't configured (local and preview builds). */
+export default function HomePage({ price }: { price: string | null }) {
   const router = useRouter();
   const { locale, t } = useI18n();
   const copy = atlasCopy[locale];
@@ -114,11 +116,12 @@ export default function HomePage() {
             <h1 className="atlas-headline">{copy.headline}{" "}<em>{copy.headlineEnd}</em></h1>
             <p className="hero-description">{copy.description}</p>
             <div className="hero-actions">
-              <button className="atlas-primary" onClick={() => { setShowWizard(true); window.scrollTo(0, 0); }}>{copy.discover}<span aria-hidden="true">↗</span></button>
+              <button className="atlas-primary" onClick={() => { setShowWizard(true); window.scrollTo(0, 0); }} data-attr="hero-start-preview">{copy.discover}<span aria-hidden="true">↗</span></button>
               <form action="/sample" method="get" {...sampleToolAttributes}>
-                <button className="atlas-link" type="submit">{copy.sample}<span aria-hidden="true">→</span></button>
+                <button className="atlas-link" type="submit" data-attr="hero-sample">{copy.sample}<span aria-hidden="true">→</span></button>
               </form>
             </div>
+            {price && <p className="hero-note">{formatMessage(copy.heroNote, { price })}</p>}
           </div>
           <figure className="seal-figure"><FortuneCards labels={[t.sections.numbersTitle, t.sections.starMapTitle, t.sections.easternMirrorTitle]} /><figcaption>{copy.eyebrow}</figcaption></figure>
         </section>

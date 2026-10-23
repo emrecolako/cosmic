@@ -2,6 +2,7 @@ import posthog from "posthog-js";
 import { storedAttribution } from "@/lib/attribution";
 
 export type FunnelEvent = "reading_started" | "preview_viewed" | "checkout_started";
+export type CheckoutPlacement = "inline_card" | "sticky_bar" | "toolkit_link";
 
 /** Funnel events carry no form answers; first-touch attribution is attached to each one. */
 export function track(

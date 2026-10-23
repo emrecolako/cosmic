@@ -19,12 +19,12 @@ export default function SharePreview({ markers }: { markers: string[] }) {
     } catch { toast(t.header.shareFailed, 'error'); }
   };
   return <>
-    <button className="atlas-link" onClick={() => dialog.current?.showModal()}>{copy.sharePreview} ↗</button>
+    <button className="atlas-link" onClick={() => dialog.current?.showModal()} data-attr="share-preview">{copy.sharePreview} ↗</button>
     <dialog ref={dialog} className="share-dialog" aria-labelledby="share-title">
       <div className="flex items-center justify-between gap-4"><h2 id="share-title" className="text-xl">{copy.sharePreview}</h2><button className="min-h-11 px-2" onClick={() => dialog.current?.close()} aria-label={copy.close}>✕</button></div>
       <div className="share-preview"><FortuneCards labels={[markers[0], markers[1], markers[2]]} number={Number(markers[0].match(/\d+/)?.[0]) || 7} /><p className="eyebrow">Unified Reading</p><p className="editorial text-3xl mt-4 leading-relaxed">{markers.join(' · ')}</p></div>
       <p className="text-sm text-ink-muted leading-relaxed mb-6">{copy.sharePrivacy}</p>
-      <Button onClick={share}>{copy.copy}</Button>
+      <Button onClick={share} data-attr="share-copy-link">{copy.copy}</Button>
     </dialog>
   </>;
 }

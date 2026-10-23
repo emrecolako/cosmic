@@ -16,7 +16,7 @@ import {
   type CalculatedProfile,
 } from "@/lib/profile";
 import { parseAnalysis } from "@/lib/analysis-stream";
-import { analyticsDistinctId, track } from "@/lib/analytics";
+import { analyticsDistinctId, track, type CheckoutPlacement } from "@/lib/analytics";
 import { storedAttribution } from "@/lib/attribution";
 
 const CHECKOUT_SESSION_KEY = "cosmic:checkout-session";
@@ -190,7 +190,7 @@ export default function ResultsPage() {
     [locale, toast]
   );
 
-  const unlock = useCallback(async () => {
+  const unlock = useCallback(async (placement: CheckoutPlacement) => {
     if (!input || !profile) return;
     setUnlocking(true);
     try {
@@ -207,7 +207,7 @@ export default function ResultsPage() {
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || typeof data.url !== "string") throw new Error();
-      track("checkout_started", { locale, price: paywallPrice || undefined }, { sendInstantly: true });
+      track("checkout_started", { locale, placement, price: paywallPrice || undefined }, { sendInstantly: true });
       window.location.href = data.url;
     } catch {
       setUnlocking(false);
