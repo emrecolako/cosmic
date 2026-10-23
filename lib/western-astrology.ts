@@ -178,8 +178,12 @@ export function getSunSign(
   birthTime?: string,
   timezoneOffsetHours?: number
 ): ZodiacSign {
-  const jd = toJulianDay(birthInstantUTC(dateOfBirth, birthTime, timezoneOffsetHours));
-  const sunLon = getSunLongitude(jd);
+  return sunSignAt(birthInstantUTC(dateOfBirth, birthTime, timezoneOffsetHours));
+}
+
+/** Sun sign, decan and sign details at a UTC instant. */
+export function sunSignAt(utc: Date): ZodiacSign {
+  const sunLon = getSunLongitude(toJulianDay(utc));
 
   const signIndex = Math.floor(sunLon / 30) % 12;
   const meta = ZODIAC_SIGNS[signIndex];
@@ -202,7 +206,7 @@ export function getSunSign(
  * Calculate Julian Day Number from a UTC date.
  * This is the standard astronomical time representation.
  */
-function toJulianDay(date: Date): number {
+export function toJulianDay(date: Date): number {
   const y = date.getUTCFullYear();
   const m = date.getUTCMonth() + 1;
   const d = date.getUTCDate() +
@@ -432,6 +436,11 @@ export function getMoonSign(
   const startOfDay = signAt(0, 0);
   const endOfDay = signAt(23, 59);
   return startOfDay === endOfDay ? startOfDay : null;
+}
+
+/** Moon sign at a UTC instant. */
+export function moonSignAt(utc: Date): string {
+  return SIGN_ORDER[Math.floor(getMoonLongitude(toJulianDay(utc)) / 30) % 12];
 }
 
 /** Moon sign for a date when the birth time zone is unknown: null unless it holds from 00:00 UTC+14 to 23:59 UTC−12. */

@@ -5,7 +5,10 @@ import { POST as checkout } from "../app/api/checkout/route";
 import { POST as webhook } from "../app/api/stripe-webhook/route";
 import { POST as generateReading } from "../app/api/generate-reading/route";
 import { POST as starMap } from "../app/api/star-map/route";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { legacyReadingHash, readingHash } from "../lib/reading-hash";
+import { legacyWesternAstro } from "../lib/legacy-western";
 import { SAMPLE_INPUT } from "../lib/sample";
 import { computeProfile } from "../lib/profile";
 
@@ -208,6 +211,42 @@ async function main() {
     throw new Error("Unexpected external call");
   }) as typeof fetch;
   check("pre-deploy hash still unlocks the reading", (await generateReading(readingRequest("full"))).status, 200);
+
+  // Sessions bought on the previous release hashed that release's westernAstro, which this one computes differently.
+  const geocoderStub = (url: string) => {
+    if (!url.startsWith("https://nominatim.openstreetmap.org/")) return null;
+    return new Response(/tromso|troms%C3%B8/i.test(url) ? JSON.stringify([{ lat: "69.6492", lon: "18.9553" }]) : "[]", { status: 200 });
+  };
+  globalThis.fetch = (async (url: string | URL | Request) => {
+    const geo = geocoderStub(String(url));
+    if (geo) return geo;
+    throw new Error("Unexpected external call");
+  }) as typeof fetch;
+  const previousRelease = JSON.parse(readFileSync(join(__dirname, "fixtures", "legacy-western.json"), "utf8")) as { cases: { input: { dateOfBirth: string; birthTime?: string; birthPlace?: string }; westernAstro: unknown }[] };
+  for (const c of previousRelease.cases) {
+    check(`server reproduces the previous release's westernAstro: ${Object.values(c.input).join(" ")}`, await legacyWesternAstro(c.input), c.westernAstro);
+  }
+  const kolkataInput = { ...SAMPLE_INPUT, dateOfBirth: "1990-01-01", birthTime: "01:00", birthPlace: "Kolkata" };
+  const kolkataProfile = (await computeProfile(kolkataInput))!;
+  const kolkataOld = previousRelease.cases[0];
+  check("previous release had Scorpio rising for Kolkata 01:00", (kolkataOld.westernAstro as { risingSign: string }).risingSign, "Scorpio");
+  check("this release computes Libra rising for it", kolkataProfile.westernAstro.risingSign, "Libra");
+  const kolkataBody = { ...body, ...kolkataInput, age: kolkataProfile.age, numerology: kolkataProfile.numerology, westernAstro: kolkataProfile.westernAstro, chineseZodiac: kolkataProfile.chineseZodiac, lifeStageContext: kolkataProfile.lifeStageContext };
+  const purchasedOnPreviousRelease = legacyReadingHash({ ...kolkataBody, westernAstro: kolkataOld.westernAstro });
+  const purchasedInStaleTab = readingHash({ ...kolkataBody, westernAstro: kolkataOld.westernAstro });
+  for (const [label, hashValue] of [["previous release", purchasedOnPreviousRelease], ["stale tab after deploy", purchasedInStaleTab]] as const) {
+    globalThis.fetch = (async (url: string | URL | Request) => {
+      if (String(url).startsWith("https://api.stripe.com/v1/checkout/sessions/")) return new Response(JSON.stringify(paidSession(hashValue)), { status: 200 });
+      if (String(url).includes("openrouter.ai/api/v1/chat/completions")) return aiResponse("<<<SNAPSHOT>>>Snapshot.\n<<<READING>>>A complete reading.");
+      throw new Error("Unexpected external call");
+    }) as typeof fetch;
+    const request = (path: string) => new NextRequest(`https://preview.example.test${path}`, {
+      method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": "192.0.2.44" },
+      body: JSON.stringify({ ...kolkataBody, mode: "full", checkoutSessionId: "cs_test_reading" }),
+    });
+    check(`${label} purchase still unlocks the star map with this release's westernAstro`, (await starMap(request("/api/star-map"))).status, 200);
+    check(`${label} purchase still unlocks the reading with this release's westernAstro`, (await generateReading(request("/api/generate-reading"))).status, 200);
+  }
 
   globalThis.fetch = (async (url: string | URL | Request) => {
     if (String(url).startsWith("https://nominatim.openstreetmap.org/")) return new Response("[]", { status: 200 });

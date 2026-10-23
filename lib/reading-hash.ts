@@ -1,5 +1,6 @@
 import { createHmac } from "node:crypto";
 import { chartKey } from "./chart/key";
+import { legacyWesternAstro } from "./legacy-western";
 
 function canonicalInputs(body: Record<string, unknown>): unknown[] {
   return [
@@ -44,7 +45,14 @@ export function legacyReadingHash(body: Record<string, unknown>): string {
   return hmac(canonicalInputs(body));
 }
 
-/** Hashes a paid session may carry for this reading, newest first. */
-export function acceptedReadingHashes(body: Record<string, unknown>): string[] {
-  return [readingHash(body), legacyReadingHash(body)];
+/**
+ * Hashes a paid session may carry for this reading, newest first. This PR
+ * changed the client's westernAstro (polar rising, half-hour zones, unknown
+ * zones), so a session bought on the previous release, or in a tab still
+ * running its code, is matched against the recomputed previous output too.
+ */
+export async function acceptedReadingHashes(body: Record<string, unknown>): Promise<string[]> {
+  const previous = await legacyWesternAstro(body);
+  const bodies = previous ? [body, { ...body, westernAstro: previous }] : [body];
+  return [...new Set([...bodies.map(readingHash), ...bodies.map(legacyReadingHash)])];
 }

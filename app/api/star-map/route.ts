@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Payments are temporarily unavailable." }, { status: 503 });
       }
       const sessionId = typeof body.checkoutSessionId === "string" ? body.checkoutSessionId : "";
-      if (!(await isPaidSession(sessionId, acceptedReadingHashes(body)))) {
+      if (!(await isPaidSession(sessionId, await acceptedReadingHashes(body)))) {
         return NextResponse.json({ error: "Payment required." }, { status: 402 });
       }
       access = "full";
