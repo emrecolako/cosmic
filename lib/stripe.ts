@@ -49,6 +49,11 @@ export class StripeError extends Error {
   }
 }
 
+/** Network errors, Stripe 5xx and rate limits can succeed on retry; other 4xx can't. */
+export function isRetryable(error: unknown): boolean {
+  return !(error instanceof StripeError) || error.status >= 500 || error.status === 429;
+}
+
 const ZERO_DECIMAL = new Set(["bif", "clp", "djf", "gnf", "jpy", "kmf", "krw", "mga", "pyg", "rwf", "ugx", "vnd", "vuv", "xaf", "xof", "xpf"]);
 
 /** Stripe minor units (cents) to a decimal amount, e.g. 499 → 4.99. */
@@ -146,6 +151,7 @@ type PromotionCodeRef = string | { id: string } | null | undefined;
 interface OrderSession extends CheckoutSession {
   amount_subtotal: number | null;
   payment_intent: string | { id: string } | null;
+  line_items?: { data?: { price?: { id?: string } | null }[] } | null;
   discounts?: { promotion_code?: PromotionCodeRef }[] | null;
   total_details?: {
     amount_discount?: number;
@@ -165,7 +171,35 @@ export interface PaidOrder {
   promoCode?: string;
   /** `metadata.partner` on the promotion code, set in the Stripe dashboard. */
   promoPartner?: string;
+  priceIds: string[];
   metadata: Record<string, string>;
+}
+
+/** Only promotion codes tagged with `metadata.partner` credit a partner; public codes don't. */
+export function promoPartnerFrom(metadata: Record<string, string> | null | undefined): string | undefined {
+  return metadata?.partner?.trim().toLowerCase() || undefined;
+}
+
+export interface WebhookEvent {
+  type: string;
+  data?: { object?: { id?: string; object?: string; metadata?: Record<string, string> | null } };
+}
+
+const PAID_EVENTS = new Set(["checkout.session.completed", "checkout.session.async_payment_succeeded"]);
+
+/**
+ * The Stripe account is shared with other products. A paid reading session
+ * always carries `metadata.readingHash`; checked before any Stripe API call.
+ */
+export function readingCheckoutSessionId(event: WebhookEvent): string | null {
+  const object = event.data?.object;
+  if (!PAID_EVENTS.has(event.type) || object?.object !== "checkout.session" || !object.id) return null;
+  return object.metadata?.readingHash ? object.id : null;
+}
+
+/** Second check after re-reading the session: it must contain this site's Price. */
+export function isReadingOrder(order: Pick<PaidOrder, "priceIds">, priceId: string | undefined): boolean {
+  return Boolean(priceId) && order.priceIds.includes(priceId!);
 }
 
 /**
@@ -174,7 +208,7 @@ export interface PaidOrder {
  */
 export async function fetchOrder(sessionId: string): Promise<PaidOrder> {
   const session = await stripe<OrderSession>(
-    `/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=total_details.breakdown`
+    `/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=total_details.breakdown&expand[]=line_items`
   );
   const promo =
     session.discounts?.find((d) => d.promotion_code)?.promotion_code ??
@@ -189,7 +223,7 @@ export async function fetchOrder(sessionId: string): Promise<PaidOrder> {
         `/promotion_codes/${encodeURIComponent(promotionCodeId)}`
       );
       promoCode = code.code;
-      promoPartner = code.metadata?.partner?.trim() || code.code.toLowerCase();
+      promoPartner = promoPartnerFrom(code.metadata);
     } catch (error) {
       // A permanent error (e.g. a restricted key without Promotion Codes read) must not block the order.
       if (!(error instanceof StripeError) || error.status >= 500) throw error;
@@ -208,16 +242,31 @@ export async function fetchOrder(sessionId: string): Promise<PaidOrder> {
     promotionCodeId,
     promoCode,
     promoPartner,
+    priceIds: (session.line_items?.data ?? []).flatMap((item) => (item.price?.id ? [item.price.id] : [])),
     metadata: session.metadata ?? {},
   };
 }
 
-/** Merges keys into the metadata of the Checkout Session and its PaymentIntent. */
+/**
+ * Merges keys into the metadata of the Checkout Session and its PaymentIntent.
+ * Each write is attempted even if the other fails; the first error is rethrown
+ * afterwards, preferring one worth retrying.
+ */
 export async function updateOrderMetadata(order: PaidOrder, values: Record<string, string>): Promise<void> {
   const form = Object.fromEntries(Object.entries(values).map(([key, value]) => [`metadata[${key}]`, value]));
   if (Object.keys(form).length === 0) return;
-  await stripe(`/checkout/sessions/${encodeURIComponent(order.sessionId)}`, { method: "POST", form });
-  if (order.paymentIntentId) {
-    await stripe(`/payment_intents/${encodeURIComponent(order.paymentIntentId)}`, { method: "POST", form });
+  const targets = [`/checkout/sessions/${encodeURIComponent(order.sessionId)}`];
+  if (order.paymentIntentId) targets.push(`/payment_intents/${encodeURIComponent(order.paymentIntentId)}`);
+  const errors: unknown[] = [];
+  for (const path of targets) {
+    try {
+      await stripe(path, { method: "POST", form });
+    } catch (error) {
+      console.error(`Stripe metadata write to ${path.split("/")[1]} failed:`, error instanceof Error ? error.message : error);
+      errors.push(error);
+    }
+  }
+  if (errors.length > 0) {
+    throw errors.find(isRetryable) ?? errors[0];
   }
 }

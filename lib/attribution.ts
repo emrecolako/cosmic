@@ -5,7 +5,7 @@
  * - first touch: the first visit with UTM parameters or an external referrer.
  *   A referrer-only first touch is replaced by the first later UTM visit.
  * - last touch: the most recent visit with UTM parameters.
- * - the promotion code applied in Stripe Checkout, which overrides both.
+ * - a partner promotion code (one with `metadata.partner`), which overrides both.
  *
  * Touches live in localStorage and are copied into Stripe Checkout metadata.
  */
@@ -76,16 +76,21 @@ export function attributionFromMetadata(metadata: Record<string, string>): Attri
 export type AttributionRule = "promo_code" | "last_touch" | "first_touch" | "none";
 
 /**
- * Who gets credit for an order: the partner behind the promotion code, else
- * the last partner-medium touch, else the first partner-medium touch.
+ * Who gets credit for an order: the partner tagged on the promotion code,
+ * else the last partner-medium touch, else the first. Partners are compared
+ * lowercased so `utm_source=Maya` and a `partner=maya` code match.
  */
 export function resolveAttribution(
   { first, last }: Attribution,
   promoPartner?: string
 ): { rule: AttributionRule; partner?: string } {
-  if (promoPartner) return { rule: "promo_code", partner: promoPartner };
-  if (last.utm_medium === "partner" && last.utm_source) return { rule: "last_touch", partner: last.utm_source };
-  if (first.utm_medium === "partner" && first.utm_source) return { rule: "first_touch", partner: first.utm_source };
+  if (promoPartner) return { rule: "promo_code", partner: promoPartner.toLowerCase() };
+  const partnerOf = (touch: Touch) =>
+    touch.utm_medium?.toLowerCase() === "partner" ? touch.utm_source?.toLowerCase() : undefined;
+  const lastPartner = partnerOf(last);
+  if (lastPartner) return { rule: "last_touch", partner: lastPartner };
+  const firstPartner = partnerOf(first);
+  if (firstPartner) return { rule: "first_touch", partner: firstPartner };
   return { rule: "none" };
 }
 

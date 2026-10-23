@@ -2,21 +2,21 @@ import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { attributionFromMetadata, flattenAttribution, resolveAttribution, sanitizeDistinctId } from "@/lib/attribution";
 import { captureServerEvent, posthogServerConfigured, stableUuid } from "@/lib/posthog-server";
-import { fetchOrder, majorUnits, StripeError, updateOrderMetadata, verifyWebhookSignature } from "@/lib/stripe";
+import {
+  fetchOrder,
+  isReadingOrder,
+  isRetryable,
+  majorUnits,
+  readingCheckoutSessionId,
+  updateOrderMetadata,
+  verifyWebhookSignature,
+  type WebhookEvent,
+} from "@/lib/stripe";
 
-const PAID_EVENTS = new Set(["checkout.session.completed", "checkout.session.async_payment_succeeded"]);
-
-interface StripeEvent {
+interface StripeEvent extends WebhookEvent {
   id: string;
-  type: string;
   created: number;
   livemode: boolean;
-  data: { object: { id?: string; object?: string } };
-}
-
-/** 5xx makes Stripe retry; only worth it when a retry can succeed. */
-function retryable(error: unknown): boolean {
-  return !(error instanceof StripeError) || error.status >= 500 || error.status === 429;
 }
 
 export async function POST(request: NextRequest) {
@@ -37,13 +37,19 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid payload." }, { status: 400 });
   }
-  const sessionId = event.data?.object?.id;
-  if (!PAID_EVENTS.has(event.type) || event.data.object.object !== "checkout.session" || !sessionId) {
+  // Shared Stripe account: other products' events must not trigger API calls here.
+  const sessionId = readingCheckoutSessionId(event);
+  if (!sessionId) {
+    console.debug(`[stripe-webhook] skipped ${event.type} ${event.id}: not a paid reading session`);
     return NextResponse.json({ received: true });
   }
 
   try {
     const order = await fetchOrder(sessionId);
+    if (!isReadingOrder(order, process.env.STRIPE_PRICE_ID)) {
+      console.debug(`[stripe-webhook] skipped ${event.id}: no line item with STRIPE_PRICE_ID`);
+      return NextResponse.json({ received: true });
+    }
     if (!order.paid) return NextResponse.json({ received: true });
 
     const touches = attributionFromMetadata(order.metadata);
@@ -57,7 +63,7 @@ export async function POST(request: NextRequest) {
         ...(order.promotionCodeId ? { promotion_code_id: order.promotionCodeId } : {}),
       });
     } catch (error) {
-      if (retryable(error)) throw error;
+      if (isRetryable(error)) throw error;
       console.error("Stripe metadata write-back failed:", error instanceof Error ? error.message : error);
     }
 
@@ -95,7 +101,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    if (!retryable(error)) {
+    if (!isRetryable(error)) {
       console.error("order_paid skipped after a permanent Stripe error:", message);
       return NextResponse.json({ received: true });
     }
