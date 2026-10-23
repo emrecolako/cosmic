@@ -16,6 +16,8 @@ import {
   type CalculatedProfile,
 } from "@/lib/profile";
 import { parseAnalysis } from "@/lib/analysis-stream";
+import { analyticsDistinctId, track } from "@/lib/analytics";
+import { storedAttribution } from "@/lib/attribution";
 
 const CHECKOUT_SESSION_KEY = "cosmic:checkout-session";
 
@@ -57,6 +59,7 @@ export default function ResultsPage() {
   const abortRef = useRef<AbortController | null>(null);
   const startedRef = useRef(false);
   const geocodeWarnedRef = useRef(false);
+  const previewTrackedRef = useRef(false);
 
   // Stripe returns here with ?session_id=… or ?checkout=canceled. Keep the
   // session in this tab's storage and strip it from the URL.
@@ -172,6 +175,13 @@ export default function ResultsPage() {
           throw new Error("Incomplete analysis");
         }
         setAiStatus("done");
+        if (teaser && !previewTrackedRef.current) {
+          previewTrackedRef.current = true;
+          track("preview_viewed", {
+            locale,
+            price: response.headers.get("X-Paywall-Price") || undefined,
+          });
+        }
       } catch {
         if (controller.signal.aborted) return;
         setAiStatus("error");
@@ -187,16 +197,23 @@ export default function ResultsPage() {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readingPayload(input, profile, locale)),
+        body: JSON.stringify({
+          ...readingPayload(input, profile, locale),
+          analytics: {
+            distinctId: analyticsDistinctId(),
+            ...storedAttribution(),
+          },
+        }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || typeof data.url !== "string") throw new Error();
+      track("checkout_started", { locale, price: paywallPrice || undefined }, { sendInstantly: true });
       window.location.href = data.url;
     } catch {
       setUnlocking(false);
       toast(paywallCopy[locale].failed, "error");
     }
-  }, [input, profile, locale, toast]);
+  }, [input, profile, locale, paywallPrice, toast]);
 
   useEffect(() => {
     if (input && profile && !startedRef.current) {

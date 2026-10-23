@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button";
 import { atlasCopy } from "@/lib/i18n/atlas";
 import { parseDateOfBirth } from "@/lib/profile";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 interface FormData {
   fullName: string;
@@ -128,7 +129,10 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
     setAttempted(false);
     if (editingReview) { setEditingReview(false); setStep(4); }
     else if (step < 4) setStep(step + 1);
-    else onSubmit(formData);
+    else {
+      track("reading_started", { locale });
+      onSubmit(formData);
+    }
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
