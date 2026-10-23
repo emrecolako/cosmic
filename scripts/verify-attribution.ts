@@ -8,10 +8,12 @@ import {
   captureAttribution,
   flattenAttribution,
   resolveAttribution,
+  sanitizeAttribution,
   storedAttribution,
 } from "../lib/attribution";
-import { isReadingOrder, promoPartnerFrom, readingCheckoutSessionId } from "../lib/stripe";
-import { shareUrl } from "../lib/share";
+import { createHash } from "node:crypto";
+import { createCheckoutSession, isReadingOrder, promoPartnerFrom, readingCheckoutSessionId } from "../lib/stripe";
+import { shareRefFor, shareUrl } from "../lib/share";
 
 let failures = 0;
 let passes = 0;
@@ -82,17 +84,48 @@ check("referrer-only later visit changes nothing", storedAttribution().last.utm_
 const roundTrip = attributionFromMetadata(flattenAttribution(storedAttribution()));
 check("touches survive Stripe metadata round trip", roundTrip, { first: storedAttribution().first, last: { utm_source: "tiktok", utm_medium: "social", utm_term: "astro" } });
 
-// --- Share links ---
-check("share link format", shareUrl("copy"), "https://unifiedreading.com/?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=copy");
-check("share link keeps a path", shareUrl("native", "/sample"), "https://unifiedreading.com/sample?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=native");
-const shareTouch = { utm_source: "share", utm_medium: "referral", utm_campaign: "reading-share", utm_content: "native" };
-visit(shareUrl("native"));
-check("share landing keeps an earlier first touch", storedAttribution().first.utm_source, "maya");
-check("share landing becomes last touch", storedAttribution().last, shareTouch);
-check("share landing is not a partner", resolveAttribution({ first: {}, last: shareTouch }), { rule: "none" });
-for (const key of Object.keys(store)) delete store[key];
-visit(shareUrl("copy"));
-check("share landing is a first touch for a new visitor", storedAttribution().first.utm_content, "copy");
+// Async: hashing and the stubbed Checkout call.
+void (async () => {
+  // --- Share links ---
+  const ref = "0123456789ab";
+  check("share link format", shareUrl("copy"), "https://unifiedreading.com/?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=copy");
+  check("share link carries the sharer ref", shareUrl("copy", { ref }), "https://unifiedreading.com/?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=copy&ref=0123456789ab");
+  check("share link keeps a path", shareUrl("native", { path: "/sample" }), "https://unifiedreading.com/sample?utm_source=share&utm_medium=referral&utm_campaign=reading-share&utm_content=native");
+  check("sharer ref is the first 12 hex of SHA-256(distinct_id)", await shareRefFor("0192f0e4-7c1a-7d3e-9b2f-5a6c7d8e9f01"), createHash("sha256").update("0192f0e4-7c1a-7d3e-9b2f-5a6c7d8e9f01").digest("hex").slice(0, 12));
 
-console.log(`\n${passes} attribution checks passed, ${failures} failed`);
-if (failures > 0) process.exit(1);
+  const shareTouch = { utm_source: "share", utm_medium: "referral", utm_campaign: "reading-share", utm_content: "native" };
+  visit(shareUrl("native", { ref }));
+  check("share landing stores the incoming ref", storedAttribution().shareRef, ref);
+  check("share landing keeps an earlier first touch", storedAttribution().first.utm_source, "maya");
+  check("share landing becomes last touch, without the ref", storedAttribution().last, shareTouch);
+  check("share ref does not override partner first touch", resolveAttribution(storedAttribution()), { rule: "first_touch", partner: "maya" });
+  check("share landing is not a partner", resolveAttribution({ first: {}, last: shareTouch }), { rule: "none" });
+  visit("https://unifiedreading.com/?ref=ba9876543210");
+  check("ref-only landing updates the ref", storedAttribution().shareRef, "ba9876543210");
+  check("ref-only landing leaves touches alone", [storedAttribution().first.utm_source, storedAttribution().last.utm_content], ["maya", "native"]);
+  visit("https://unifiedreading.com/?ref=%3Cscript%3E");
+  visit("https://unifiedreading.com/?ref=ABCDEF012345");
+  check("malformed refs are ignored", storedAttribution().shareRef, "ba9876543210");
+  check("untrusted shareRef is dropped by sanitizeAttribution", sanitizeAttribution({ first: {}, last: {}, shareRef: "x".repeat(12) }), { first: {}, last: {} });
+
+  // The checkout route sends flattenAttribution(sanitizeAttribution(body.analytics)) to createCheckoutSession.
+  const checkoutBody = JSON.parse(JSON.stringify({ distinctId: "id", ...storedAttribution() }));
+  let checkoutForm = new URLSearchParams();
+  globals.fetch = async (_url: string, init: { body: URLSearchParams }) => {
+    checkoutForm = init.body;
+    return { ok: true, json: async () => ({ id: "cs_test_1", url: "https://checkout.stripe.com/c/pay/cs_test_1", amount_total: 499, currency: "usd" }) };
+  };
+  await createCheckoutSession("hash", "https://unifiedreading.com", "en", flattenAttribution(sanitizeAttribution(checkoutBody)));
+  check("share ref reaches Checkout Session metadata", checkoutForm.get("metadata[share_ref]"), "ba9876543210");
+  check("share ref reaches PaymentIntent metadata", checkoutForm.get("payment_intent_data[metadata][share_ref]"), "ba9876543210");
+  check("partner first touch still reaches checkout", checkoutForm.get("metadata[first_touch_utm_source]"), "maya");
+  check("share ref survives the webhook metadata round trip", attributionFromMetadata({ share_ref: "ba9876543210" }).shareRef, "ba9876543210");
+
+  for (const key of Object.keys(store)) delete store[key];
+  visit(shareUrl("copy"));
+  check("share landing is a first touch for a new visitor", storedAttribution().first.utm_content, "copy");
+  check("share landing without a ref stores none", storedAttribution().shareRef, undefined);
+
+  console.log(`\n${passes} attribution checks passed, ${failures} failed`);
+  if (failures > 0) process.exit(1);
+})();

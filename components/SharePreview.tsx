@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useI18n } from './LocaleProvider';
 import { atlasCopy } from '@/lib/i18n/atlas';
-import { trackShare } from '@/lib/analytics';
+import { trackShare, useSharerRef } from '@/lib/analytics';
 import { shareUrl, type SharePlacement } from '@/lib/share';
 import { useToast } from './ui/Toast';
 import FortuneCards from './FortuneCards';
@@ -14,20 +14,21 @@ export default function SharePreview({ markers, placement }: { markers: string[]
   const copy = atlasCopy[locale];
   const dialog = useRef<HTMLDialogElement>(null);
   const { toast } = useToast();
+  const sharerRef = useSharerRef();
   const [canShare, setCanShare] = useState(false);
   useEffect(() => setCanShare(typeof navigator.share === 'function'), []);
   const summary = `Unified Reading\n${markers.join(' · ')}`;
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${summary}\n${shareUrl('copy')}`);
-      trackShare(placement, 'copy');
+      await navigator.clipboard.writeText(`${summary}\n${shareUrl('copy', { ref: sharerRef })}`);
+      trackShare(placement, 'copy', sharerRef);
       toast(t.header.shareCopied, 'success');
     } catch { toast(t.header.shareFailed, 'error'); }
   };
   const nativeShare = async () => {
     try {
-      await navigator.share({ title: 'Unified Reading', text: summary, url: shareUrl('native') });
-      trackShare(placement, 'native');
+      await navigator.share({ title: 'Unified Reading', text: summary, url: shareUrl('native', { ref: sharerRef }) });
+      trackShare(placement, 'native', sharerRef);
     } catch (error) {
       if ((error as DOMException)?.name !== 'AbortError') toast(t.header.shareFailed, 'error');
     }

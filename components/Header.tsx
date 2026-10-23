@@ -5,12 +5,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/components/LocaleProvider";
 import { useToast } from "@/components/ui/Toast";
-import { trackShare } from "@/lib/analytics";
+import { trackShare, useSharerRef } from "@/lib/analytics";
 import { shareUrl } from "@/lib/share";
 
 export default function Header({ initialTheme }: { initialTheme: "dark" | "light" }) {
   const { t } = useI18n();
   const { toast } = useToast();
+  const sharerRef = useSharerRef();
   const [isDark, setIsDark] = useState(initialTheme === "dark");
 
   const toggleTheme = () => {
@@ -22,8 +23,8 @@ export default function Header({ initialTheme }: { initialTheme: "dark" | "light
 
   const handleShare = async () => {
     try {
-      await navigator.clipboard.writeText(shareUrl("copy"));
-      trackShare("header", "copy");
+      await navigator.clipboard.writeText(shareUrl("copy", { ref: sharerRef }));
+      trackShare("header", "copy", sharerRef);
       toast(t.header.shareCopied, "success");
     } catch {
       toast(t.header.shareFailed, "error");
