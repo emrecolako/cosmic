@@ -8,6 +8,8 @@
  * - a partner promotion code (one with `metadata.partner`), which overrides both.
  *
  * Touches live in localStorage and are copied into Stripe Checkout metadata.
+ * A share link's anonymous `ref` is kept beside them, outside both touches,
+ * so it never changes who gets partner credit.
  */
 
 export const TOUCH_KEYS = [
@@ -21,10 +23,11 @@ export const TOUCH_KEYS = [
 const UTM_KEYS = TOUCH_KEYS.filter((key) => key !== "referrer");
 
 export type Touch = Partial<Record<(typeof TOUCH_KEYS)[number], string>>;
-export interface Attribution { first: Touch; last: Touch }
+export interface Attribution { first: Touch; last: Touch; shareRef?: string }
 
 const STORAGE_KEY = "ur:attribution";
 const MAX_VALUE_LENGTH = 200;
+const SHARE_REF = /^[0-9a-f]{12}$/;
 const INTERNAL_REFERRER = /(^|\.)(unifiedreading\.com|stripe\.com|vercel\.app)$/i;
 
 function clean(value: unknown): string | undefined {
@@ -45,9 +48,14 @@ export function sanitizeTouch(input: unknown): Touch {
   return touch;
 }
 
+export function sanitizeShareRef(input: unknown): string | undefined {
+  return typeof input === "string" && SHARE_REF.test(input) ? input : undefined;
+}
+
 export function sanitizeAttribution(input: unknown): Attribution {
   const source = (typeof input === "object" && input !== null ? input : {}) as Record<string, unknown>;
-  return { first: sanitizeTouch(source.first), last: sanitizeTouch(source.last) };
+  const shareRef = sanitizeShareRef(source.shareRef);
+  return { first: sanitizeTouch(source.first), last: sanitizeTouch(source.last), ...(shareRef ? { shareRef } : {}) };
 }
 
 /** PostHog anonymous IDs are UUIDs; reject anything that could not be one of ours. */
@@ -57,9 +65,9 @@ export function sanitizeDistinctId(input: unknown): string | undefined {
 
 const hasUtm = (touch: Touch) => UTM_KEYS.some((key) => touch[key]);
 
-/** Flattens touches to `first_touch_*` / `last_touch_*` keys for event properties and Stripe metadata. */
-export function flattenAttribution({ first, last }: Attribution): Record<string, string> {
-  const flat: Record<string, string> = {};
+/** Flattens touches to `first_touch_*` / `last_touch_*` (and `share_ref`) keys for event properties and Stripe metadata. */
+export function flattenAttribution({ first, last, shareRef }: Attribution): Record<string, string> {
+  const flat: Record<string, string> = shareRef ? { share_ref: shareRef } : {};
   for (const key of TOUCH_KEYS) {
     if (first[key]) flat[`first_touch_${key}`] = first[key]!;
     if (key !== "referrer" && last[key]) flat[`last_touch_${key}`] = last[key]!;
@@ -70,7 +78,8 @@ export function flattenAttribution({ first, last }: Attribution): Record<string,
 export function attributionFromMetadata(metadata: Record<string, string>): Attribution {
   const pick = (prefix: string) =>
     sanitizeTouch(Object.fromEntries(TOUCH_KEYS.map((key) => [key, metadata[`${prefix}${key}`]])));
-  return { first: pick("first_touch_"), last: pick("last_touch_") };
+  const shareRef = sanitizeShareRef(metadata.share_ref);
+  return { first: pick("first_touch_"), last: pick("last_touch_"), ...(shareRef ? { shareRef } : {}) };
 }
 
 export type AttributionRule = "promo_code" | "last_touch" | "first_touch" | "none";
@@ -125,13 +134,17 @@ export function captureAttribution(): void {
       ...Object.fromEntries(UTM_KEYS.map((key) => [key, params.get(key)])),
       referrer: externalReferrer(),
     });
-    if (Object.keys(visit).length === 0) return;
+    const incomingRef = sanitizeShareRef(params.get("ref"));
+    if (Object.keys(visit).length === 0 && !incomingRef) return;
 
     const stored = storedAttribution();
     const visitHasUtm = hasUtm(visit);
-    const first = Object.keys(stored.first).length === 0 || (!hasUtm(stored.first) && visitHasUtm) ? visit : stored.first;
+    const visitIsTouch = Object.keys(visit).length > 0;
+    const first = visitIsTouch && (Object.keys(stored.first).length === 0 || (!hasUtm(stored.first) && visitHasUtm)) ? visit : stored.first;
     const last = visitHasUtm ? visit : stored.last;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ first, last }));
+    // The latest share link credits its sharer; first/last touch follow their own rules above.
+    const shareRef = incomingRef ?? stored.shareRef;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ first, last, ...(shareRef ? { shareRef } : {}) }));
   } catch {
     // Attribution is best-effort when storage is unavailable.
   }

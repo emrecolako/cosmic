@@ -5,9 +5,13 @@ import Link from 'next/link';
 import { useI18n } from './LocaleProvider';
 import { useToast } from './ui/Toast';
 
+import { trackShare, useSharerRef } from "@/lib/analytics";
+import { shareUrl } from "@/lib/share";
+
 export default function Header({ initialTheme }: { initialTheme: 'dark' | 'light' }) {
   const { t } = useI18n();
   const { toast } = useToast();
+  const sharerRef = useSharerRef();
   const pathname = usePathname();
   const [isDark, setIsDark] = useState(initialTheme === 'dark');
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,9 +21,15 @@ export default function Header({ initialTheme }: { initialTheme: 'dark' | 'light
     document.documentElement.classList.toggle('dark', next);
     document.cookie = `theme=${next ? 'dark' : 'light'};path=/;max-age=31536000;samesite=lax`;
   };
+
   const share = async () => {
-    try { await navigator.clipboard.writeText(window.location.origin); toast(t.header.shareCopied, 'success'); }
-    catch { toast(t.header.shareFailed, 'error'); }
+    try {
+      await navigator.clipboard.writeText(shareUrl("copy", { ref: sharerRef }));
+      trackShare("header", "copy", sharerRef);
+      toast(t.header.shareCopied, "success");
+    } catch {
+      toast(t.header.shareFailed, "error");
+    }
   };
   const close = () => setMenuOpen(false);
   return <header lang="en" className={`atlas-header ${pathname === '/' ? 'home-header' : ''}`}>

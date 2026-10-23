@@ -19,6 +19,7 @@ import { formatMessage } from '@/lib/i18n';
 import { enContent, type LocaleContent, type NumerologyCategory, type NumerologyNumber, type SignName, type AnimalName, type ChineseElementName } from '@/lib/i18n/content';
 import type { CalculatedProfile } from '@/lib/profile';
 import type { ParsedAnalysis } from '@/lib/analysis-stream';
+import type { SharePlacement } from '@/lib/share';
 export type AiStatus = 'streaming' | 'done' | 'error';
 export type { PaywallState };
 interface CosmicProfileProps { profile: CalculatedProfile; content: LocaleContent; ai: ParsedAnalysis; aiStatus: AiStatus; onRetry?: () => void; name?: string; sample?: boolean; birthDate?: string; paywall?: PaywallState | null; }
@@ -38,6 +39,7 @@ export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry 
   const animal = content.animalNames[chineseZodiac.animal as AnimalName];
   const element = content.chineseElementNames[chineseZodiac.element as ChineseElementName];
   const markers = [`${t.numerology.lifePath} ${numerology.lifePath.number}`, sun, `${element} ${animal}`];
+  const sharePlacement: SharePlacement = sample ? 'sample' : paywall ? 'preview' : 'results';
   const animalArt = animalArtwork(chineseZodiac.animal as AnimalName);
   const yearCopy = interpretationFor(content, 'personalYear', numerology.personalYear.number);
   const chapters = [
@@ -45,7 +47,7 @@ export default function CosmicProfile({ profile, content, ai, aiStatus, onRetry 
   ];
   const numbers: Array<[NumerologyCategory, string]> = [['lifePath', t.numerology.lifePath], ['expression', t.numerology.expression], ['soulUrge', t.numerology.soulUrge], ['personality', t.numerology.personality]];
   return <>
-    <div className="flex justify-between items-center gap-4 text-sm"><Link className="min-h-11 flex items-center text-ink-muted" href={sample ? '/' : '/#details'}>← {sample ? t.wizard.back : copy.edit}</Link><div className="flex flex-wrap justify-end gap-4">{aiStatus === "done" && !paywall && <DownloadReading profile={profile} ai={ai} name={name} markers={markers} complete />}<SharePreview markers={markers} sunGlyph={westernAstro.sunSign.glyph} animalArt={animalArt} /></div></div>
+    <div className="flex justify-between items-center gap-4 text-sm"><Link className="min-h-11 flex items-center text-ink-muted" href={sample ? '/' : '/#details'}>← {sample ? t.wizard.back : copy.edit}</Link><div className="flex flex-wrap justify-end gap-4">{aiStatus === "done" && !paywall && <DownloadReading profile={profile} ai={ai} name={name} markers={markers} complete placement={sharePlacement} />}<SharePreview markers={markers} placement={sharePlacement} sunGlyph={westernAstro.sunSign.glyph} animalArt={animalArt} /></div></div>
     <section id="snapshot" className="report-cover">
       <p className="eyebrow mb-6">{t.results.cosmicSnapshotLabel}{sample ? ` / ${copy.sampleLabel}` : ''}</p>
       {sample && birthDate && <p className="text-sm text-ink-muted mb-6">{t.wizard.dobLabel}: <time dateTime={birthDate}>{new Intl.DateTimeFormat(locale, {dateStyle:'long',timeZone:'UTC'}).format(new Date(`${birthDate}T12:00:00Z`))}</time> · {profile.currentYear}</p>}
