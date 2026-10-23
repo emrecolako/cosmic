@@ -43,4 +43,10 @@ export interface StarMapFull extends StarMapBase {
   wheel: FullWheel;
 }
 
-export type StarMapView = StarMapPreview | StarMapFull;
+/** Solar chart whose Sun changed sign that day: the houses can't be counted, so none are sent. */
+export interface StarMapUnavailable extends StarMapBase {
+  access: "none";
+  reason: "sun_unstable";
+}
+
+export type StarMapView = StarMapPreview | StarMapFull | StarMapUnavailable;

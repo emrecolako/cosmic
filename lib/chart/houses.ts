@@ -79,6 +79,7 @@ export function computeChart({ dateOfBirth, birthTime, place }: BirthData): Nata
     PLANETS.some((p) => !bodies[p].unstable && nearBoundary(bodies[p].lon)) ||
     [asc, mc].some((a) => a && nearBoundary(a.lon));
   const dscSign = SIGNS[(SIGNS.indexOf(firstHouseSign) + 6) % 12];
+  const solarAnchorUnstable = mode === "solar" && unstable.has("sun");
 
   const chart: NatalChart = {
     engineVersion: ENGINE_VERSION,
@@ -86,9 +87,10 @@ export function computeChart({ dateOfBirth, birthTime, place }: BirthData): Nata
     houseSystem: mode === "full" ? "whole_sign" : "solar_whole_sign",
     timeKnown,
     placeKnown,
-    approximate: polar || nearCusp,
+    approximate: polar || nearCusp || solarAnchorUnstable,
     polar,
     nearCusp,
+    solarAnchorUnstable,
     firstHouseSign,
     dsc: { sign: dscSign },
     bodies,

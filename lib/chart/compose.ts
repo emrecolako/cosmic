@@ -172,6 +172,7 @@ export function toRuleChart(chart: NatalChart): { stable: RuleChart; unstable: P
 }
 
 export function compose(chart: NatalChart): Composition {
+  if (chart.solarAnchorUnstable) throw new Error("No houses can be composed when the solar chart's Sun sign is uncertain");
   const { stable: c, unstable } = toRuleChart(chart);
   const P = c.planets;
   const mode = c.mode;

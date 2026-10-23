@@ -34,7 +34,8 @@ export default function StarMapChapter({ header, westernAstro, content, state, p
   const sectionRef = useRef<HTMLElement>(null);
   const trackedRef = useRef(false);
   const [viewed, setViewed] = useState(false);
-  const view = state.status === "ready" ? state.view : null;
+  const ready = state.status === "ready" ? state.view : null;
+  const view = ready?.access === "none" ? null : ready;
   const legacy = atlasCopy.en;
 
   useEffect(() => {
@@ -58,8 +59,8 @@ export default function StarMapChapter({ header, westernAstro, content, state, p
     track("preview_section_viewed", { section: "star_map", readingHash: tracking.readingHash, has_birth_time: tracking.hasBirthTime, chart_mode: view.mode });
   }, [viewed, tracking, view]);
 
-  const solar = view ? view.mode === "solar" : !westernAstro.moonSign;
-  const note = !view
+  const solar = ready ? ready.mode === "solar" : !westernAstro.moonSign;
+  const note = ready?.access === "none" ? starMapCopy.sunUnstable : !view
     ? <>{!westernAstro.moonSign && <>{legacy.unknown} </>}{legacy.chartPrecision}</>
     : <>{view.label ?? (view.access === "full" ? starMapCopy.precision : starMapCopy.precisionLocked)}{view.approximate && <> {starMapCopy.approximate}</>}</>;
 
@@ -67,14 +68,14 @@ export default function StarMapChapter({ header, westernAstro, content, state, p
     {header}
     <div className="star-composition">
       <div className="chart-instrument">
-        <h3 className="eyebrow text-center mb-5">{view ? (solar ? starMapCopy.eyebrowSolar : starMapCopy.eyebrowFull) : westernAstro.moonSign ? legacy.knownChart : legacy.solar}</h3>
+        <h3 className="eyebrow text-center mb-5">{ready ? (solar ? starMapCopy.eyebrowSolar : starMapCopy.eyebrowFull) : westernAstro.moonSign ? legacy.knownChart : legacy.solar}</h3>
         {view?.access === "full" ? <StarMapWheel wheel={view.wheel} />
           : view ? <LockedStarMapWheel />
             : <NatalChartVisual sunSign={westernAstro.sunSign.sign} sunGlyph={westernAstro.sunSign.glyph} moonSign={westernAstro.moonSign} risingSign={westernAstro.risingSign} content={content} />}
         <p className="precision-note">{note}</p>
       </div>
-      <WesternAstroCard profile={westernAstro} content={content} rulerHint={view?.mode === "full" ? starMapCopy.sunRulerHint : undefined} hideBirthTimeNote={Boolean(view)} />
+      <WesternAstroCard profile={westernAstro} content={content} rulerHint={view?.mode === "full" ? starMapCopy.sunRulerHint : undefined} hideBirthTimeNote={Boolean(ready)} />
     </div>
-    <StarMapHouses state={state} paywall={paywall} placement={placement} onRetry={onRetry} onCtaVisibilityChange={onCtaVisibilityChange} />
+    {ready?.access !== "none" && <StarMapHouses state={state} paywall={paywall} placement={placement} onRetry={onRetry} onCtaVisibilityChange={onCtaVisibilityChange} />}
   </section>;
 }

@@ -141,8 +141,8 @@ export default function StarMapHouses({ state, paywall, placement, onRetry, onCt
     <p className="house-gloss mb-6">{copy.housesGloss}</p>
     {state.status === "loading" && <div className="space-y-3" aria-label={copy.loading} role="status"><Skeleton className="h-3 w-full" /><Skeleton className="h-3 w-11/12" /><Skeleton className="h-3 w-4/5" /></div>}
     {state.status === "error" && <div className="reading-error"><p className="mb-3">{copy.error}</p>{onRetry && <button type="button" className="atlas-link" disabled={retrying} onClick={() => { setRetrying(true); onRetry(); }}>{copy.retry}</button>}</div>}
-    {state.status === "ready" && (state.view.access === "full"
-      ? <FullHouses view={state.view} placement={placement} />
-      : <PreviewHouses view={state.view} paywall={paywall} onCtaVisibilityChange={onCtaVisibilityChange} />)}
+    {state.status === "ready" && state.view.access === "full" && <FullHouses view={state.view} placement={placement} />}
+    {state.status === "ready" && state.view.access === "preview" && <PreviewHouses view={state.view} paywall={paywall} onCtaVisibilityChange={onCtaVisibilityChange} />}
+    {state.status === "ready" && state.view.access === "none" && <p className="house-gloss">{copy.sunUnstable}</p>}
   </div>;
 }

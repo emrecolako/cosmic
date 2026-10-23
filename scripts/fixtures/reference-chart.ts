@@ -35,6 +35,7 @@ export function fromReferenceChart(ref: ReferenceChart): NatalChart {
     approximate: false,
     polar: false,
     nearCusp: false,
+    solarAnchorUnstable: ref.mode === "solar" && Boolean(ref.planets.sun.unstable),
     firstHouseSign: ref.asc.sign,
     dsc: ref.dsc,
     bodies,

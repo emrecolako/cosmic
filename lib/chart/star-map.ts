@@ -32,6 +32,7 @@ export async function chartForReading(body: { dateOfBirth: string; birthTime?: s
 }
 
 export function starMapView(chart: NatalChart, access: "preview" | "full"): StarMapView {
+  if (chart.solarAnchorUnstable) return { access: "none", reason: "sun_unstable", mode: chart.mode, label: null, approximate: true };
   const c = compose(chart);
   const base = { mode: c.mode, label: c.label, approximate: chart.approximate };
   if (access === "preview") {
@@ -68,12 +69,21 @@ export function starMapView(chart: NatalChart, access: "preview" | "full"): Star
   return full;
 }
 
-/** Grounding for the AI reading: the same selection the paid Star Map shows. */
-export function starMapGrounding(chart: NatalChart) {
+export interface StarMapGrounding {
+  mode: NatalChart["mode"];
+  houses: Partial<Record<(typeof PLANETS)[number], number>>;
+  chartRuler?: { planet: string; modernCoRuler?: string; house: number };
+  midheaven?: { sign: string; house: number };
+  entries: { id: string; title: string; text: string }[];
+}
+
+/** Grounding for the AI reading: the same selection the paid Star Map shows; none when the houses are unknown. */
+export function starMapGrounding(chart: NatalChart): StarMapGrounding | undefined {
+  if (chart.solarAnchorUnstable) return undefined;
   const c = compose(chart);
   return {
     mode: chart.mode,
-    houses: Object.fromEntries(PLANETS.filter((p) => !chart.bodies[p].unstable).map((p) => [p, chart.bodies[p].house])) as Partial<Record<(typeof PLANETS)[number], number>>,
+    houses: Object.fromEntries(PLANETS.filter((p) => !chart.bodies[p].unstable).map((p) => [p, chart.bodies[p].house])),
     chartRuler: chart.chartRuler ? { planet: chart.chartRuler.planet, modernCoRuler: chart.chartRuler.modernCoRuler, house: chart.chartRuler.house } : undefined,
     midheaven: chart.mc ? { sign: chart.mc.sign, house: chart.mc.house } : undefined,
     entries: [
@@ -82,4 +92,3 @@ export function starMapGrounding(chart: NatalChart) {
     ],
   };
 }
-export type StarMapGrounding = ReturnType<typeof starMapGrounding>;

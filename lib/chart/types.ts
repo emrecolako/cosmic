@@ -41,6 +41,11 @@ export interface NatalChart {
   approximate: boolean;
   polar: boolean;
   nearCusp: boolean;
+  /**
+   * Solar chart whose Sun changes sign within the uncertainty window: the
+   * 1st house itself is unknown, so no house placement may be shown or used.
+   */
+  solarAnchorUnstable: boolean;
   /** Sign of the 1st house: the rising sign, or the Sun sign in a solar chart. */
   firstHouseSign: Sign;
   asc?: Angle;

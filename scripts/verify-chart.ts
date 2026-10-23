@@ -12,10 +12,14 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { computeChart } from "../lib/chart/houses";
 import { compose, LIBRARY, sentences } from "../lib/chart/compose";
-import { starMapView } from "../lib/chart/star-map";
+import { starMapGrounding, starMapView } from "../lib/chart/star-map";
+import { buildAnalysisPrompt, type CosmicProfile } from "../lib/analysis-prompt";
+import { calculateNumerologyProfile } from "../lib/numerology";
+import { getChineseZodiac } from "../lib/chinese-zodiac";
+import { calculateAge, classifyLifeStage } from "../lib/life-stages";
 import { chartKey } from "../lib/chart/key";
 import { localToUtcMillis, timeZoneAt } from "../lib/timezone";
-import { getRisingSign } from "../lib/western-astrology";
+import { calculateWesternProfile, getRisingSign } from "../lib/western-astrology";
 import { PLANETS, SIGNS, type NatalChart } from "../lib/chart/types";
 import { fromReferenceChart, type ReferenceChart } from "./fixtures/reference-chart";
 
@@ -122,6 +126,37 @@ check("Sydney birth uses the local offset, not UTC", Math.abs(sunsetSydney.bodie
 const solarCompose = compose(computeChart(examples[2]));
 check("solar reading has no rising or chart ruler slots", solarCompose.paid.paragraphs.every((p) => !["sun_rising", "chart_ruler", "angular", "partnership", "career"].includes(p.slot)));
 check("solar reading says the Moon was left out", solarCompose.paid.notes.includes("Your Moon changed sign around your birth date, so we've left it out until we have a birth time."));
+
+const promptDob = new Date(2020, 2, 20);
+const promptProfile: CosmicProfile = {
+  fullName: "Sam Rivera", dateOfBirth: "2020-03-20", lifeStage: "Exploring life", age: calculateAge(promptDob), locale: "en",
+  numerology: calculateNumerologyProfile("Sam Rivera", promptDob, 2026), westernAstro: calculateWesternProfile(promptDob),
+  chineseZodiac: getChineseZodiac(promptDob), lifeStageContext: classifyLifeStage(calculateAge(promptDob), ["exploring"]),
+};
+
+// --- A solar chart whose Sun changes sign that day has no countable houses ---
+const london = { latitude: 51.5074, longitude: -0.1278, timeZone: "Europe/London" };
+const sunTurns = [
+  ["no time, known place (Sun enters Aries 2020-03-20 03:50 UTC)", computeChart({ dateOfBirth: "2020-03-20", place: london })],
+  ["time, unresolved place", computeChart({ dateOfBirth: "2020-03-20", birthTime: "18:00" })],
+] as const;
+for (const [label, chart] of sunTurns) {
+  check(`${label}: Sun unstable`, chart.bodies.sun.unstable === true);
+  check(`${label}: solar anchor flagged`, chart.solarAnchorUnstable && chart.approximate);
+  for (const access of ["preview", "full"] as const) {
+    const view = starMapView(chart, access);
+    const json = JSON.stringify(view);
+    check(`${label}: ${access} view sends no houses`, view.access === "none" && !/house|"lon"|paragraphs|teaser/i.test(json), json);
+  }
+  check(`${label}: no AI house grounding`, starMapGrounding(chart) === undefined);
+  const prompt = buildAnalysisPrompt({ ...promptProfile, starMapHouses: starMapGrounding(chart) });
+  check(`${label}: prompt keeps houses forbidden`, !prompt.includes("<star_map_houses>") && prompt.includes("No exact degrees, houses,"));
+  let threw = false;
+  try { compose(chart); } catch { threw = true; }
+  check(`${label}: compose refuses an unknown 1st house`, threw);
+}
+const stableSolar = computeChart(examples[2]);
+check("stable-Sun solar chart keeps its houses", !stableSolar.solarAnchorUnstable && starMapView(stableSolar, "full").access === "full" && starMapGrounding(stableSolar) !== undefined);
 
 // --- Free payload never carries locked text (spec T6) ---
 const lockedTexts = (chart: NatalChart) => {

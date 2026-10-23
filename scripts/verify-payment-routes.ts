@@ -255,6 +255,9 @@ async function main() {
   const unresolved = await (await starMap(starMapRequest("teaser", { birthPlace: "Nowhere Junction" }))).json();
   check("unresolved place gives a solar chart, not UTC", unresolved.mode, "solar");
   check("solar chart is labelled", typeof unresolved.label, "string");
+  globalThis.fetch = (async () => { throw new Error("No external call expected"); }) as typeof fetch;
+  const sunTurns = await (await starMap(starMapRequest("teaser", { dateOfBirth: "2020-03-20", birthTime: undefined, birthPlace: "London" }))).json();
+  check("Sun changing sign with no birth time: no houses sent", [sunTurns.access, JSON.stringify(sunTurns).includes("house")], ["none", false]);
   const turkish = await starMap(starMapRequest("teaser", { locale: "tr" }));
   check("houses stay English-only in phase 1", turkish.status, 404);
   check("checkout stores birth-time flag as a boolean string", postedCheckout?.get("metadata[has_birth_time]"), "true");

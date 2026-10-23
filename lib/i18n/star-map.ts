@@ -10,6 +10,7 @@ export const starMapCopy = {
   precision: "Each house is one whole sign, counted from your rising sign. Markers show calculated positions. Planetary aspects and current transits are not calculated.",
   precisionLocked: "Each house is one whole sign, counted from your rising sign. The planets in each house are part of your full reading.",
   approximate: "Treat this chart as approximate: a placement sits right on a sign boundary, or the birthplace is close to the poles.",
+  sunUnstable: "The Sun changed sign on your birth date, so we can’t count your houses without a birth time.",
   housesTitle: "Your houses",
   housesGloss: "Houses split your chart into 12 areas of life, such as home, work and love. A planet’s house shows where its energy tends to show up.",
   sunRulerHint: "The planet linked to your Sun sign. Your chart ruler, which depends on your rising sign, is in your Star Map houses.",
