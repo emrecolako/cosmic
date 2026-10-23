@@ -37,14 +37,28 @@ const cases: Array<{ input: ReadingInput; expectedAnimal: AnimalName }> = [
 async function main() {
   for (const entry of ALL_ENTRIES) {
     const html = renderToStaticMarkup(<LibraryArtwork entry={entry} />);
-    const names = [...html.matchAll(/%2Fartwork%2F([^&]+)\.png/g)].map((match) => match[1]);
+    const names = [...new Map([...html.matchAll(/%2Fartwork%2F([^&]+)\.(png|webp)/g)]
+      .map((match) => [match[1], { name: match[1], extension: match[2] }] as const)).values()];
     assert.ok(names.length > 0, `No artwork on ${entry.path}`);
-    for (const name of names) assertPng(name as ArtworkName);
-    if (entry.type === 'chinese-zodiac') assert.ok(names.includes(animalArtwork(entry.label as AnimalName)), `Wrong animal on ${entry.path}`);
+    for (const { name, extension } of names) {
+      if (extension === 'png') assertPng(name as ArtworkName);
+      else {
+        const file = readFileSync(join(process.cwd(), 'public', 'artwork', `${name}.webp`));
+        assert.equal(file.subarray(0, 4).toString(), 'RIFF', `${name} is not a WebP image`);
+      }
+    }
+    if (entry.type === 'chinese-zodiac') assert.ok(names.some(({ name }) => name === animalArtwork(entry.label as AnimalName)), `Wrong animal on ${entry.path}`);
     if (entry.type === 'chinese-zodiac-pair') {
       for (const animal of entry.slug.split('-and-')) {
         const expected = animalArtwork((animal[0].toUpperCase() + animal.slice(1)) as AnimalName);
-        assert.ok(names.includes(expected), `Missing ${expected} on ${entry.path}`);
+        assert.ok(names.some(({ name }) => name === expected), `Missing ${expected} on ${entry.path}`);
+      }
+    }
+    if (entry.type === 'zodiac-pair') {
+      assert.equal((html.match(/<img /g) ?? []).length, 2, `Expected two rendered sign images on ${entry.path}`);
+      assert.equal(names.length, entry.slug.split('-and-')[0] === entry.slug.split('-and-')[1] ? 1 : 2, `Expected both sign illustrations on ${entry.path}`);
+      for (const sign of entry.slug.split('-and-')) {
+        assert.ok(names.some(({ name, extension }) => name === `western-${sign}` && extension === 'webp'), `Missing ${sign} on ${entry.path}`);
       }
     }
   }
