@@ -1,0 +1,69 @@
+{
+  "description": "Chinese zodiac compatibility for all 78 animal pairings through the classical San He trines, Liu He secret friends, Liu Chong clashes and Liu Hai harms.",
+  "answer": "In Chinese astrology, animal compatibility is traditionally read through four structures: San He trines of natural allies, Liu He secret-friend pairs, Liu Chong clashes between opposite animals, and Liu Hai harms. Pairs outside all four are open. These describe tendencies to understand, not verdicts about any relationship.",
+  "sections": [
+    {
+      "heading": "San He: the three harmonies",
+      "paragraphs": [
+        "The San He groups the twelve animals into four trines of three, each spaced four branches apart on the wheel. The Rat, Dragon and Monkey form the Water trine, associated with initiative and adaptability. The Ox, Snake and Rooster form the Metal trine, associated with determination and precision. The Tiger, Horse and Dog form the Fire trine, associated with passion and loyalty. The Rabbit, Goat and Pig form the Wood trine, associated with kindness and creativity. Animals within a trine are traditionally treated as the most natural allies, sharing a basic rhythm and outlook even when their individual characters differ. Each animal therefore has two trine mates. The trine element is a property of the group as a whole and is separate from each animal's own fixed element, which is why, for example, the Dragon belongs to the Water trine while its own element is Earth.",
+        "Trine membership appears on every animal page and pair page, so it is easy to see which group an animal belongs to.",
+        "Folk wisdom often summarises the trines with simple images: the Water trine as clever strategists, the Metal trine as diligent perfectionists, the Fire trine as passionate idealists and the Wood trine as gentle peacemakers."
+      ]
+    },
+    {
+      "heading": "Liu He: the secret friends",
+      "paragraphs": [
+        "The Liu He, or six harmonies, pairs each animal with exactly one partner, often called its secret friend. The six pairs are the Rat and Ox, the Tiger and Pig, the Rabbit and Dog, the Dragon and Rooster, the Snake and Monkey, and the Horse and Goat. These pairings are traditionally read as quietly supportive: the two animals complement each other in ways that may not be obvious, often balancing a more active temperament with a steadier or gentler one. Some of the pairs sit side by side on the wheel, like the Rat and Ox, while others sit further apart, like the Tiger and Pig. In many traditional readings the Liu He partner is mentioned alongside the trine mates as one of an animal's three best matches, which is how Unified Reading's own compatibility tables are built.",
+        "Unlike the trines, the secret-friend pairs are one-to-one, so each animal has exactly one Liu He partner.",
+        "Some interpreters link each secret-friend pair with an element it produces together, though sources disagree on several of those combinations, so the library does not rely on them."
+      ]
+    },
+    {
+      "heading": "Liu Chong and Liu Hai: clashes and harms",
+      "paragraphs": [
+        "The Liu Chong, or six clashes, pairs each animal with the one directly opposite it on the wheel, six branches away: the Rat and Horse, the Ox and Goat, the Tiger and Monkey, the Rabbit and Rooster, the Dragon and Dog, and the Snake and Pig. Opposites always share a polarity, and traditional readings describe these pairings as strongly contrasting, magnetic at times and combative at others. The Liu Hai, or six harms, pairs the Rat and Goat, the Ox and Horse, the Tiger and Snake, the Rabbit and Dragon, the Monkey and Pig, and the Rooster and Dog. Harms are said to work more quietly, through accumulated misunderstandings rather than open conflict. Both structures describe pairings that need more care. Neither is treated as forbidding a relationship, and many readings note that challenging pairings can teach both people a great deal.",
+        "The pair pages for these combinations describe the specific tension each one is traditionally associated with.",
+        "In practice, a clash or harm is often described as a pairing where the two people need to make their expectations explicit, since their instincts about pace, money, closeness or conflict may run in opposite directions. Awareness, patience and humour usually matter more than the label."
+      ]
+    },
+    {
+      "heading": "Pairs outside the classical structures",
+      "paragraphs": [
+        "Of the seventy-eight possible pairings, including twelve same-animal pairs, a little under half do not appear in any of the four structures. Traditional readings treat these as open pairings, neither especially favoured nor especially strained, which places more weight on the individuals, on the five-element relationship between their fixed elements and on their year elements. The five elements interact in two cycles: in the generating cycle Wood feeds Fire, Fire makes Earth, Earth bears Metal, Metal carries Water and Water nourishes Wood; in the controlling cycle Wood parts Earth, Earth dams Water, Water quenches Fire, Fire melts Metal and Metal cuts Wood. Every pair page shows which applies. Same-animal pairs are described as mirrors, sharing strengths and blind spots. Every page treats compatibility as a set of themes to notice and talk about, not as a verdict on a relationship.",
+        "Every pairing page also lists the trines both animals belong to, which helps place an open pairing in context.",
+        "Family members are sometimes compared in the same way, and parents occasionally look at a child's animal alongside their own, though the tradition offers these comparisons as conversation rather than instruction."
+      ]
+    },
+    {
+      "heading": "Same-animal pairs and reading a pairing well",
+      "paragraphs": [
+        "Two people born in the same animal's year, whether in the same year or twelve or twenty-four years apart, form a same-animal pair. The classical tables do not count these among the harmonies or clashes, and traditional readings describe them as mirrors: each partner recognises the other's motives and habits, and the shared blind spot tends to show up twice. A pair of Roosters may both criticise freely; a pair of Pigs may both avoid hard conversations. Their year elements can still differ, which adds variety. More generally, a good way to read any pairing page is to start with the classical relationship, then look at the five-element cycle between the two animals' fixed elements, then at what each animal tends to need and where friction starts. Read together, those layers give a picture of tendencies that two people can recognise, discuss and work with, which is what the tradition is best used for."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Which Chinese zodiac animals are most compatible?",
+      "answer": "Traditionally, animals in the same San He trine and the six Liu He secret-friend pairs. Each animal therefore has three classical best matches: two trine mates and one secret friend."
+    },
+    {
+      "question": "Which Chinese zodiac animals clash?",
+      "answer": "The six Liu Chong pairs, opposite each other on the wheel: Rat and Horse, Ox and Goat, Tiger and Monkey, Rabbit and Rooster, Dragon and Dog, and Snake and Pig."
+    },
+    {
+      "question": "Does a clash mean a relationship will fail?",
+      "answer": "No. The clashes and harms describe tensions the tradition associates with a pairing. Many couples with challenging pairings do well, and the tradition is best read as a prompt for awareness."
+    },
+    {
+      "question": "Does the Chinese zodiac use my birth year or my Lunar New Year?",
+      "answer": "The lunar year. Your animal comes from the year that began at the Lunar New Year before your birthday, which matters for January and early February births."
+    },
+    {
+      "question": "Do the year elements change compatibility?",
+      "answer": "The classical structures use the animals alone. Year elements add a second layer that some practitioners weigh, using the generating and controlling cycles, which a full reading can describe for an individual."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

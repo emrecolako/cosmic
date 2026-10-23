@@ -1,0 +1,69 @@
+{
+  "description": "Astrology basics: the tropical zodiac, Sun, Moon and rising signs, whole sign houses, and why Unified Reading does not calculate aspects or transits.",
+  "answer": "In Western astrology, a birth chart maps the Sun, Moon and planets against the twelve signs of the tropical zodiac at the moment of birth. A Unified Reading calculates the Sun sign and decan, adds the Moon and rising signs with a birth time, and whole sign houses with a birth time and place, but not aspects or transits.",
+  "sections": [
+    {
+      "heading": "What Western astrology is",
+      "paragraphs": [
+        "Western astrology reads meaning into the positions of the Sun, Moon and planets as seen from Earth. It uses the tropical zodiac, which divides the Sun's apparent yearly path, the ecliptic, into twelve equal signs of 30 degrees, beginning with Aries at the March equinox. Because it is anchored to the seasons rather than to the constellations, the tropical zodiac stays aligned with the solstices and equinoxes. Each sign combines an element, Fire, Earth, Air or Water, with a modality, cardinal, fixed or mutable, and each has a ruling planet. Astrology is an interpretive tradition with a long history in many cultures. Unified Reading treats it, like numerology and the Chinese zodiac, as a framework for reflection that can prompt useful questions about character and priorities rather than as a source of predictions.",
+        "The tropical and sidereal zodiacs now differ by roughly twenty-four degrees, which is why the same birth date can give different signs in Western and Vedic astrology.",
+        "Astronomers and astrologers once overlapped heavily, which is why much astrological vocabulary, from ecliptic to equinox, is also astronomical vocabulary. The calculations behind a Sun sign are ordinary positional astronomy; only the interpretation belongs to the tradition."
+      ]
+    },
+    {
+      "heading": "Sun, Moon and rising",
+      "paragraphs": [
+        "The three placements most people hear about are the Sun, Moon and rising signs. The Sun sign depends on the date of birth and is read as core identity and vitality. The Moon sign depends on where the Moon was at the moment of birth; the Moon moves through a whole sign in roughly two and a half days, so the time of birth matters, and it is read as emotional needs and instinctive responses. The rising sign, or ascendant, is the sign rising on the eastern horizon at the moment and place of birth; it changes about every two hours and is read as outward manner and approach to new situations. Many people find that their Moon or rising sign explains why a Sun sign description fits them only partly, which is one reason Unified Reading asks for a birth time when it is known.",
+        "Because the rising sign moves so quickly, even a birth time rounded to the nearest hour can occasionally change it.",
+        "A useful shorthand many readers adopt: the Sun describes what someone is becoming, the Moon what they need in order to feel safe, and the rising sign how they tend to approach new people and situations."
+      ]
+    },
+    {
+      "heading": "What a Unified Reading calculates",
+      "paragraphs": [
+        "Unified Reading calculates the Sun sign from the Sun's ecliptic longitude on the birth date, accurate to a small fraction of a degree, so cusp dates resolve for the specific year. It reports the decan, the 10-degree third of the sign. When a birth time is provided, it calculates the Moon sign with a standard lunar longitude algorithm from the astronomical literature, adjusted for the birth location's time zone. When a birth time and place are both provided, it calculates the rising sign with the standard ascendant formula. With both, it also counts whole sign houses from the rising sign, so each house is one complete sign, and names the chart ruler, the planet that rules the rising sign. Without a birth time, the reading omits the Moon and rising signs and shows a solar chart counted from the Sun sign instead of claiming precision it does not have.",
+        "Time zones and daylight saving are resolved from the birth place, using the time zone database, before any position is calculated.",
+        "Unknown or uncertain birth times are common, and the form lets readers say so explicitly; the resulting report labels the chart as approximate wherever precision would otherwise be implied."
+      ]
+    },
+    {
+      "heading": "What it does not calculate, and how it handles houses",
+      "paragraphs": [
+        "Planetary aspects and current transits are central to many professional astrology readings, and Unified Reading does not calculate them. Aspects are precise angles between planets in a chart, and calculating them properly needs every planet's position and agreed orbs. Transits compare today's planetary positions with the birth chart, which turns a reading into a forecast. Houses are handled in one specific way: the reading uses whole sign houses, the oldest system, in which the rising sign is the first house and each following sign is the next house. Quadrant systems such as Placidus divide the sky unevenly and can place planets in different houses, so results may differ from other software. Keeping to whole signs, and leaving out aspects and transits, keeps the reading honest about what it computes. When the compatibility pages here mention a trine or a square, they mean the angle between two whole signs, not an aspect calculated from two birth charts.",
+        "This scope is stated on every reading and on the pricing page, so a reader always knows which parts are calculated and which are interpretation.",
+        "Readers who want aspects, transits or a quadrant house system such as Placidus are best served by a dedicated chart from a practising astrologer, and Unified Reading says so rather than approximating them."
+      ]
+    },
+    {
+      "heading": "Why the library stays at the level of signs",
+      "paragraphs": [
+        "The pages in this library describe whole signs and the relationships between them, rather than individual birth charts, for two reasons. First, sign-level relationships rest only on facts that can be calculated from a date: which sign the Sun was in, which element and modality that sign has, and how far apart two signs sit on the wheel. Second, they match what a Unified Reading actually computes, so nothing here implies a precision the reading does not offer. When the compatibility pages use names such as trine, square or opposition, they borrow the traditional vocabulary for the angle between two signs, which is a coarse but useful lens. A professional astrologer working with full birth times would look at exact planetary positions, house placements and aspects in both charts, and might reach different conclusions about a particular couple. The library is a starting point for reflection, and it is honest about where its view ends and a fuller chart would begin."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Does Unified Reading calculate my full birth chart?",
+      "answer": "It calculates the Sun sign and decan, the Moon sign with a birth time, and, with a birth time and place, the rising sign, whole sign houses and the chart ruler. It does not calculate planetary aspects or current transits."
+    },
+    {
+      "question": "Why does the Moon sign need a birth time?",
+      "answer": "The Moon moves through a whole sign in about two and a half days, so on many dates it changes sign during the day. A birth time is needed to place it reliably."
+    },
+    {
+      "question": "What is the tropical zodiac?",
+      "answer": "It is the zodiac used in Western astrology, dividing the ecliptic into twelve 30-degree signs starting at the March equinox. It follows the seasons rather than the constellations."
+    },
+    {
+      "question": "Is astrology scientific?",
+      "answer": "No. Astrology is an interpretive tradition rather than a science. Unified Reading uses accurate astronomy to find where the Sun and Moon were, then offers traditional interpretation for reflection."
+    },
+    {
+      "question": "What is a decan?",
+      "answer": "A decan is one of three 10-degree subdivisions of a sign. Unified Reading reports which decan the Sun was in, adding a little nuance to the Sun sign description."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

@@ -1,0 +1,68 @@
+{
+  "description": "Zodiac sign compatibility for all 78 Sun sign pairings, read through elements, modalities, ruling planets and the angle between signs, with no scores.",
+  "answer": "In Western astrology, Sun sign compatibility compares two signs' elements, modalities, ruling planets and the angle between them around the zodiac. Same-element signs tend to feel familiar, complementary elements support each other, and contrasting ones must translate. It describes themes for a relationship, not a score or an outcome.",
+  "sections": [
+    {
+      "heading": "How Sun sign compatibility works",
+      "paragraphs": [
+        "Sun sign compatibility is the simplest form of astrological matching, and the most widely searched. It looks at the signs the Sun occupied when two people were born and asks how their traditional qualities interact. The first layer is element: Fire with Fire, Earth with Water, Air with Fire and so on. The second is modality: two cardinal signs may compete to lead, while a fixed sign and a mutable sign often balance persistence with flexibility. The third is the ruling planet, which can reveal shared values even between signs of different elements. The fourth is the angle between the signs around the zodiac, which matches the classical aspects at the level of whole signs. Each of the seventy-eight pairing pages walks through those layers and then turns them into practical observations about needs, friction and what helps.",
+        "Every pairing page uses the same structure, which makes it easy to compare, say, Aries with Libra against Aries with Leo.",
+        "Readers sometimes arrive expecting a simple yes or no; the pages instead aim to give two people a shared vocabulary for differences they have probably already noticed."
+      ]
+    },
+    {
+      "heading": "Elements in pairings",
+      "paragraphs": [
+        "Element relationships are the quickest way into a pairing. Two signs of the same element, such as Cancer and Pisces or Gemini and Aquarius, usually recognise each other's pace and priorities with little explanation. Complementary elements, Fire with Air and Earth with Water, are said to feed each other: air fans fire, water nourishes earth. Contrasting elements, Fire with Earth or Water, and Air with Earth or Water, approach life from different starting points, which can create friction and also an unusually well-rounded partnership. None of these is a ranking. Same-element pairs can become too alike to challenge each other, and contrasting pairs often report that the difference is exactly what drew them together. The pages describe each combination in terms of what it tends to make easy and what it tends to make harder.",
+        "Elements are also where most popular compatibility charts begin, so the pages explain the reasoning rather than just the result.",
+        "In practice, element balance between two people often shows up in everyday rhythms: who wants to go out and who wants to stay in, who plans and who improvises, who talks a feeling through and who quietly acts on it."
+      ]
+    },
+    {
+      "heading": "The angle between two signs",
+      "paragraphs": [
+        "Counting around the zodiac, any two signs are separated by a multiple of 30 degrees, and traditional astrology names those separations. Signs 0 degrees apart are the same sign. Neighbouring signs, 30 degrees apart, form a semi-sextile and share neither element nor modality. Signs 60 degrees apart form a sextile and have complementary elements. Signs 90 degrees apart form a square and share a modality but not a compatible element. Signs 120 degrees apart form a trine and share an element. Signs 150 degrees apart form a quincunx, sharing nothing. Signs 180 degrees apart are opposite, sharing a modality and complementary elements. These are relationships between whole signs, and Unified Reading does not calculate planetary aspects from two people's birth charts; the pair pages use the separation as one traditional lens among several.",
+        "Same-sign pairings are included, since two people with the same Sun sign is one of the most common questions about compatibility."
+      ]
+    },
+    {
+      "heading": "What Sun sign compatibility leaves out",
+      "paragraphs": [
+        "A Sun sign is one layer of a birth chart, and astrologers usually weigh the Moon sign, the rising sign and the positions of Venus and Mars when they talk about relationships. Those need a birth time, and in the case of the rising sign a birth place, which is why Sun sign pages can only speak in general terms. Unified Reading calculates the Moon and rising signs when a birth time is known, and it adds numerology and the Chinese zodiac to give a fuller personal picture, but it does not produce two-person compatibility reports. The pairing pages are best read as conversation starters: a way for two people to notice patterns and talk about them. Any pairing can work well, and no sign combination decides how a relationship will go.",
+        "The free preview calculates your own Sun sign and, with a birth time, your Moon and rising signs as well.",
+        "Couples who know their birth times can go further with the free preview, which shows each person's Moon and rising sign alongside the Sun."
+      ]
+    },
+    {
+      "heading": "Same-sign and opposite-sign pairings",
+      "paragraphs": [
+        "Two kinds of pairing come up more than any others: two people with the same Sun sign, and two people with opposite signs. Same-sign pairs share element, modality and ruler, so they tend to recognise each other's instincts immediately. The traditional caution is that they also share blind spots: two Geminis may both avoid heavy conversations, and two Capricorns may both work too much. Opposite-sign pairs, such as Cancer and Capricorn or Leo and Aquarius, share a modality and have complementary elements, and they are often described as magnetic because each embodies what the other is learning. The traditional caution there is polarisation, with each partner exaggerating their own side. Every one of the twelve same-sign and six opposite-sign pairs has its own page, and those pages describe what tends to help: variety from outside the relationship for same-sign pairs, and borrowing a little of the other's approach for opposites."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Which zodiac signs are most compatible?",
+      "answer": "Astrology does not rank pairings, but same-element and complementary-element matches, such as trines and sextiles, are traditionally described as the easiest. Squares and oppositions are described as more challenging and often more dynamic."
+    },
+    {
+      "question": "Why are there 78 zodiac pairings?",
+      "answer": "Twelve signs can be paired in 66 ways with different signs, plus 12 same-sign pairs, for 78 in total. Each pairing has one page, and the reversed order redirects to it."
+    },
+    {
+      "question": "Does Unified Reading give compatibility percentages?",
+      "answer": "No. Percentages imply a precision the tradition does not have. The pages describe themes, strengths and friction points instead."
+    },
+    {
+      "question": "Do I need my birth time for compatibility?",
+      "answer": "Not for Sun sign compatibility, which uses only the date. A birth time adds the Moon and rising signs, which many astrologers consider important for relationships."
+    },
+    {
+      "question": "Can two people with challenging signs have a good relationship?",
+      "answer": "Yes. Squares, quincunxes and oppositions are described as challenging because they ask for more adjustment, and many astrologers consider that friction a source of growth. The signs describe dynamics, not outcomes."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

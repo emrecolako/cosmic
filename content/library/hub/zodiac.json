@@ -1,0 +1,68 @@
+{
+  "description": "The 12 zodiac signs explained: dates, elements (fire, earth, air, water), modalities (cardinal, fixed, mutable), ruling planets and how Sun signs are calculated.",
+  "answer": "In Western astrology, the twelve zodiac signs divide the Sun's yearly path into 30-degree sections, starting with Aries at the March equinox. Each sign combines one of four elements with one of three modalities and has a ruling planet, and together those three features describe the sign's traditional character.",
+  "sections": [
+    {
+      "heading": "The four elements",
+      "paragraphs": [
+        "Every sign belongs to one of four elements, and each element contains three signs spaced evenly around the zodiac. Fire, made up of Aries, Leo and Sagittarius, is associated with enthusiasm, courage and spontaneity. Earth, made up of Taurus, Virgo and Capricorn, is associated with practicality, patience and the physical world. Air, made up of Gemini, Libra and Aquarius, is associated with ideas, communication and social connection. Water, made up of Cancer, Scorpio and Pisces, is associated with emotion, intuition and empathy. Traditional astrology also groups Fire and Air as active elements and Earth and Water as receptive ones. Element is often the first thing astrologers look at in a pairing: signs of the same element tend to understand each other's rhythm, complementary elements feed each other, and contrasting elements have to translate between styles.",
+        "Element is often the first thing people notice when comparing two Sun signs, which is why the compatibility pages begin with it.",
+        "Some astrologers also speak of a sign's element being expressed through its modality, so that Aries is often summarised as initiating fire, Leo as sustained fire and Sagittarius as roaming, adaptable fire."
+      ]
+    },
+    {
+      "heading": "The three modalities",
+      "paragraphs": [
+        "Each sign also has a modality, sometimes called a quality, that describes how it uses its element. Cardinal signs open each season: Aries in spring, Cancer in summer, Libra in autumn and Capricorn in winter, counted for the northern hemisphere. They are associated with initiating and leading. Fixed signs sit in the middle of each season: Taurus, Leo, Scorpio and Aquarius. They are associated with persistence, loyalty and stability. Mutable signs close each season: Gemini, Virgo, Sagittarius and Pisces. They are associated with flexibility, adaptation and change. Because the four elements and three modalities combine without repeating, each of the twelve signs is a unique pairing, such as cardinal fire for Aries or mutable water for Pisces. That simple grid is the backbone of most sign descriptions and of most compatibility reasoning.",
+        "Seasonal language follows the northern hemisphere convention that the zodiac was built around, even though the signs themselves are used worldwide.",
+        "Seasonal timing also gives each modality a mood: cardinal signs arrive like a change of weather, fixed signs hold the season steady, and mutable signs prepare the shift toward whatever comes next."
+      ]
+    },
+    {
+      "heading": "Ruling planets",
+      "paragraphs": [
+        "Each sign has a ruling planet, read as the planet whose themes the sign expresses most naturally. Unified Reading uses the modern rulers: Mars for Aries, Venus for Taurus and Libra, Mercury for Gemini and Virgo, the Moon for Cancer, the Sun for Leo, Pluto for Scorpio, Jupiter for Sagittarius, Saturn for Capricorn, Uranus for Aquarius and Neptune for Pisces. Traditional astrology, before the outer planets were discovered, gave Scorpio to Mars, Aquarius to Saturn and Pisces to Jupiter, and many astrologers still mention both. Signs that share a ruler, such as Taurus and Libra under Venus, are often said to value similar things even when their elements differ. In the pairing pages, rulers are one layer among several, alongside element, modality and the angle between the two signs.",
+        "Rulers also explain some of the sign descriptions, such as Gemini's quick talk under Mercury or Capricorn's patience under Saturn.",
+        "Modern rulers were assigned after Uranus, Neptune and Pluto were discovered, in 1781, 1846 and 1930 respectively, so both schemes remain in circulation and appear side by side in many guides."
+      ]
+    },
+    {
+      "heading": "How Sun signs are calculated",
+      "paragraphs": [
+        "A Sun sign is the sign the Sun occupied on the day of birth. Many websites use fixed date ranges, but the Sun's entry into each sign shifts by about a day from year to year, so a birthday near the boundary, often called a cusp, can fall on either side depending on the year. Unified Reading avoids that problem by calculating the Sun's actual ecliptic longitude for the birth date, which settles cusp birthdays for the specific year. The same calculation gives the decan, the 10-degree third of the sign the Sun was in. The dates listed on this site are the ranges for 2026, calculated at noon. Moon and rising signs move much faster than the Sun and need a birth time, and the rising sign also needs a birth place. Each sign below links to its twelve compatibility pairings.",
+        "The sign directory below lists each sign's 2026 dates, element, modality and ruler, followed by links to all twelve of its pairings."
+      ]
+    },
+    {
+      "heading": "Signs, opposites and the zodiac wheel",
+      "paragraphs": [
+        "The twelve signs are often pictured as a wheel, and their positions on it explain a lot about how they are described. Each sign has an opposite six signs away: Aries and Libra, Taurus and Scorpio, Gemini and Sagittarius, Cancer and Capricorn, Leo and Aquarius, Virgo and Pisces. Opposites share a modality and have complementary elements, so they are read as two approaches to the same theme, such as self and partnership for Aries and Libra, or security and transformation for Taurus and Scorpio. Signs four apart share an element and form the classic trines, while signs three apart share a modality and form squares. Neighbouring signs contrast sharply, which is why astrologers sometimes describe each sign as a reaction to the one before it, Taurus steadying Aries' rush or Gemini loosening Taurus' hold. Reading a sign alongside its opposite and its neighbours is often more revealing than reading it alone."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What are the zodiac sign dates?",
+      "answer": "In 2026 the Sun enters Aries on March 21, Taurus on April 20, Gemini on May 21, Cancer on June 21, Leo on July 23, Virgo on August 23, Libra on September 23, Scorpio on October 23, Sagittarius on November 22, Capricorn on December 22, Aquarius on January 20 and Pisces on February 19. Dates near a cusp shift by about a day between years."
+    },
+    {
+      "question": "What is a cusp?",
+      "answer": "A cusp is the boundary between two signs. Someone born near it is still one sign or the other, determined by the Sun's exact position that year. The zodiac sign calculator resolves this automatically."
+    },
+    {
+      "question": "What is the difference between a Sun sign and a rising sign?",
+      "answer": "The Sun sign comes from the date of birth. The rising sign, or ascendant, is the sign on the eastern horizon at the moment of birth, so it needs an accurate birth time and place."
+    },
+    {
+      "question": "Does Unified Reading use the tropical or sidereal zodiac?",
+      "answer": "The tropical zodiac, which is standard in Western astrology and anchors Aries to the March equinox. Sidereal systems used in Vedic astrology place signs differently."
+    },
+    {
+      "question": "Which zodiac sign is the most compatible with mine?",
+      "answer": "Astrology does not single out one best match. The compatibility section compares your sign with all twelve signs, describing what each pairing tends to make easier and harder."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}
