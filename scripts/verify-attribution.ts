@@ -129,6 +129,7 @@ async function verifySharing() {
   for (const key of Object.keys(store)) delete store[key];
   visit("https://unifiedreading.com/?utm_source=maya&utm_medium=partner");
   visit(shareUrl("copy", { path: "/life-path/1-vs-9", campaign: "library-share" }));
+  check("compare link keeps t and v and adds the compare-friend tags", shareUrl("native", { ref: "0123456789ab", path: "/compare?t=lp&v=7", campaign: "compare-friend" }), "https://unifiedreading.com/compare?t=lp&v=7&utm_source=share&utm_medium=referral&utm_campaign=compare-friend&utm_content=native&ref=0123456789ab");
   check("library share link format", shareUrl("copy", { path: "/life-path/1-vs-9", campaign: "library-share" }), "https://unifiedreading.com/life-path/1-vs-9?utm_source=share&utm_medium=referral&utm_campaign=library-share&utm_content=copy");
   check("library landing records its path on the last touch", storedAttribution().last.landing_path, "/life-path/1-vs-9");
   check("library landing keeps the partner first touch", [storedAttribution().first.utm_source, storedAttribution().first.landing_path], ["maya", "/"]);

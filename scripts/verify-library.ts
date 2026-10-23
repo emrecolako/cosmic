@@ -34,6 +34,7 @@ import {
 } from "../lib/library/registry";
 import { SIGN_ORDER } from "../lib/western-astrology";
 import { ANIMALS } from "../lib/chinese-zodiac";
+import { comparePath, parseCompare, pairEntryFor } from "../lib/compare";
 
 const failures: string[] = [];
 const fail = (entry: LibraryEntry | string, message: string) =>
@@ -277,6 +278,23 @@ for (const [target, sources] of inbound) {
   if (sources.size < fewest.count) fewest = { count: sources.size, path: target };
   if (sources.size < MIN_INBOUND) fail(target, `only ${sources.size} internal pages link here (${MIN_INBOUND}+)`);
 }
+
+// ---------------------------------------------------------------------------
+// Compare with a friend
+// ---------------------------------------------------------------------------
+
+const invalid: Array<[string | null, string | null]> = [["lp", "07"], ["lp", "10"], ["lp", " 7"], ["sun", "Scorpio"], ["sun", "ophiuchus"], ["cz", "cat"], ["xx", "1"], [null, null], ["lp", "1990-11-04"]];
+for (const [t, v] of invalid) if (parseCompare(t, v)) fail("/compare", `accepted t=${t} v=${v}`);
+for (const [t, v] of [["lp", "7"], ["lp", "33"], ["sun", "aquarius"], ["cz", "ox"]] as const) if (!parseCompare(t, v)) fail("/compare", `rejected t=${t} v=${v}`);
+if (comparePath({ t: "lp", v: "7" }) !== "/compare?t=lp&v=7") fail("/compare", "compare path format changed");
+const routed = [
+  [pairEntryFor({ t: "lp", v: "9" }, { t: "lp", v: "1" }).path, "/life-path/1-vs-9"],
+  [pairEntryFor({ t: "lp", v: "22" }, { t: "lp", v: "4" }).path, "/life-path/4-vs-4"],
+  [pairEntryFor({ t: "sun", v: "libra" }, { t: "sun", v: "aries" }).path, "/compatibility/aries-and-libra"],
+  [pairEntryFor({ t: "cz", v: "ox" }, { t: "cz", v: "rat" }).path, "/chinese-zodiac/compatibility/rat-and-ox"],
+];
+for (const [got, want] of routed) if (got !== want) fail("/compare", `routes to ${got}, expected canonical ${want}`);
+if (ALL_ENTRIES.some((e) => e.path === "/compare")) fail("/compare", "must stay out of the registry (and so the sitemaps)");
 
 // ---------------------------------------------------------------------------
 
