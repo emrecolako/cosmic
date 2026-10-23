@@ -26,11 +26,14 @@ export default function WesternAstroCard({
   profile,
   content,
   rulerHint,
+  hideBirthTimeNote = false,
 }: {
   profile: WesternAstrologyProfile;
   content: LocaleContent;
   /** Overrides the Sun-sign ruler hint, e.g. to point at the chart ruler in the houses block. */
   rulerHint?: string;
+  /** The Star Map already explains the missing birth time in one line. */
+  hideBirthTimeNote?: boolean;
 }) {
   const { t } = useI18n();
   const { sunSign, moonSign, risingSign } = profile;
@@ -86,7 +89,7 @@ export default function WesternAstroCard({
         </div>
       </div>
 
-      {!moonSign && !risingSign && (
+      {!moonSign && !risingSign && !hideBirthTimeNote && (
         <p className="font-mono text-xs tracking-wider uppercase text-ink-muted mt-3">
           {t.western.birthTimeNote}
         </p>

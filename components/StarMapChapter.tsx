@@ -73,7 +73,7 @@ export default function StarMapChapter({ header, westernAstro, content, state, p
             : <NatalChartVisual sunSign={westernAstro.sunSign.sign} sunGlyph={westernAstro.sunSign.glyph} moonSign={westernAstro.moonSign} risingSign={westernAstro.risingSign} content={content} />}
         <p className="precision-note">{note}</p>
       </div>
-      <WesternAstroCard profile={westernAstro} content={content} rulerHint={starMapCopy.sunRulerHint} />
+      <WesternAstroCard profile={westernAstro} content={content} rulerHint={view?.mode === "full" ? starMapCopy.sunRulerHint : undefined} hideBirthTimeNote={Boolean(view)} />
     </div>
     <StarMapHouses state={state} paywall={paywall} placement={placement} onRetry={onRetry} onCtaVisibilityChange={onCtaVisibilityChange} />
   </section>;
