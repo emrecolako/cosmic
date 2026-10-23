@@ -1,6 +1,6 @@
 {
  "oracle": "Swiss Ephemeris 2.10.03 via sweph (Moshier), tropical, geocentric; whole sign houses (\"W\"). Longitudes in degrees.",
- "generator": "scripts/fixtures/generate-charts.cjs",
+ "generator": "scripts/fixtures/generate-charts.mjs",
  "seed": 20261023,
  "charts": [
   {

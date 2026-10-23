@@ -10,11 +10,14 @@ import {
 import type { WesternAstrologyProfile } from "@/lib/western-astrology";
 import { textGlyph } from "@/lib/utils";
 
-function ParamRow({ label, value }: { label: string; value: string }) {
+function ParamRow({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
     <div className="grid grid-cols-[minmax(6rem,8rem)_1fr] gap-4 py-3 border-b border-line-muted">
       <span className="text-ink-muted uppercase">{label}</span>
-      <span className="text-ink tabular-nums min-w-0 break-words">{value}</span>
+      <span className="text-ink tabular-nums min-w-0 break-words">
+        {value}
+        {hint && <span className="block text-xs text-ink-muted leading-5 mt-1">{hint}</span>}
+      </span>
     </div>
   );
 }
@@ -22,9 +25,12 @@ function ParamRow({ label, value }: { label: string; value: string }) {
 export default function WesternAstroCard({
   profile,
   content,
+  rulerHint,
 }: {
   profile: WesternAstrologyProfile;
   content: LocaleContent;
+  /** Overrides the Sun-sign ruler hint, e.g. to point at the chart ruler in the houses block. */
+  rulerHint?: string;
 }) {
   const { t } = useI18n();
   const { sunSign, moonSign, risingSign } = profile;
@@ -59,7 +65,7 @@ export default function WesternAstroCard({
           )}
           <ParamRow label={t.western.element} value={localizedElement} />
           <ParamRow label={t.western.modality} value={localizedModality} />
-          <ParamRow label={t.western.rulingPlanet} value={localizedPlanet} />
+          <ParamRow label={t.western.rulingPlanet} value={localizedPlanet} hint={rulerHint ?? t.western.rulingPlanetHint} />
         </div>
       </div>
 

@@ -5,12 +5,15 @@
  * Swiss Ephemeris is AGPL/commercial, so it is never a dependency of this repo:
  * install `sweph` in a scratch directory and point SWEPH_DIR at it, e.g.
  *   mkdir /tmp/oracle && cd /tmp/oracle && npm i sweph@2.10.3-8
- *   SWEPH_DIR=/tmp/oracle node scripts/fixtures/generate-charts.cjs
+ *   SWEPH_DIR=/tmp/oracle node scripts/fixtures/generate-charts.mjs
  * Only the resulting JSON is committed.
  */
-const path = require("node:path");
-const fs = require("node:fs");
-const S = require(require.resolve("sweph", { paths: [process.env.SWEPH_DIR || process.cwd()] }));
+import { createRequire } from "node:module";
+import { writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+const load = createRequire(import.meta.url);
+const S = load(load.resolve("sweph", { paths: [process.env.SWEPH_DIR || process.cwd()] }));
 
 const FLAGS = S.constants.SEFLG_MOSEPH;
 const BODIES = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"];
@@ -72,10 +75,10 @@ for (let n = 0; n < 3; n++) {
 
 const out = {
   oracle: `Swiss Ephemeris ${S.version()} via sweph (Moshier), tropical, geocentric; whole sign houses ("W"). Longitudes in degrees.`,
-  generator: "scripts/fixtures/generate-charts.cjs",
+  generator: "scripts/fixtures/generate-charts.mjs",
   seed: 20261023,
   charts,
   local,
 };
-fs.writeFileSync(path.join(__dirname, "charts.json"), JSON.stringify(out, null, 1) + "\n");
+writeFileSync(fileURLToPath(new URL("charts.json", import.meta.url)), JSON.stringify(out, null, 1) + "\n");
 console.log(`wrote ${charts.length} random + ${local.length} edge-case charts`);

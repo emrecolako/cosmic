@@ -4,6 +4,8 @@ import { NextRequest } from "next/server";
 import { POST as checkout } from "../app/api/checkout/route";
 import { POST as webhook } from "../app/api/stripe-webhook/route";
 import { POST as generateReading } from "../app/api/generate-reading/route";
+import { POST as starMap } from "../app/api/star-map/route";
+import { legacyReadingHash, readingHash } from "../lib/reading-hash";
 import { SAMPLE_INPUT } from "../lib/sample";
 import { computeProfile } from "../lib/profile";
 
@@ -84,7 +86,9 @@ async function main() {
   check("other product webhook makes no API call", calls.length, 0);
 
   const order = {
-    id: "cs_test_reading", payment_status: "paid", metadata: { readingHash: checkoutJson.readingHash, site_host: "preview.example.test" },
+    id: "cs_test_reading", payment_status: "paid",
+    // Stripe returns the metadata the checkout route wrote.
+    metadata: Object.fromEntries([...(postedCheckout?.entries() ?? [])].flatMap(([key, value]) => key.match(/^metadata\[(.+)\]$/) ? [[key.slice(9, -1), value]] : [])) as Record<string, string>,
     payment_intent: "pi_test_reading", amount_total: 499, amount_subtotal: 499, currency: "usd",
     total_details: { amount_discount: 0 }, line_items: { data: [{ price: { id: "price_other_product" } }] },
   };
@@ -158,6 +162,65 @@ async function main() {
   check("paid reading does not carry paywall header", fullResponse.headers.get("x-paywall"), null);
   check("paid reading carries full text", (await fullResponse.text()).includes("A complete reading."), true);
   check("paid generation verifies Stripe then calls model", calls.length, 2);
+
+  // Star Map houses: the preview is computed on the server and carries no locked text.
+  const starMapRequest = (mode: "teaser" | "full", extra: Record<string, unknown> = {}) => new NextRequest("https://preview.example.test/api/star-map", {
+    method: "POST", headers: { "content-type": "application/json", "x-forwarded-for": "192.0.2.43" },
+    body: JSON.stringify({ ...body, ...extra, mode, checkoutSessionId: "cs_test_reading" }),
+  });
+  calls = [];
+  globalThis.fetch = (async (url: string | URL | Request) => { calls.push(String(url)); throw new Error("No external call expected"); }) as typeof fetch;
+  const preview = await starMap(starMapRequest("teaser"));
+  const previewJson = await preview.json();
+  check("star map preview succeeds", preview.status, 200);
+  check("star map preview carries paywall header", preview.headers.get("x-paywall"), "1");
+  check("star map preview is the free view", previewJson.access, "preview");
+  check("star map preview has no paragraphs", "paragraphs" in previewJson, false);
+  check("star map preview has no placements", JSON.stringify(previewJson).includes('"lon"'), false);
+  check("star map preview uses the offline geocoder only", calls.length, 0);
+  check("sample persona has a full chart", previewJson.mode, "full");
+
+  const paidSession = (readingHashValue: string) => ({ ...order, created: Math.floor(Date.now() / 1000), metadata: { readingHash: readingHashValue } });
+  for (const [label, hashValue, status] of [
+    ["new hash unlocks the star map", readingHash(body), 200],
+    ["pre-deploy hash still unlocks for 24 hours", legacyReadingHash(body), 200],
+    ["another reading's hash cannot unlock", readingHash({ ...body, birthTime: "07:41" }), 402],
+  ] as const) {
+    globalThis.fetch = (async (url: string | URL | Request) => {
+      if (String(url).startsWith("https://api.stripe.com/v1/checkout/sessions/")) return new Response(JSON.stringify(paidSession(hashValue)), { status: 200 });
+      throw new Error("Unexpected external call");
+    }) as typeof fetch;
+    const response = await starMap(starMapRequest("full"));
+    check(label, response.status, status);
+    if (status === 200) {
+      const full = await response.json();
+      check(`${label}: full view`, full.access, "full");
+      check(`${label}: has paragraphs`, full.paragraphs.length > 3, true);
+      check(`${label}: no paywall header`, response.headers.get("x-paywall"), null);
+      const freeText = [previewJson.teaser, previewJson.firstTeaser?.text].join(" ");
+      const lockedSentences = (full.paragraphs as { text: string }[]).flatMap((p) => p.text.split(/(?<=[.!?])\s+/)).filter((x) => !freeText.includes(x));
+      check(`${label}: none of its locked sentences were in the preview`, lockedSentences.filter((x) => JSON.stringify(previewJson).includes(x)).length, 0);
+    }
+  }
+  globalThis.fetch = (async (url: string | URL | Request) => {
+    if (String(url).startsWith("https://api.stripe.com/v1/checkout/sessions/")) return new Response(JSON.stringify(paidSession(legacyReadingHash(body))), { status: 200 });
+    if (String(url).includes("openrouter.ai/api/v1/chat/completions")) return aiResponse("<<<SNAPSHOT>>>Snapshot.\n<<<READING>>>A complete reading.");
+    throw new Error("Unexpected external call");
+  }) as typeof fetch;
+  check("pre-deploy hash still unlocks the reading", (await generateReading(readingRequest("full"))).status, 200);
+
+  globalThis.fetch = (async (url: string | URL | Request) => {
+    if (String(url).startsWith("https://nominatim.openstreetmap.org/")) return new Response("[]", { status: 200 });
+    throw new Error("Unexpected external call");
+  }) as typeof fetch;
+  const unresolved = await (await starMap(starMapRequest("teaser", { birthPlace: "Nowhere Junction" }))).json();
+  check("unresolved place gives a solar chart, not UTC", unresolved.mode, "solar");
+  check("solar chart is labelled", typeof unresolved.label, "string");
+  const turkish = await starMap(starMapRequest("teaser", { locale: "tr" }));
+  check("houses stay English-only in phase 1", turkish.status, 404);
+  check("checkout stores birth-time flag as a boolean string", postedCheckout?.get("metadata[has_birth_time]"), "true");
+  check("checkout stores no birth values", [...(postedCheckout?.values() ?? [])].some((v) => v.includes("07:40") || v.includes("Lisbon")), false);
+  check("order_paid carries birth flags", (paidEvent?.properties as Record<string, unknown>)?.has_birth_place, true);
 
   delete process.env.STRIPE_SECRET_KEY;
   delete process.env.STRIPE_PRICE_ID;

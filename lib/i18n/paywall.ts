@@ -7,7 +7,7 @@ const en = {
   item2: 'Where the systems agree and where they pull apart, framed for your life stage',
   item3: 'What your Personal Year {number} means for you this year',
   item4: '3–5 practical takeaways, plus a text file to download',
-  cta: 'Unlock my full reading, {price}',
+  cta: 'Unlock your full reading, {price}',
   note: 'One-time {price}, no subscription. Download your reading right after paying.',
   locked: 'Part of your full reading.',
   unlocking: 'Opening checkout…',

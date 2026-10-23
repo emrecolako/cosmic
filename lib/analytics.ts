@@ -3,8 +3,16 @@ import { flattenAttribution, storedAttribution } from "@/lib/attribution";
 import { useEffect, useState } from "react";
 import { shareRefFor, type ShareChannel, type SharePlacement } from "@/lib/share";
 
-export type FunnelEvent = "reading_started" | "preview_viewed" | "checkout_started" | "cta_clicked" | "share_created";
-export type CheckoutPlacement = "inline_card" | "sticky_bar" | "toolkit_link";
+export type FunnelEvent =
+  | "reading_started"
+  | "preview_viewed"
+  | "checkout_started"
+  | "cta_clicked"
+  | "share_created"
+  | "preview_section_viewed"
+  | "locked_section_tapped"
+  | "unlock_clicked";
+export type CheckoutPlacement = "inline_card" | "sticky_bar" | "toolkit_link" | "star_map";
 
 /** Funnel events carry no form answers; first- and last-touch attribution is attached to each one. */
 export function track(
@@ -21,8 +29,13 @@ export function track(
 }
 
 /** `utm_content` mirrors the tag on the shared link so events and landings join on it. */
-export function trackShare(placement: SharePlacement, channel: ShareChannel, sharerRef: string | undefined): void {
-  track("share_created", { placement, share_channel: channel, utm_content: channel, sharer_ref: sharerRef });
+export function trackShare(
+  placement: SharePlacement,
+  channel: ShareChannel,
+  sharerRef: string | undefined,
+  extra: Record<string, string> = {}
+): void {
+  track("share_created", { placement, share_channel: channel, utm_content: channel, sharer_ref: sharerRef, ...extra });
 }
 
 /**

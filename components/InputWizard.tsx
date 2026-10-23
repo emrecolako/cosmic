@@ -135,7 +135,12 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
     else if (step < 4) setStep(step + 1);
     else {
       submittedRef.current = true;
-      track("reading_started", { locale });
+      track("reading_started", {
+        locale,
+        has_birth_time: !formData.dontKnowBirthTime && Boolean(formData.birthTime),
+        birth_time_unknown: formData.dontKnowBirthTime,
+        has_birth_place: Boolean(formData.birthPlace.trim()),
+      });
       onSubmit(formData);
     }
     window.scrollTo({ top: 0, behavior: "instant" });
