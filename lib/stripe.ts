@@ -39,8 +39,22 @@ async function stripe<T>(path: string, init?: { method?: string; form?: Record<s
     body: init?.form ? new URLSearchParams(init.form) : undefined,
     cache: "no-store",
   });
-  if (!response.ok) throw new Error(`Stripe ${path} failed: ${response.status}`);
+  if (!response.ok) throw new StripeError(`Stripe ${path} failed: ${response.status}`, response.status);
   return response.json() as Promise<T>;
+}
+
+export class StripeError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
+
+const ZERO_DECIMAL = new Set(["bif", "clp", "djf", "gnf", "jpy", "kmf", "krw", "mga", "pyg", "rwf", "ugx", "vnd", "vuv", "xaf", "xof", "xpf"]);
+
+/** Stripe minor units (cents) to a decimal amount, e.g. 499 → 4.99. */
+export function majorUnits(amount: number | null | undefined, currency: string | null | undefined): number | null {
+  if (amount === null || amount === undefined) return null;
+  return currency && ZERO_DECIMAL.has(currency.toLowerCase()) ? amount : amount / 100;
 }
 
 interface CheckoutSession {
@@ -49,20 +63,29 @@ interface CheckoutSession {
   created: number;
   payment_status: "paid" | "unpaid" | "no_payment_required";
   metadata: Record<string, string> | null;
+  amount_total: number | null;
+  currency: string | null;
 }
 
+export interface CreatedCheckout { url: string; amount: number | null; currency: string | null }
+
 /**
- * `tracking` holds the PostHog distinct ID and first-touch UTM values. They
- * are copied into metadata so the webhook can attribute the order.
+ * `tracking` holds the PostHog distinct ID, site host and attribution
+ * touches. They go on both the session and its PaymentIntent so every
+ * Stripe view of the order shows its source.
  */
 export async function createCheckoutSession(
   readingHash: string,
   origin: string,
   locale: string,
   tracking: Record<string, string> = {}
-): Promise<string> {
+): Promise<CreatedCheckout> {
+  const fields = { ...tracking, readingHash };
   const metadata = Object.fromEntries(
-    Object.entries(tracking).map(([key, value]) => [`metadata[${key}]`, value])
+    Object.entries(fields).flatMap(([key, value]) => [
+      [`metadata[${key}]`, value],
+      [`payment_intent_data[metadata][${key}]`, value],
+    ])
   );
   const session = await stripe<CheckoutSession>("/checkout/sessions", {
     method: "POST",
@@ -72,14 +95,17 @@ export async function createCheckoutSession(
       "line_items[0][quantity]": "1",
       allow_promotion_codes: "true",
       ...metadata,
-      "metadata[readingHash]": readingHash,
       success_url: `${origin}/results?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/results?checkout=canceled`,
       locale: locale === "en" ? "auto" : locale,
     },
   });
   if (!session.url) throw new Error("Stripe session has no URL");
-  return session.url;
+  return {
+    url: session.url,
+    amount: majorUnits(session.amount_total, session.currency),
+    currency: session.currency?.toUpperCase() ?? null,
+  };
 }
 
 /** True when the session is paid, recent, and was bought for this exact reading. */
@@ -115,12 +141,11 @@ export function verifyWebhookSignature(
   });
 }
 
-type PromotionCodeRef = string | { id: string; code?: string } | null | undefined;
+type PromotionCodeRef = string | { id: string } | null | undefined;
 
 interface OrderSession extends CheckoutSession {
-  amount_total: number | null;
   amount_subtotal: number | null;
-  currency: string | null;
+  payment_intent: string | { id: string } | null;
   discounts?: { promotion_code?: PromotionCodeRef }[] | null;
   total_details?: {
     amount_discount?: number;
@@ -130,6 +155,7 @@ interface OrderSession extends CheckoutSession {
 
 export interface PaidOrder {
   sessionId: string;
+  paymentIntentId?: string;
   paid: boolean;
   amountTotal: number | null;
   amountSubtotal: number | null;
@@ -137,6 +163,8 @@ export interface PaidOrder {
   currency: string | null;
   promotionCodeId?: string;
   promoCode?: string;
+  /** `metadata.partner` on the promotion code, set in the Stripe dashboard. */
+  promoPartner?: string;
   metadata: Record<string, string>;
 }
 
@@ -153,16 +181,25 @@ export async function fetchOrder(sessionId: string): Promise<PaidOrder> {
     session.total_details?.breakdown?.discounts?.find((d) => d.discount?.promotion_code)?.discount
       ?.promotion_code;
   const promotionCodeId = typeof promo === "string" ? promo : promo?.id;
-  let promoCode = typeof promo === "object" && promo ? promo.code : undefined;
-  if (promotionCodeId && !promoCode) {
+  let promoCode: string | undefined;
+  let promoPartner: string | undefined;
+  if (promotionCodeId) {
     try {
-      promoCode = (await stripe<{ code: string }>(`/promotion_codes/${encodeURIComponent(promotionCodeId)}`)).code;
-    } catch {
-      // The promotion code ID is still recorded.
+      const code = await stripe<{ code: string; metadata?: Record<string, string> | null }>(
+        `/promotion_codes/${encodeURIComponent(promotionCodeId)}`
+      );
+      promoCode = code.code;
+      promoPartner = code.metadata?.partner?.trim() || code.code.toLowerCase();
+    } catch (error) {
+      // A permanent error (e.g. a restricted key without Promotion Codes read) must not block the order.
+      if (!(error instanceof StripeError) || error.status >= 500) throw error;
+      console.error(`Promotion code ${promotionCodeId} lookup failed: ${error.status}`);
     }
   }
+  const paymentIntent = session.payment_intent;
   return {
     sessionId: session.id,
+    paymentIntentId: typeof paymentIntent === "string" ? paymentIntent : paymentIntent?.id,
     paid: session.payment_status === "paid",
     amountTotal: session.amount_total,
     amountSubtotal: session.amount_subtotal,
@@ -170,6 +207,17 @@ export async function fetchOrder(sessionId: string): Promise<PaidOrder> {
     currency: session.currency,
     promotionCodeId,
     promoCode,
+    promoPartner,
     metadata: session.metadata ?? {},
   };
+}
+
+/** Merges keys into the metadata of the Checkout Session and its PaymentIntent. */
+export async function updateOrderMetadata(order: PaidOrder, values: Record<string, string>): Promise<void> {
+  const form = Object.fromEntries(Object.entries(values).map(([key, value]) => [`metadata[${key}]`, value]));
+  if (Object.keys(form).length === 0) return;
+  await stripe(`/checkout/sessions/${encodeURIComponent(order.sessionId)}`, { method: "POST", form });
+  if (order.paymentIntentId) {
+    await stripe(`/payment_intents/${encodeURIComponent(order.paymentIntentId)}`, { method: "POST", form });
+  }
 }

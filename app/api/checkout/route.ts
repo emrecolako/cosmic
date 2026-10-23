@@ -3,7 +3,7 @@ import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { validateReadingBody } from "@/lib/reading-request";
 import { readingHash } from "@/lib/reading-hash";
 import { createCheckoutSession, paymentsConfigured, paywallEnabled } from "@/lib/stripe";
-import { sanitizeAttribution, sanitizeDistinctId } from "@/lib/attribution";
+import { flattenAttribution, sanitizeAttribution, sanitizeDistinctId } from "@/lib/attribution";
 
 export async function POST(request: NextRequest) {
   if (!paywallEnabled()) {
@@ -25,12 +25,14 @@ export async function POST(request: NextRequest) {
 
     const origin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin;
     const distinctId = sanitizeDistinctId(body.analytics?.distinctId);
+    const hash = readingHash(body);
     const tracking: Record<string, string> = {
-      ...sanitizeAttribution(body.analytics),
+      ...flattenAttribution(sanitizeAttribution(body.analytics)),
+      site_host: request.nextUrl.host.slice(0, 200),
       ...(distinctId ? { posthog_distinct_id: distinctId } : {}),
     };
-    const url = await createCheckoutSession(readingHash(body), origin, String(body.locale), tracking);
-    return NextResponse.json({ url });
+    const checkout = await createCheckoutSession(hash, origin, String(body.locale), tracking);
+    return NextResponse.json({ ...checkout, readingHash: hash });
   } catch {
     console.error("Checkout session creation failed");
     return NextResponse.json({ error: "Could not start checkout." }, { status: 502 });

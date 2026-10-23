@@ -121,6 +121,7 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
       : currentStep === 1 ? !errors.birthTime : currentStep === 2 ? !errors.lifeStages : true;
 
   const handleNext = () => {
+    if (isLoading) return;
     if (!stepValid(step)) {
       setAttempted(true);
       requestAnimationFrame(() => { const invalid = rootRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]'); (invalid ?? rootRef.current?.querySelector<HTMLElement>('[role="checkbox"]'))?.focus(); });

@@ -1,21 +1,31 @@
 /**
- * First-touch campaign attribution. Captured in the browser on the first
- * landing, kept in localStorage, and copied into Stripe Checkout metadata so
- * every order records the channel that brought the visitor.
+ * Campaign attribution. Partners are paid a revenue share, so every order
+ * records three things:
+ *
+ * - first touch: the first visit with UTM parameters or an external referrer.
+ *   A referrer-only first touch is replaced by the first later UTM visit.
+ * - last touch: the most recent visit with UTM parameters.
+ * - the promotion code applied in Stripe Checkout, which overrides both.
+ *
+ * Touches live in localStorage and are copied into Stripe Checkout metadata.
  */
 
-export const ATTRIBUTION_KEYS = [
+export const TOUCH_KEYS = [
   "utm_source",
   "utm_medium",
   "utm_campaign",
   "utm_content",
+  "utm_term",
   "referrer",
 ] as const;
+const UTM_KEYS = TOUCH_KEYS.filter((key) => key !== "referrer");
 
-export type Attribution = Partial<Record<(typeof ATTRIBUTION_KEYS)[number], string>>;
+export type Touch = Partial<Record<(typeof TOUCH_KEYS)[number], string>>;
+export interface Attribution { first: Touch; last: Touch }
 
 const STORAGE_KEY = "ur:attribution";
 const MAX_VALUE_LENGTH = 200;
+const INTERNAL_REFERRER = /(^|\.)(unifiedreading\.com|stripe\.com|vercel\.app)$/i;
 
 function clean(value: unknown): string | undefined {
   if (typeof value !== "string") return undefined;
@@ -24,15 +34,20 @@ function clean(value: unknown): string | undefined {
 }
 
 /** Keeps only known keys with short string values; safe for untrusted input. */
-export function sanitizeAttribution(input: unknown): Attribution {
+export function sanitizeTouch(input: unknown): Touch {
   if (typeof input !== "object" || input === null) return {};
   const source = input as Record<string, unknown>;
-  const result: Attribution = {};
-  for (const key of ATTRIBUTION_KEYS) {
+  const touch: Touch = {};
+  for (const key of TOUCH_KEYS) {
     const value = clean(source[key]);
-    if (value) result[key] = value;
+    if (value) touch[key] = value;
   }
-  return result;
+  return touch;
+}
+
+export function sanitizeAttribution(input: unknown): Attribution {
+  const source = (typeof input === "object" && input !== null ? input : {}) as Record<string, unknown>;
+  return { first: sanitizeTouch(source.first), last: sanitizeTouch(source.last) };
 }
 
 /** PostHog anonymous IDs are UUIDs; reject anything that could not be one of ours. */
@@ -40,12 +55,46 @@ export function sanitizeDistinctId(input: unknown): string | undefined {
   return typeof input === "string" && /^[A-Za-z0-9._:@$-]{1,200}$/.test(input) ? input : undefined;
 }
 
+const hasUtm = (touch: Touch) => UTM_KEYS.some((key) => touch[key]);
+
+/** Flattens touches to `first_touch_*` / `last_touch_*` keys for event properties and Stripe metadata. */
+export function flattenAttribution({ first, last }: Attribution): Record<string, string> {
+  const flat: Record<string, string> = {};
+  for (const key of TOUCH_KEYS) {
+    if (first[key]) flat[`first_touch_${key}`] = first[key]!;
+    if (key !== "referrer" && last[key]) flat[`last_touch_${key}`] = last[key]!;
+  }
+  return flat;
+}
+
+export function attributionFromMetadata(metadata: Record<string, string>): Attribution {
+  const pick = (prefix: string) =>
+    sanitizeTouch(Object.fromEntries(TOUCH_KEYS.map((key) => [key, metadata[`${prefix}${key}`]])));
+  return { first: pick("first_touch_"), last: pick("last_touch_") };
+}
+
+export type AttributionRule = "promo_code" | "last_touch" | "first_touch" | "none";
+
+/**
+ * Who gets credit for an order: the partner behind the promotion code, else
+ * the last partner-medium touch, else the first partner-medium touch.
+ */
+export function resolveAttribution(
+  { first, last }: Attribution,
+  promoPartner?: string
+): { rule: AttributionRule; partner?: string } {
+  if (promoPartner) return { rule: "promo_code", partner: promoPartner };
+  if (last.utm_medium === "partner" && last.utm_source) return { rule: "last_touch", partner: last.utm_source };
+  if (first.utm_medium === "partner" && first.utm_source) return { rule: "first_touch", partner: first.utm_source };
+  return { rule: "none" };
+}
+
 /** External referrer as origin + path; query strings can carry personal data. */
 function externalReferrer(): string | undefined {
   try {
     if (!document.referrer) return undefined;
     const url = new URL(document.referrer);
-    if (url.host === window.location.host) return undefined;
+    if (url.host === window.location.host || INTERNAL_REFERRER.test(url.hostname)) return undefined;
     return `${url.origin}${url.pathname === "/" ? "" : url.pathname}`;
   } catch {
     return undefined;
@@ -54,26 +103,30 @@ function externalReferrer(): string | undefined {
 
 export function storedAttribution(): Attribution {
   try {
-    return sanitizeAttribution(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null"));
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null");
+    // Earlier builds stored a flat first-touch object.
+    if (raw && !("first" in raw) && !("last" in raw)) return { first: sanitizeTouch(raw), last: {} };
+    return sanitizeAttribution(raw);
   } catch {
-    return {};
+    return { first: {}, last: {} };
   }
 }
 
-/** Records the first landing that carried UTM parameters or an external referrer. */
 export function captureAttribution(): void {
   if (typeof window === "undefined") return;
   try {
-    if (localStorage.getItem(STORAGE_KEY)) return;
     const params = new URLSearchParams(window.location.search);
-    const touch = sanitizeAttribution({
-      utm_source: params.get("utm_source"),
-      utm_medium: params.get("utm_medium"),
-      utm_campaign: params.get("utm_campaign"),
-      utm_content: params.get("utm_content"),
+    const visit = sanitizeTouch({
+      ...Object.fromEntries(UTM_KEYS.map((key) => [key, params.get(key)])),
       referrer: externalReferrer(),
     });
-    if (Object.keys(touch).length > 0) localStorage.setItem(STORAGE_KEY, JSON.stringify(touch));
+    if (Object.keys(visit).length === 0) return;
+
+    const stored = storedAttribution();
+    const visitHasUtm = hasUtm(visit);
+    const first = Object.keys(stored.first).length === 0 || (!hasUtm(stored.first) && visitHasUtm) ? visit : stored.first;
+    const last = visitHasUtm ? visit : stored.last;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ first, last }));
   } catch {
     // Attribution is best-effort when storage is unavailable.
   }

@@ -60,6 +60,22 @@ export default function ResultsPage() {
   const startedRef = useRef(false);
   const geocodeWarnedRef = useRef(false);
   const previewTrackedRef = useRef(false);
+  const unlockingRef = useRef(false);
+
+  /** One preview_viewed per reading per tab, across reloads and cancelled checkouts. */
+  const firstPreviewView = (hash: string | undefined): boolean => {
+    if (!hash) {
+      if (previewTrackedRef.current) return false;
+      previewTrackedRef.current = true;
+      return true;
+    }
+    try {
+      const key = `ur:pv:${hash}`;
+      if (sessionStorage.getItem(key)) return false;
+      sessionStorage.setItem(key, "1");
+    } catch {}
+    return true;
+  };
 
   // Stripe returns here with ?session_id=… or ?checkout=canceled. Keep the
   // session in this tab's storage and strip it from the URL.
@@ -175,12 +191,15 @@ export default function ResultsPage() {
           throw new Error("Incomplete analysis");
         }
         setAiStatus("done");
-        if (teaser && !previewTrackedRef.current) {
-          previewTrackedRef.current = true;
-          track("preview_viewed", {
-            locale,
-            price: response.headers.get("X-Paywall-Price") || undefined,
-          });
+        if (teaser) {
+          const hash = response.headers.get("X-Reading-Hash") || undefined;
+          if (firstPreviewView(hash)) {
+            track("preview_viewed", {
+              locale,
+              readingHash: hash,
+              price: response.headers.get("X-Paywall-Price") || undefined,
+            });
+          }
         }
       } catch {
         if (controller.signal.aborted) return;
@@ -191,7 +210,8 @@ export default function ResultsPage() {
   );
 
   const unlock = useCallback(async (placement: CheckoutPlacement) => {
-    if (!input || !profile) return;
+    if (!input || !profile || unlockingRef.current) return;
+    unlockingRef.current = true;
     setUnlocking(true);
     try {
       const response = await fetch("/api/checkout", {
@@ -207,13 +227,35 @@ export default function ResultsPage() {
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || typeof data.url !== "string") throw new Error();
-      track("checkout_started", { locale, placement, price: paywallPrice || undefined }, { sendInstantly: true });
+      track(
+        "checkout_started",
+        {
+          locale,
+          placement,
+          readingHash: typeof data.readingHash === "string" ? data.readingHash : undefined,
+          amount: typeof data.amount === "number" ? data.amount : undefined,
+          currency: typeof data.currency === "string" ? data.currency : undefined,
+        },
+        { sendInstantly: true }
+      );
       window.location.href = data.url;
     } catch {
+      unlockingRef.current = false;
       setUnlocking(false);
       toast(paywallCopy[locale].failed, "error");
     }
-  }, [input, profile, locale, paywallPrice, toast]);
+  }, [input, profile, locale, toast]);
+
+  // Back from Stripe via the bfcache restores the page with the button still busy.
+  useEffect(() => {
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (!event.persisted) return;
+      unlockingRef.current = false;
+      setUnlocking(false);
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
 
   useEffect(() => {
     if (input && profile && !startedRef.current) {
