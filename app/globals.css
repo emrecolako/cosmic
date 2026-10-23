@@ -327,3 +327,7 @@ a.fortune-card:hover { transform:translateY(-5px); }
   .report-shell:has(.unlock-sticky) { padding-bottom:88px; }
 }
 .hero-note { margin-top:16px; color:var(--text-muted); font-size:13px; letter-spacing:.02em; }
+.sample-cta { display:flex; flex-direction:column; align-items:flex-start; }
+.sample-cta-top { margin-bottom:28px; }
+.sample-cta-bottom { align-items:center; text-align:center; padding:8px 0 56px; }
+@media(max-width:640px) { .sample-cta .atlas-primary { width:100%; justify-content:space-between; } }
