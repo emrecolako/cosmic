@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 const shareTitle = 'Sample Reading | Unified Reading';
 const shareDescription = 'See how one reading brings numerology, Western zodiac signs, and the Chinese zodiac together.';
 
-/** og:image comes from ./opengraph-image.tsx; twitter needs the same image named explicitly. */
+/** og:image comes from ./opengraph-image.tsx (its URL carries a build hash); X falls back to og:image. */
 export const metadata: Metadata = {
   title: 'Sample Numerology & Astrology Reading | Unified Reading',
   description: 'Explore a free fictional sample from Unified Reading that combines numerology, Western zodiac signs, and the Chinese zodiac.',
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: shareTitle,
     description: shareDescription,
-    images: [{ url: '/sample/opengraph-image', width: 1200, height: 630, alt: 'Sample reading from Unified Reading: Life Path 7, Scorpio Sun, Metal Horse' }],
   },
 };
 
