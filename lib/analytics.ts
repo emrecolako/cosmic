@@ -16,8 +16,44 @@ export type FunnelEvent =
   | "library_date_entered"
   | "compare_link_created"
   | "compare_landed"
-  | "compare_completed";
+  | "compare_completed"
+  | "free_result_viewed";
 export type CheckoutPlacement = "inline_card" | "sticky_bar" | "toolkit_link" | "star_map";
+
+const LANDING_KEY = "ur:landing";
+interface Landing { path: string; at: number; utm_source?: string }
+
+/**
+ * Runs on every full page load; only the tab's first one is kept, so a hop
+ * between root layouts doesn't reset where the visitor landed. Path only:
+ * the query string can carry more than UTMs.
+ */
+export function rememberLanding(): void {
+  try {
+    if (sessionStorage.getItem(LANDING_KEY)) return;
+    const utmSource = new URLSearchParams(window.location.search).get("utm_source")?.trim().slice(0, 200) || undefined;
+    const landing: Landing = { path: window.location.pathname, at: Date.now(), ...(utmSource ? { utm_source: utmSource } : {}) };
+    sessionStorage.setItem(LANDING_KEY, JSON.stringify(landing));
+  } catch {
+    // Without storage the current page counts as the landing page.
+  }
+}
+
+/** Where this tab landed, its campaign source (else the last touch's), and seconds since. */
+export function landingContext(): { landing_page: string; utm_source?: string; seconds_since_landing: number } {
+  let landing: Partial<Landing> = {};
+  try {
+    landing = JSON.parse(sessionStorage.getItem(LANDING_KEY) ?? "{}");
+  } catch {
+    // Fall through to the current page.
+  }
+  const elapsed = typeof landing.at === "number" ? Date.now() - landing.at : performance.now();
+  return {
+    landing_page: typeof landing.path === "string" ? landing.path : window.location.pathname,
+    utm_source: landing.utm_source ?? storedAttribution().last.utm_source,
+    seconds_since_landing: Math.round(elapsed / 100) / 10,
+  };
+}
 
 /** Funnel events carry no form answers; first- and last-touch attribution is attached to each one. */
 export function track(

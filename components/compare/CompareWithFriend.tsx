@@ -28,6 +28,8 @@ export default function CompareWithFriend({ values, placement, context = {}, lab
       if (channel === "native") await navigator.share({ title: "Compare with me on Unified Reading", text, url });
       else await navigator.clipboard.writeText(`${text} ${url}`);
       track("compare_link_created", { ...context, t: value.t, v: value.v, placement, share_channel: channel, sharer_ref: sharerRef });
+      // Also a share, so funnels ending in share_created count it.
+      track("share_created", { ...context, placement, share_kind: "compare", share_channel: channel, utm_content: channel, sharer_ref: sharerRef });
       setStatus(channel === "copy" ? "copied" : "idle");
       setPicking(false);
     } catch (error) {
