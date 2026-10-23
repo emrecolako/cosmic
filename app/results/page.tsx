@@ -18,8 +18,13 @@ import {
 import { parseAnalysis } from "@/lib/analysis-stream";
 import { analyticsDistinctId, track, type CheckoutPlacement } from "@/lib/analytics";
 import { storedAttribution } from "@/lib/attribution";
+import { birthDataFlags } from "@/lib/birth-flags";
+import { starMapHousesEnabled } from "@/lib/chart/flags";
+import type { StarMapView } from "@/lib/chart/view";
+import type { StarMapState } from "@/components/StarMapHouses";
 
 const CHECKOUT_SESSION_KEY = "cosmic:checkout-session";
+const UNLOCK_SECTION: Record<CheckoutPlacement, string> = { inline_card: "unlock_card", sticky_bar: "unlock_card", toolkit_link: "toolkit", star_map: "star_map" };
 
 function storedCheckoutSession(): string | null {
   try {
@@ -56,6 +61,8 @@ export default function ResultsPage() {
   const [paywallPrice, setPaywallPrice] = useState<string | null>(null);
   const [checkoutAvailable, setCheckoutAvailable] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
+  const [starMap, setStarMap] = useState<StarMapState | undefined>();
+  const [readingHash, setReadingHash] = useState<string>();
 
   const abortRef = useRef<AbortController | null>(null);
   const startedRef = useRef(false);
@@ -193,13 +200,15 @@ export default function ResultsPage() {
           throw new Error("Incomplete analysis");
         }
         setAiStatus("done");
+        const hash = response.headers.get("X-Reading-Hash") || undefined;
+        setReadingHash(hash);
         if (teaser) {
-          const hash = response.headers.get("X-Reading-Hash") || undefined;
           if (firstPreviewView(hash)) {
             track("preview_viewed", {
               locale,
               readingHash: hash,
               price: response.headers.get("X-Paywall-Price") || undefined,
+              ...birthDataFlags(currentInput),
             });
           }
         }
@@ -213,6 +222,7 @@ export default function ResultsPage() {
 
   const unlock = useCallback(async (placement: CheckoutPlacement) => {
     if (!input || !profile || !checkoutAvailable || unlockingRef.current) return;
+    track("unlock_clicked", { section: UNLOCK_SECTION[placement], placement, locale });
     unlockingRef.current = true;
     setUnlocking(true);
     try {
@@ -237,6 +247,7 @@ export default function ResultsPage() {
           readingHash: typeof data.readingHash === "string" ? data.readingHash : undefined,
           amount: typeof data.amount === "number" ? data.amount : undefined,
           currency: typeof data.currency === "string" ? data.currency : undefined,
+          ...birthDataFlags(input),
         },
         { sendInstantly: true }
       );
@@ -268,6 +279,40 @@ export default function ResultsPage() {
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
+  // Houses come from the server so locked text is only sent after payment.
+  const loadStarMap = useCallback(async (currentInput: ReadingInput, currentProfile: CalculatedProfile, signal?: AbortSignal) => {
+    if (!starMapHousesEnabled(locale)) {
+      setStarMap(undefined);
+      return;
+    }
+    setStarMap({ status: "loading" });
+    const request = (checkoutSessionId: string | null) =>
+      fetch("/api/star-map", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...readingPayload(currentInput, currentProfile, locale), mode: checkoutSessionId ? "full" : "teaser", checkoutSessionId }),
+        signal,
+      });
+    try {
+      const sessionId = storedCheckoutSession();
+      let response = await request(sessionId);
+      // The reading request clears an invalid session and tells the visitor; here we just fall back to the preview.
+      if (response.status === 402 && sessionId) response = await request(null);
+      if (!response.ok) throw new Error("Star Map failed");
+      const view = (await response.json()) as StarMapView;
+      setStarMap({ status: "ready", view });
+    } catch {
+      if (!signal?.aborted) setStarMap({ status: "error" });
+    }
+  }, [locale]);
+
+  useEffect(() => {
+    if (!input || !profile) return;
+    const controller = new AbortController();
+    void loadStarMap(input, profile, controller.signal);
+    return () => controller.abort();
+  }, [input, profile, loadStarMap]);
+
   const ai = useMemo(() => parseAnalysis(aiText), [aiText]);
 
   const retry = () => {
@@ -297,6 +342,9 @@ export default function ResultsPage() {
             ai={ai}
             aiStatus={aiStatus}
             onRetry={retry}
+            starMap={starMap}
+            onStarMapRetry={() => { if (input && profile) void loadStarMap(input, profile); }}
+            starMapTracking={input ? { readingHash, hasBirthTime: Boolean(input.birthTime) } : undefined}
             paywall={
               paywallPrice !== null
                 ? { price: paywallPrice, onUnlock: unlock, unlocking, checkoutAvailable }

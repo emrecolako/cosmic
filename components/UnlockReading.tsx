@@ -8,14 +8,15 @@ import Button from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 export interface PaywallState { price: string; onUnlock: (placement: CheckoutPlacement) => void; unlocking: boolean; checkoutAvailable: boolean; }
-interface UnlockReadingProps extends PaywallState { firstName: string; personalYear: number; }
+interface UnlockReadingProps extends PaywallState { firstName: string; personalYear: number; /** Another unlock CTA is on screen, so the sticky bar stays hidden. */ otherCtaVisible?: boolean; }
 
 /** Unlock card shown right after the free snapshot, plus a sticky bar on small screens while the card is off-screen. */
-export default function UnlockReading({ price, onUnlock, unlocking, checkoutAvailable, firstName, personalYear }: UnlockReadingProps) {
+export default function UnlockReading({ price, onUnlock, unlocking, checkoutAvailable, firstName, personalYear, otherCtaVisible = false }: UnlockReadingProps) {
   const { locale } = useI18n();
   const copy = paywallCopy[locale];
   const cardRef = useRef<HTMLElement>(null);
   const [cardVisible, setCardVisible] = useState(true);
+  const stickyHidden = cardVisible || otherCtaVisible;
   const cta = checkoutAvailable ? unlocking ? copy.unlocking : formatMessage(copy.cta, { price }) : copy.unavailable;
   const items = [copy.item1, copy.item2, formatMessage(copy.item3, { number: personalYear }), copy.item4];
 
@@ -35,8 +36,8 @@ export default function UnlockReading({ price, onUnlock, unlocking, checkoutAvai
       <Button size="lg" onClick={() => onUnlock('inline_card')} disabled={unlocking || !checkoutAvailable} aria-busy={unlocking} className="w-full sm:w-auto" data-attr="unlock-inline-card">{cta}</Button>
       <p className="text-xs text-ink-muted mt-4">{checkoutAvailable ? formatMessage(copy.note, { price }) : copy.unavailableNote}</p>
     </section>
-    {checkoutAvailable && <div className="unlock-sticky" data-hidden={cardVisible || undefined} aria-hidden={cardVisible || undefined}>
-      <Button size="md" onClick={() => onUnlock('sticky_bar')} disabled={unlocking} aria-busy={unlocking} tabIndex={cardVisible ? -1 : undefined} className="w-full" data-attr="unlock-sticky-bar">{cta}</Button>
+    {checkoutAvailable && <div className="unlock-sticky" data-hidden={stickyHidden || undefined} aria-hidden={stickyHidden || undefined}>
+      <Button size="md" onClick={() => onUnlock('sticky_bar')} disabled={unlocking} aria-busy={unlocking} tabIndex={stickyHidden ? -1 : undefined} className="w-full" data-attr="unlock-sticky-bar">{cta}</Button>
     </div>}
   </>;
 }

@@ -1,0 +1,264 @@
+[
+  {
+    "id": "house_01",
+    "type": "house",
+    "house": 1,
+    "title": "The 1st House: Self and First Impressions",
+    "body": "The 1st house begins at your rising sign and describes the way you meet the world. It tends to show your instinctive style, the energy people notice before you speak, and how you look after your own body and vitality. Planets here often feel loud in your personality, as if they stand at the front door of the chart. Many astrologers read this house as the lens every other placement is seen through.",
+    "tags": [
+      "self-aware",
+      "visible",
+      "instinctive",
+      "embodied"
+    ],
+    "share_line": "Your 1st house is your front door: the self you lead with before a word is said.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_houses_101",
+      "src_ahub_1st_house",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Under whole sign houses the entire rising sign is the 1st house; under Placidus it begins at the Ascendant degree. Angles agree across quadrant systems.",
+    "word_count": 73,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_02",
+    "type": "house",
+    "house": 2,
+    "title": "The 2nd House: Resources and Values",
+    "body": "The 2nd house is about what sustains you. It often shows up as your relationship with possessions, earning, and the practical things that make you feel secure. Underneath that sits something quieter: the talents you were born with and what you genuinely value. Think of it less as a money forecast and more as a portrait of what you build, keep, and care about, and why it matters to you.",
+    "tags": [
+      "grounded",
+      "resourceful",
+      "steady",
+      "value-driven"
+    ],
+    "share_line": "Your 2nd house shows what you value and the talents you bring to the table.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_1",
+      "src_rgordon_houses"
+    ],
+    "tradition_notes": "Often called 'the money house'; copy frames it as values and talents, never a financial forecast.",
+    "word_count": 70,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_03",
+    "type": "house",
+    "house": 3,
+    "title": "The 3rd House: Mind and Everyday Exchange",
+    "body": "The 3rd house covers the near and the everyday: conversations, short trips, siblings, neighbours, and the way your mind takes in information. It tends to describe how you learn, write, and talk things through. In older astrology it was also linked to the Moon and to daily devotion, a reminder that small rituals count. Placements here often show up as curiosity about whatever is right in front of you.",
+    "tags": [
+      "curious",
+      "talkative",
+      "quick-witted",
+      "local"
+    ],
+    "share_line": "Your 3rd house is your everyday mind: how you learn, talk and make sense of things.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_1",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 69,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_04",
+    "type": "house",
+    "house": 4,
+    "title": "The 4th House: Home and Roots",
+    "body": "The 4th house sits at the base of the chart and speaks to where you come from. It tends to describe home, family, ancestry, and the private ground you return to when the day is done. Astrologers disagree on which parent it shows, so it is best read as your roots in general. Placements here often colour what makes a place feel safe and what you want your later years to feel like.",
+    "tags": [
+      "rooted",
+      "private",
+      "protective",
+      "nostalgic"
+    ],
+    "share_line": "Your 4th house is your foundation: home, family and the ground beneath your feet.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_houses_101",
+      "src_ahub_12_houses",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 73,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_05",
+    "type": "house",
+    "house": 5,
+    "title": "The 5th House: Joy and Creativity",
+    "body": "The 5th house is the place of pleasure and play. It often shows up as what you create for the love of it, how you flirt and have fun, and your relationship with children or with your own inner child. Traditional astrologers called it a house of good fortune. Planets here tend to describe what lights you up when nothing is required of you, and how you share that delight with others.",
+    "tags": [
+      "playful",
+      "creative",
+      "expressive",
+      "warm-hearted"
+    ],
+    "share_line": "Your 5th house is where you play: the things you make and love just because.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_1",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology places sexuality and pleasure here; modern astrology also assigns sex to the 8th.",
+    "word_count": 72,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_06",
+    "type": "house",
+    "house": 6,
+    "title": "The 6th House: Work and Daily Rhythm",
+    "body": "The 6th house deals with the routines that keep life running: daily tasks, habits, the work you do with your hands, and the people you work alongside. Older astrology saw it as a house of toil and strain, while modern readings focus on service and self-care routines. It tends to show how you handle effort and repetition, and what kind of daily rhythm helps you feel steady and useful.",
+    "tags": [
+      "diligent",
+      "practical",
+      "helpful",
+      "methodical"
+    ],
+    "share_line": "Your 6th house is your daily rhythm: the habits and work that keep you steady.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_1",
+      "src_ahub_6th_house"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 69,
+    "sentence_count": 3
+  },
+  {
+    "id": "house_07",
+    "type": "house",
+    "house": 7,
+    "title": "The 7th House: Partnership",
+    "body": "The 7th house sits opposite the rising sign and describes the people you meet one to one. It covers committed partners, close collaborators, and the friendships where your lives become intertwined. It often shows the qualities you are drawn to in others, sometimes the ones you have not yet claimed in yourself. Placements here tend to colour how you share decisions, handle compromise, and show up when someone counts on you.",
+    "tags": [
+      "relational",
+      "fair-minded",
+      "cooperative",
+      "devoted"
+    ],
+    "share_line": "Your 7th house is your mirror: the partners who show you who you are.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_2",
+      "src_ahub_12_houses"
+    ],
+    "tradition_notes": "Medieval astrology also placed 'open enemies' here; Hellenistic texts put enemies in the 6th/12th.",
+    "word_count": 71,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_08",
+    "type": "house",
+    "house": 8,
+    "title": "The 8th House: Intimacy and Shared Depths",
+    "body": "The 8th house is about what is shared and what is hidden. Traditionally it covered endings, fear, and other people's resources, and modern astrology adds emotional intimacy and personal transformation. It tends to show how you handle trust, vulnerability, and the things you merge with another person. Placements here often show up as an interest in what lies beneath the surface, and a capacity to come through hard seasons changed.",
+    "tags": [
+      "intense",
+      "private",
+      "perceptive",
+      "resilient"
+    ],
+    "share_line": "Your 8th house is your depth: trust, intimacy and the change that follows.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_2",
+      "src_ahub_8th_house"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 70,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_09",
+    "type": "house",
+    "house": 9,
+    "title": "The 9th House: Meaning and the Wider World",
+    "body": "The 9th house reaches beyond the familiar. It covers long journeys, higher learning, belief, philosophy, and the search for something that makes life feel meaningful. Ancient astrologers called it the place of God, linked to the Sun. It tends to describe the ideas you are willing to travel for, whether across a map or through a book, and the teachers, cultures, and big questions that widen your view.",
+    "tags": [
+      "adventurous",
+      "philosophical",
+      "open-minded",
+      "seeking"
+    ],
+    "share_line": "Your 9th house is your horizon: the journeys and ideas that widen your world.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_1",
+      "src_tap_houses_2"
+    ],
+    "word_count": 68,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_10",
+    "type": "house",
+    "house": 10,
+    "title": "The 10th House: Vocation and Public Life",
+    "body": "The 10th house is the top of the chart, the most visible point. It tends to describe your reputation, your ambitions, and the kind of contribution you want to be known for. This is less about a specific job and more about direction and standing. Placements here often show up in how others see you in public roles, and in the effort you are willing to put into building something lasting.",
+    "tags": [
+      "ambitious",
+      "visible",
+      "purposeful",
+      "driven"
+    ],
+    "share_line": "Your 10th house is your summit: the work and reputation you want to be known for.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_2",
+      "src_ahub_12_houses"
+    ],
+    "word_count": 71,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_11",
+    "type": "house",
+    "house": 11,
+    "title": "The 11th House: Friends and Future Hopes",
+    "body": "The 11th house covers friends, communities, and allies, along with the hopes you hold for the future. Ancient astrologers named it the place of the good spirit, a house of support and benefit. It tends to show the groups where you feel you belong and the causes you are drawn to. Placements here often show up as the kind of friend you are and the shared dreams you help move forward.",
+    "tags": [
+      "sociable",
+      "hopeful",
+      "community-minded",
+      "loyal"
+    ],
+    "share_line": "Your 11th house is your circle: the friends and hopes that carry you forward.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_2",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 71,
+    "sentence_count": 4
+  },
+  {
+    "id": "house_12",
+    "type": "house",
+    "house": 12,
+    "title": "The 12th House: Rest and the Inner World",
+    "body": "The 12th house is the quietest corner of the chart. Traditionally it covered isolation, loss, and hidden things, and modern readings add retreat, spirituality, and the unconscious. It tends to show what works out of view: the parts of you that need solitude, and the inner life that rarely gets spoken about. Placements here often show up as a rich imagination and a gift for helping people behind the scenes.",
+    "tags": [
+      "reflective",
+      "intuitive",
+      "compassionate",
+      "private"
+    ],
+    "share_line": "Your 12th house is your inner world: the quiet that restores you.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_houses_2",
+      "src_kelly_12th_mars"
+    ],
+    "tradition_notes": "Traditionally isolation, loss and hidden enemies; modern readings add spirituality and the unconscious.",
+    "word_count": 70,
+    "sentence_count": 4
+  }
+]

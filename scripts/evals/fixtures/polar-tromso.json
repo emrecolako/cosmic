@@ -1,0 +1,43 @@
+{
+  "scope": "snapshot",
+  "locale": "en",
+  "birthTimeKnown": true,
+  "facts": {
+    "lifePath": 3,
+    "sunSign": "Gemini",
+    "chineseAnimal": "Rooster",
+    "personalYear": 9,
+    "moonSign": "Cancer",
+    "risingSign": "Scorpio"
+  },
+  "lifeStageTerms": [
+    "explore",
+    "identity"
+  ],
+  "chart": {
+    "mode": "full",
+    "houses": {
+      "sun": 8,
+      "moon": 9,
+      "mercury": 9,
+      "venus": 7,
+      "mars": 10,
+      "jupiter": 12,
+      "saturn": 5,
+      "uranus": 3,
+      "neptune": 3,
+      "pluto": 1
+    },
+    "chartRuler": "mars",
+    "approximate": true
+  },
+  "birth": {
+    "dateOfBirth": "1993-06-20",
+    "birthTime": "21:15",
+    "place": {
+      "latitude": 69.6492,
+      "longitude": 18.9553,
+      "timeZone": "Europe/Oslo"
+    }
+  }
+}

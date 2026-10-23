@@ -1,0 +1,44 @@
+{
+  "scope": "full",
+  "locale": "en",
+  "birthTimeKnown": true,
+  "facts": {
+    "lifePath": 5,
+    "sunSign": "Pisces",
+    "chineseAnimal": "Tiger",
+    "personalYear": 9,
+    "moonSign": "Virgo",
+    "risingSign": "Libra"
+  },
+  "lifeStageTerms": [
+    "relationship",
+    "partner",
+    "love"
+  ],
+  "chart": {
+    "mode": "full",
+    "houses": {
+      "sun": 6,
+      "moon": 12,
+      "mercury": 6,
+      "venus": 6,
+      "mars": 3,
+      "jupiter": 6,
+      "saturn": 3,
+      "uranus": 3,
+      "neptune": 4,
+      "pluto": 2
+    },
+    "chartRuler": "venus",
+    "approximate": false
+  },
+  "birth": {
+    "dateOfBirth": "1986-02-24",
+    "birthTime": "20:30",
+    "place": {
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "timeZone": "Europe/London"
+    }
+  }
+}

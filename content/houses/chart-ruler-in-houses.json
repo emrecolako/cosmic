@@ -1,0 +1,278 @@
+[
+  {
+    "id": "chart_ruler_house_01",
+    "type": "chart_ruler_in_house",
+    "house": 1,
+    "title": "Chart Ruler in the 1st House",
+    "body": "Your chart ruler is the planet that rules your rising sign, and here it returns home to the 1st house. This tends to make your personality direct and self-steering: you are often the main character of your own story. Life direction frequently grows out of personal initiative, the body, and how you present yourself. The lesson is to trust your own compass while staying curious about how you land on others.",
+    "tags": [
+      "self-directed",
+      "independent",
+      "visible",
+      "bold"
+    ],
+    "share_line": "Your chart ruler sits in your 1st house: you steer your own story.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 71,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_02",
+    "type": "chart_ruler_in_house",
+    "house": 2,
+    "title": "Chart Ruler in the 2nd House",
+    "body": "When the planet ruling your rising sign sits in the 2nd house, your sense of self tends to be tied to what you build and value. You may feel most like yourself when you are developing a skill, creating stability, or caring for the things that matter to you. Personal worth and self-worth often get tangled here. Life tends to ask you to define security on your own terms.",
+    "tags": [
+      "steady",
+      "resourceful",
+      "grounded",
+      "value-driven"
+    ],
+    "share_line": "Your chart ruler is in your 2nd house: you grow by building what you value.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 69,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_03",
+    "type": "chart_ruler_in_house",
+    "house": 3,
+    "title": "Chart Ruler in the 3rd House",
+    "body": "With your chart ruler in the 3rd house, much of your life direction tends to run through words and ideas. You often learn by asking, writing, teaching, or talking it through, and your local world of siblings, neighbours, and daily errands can matter more than people expect. A restless mind is common. Your growth often comes from staying curious and turning conversations into connections.",
+    "tags": [
+      "curious",
+      "communicative",
+      "adaptable",
+      "quick-witted"
+    ],
+    "share_line": "Your chart ruler is in your 3rd house: your path runs through words and ideas.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 64,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_04",
+    "type": "chart_ruler_in_house",
+    "house": 4,
+    "title": "Chart Ruler in the 4th House",
+    "body": "A chart ruler in the 4th house tends to anchor your identity in home, family, and roots. You may feel most yourself in private, among people who knew you before the world did. Questions about where you come from and where you belong often shape the bigger choices in your life. Many people with this placement build a home life that becomes the centre of everything else.",
+    "tags": [
+      "rooted",
+      "private",
+      "protective",
+      "loyal"
+    ],
+    "share_line": "Your chart ruler is in your 4th house: home is where your story starts.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 67,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_05",
+    "type": "chart_ruler_in_house",
+    "house": 5,
+    "title": "Chart Ruler in the 5th House",
+    "body": "When your chart ruler lands in the 5th house, joy is not a side project; it is part of your direction. You tend to come alive through creativity, romance, play, performance, or time with children. Expressing yourself freely often matters more than doing things the expected way. The invitation is to treat pleasure and creativity as real priorities rather than rewards for later.",
+    "tags": [
+      "creative",
+      "playful",
+      "expressive",
+      "warm-hearted"
+    ],
+    "share_line": "Your chart ruler is in your 5th house: you're here to create and play.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 63,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_06",
+    "type": "chart_ruler_in_house",
+    "house": 6,
+    "title": "Chart Ruler in the 6th House",
+    "body": "With the chart ruler in the 6th house, your sense of purpose tends to come through usefulness. You often feel most like yourself when you are improving something, solving practical problems, or supporting others day to day. Work habits and routines can shape your mood more than you realise. The growth edge is learning that rest and boundaries are part of good work, not a break from it.",
+    "tags": [
+      "diligent",
+      "helpful",
+      "practical",
+      "detail-minded"
+    ],
+    "share_line": "Your chart ruler is in your 6th house: you find yourself by being useful.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 68,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_07",
+    "type": "chart_ruler_in_house",
+    "house": 7,
+    "title": "Chart Ruler in the 7th House",
+    "body": "A chart ruler in the 7th house points your life toward other people. You tend to grow through partnership, whether that is love, close friendship, or a collaborator who changes your path. Relationships often act as mirrors, showing you parts of yourself you might not see alone. The balance to find is staying true to yourself while you meet someone else halfway.",
+    "tags": [
+      "relational",
+      "cooperative",
+      "fair-minded",
+      "devoted"
+    ],
+    "share_line": "Your chart ruler is in your 7th house: your path runs through partnership.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_08",
+    "type": "chart_ruler_in_house",
+    "house": 8,
+    "title": "Chart Ruler in the 8th House",
+    "body": "When your chart ruler sits in the 8th house, life tends to pull you beneath the surface. You may be drawn to deep bonds, shared resources, psychology, or anything that others prefer not to look at. Big personal changes often mark the chapters of your story. Many people with this placement develop real resilience and become the person others trust with what is difficult.",
+    "tags": [
+      "intense",
+      "perceptive",
+      "resilient",
+      "private"
+    ],
+    "share_line": "Your chart ruler is in your 8th house: you're built for depth and reinvention.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 64,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_09",
+    "type": "chart_ruler_in_house",
+    "house": 9,
+    "title": "Chart Ruler in the 9th House",
+    "body": "A chart ruler in the 9th house tends to set your compass toward the horizon. Travel, study, belief, and the search for meaning often shape your direction more than routine ever could. You may feel most yourself when you are learning something new or sharing what you have discovered. Teachers, foreign places, and big ideas tend to arrive at turning points.",
+    "tags": [
+      "adventurous",
+      "philosophical",
+      "open-minded",
+      "seeking"
+    ],
+    "share_line": "Your chart ruler is in your 9th house: your path is a search for meaning.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_10",
+    "type": "chart_ruler_in_house",
+    "house": 10,
+    "title": "Chart Ruler in the 10th House",
+    "body": "With your chart ruler in the 10th house, your identity and your public role tend to be closely linked. You often feel driven to build something visible and to be recognised for what you contribute. Reputation can matter a great deal, and ambition usually shows early. The work is to make sure the summit you are climbing is one you actually chose.",
+    "tags": [
+      "ambitious",
+      "purposeful",
+      "visible",
+      "driven"
+    ],
+    "share_line": "Your chart ruler is in your 10th house: you're built to be seen for your work.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_11",
+    "type": "chart_ruler_in_house",
+    "house": 11,
+    "title": "Chart Ruler in the 11th House",
+    "body": "When your chart ruler lands in the 11th house, friends and communities tend to shape your direction. You often find your people in groups, networks, or shared causes, and allies can open doors at key moments. Your hopes for the future are a strong motivator. The invitation is to stay yourself inside the group while helping its larger vision come true.",
+    "tags": [
+      "sociable",
+      "hopeful",
+      "community-minded",
+      "loyal"
+    ],
+    "share_line": "Your chart ruler is in your 11th house: your people help you find your path.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "chart_ruler_house_12",
+    "type": "chart_ruler_in_house",
+    "house": 12,
+    "title": "Chart Ruler in the 12th House",
+    "body": "A chart ruler in the 12th house tends to give you a rich inner life that others may not fully see. You might do your best work behind the scenes, in quiet, creative, or caring settings. Solitude can feel restoring rather than lonely. Many people with this placement learn to trust intuition and to share their gifts without needing the spotlight.",
+    "tags": [
+      "reflective",
+      "intuitive",
+      "compassionate",
+      "private"
+    ],
+    "share_line": "Your chart ruler is in your 12th house: your power works quietly.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_asc_ruler",
+      "src_grace_chart_ruler",
+      "src_tap_house_rulers"
+    ],
+    "tradition_notes": "Chart ruler = the planet ruling the rising sign. Traditional rulers (used by Kelly Surtees, Grace the astrologer, Chris Brennan): Aries/Scorpio→Mars, Taurus/Libra→Venus, Gemini/Virgo→Mercury, Cancer→Moon, Leo→Sun, Sagittarius/Pisces→Jupiter, Capricorn/Aquarius→Saturn. Modern co-rulers: Scorpio→Pluto, Aquarius→Uranus, Pisces→Neptune; traditional astrologers reject outer planets as chart rulers because they are generational. Recommended: use the traditional ruler, mention the modern co-ruler. Note the current UI's 'ruling planet' is the Sun sign's modern ruler, not the chart ruler.",
+    "word_count": 61,
+    "sentence_count": 4
+  }
+]

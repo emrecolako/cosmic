@@ -1,0 +1,114 @@
+{
+ "mode": "solar",
+ "label": "Solar chart: we don't have your birth time and place, so your Sun sign is used as your 1st house. Your rising sign and the exact houses need a birth time.",
+ "selected": [
+  "stellium_house_01",
+  "venus_house_01",
+  "mercury_house_01",
+  "mars_house_08",
+  "stellium_house_03",
+  "jupiter_house_10",
+  "saturn_house_03",
+  "uranus_house_03",
+  "neptune_house_03",
+  "pluto_house_01"
+ ],
+ "consumed_bridges": [],
+ "paid": {
+  "paragraphs": [
+   {
+    "slot": "emphasis",
+    "id": "stellium_house_01",
+    "title": "Stellium in the 1st House",
+    "text": "A cluster of three or more planets in your 1st house tends to put your personality, body and personal initiative at the centre of the chart. You may come across as vivid and self-directed, with a lot of energy concentrated in how you show up. Life often asks you to define yourself on your own terms. The growth edge is sharing the stage, because so much self-focus can make it harder to notice what others need."
+   },
+   {
+    "slot": "venus_house",
+    "id": "venus_house_01",
+    "title": "Venus in the 1st House",
+    "text": "With Venus in the 1st house, charm tends to come easily. People often find you approachable, warm, and pleasant to be around, and you may care about beauty and style. Your sense of style often says something about you, and people may remember how you made them feel. Harmony matters to you. The growth edge is that likeability can become a habit, so learning to disagree gracefully helps your relationships feel honest as well as sweet."
+   },
+   {
+    "slot": "personal",
+    "id": "mercury_house_01",
+    "title": "Mercury in the 1st House",
+    "text": "With Mercury in the 1st house, your mind tends to lead. You may come across as quick, curious, and talkative, and people often notice your wit before anything else. You think on your feet and like to name what you see."
+   },
+   {
+    "slot": "personal",
+    "id": "mars_house_08",
+    "title": "Mars in the 8th House",
+    "text": "Mars in the 8th house tends to give you powerful inner drive. You may pursue depth and intensity in relationships and in life, and you rarely do things halfway. You may feel driven to understand what is really going on beneath polite surfaces, in relationships and elsewhere. Crises can bring out your courage. Shared resources and trust are often areas where you assert yourself. Many people with this placement find strength in facing what others avoid."
+   }
+  ],
+  "tensions": [],
+  "more": [
+   {
+    "id": "stellium_house_03",
+    "text": "A 3rd-house stellium: you tend to live in a constant stream of ideas and conversation."
+   },
+   {
+    "id": "jupiter_house_10",
+    "text": "Jupiter in the 10th: you aim high, generously."
+   },
+   {
+    "id": "saturn_house_03",
+    "text": "Saturn in the 3rd: your words carry weight."
+   },
+   {
+    "id": "uranus_house_03",
+    "text": "Uranus in the 3rd: your mind works in lightning flashes."
+   },
+   {
+    "id": "neptune_house_03",
+    "text": "Neptune in the 3rd: you speak in poetry."
+   },
+   {
+    "id": "pluto_house_01",
+    "text": "Pluto in the 1st: your presence fills the room."
+   }
+  ],
+  "notes": [
+   "moon_unstable",
+   "Your Moon changed sign around your birth date, so we've left it out until we have a birth time."
+  ],
+  "word_count": 269
+ },
+ "free": {
+  "label": "Solar chart: we don't have your birth time and place, so your Sun sign is used as your 1st house. Your rising sign and the exact houses need a birth time.",
+  "blocks": [
+   {
+    "kind": "combined_teaser",
+    "visibility": "free",
+    "text": "A 1st-house stellium: you tend to put a lot of energy into becoming fully yourself."
+   },
+   {
+    "kind": "first_teaser",
+    "visibility": "free",
+    "title": "Stellium in the 1st House",
+    "text": "A cluster of three or more planets in your 1st house tends to put your personality, body and personal initiative at the centre of the chart. You may come across as vivid and self-directed, with a lot of energy concentrated in how you show up.",
+    "locked_sentences": 2
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your Venus house",
+    "title": "Venus in the 1st House"
+   },
+   {
+    "kind": "more_count",
+    "visibility": "locked",
+    "text": "+8 more placements"
+   },
+   {
+    "kind": "wheel",
+    "visibility": "free",
+    "state": "blurred, house lines visible, unlabelled"
+   },
+   {
+    "kind": "cta",
+    "text": "Unlock your full reading, $4.99"
+   }
+  ]
+ }
+}

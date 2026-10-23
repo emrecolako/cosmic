@@ -4,20 +4,25 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run verify && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npm run verify:artwork && npx tsc --noEmit && next build",
+    "build": "npm run verify && npm run verify:houses && npm run verify:chart && npm run verify:i18n && npm run verify:attribution && npm run verify:payment-routes && npm run verify:artwork && npm run eval:test && npx tsc --noEmit && next build && npm run verify:bundle",
     "start": "next start",
     "lint": "eslint .",
     "verify": "tsx scripts/verify.ts",
+    "verify:houses": "tsx scripts/verify-houses.ts",
+    "verify:chart": "tsx scripts/verify-chart.ts",
     "verify:i18n": "tsx scripts/verify-i18n.ts",
     "verify:attribution": "tsx scripts/verify-attribution.ts",
     "verify:payment-routes": "tsx scripts/verify-payment-routes.ts",
-    "verify:artwork": "tsx scripts/verify-artwork.tsx"
+    "verify:artwork": "tsx scripts/verify-artwork.tsx",
+    "verify:bundle": "tsx scripts/verify-bundle.ts",
+    "eval:test": "tsx scripts/evals/reading.test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "astronomy-engine": "2.1.19",
     "framer-motion": "^12.34.0",
     "next": "^16.4.2",
     "posthog-js": "^1.435.6",

@@ -1,0 +1,68 @@
+{
+ "mode": "solar",
+ "house_system": "solar_whole_sign",
+ "time_known": false,
+ "place_known": false,
+ "sun_decan": 2,
+ "asc": {
+  "sign": "scorpio",
+  "deg_in_sign": null
+ },
+ "mc": null,
+ "dsc": {
+  "sign": "taurus"
+ },
+ "planets": {
+  "sun": {
+   "sign": "scorpio",
+   "deg_in_sign": 11.81,
+   "house": 1
+  },
+  "moon": {
+   "sign": "gemini",
+   "deg_in_sign": 4.36,
+   "house": 8,
+   "unstable": true
+  },
+  "mercury": {
+   "sign": "scorpio",
+   "deg_in_sign": 19.99,
+   "house": 1
+  },
+  "venus": {
+   "sign": "scorpio",
+   "deg_in_sign": 12.53,
+   "house": 1
+  },
+  "mars": {
+   "sign": "gemini",
+   "deg_in_sign": 12.98,
+   "house": 8
+  },
+  "jupiter": {
+   "sign": "leo",
+   "deg_in_sign": 12.54,
+   "house": 10
+  },
+  "saturn": {
+   "sign": "capricorn",
+   "deg_in_sign": 20.15,
+   "house": 3
+  },
+  "uranus": {
+   "sign": "capricorn",
+   "deg_in_sign": 6.66,
+   "house": 3
+  },
+  "neptune": {
+   "sign": "capricorn",
+   "deg_in_sign": 12.27,
+   "house": 3
+  },
+  "pluto": {
+   "sign": "scorpio",
+   "deg_in_sign": 17.47,
+   "house": 1
+  }
+ }
+}

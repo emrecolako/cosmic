@@ -4,6 +4,7 @@ import { validateReadingBody } from "@/lib/reading-request";
 import { readingHash } from "@/lib/reading-hash";
 import { createCheckoutSession, paymentsConfigured, paywallEnabled } from "@/lib/stripe";
 import { flattenAttribution, sanitizeAttribution, sanitizeDistinctId } from "@/lib/attribution";
+import { birthDataFlags } from "@/lib/birth-flags";
 
 export async function POST(request: NextRequest) {
   if (!paywallEnabled()) {
@@ -29,6 +30,7 @@ export async function POST(request: NextRequest) {
     const tracking: Record<string, string> = {
       ...flattenAttribution(sanitizeAttribution(body.analytics)),
       site_host: request.nextUrl.host.slice(0, 200),
+      ...Object.fromEntries(Object.entries(birthDataFlags(body)).map(([key, value]) => [key, String(value)])),
       ...(distinctId ? { posthog_distinct_id: distinctId } : {}),
     };
     const checkout = await createCheckoutSession(hash, origin, String(body.locale), tracking);

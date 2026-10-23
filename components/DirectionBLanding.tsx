@@ -41,9 +41,9 @@ export default function DirectionBLanding({ price, onStart }: { price: string | 
       <div className="section-heading"><h2>Three lenses. A fuller picture.</h2><span className="eyebrow">02 / The method</span></div>
       <div className="method-composition"><ReadingArtwork name="chapters-book" /><div className="method-rows">
         <article><p className="eyebrow">01 / Numerology</p><h3>The numbers in your name.</h3><p>Your birth name and date reveal five core numbers, from Life Path to Personal Year.</p></article>
-        <article><p className="eyebrow">02 / Western astrology</p><h3>Your place in the sky.</h3><p>Start with your Sun sign. A known birth time and place can add Moon and rising signs.</p></article>
+        <article><p className="eyebrow">02 / Western astrology</p><h3>Your place in the sky.</h3><p>Start with your Sun sign. A known birth time and place can add Moon and rising signs and your houses.</p></article>
         <article><p className="eyebrow">03 / Chinese zodiac</p><h3>Another way to see yourself.</h3><p>Your animal, element, and yin or yang offer another perspective on the same person.</p></article>
-        <p className="microcopy">Approximate signs. No houses, aspects, or current transits.<br /><Link href="/about">Read about the method ↗</Link></p>
+        <p className="microcopy">Houses with a birth time and place. No aspects or current transits.<br /><Link href="/about">Read about the method ↗</Link></p>
       </div></div>
     </div></section>
     <section className="reflection-band"><div className="atlas-shell"><p className="eyebrow">From Alex’s fictional sample / A small thing to try</p><blockquote>“Keep a question journal<br />for seven days.”</blockquote><p>A useful reflection can begin with a very ordinary action.</p><Link href="/sample" className="text-action">Explore the sample ↗</Link></div></section>

@@ -1,0 +1,175 @@
+{
+ "mode": "full",
+ "label": null,
+ "selected": [
+  "sun_aquarius_rising_aquarius",
+  "chart_ruler_house_12",
+  "sun_house_01",
+  "moon_house_11",
+  "pluto_house_10",
+  "stellium_house_12",
+  "venus_house_12",
+  "dsc_leo",
+  "mc_scorpio",
+  "mercury_house_12",
+  "mars_house_11",
+  "jupiter_house_06",
+  "uranus_house_12",
+  "neptune_house_12"
+ ],
+ "consumed_bridges": [],
+ "paid": {
+  "paragraphs": [
+   {
+    "slot": "sun_rising",
+    "id": "sun_aquarius_rising_aquarius",
+    "title": "Sun in Aquarius, Aquarius Rising",
+    "text": "With both your Sun and rising sign in Aquarius, what drives you underneath and the face you show first are close to the same thing: a need for independence and ideas that serve the group. People tend to get an accurate read on you quickly, because a first impression that is friendly, unusual and a little detached really does match the person underneath. In everyday life this often shows up as an easy, offbeat friendliness backed by an original mind that resists simply fitting in. The growth edge is borrowing a little from the opposite sign, Leo, so your originality doesn't tip into cool detachment."
+   },
+   {
+    "slot": "chart_ruler",
+    "id": "chart_ruler_house_12",
+    "title": "Your chart ruler: Saturn (with Uranus as a modern co-ruler) in the 12th house",
+    "text": "A chart ruler in the 12th house tends to give you a rich inner life that others may not fully see. You might do your best work behind the scenes, in quiet, creative, or caring settings. Solitude can feel restoring rather than lonely. Many people with this placement learn to trust intuition and to share their gifts without needing the spotlight."
+   },
+   {
+    "slot": "sun_house",
+    "id": "sun_house_01",
+    "title": "Sun in the 1st House",
+    "text": "With the Sun in the 1st house, your core self tends to be right on the surface. People often read your energy quickly, and you may feel most alive when you are leading or simply being yourself in full view. Confidence and vitality are common themes. The growth edge is remembering that not every room needs you at its centre to be a good room."
+   },
+   {
+    "slot": "moon_house",
+    "id": "moon_house_11",
+    "title": "Moon in the 11th House",
+    "text": "With the Moon in the 11th house, friends tend to feel like family. You may draw emotional security from a circle, a community, or a shared cause. Your hopes for the future carry real feeling. You often look after the group's mood without being asked. The balance is making sure the friends you care for know how to care for you, too."
+   },
+   {
+    "slot": "angular",
+    "id": "pluto_house_10",
+    "title": "Pluto in the 10th House",
+    "text": "Pluto in the 10th house tends to bring intensity to your ambitions. You may feel driven to have real impact and influence. Your relationship with ambition can deepen and change shape over the years, and you may be drawn to roles where your choices carry real weight for others. You may approach work with a strong urge to transform how things are done. Others may see you as formidable."
+   },
+   {
+    "slot": "emphasis",
+    "id": "stellium_house_12",
+    "title": "Stellium in the 12th House",
+    "text": "A cluster of three or more planets in your 12th house tends to concentrate energy in private, inner and behind-the-scenes parts of life. Solitude, imagination, spirituality or quiet service may matter more than public life. In your chart that cluster is 5 planets: Mercury, Venus, Saturn, Uranus, Neptune."
+   },
+   {
+    "slot": "venus_house",
+    "id": "venus_house_12",
+    "title": "Venus in the 12th House",
+    "text": "Venus in the 12th house tends to make love private and tender. You may keep affection close, fall quietly, or feel drawn to compassionate or selfless forms of love. Art, music, and imagination can be deeply soothing. Many people with this placement have a gift for kindness behind the scenes, and learn to make sure their own heart is cared for too."
+   },
+   {
+    "slot": "partnership",
+    "id": "dsc_leo",
+    "title": "Leo on the 7th House Cusp (Descendant)",
+    "text": "With Leo on the cusp of your 7th house, the Descendant, you tend to be drawn to warm, expressive partners who bring the spotlight. In close relationships, both romantic and working, you often look for generosity, loyalty and wholehearted affection. Astrologers often add that the sign here describes qualities you are still learning to own, which is why partners tend to mirror them back. The Sun, already covered above, is also the ruler of your 7th house, so what it says about self-presentation and personal initiative tends to colour your close relationships too."
+   },
+   {
+    "slot": "career",
+    "id": "mc_scorpio",
+    "title": "Scorpio on the 10th House Cusp (Midheaven)",
+    "text": "With Scorpio on the cusp of your 10th house, the Midheaven, your public image and approach to work tend to be focused, strategic and unafraid of depth. You may become known for research, transformation and handling what is complex. Its ruler, Mars (with Pluto as a modern co-ruler), acts as a kind of career planet, so the house it occupies often shows where your sense of vocation draws its energy. This describes a style and direction rather than a specific job, and the rest of your chart fills in the detail."
+   }
+  ],
+  "tensions": [
+   {
+    "pair": [
+     "private",
+     "visible"
+    ],
+    "between": [
+     "chart_ruler_house_12",
+     "sun_house_01"
+    ],
+    "text": "Your chart holds both a private streak and a visible one. Rather than one cancelling the other out, they often take turns, and a lot of your range can come from giving each its own time and place."
+   }
+  ],
+  "more": [
+   {
+    "id": "mercury_house_12",
+    "text": "Mercury in the 12th: you know more than you say."
+   },
+   {
+    "id": "mars_house_11",
+    "text": "Mars in the 11th: you rally people around a cause."
+   },
+   {
+    "id": "jupiter_house_06",
+    "text": "Jupiter in the 6th: you find meaning in helping."
+   },
+   {
+    "id": "uranus_house_12",
+    "text": "Uranus in the 12th: your genius works in the background."
+   },
+   {
+    "id": "neptune_house_12",
+    "text": "Neptune in the 12th: your inner world is vast."
+   }
+  ],
+  "notes": [],
+  "word_count": 694
+ },
+ "free": {
+  "label": null,
+  "blocks": [
+   {
+    "kind": "existing_rising_card",
+    "visibility": "free"
+   },
+   {
+    "kind": "combined_teaser",
+    "visibility": "free",
+    "text": "Aquarius Sun, Aquarius rising: you tend to be exactly who you seem, originality and all."
+   },
+   {
+    "kind": "sun_house_teaser",
+    "visibility": "free",
+    "title": "Sun in the 1st House",
+    "text": "With the Sun in the 1st house, your core self tends to be right on the surface. People often read your energy quickly, and you may feel most alive when you are leading or simply being yourself in full view.",
+    "locked_sentences": 2
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your Moon's house",
+    "title": "Moon in the 11th House"
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your Venus house",
+    "title": "Venus in the 12th House"
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your 7th house ruler",
+    "title": "Leo on your Descendant, ruled by the Sun in your 1st house"
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your 10th house and Midheaven",
+    "title": "Scorpio on the 10th House Cusp (Midheaven)"
+   },
+   {
+    "kind": "more_count",
+    "visibility": "locked",
+    "text": "+10 more placements"
+   },
+   {
+    "kind": "wheel",
+    "visibility": "free",
+    "state": "blurred, house lines visible, unlabelled"
+   },
+   {
+    "kind": "cta",
+    "text": "Unlock your full reading, $4.99"
+   }
+  ]
+ }
+}

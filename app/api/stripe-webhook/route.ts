@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { attributionFromMetadata, flattenAttribution, resolveAttribution, sanitizeDistinctId } from "@/lib/attribution";
 import { captureServerEvent, posthogServerConfigured, stableUuid } from "@/lib/posthog-server";
+import { birthFlagsFromMetadata } from "@/lib/birth-flags";
 import {
   fetchOrder,
   isReadingOrder,
@@ -98,6 +99,7 @@ export async function POST(request: NextRequest) {
         ...flattenAttribution(touches),
         stripe_session_id: sessionId,
         readingHash: order.metadata.readingHash ?? null,
+        ...birthFlagsFromMetadata(order.metadata),
         $host: order.metadata.site_host ?? null,
         vercel_env: process.env.VERCEL_ENV ?? "development",
         livemode: event.livemode,

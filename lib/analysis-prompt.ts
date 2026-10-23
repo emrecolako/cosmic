@@ -9,6 +9,7 @@ import type { NumerologyProfile } from "./numerology";
 import type { WesternAstrologyProfile } from "./western-astrology";
 import type { ChineseZodiacProfile } from "./chinese-zodiac";
 import type { LifeStageContext } from "./life-stages";
+import type { StarMapGrounding } from "./chart/star-map";
 import {
   DEFAULT_LOCALE,
   LANGUAGE_NAMES,
@@ -29,6 +30,31 @@ export interface CosmicProfile {
   chineseZodiac: ChineseZodiacProfile;
   lifeStageContext: LifeStageContext;
   locale?: Locale;
+  /** Server-computed whole sign houses and the Star Map selection (full scope, English). */
+  starMapHouses?: StarMapGrounding;
+}
+
+const HOUSES_INSTRUCTION =
+  "Use these as the only source for house and chart-ruler claims; keep the tendency framing; do not add predictions, health, money or legal claims; do not quote the library verbatim more than one sentence at a time.";
+const ordinal = (h: number) => ({ 1: "1st", 2: "2nd", 3: "3rd" } as Record<number, string>)[h] ?? `${h}th`;
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
+function housesBlock(houses: StarMapGrounding): string {
+  const solar = houses.mode === "solar";
+  const placements = Object.entries(houses.houses)
+    .map(([planet, house]) => `${capitalize(planet)} ${solar ? "solar " : ""}${ordinal(house!)}`)
+    .join(", ");
+  const lines = [
+    solar
+      ? `- Solar houses (no birth time or place, so houses are counted from the Sun sign; always call them solar houses, e.g. "your solar 7th house"): ${placements}`
+      : `- Houses (whole sign, counted from the rising sign): ${placements}`,
+  ];
+  if (houses.chartRuler) {
+    lines.push(`- Chart ruler (traditional ruler of the rising sign): ${capitalize(houses.chartRuler.planet)}${houses.chartRuler.modernCoRuler ? ` (modern co-ruler ${capitalize(houses.chartRuler.modernCoRuler)})` : ""}, in the ${ordinal(houses.chartRuler.house)} house`);
+  }
+  if (houses.midheaven) lines.push(`- Midheaven: ${capitalize(houses.midheaven.sign)}, in the ${ordinal(houses.midheaven.house)} house`);
+  const entries = houses.entries.map((e) => `[${e.id}]${e.title ? ` ${e.title}:` : ""} ${e.text}`).join("\n");
+  return `${lines.join("\n")}\n\n<star_map_houses>\n${HOUSES_INSTRUCTION}\n${entries}\n</star_map_houses>`;
 }
 
 export const SYSTEM_PROMPT = `You are a master astrologer and numerologist who synthesizes multiple cosmic systems into unified, practical wisdom. You write with warmth and intelligence — never vague, never preachy. You acknowledge that these are interpretive frameworks, not deterministic predictions. You adapt your advice to the person's actual life context.
@@ -76,12 +102,17 @@ export function buildAnalysisPrompt(data: CosmicProfile, { scope = "full" }: Pro
   if (data.westernAstro.risingSign) {
     astroSection += `\n- Rising Sign: ${data.westernAstro.risingSign}`;
   }
+  const houses = data.starMapHouses;
   if (!data.birthTime) {
-    astroSection += `\n- Note: Birth time not provided. Moon, rising, and house placements are unavailable.`;
+    astroSection += houses
+      ? `\n- Note: Birth time not provided: solar houses only, no rising sign.`
+      : `\n- Note: Birth time not provided. Moon, rising, and house placements are unavailable.`;
   } else if (!data.westernAstro.risingSign) {
     astroSection += `\n- Note: Rising sign is unavailable; location or timezone may be missing.`;
   }
-  astroSection += `\n- Precision: Only the signs listed above are available. No exact degrees, houses, planetary aspects, current transits, or personality scores are calculated. Do not invent them anywhere in the reading.`;
+  astroSection += houses
+    ? `\n- Precision: Only the signs listed above and the house placements and chart ruler below are available. No exact degrees, planetary aspects, current transits, or personality scores are calculated. Do not invent them anywhere in the reading.\n${housesBlock(houses)}`
+    : `\n- Precision: Only the signs listed above are available. No exact degrees, houses, planetary aspects, current transits, or personality scores are calculated. Do not invent them anywhere in the reading.`;
 
   sections.push(astroSection);
 
@@ -137,7 +168,7 @@ A compelling 2-3 sentence executive summary that captures the essence of this pe
 An 800-1200 word unified narrative that: (1) Finds connecting threads across numerology, Western astrology, and Chinese astrology. (2) Identifies reinforcing patterns where multiple systems agree. (3) Calls out interesting tensions where systems suggest opposing tendencies — framed as complexity, not contradiction. (4) Adapts language and focus based on their life stage. (5) Uses a warm, intelligent tone.${data.whatsOnYourMind ? " (6) Weaves in the personal context they shared naturally — don't just append it, integrate it." : ""} Separate paragraphs with blank lines. Add three short editorial subheadings, in the requested language, for shared themes, tensions, and practical meaning. Prefix each subheading with ## and put a blank line before and after it.
 
 <<<SEASON>>>
-A 150-200 word section about what's active for them right now, based on their Personal Year number (${data.numerology.personalYear.number} — ${data.numerology.personalYear.interpretation.title}) only. No current planetary transits, exact planetary degrees, houses, aspects, or personality scores have been calculated: never invent or claim them. This should feel timely and actionable.
+A 150-200 word section about what's active for them right now, based on their Personal Year number (${data.numerology.personalYear.number} — ${data.numerology.personalYear.interpretation.title}) only. No current planetary transits, exact planetary degrees, ${houses ? "" : "houses, "}aspects, or personality scores have been calculated: never invent or claim them. This should feel timely and actionable.
 
 <<<TOOLKIT>>>
 3-5 specific, practical takeaways based on their complete profile, one per line, each line starting with "- ". Each should be 1-2 sentences — not just "be more patient" but something specific to their profile combination. Think actionable micro-advice.

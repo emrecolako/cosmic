@@ -1,0 +1,444 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://unifiedreading.com/schemas/house-library-entry.json",
+  "title": "House interpretation library entry",
+  "description": "Each library file (houses.json, planets-in-houses.json, chart-ruler-in-houses.json, combinations.json) is an array of these entries.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "type",
+      "title",
+      "body",
+      "tags",
+      "share_line",
+      "teaser_cut",
+      "source_ids",
+      "word_count"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^(house_(0[1-9]|1[0-2])|(sun|moon|mercury|venus|mars|jupiter|saturn|uranus|neptune|pluto)_house_(0[1-9]|1[0-2])|chart_ruler_house_(0[1-9]|1[0-2])|sun_(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)_rising_(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces)|sun_moon_house_(0[1-9]|1[0-2])_(0[1-9]|1[0-2])|stellium_house_(0[1-9]|1[0-2])|hemisphere_(upper|lower|eastern|western)|quadrant_[1-4]|chart_ruler_with_sun|(dsc|mc)_(aries|taurus|gemini|cancer|leo|virgo|libra|scorpio|sagittarius|capricorn|aquarius|pisces))$"
+      },
+      "type": {
+        "enum": [
+          "house",
+          "planet_in_house",
+          "chart_ruler_in_house",
+          "combination"
+        ]
+      },
+      "planet": {
+        "enum": [
+          "Sun",
+          "Moon",
+          "Mercury",
+          "Venus",
+          "Mars",
+          "Jupiter",
+          "Saturn",
+          "Uranus",
+          "Neptune",
+          "Pluto"
+        ],
+        "description": "Required when type = planet_in_house"
+      },
+      "house": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 12
+      },
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "body": {
+        "type": "string",
+        "description": "Original interpretation, 60-120 words, at least 3 sentences, tendency framing, second person."
+      },
+      "tags": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 5,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z]+(-[a-z]+)*$"
+        },
+        "description": "Lowercase single words or hyphenated compounds, matching the existing UI trait style (rendered joined with ' \u00b7 ')."
+      },
+      "share_line": {
+        "type": "string",
+        "maxLength": 120,
+        "description": "One second-person sentence usable alone on a share card. House and Sun-in-house entries name the house (e.g. 'Sun in the 10th: you're built to be seen.')."
+      },
+      "teaser_cut": {
+        "type": "integer",
+        "minimum": 2,
+        "description": "Number of leading body sentences shown free = 0-based index of the first locked sentence. Must be < sentence_count."
+      },
+      "source_ids": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        },
+        "description": "Each id must exist in sources/source-log.json."
+      },
+      "tradition_notes": {
+        "type": "string"
+      },
+      "word_count": {
+        "type": "integer",
+        "minimum": 60,
+        "maximum": 120
+      },
+      "sentence_count": {
+        "type": "integer",
+        "minimum": 3
+      },
+      "subtype": {
+        "enum": [
+          "sun_rising",
+          "sun_moon_houses",
+          "stellium",
+          "hemisphere",
+          "quadrant",
+          "chart_ruler_sun",
+          "descendant_sign",
+          "midheaven_sign"
+        ]
+      },
+      "authoring": {
+        "enum": [
+          "composed",
+          "hand-written"
+        ],
+        "description": "composed = assembled from hand-written fragments by build/build_combinations.py; needs editorial review."
+      },
+      "conditions": {
+        "$ref": "#/$defs/conditions"
+      }
+    },
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "type": {
+              "const": "planet_in_house"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "planet",
+            "house"
+          ]
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "type": {
+              "enum": [
+                "house",
+                "chart_ruler_in_house"
+              ]
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "house"
+          ]
+        }
+      },
+      {
+        "if": {
+          "properties": {
+            "type": {
+              "const": "combination"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "subtype",
+            "conditions",
+            "authoring"
+          ]
+        }
+      }
+    ]
+  },
+  "$defs": {
+    "conditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "description": "Entry applies when every atom in 'all' holds, at least one in 'any' holds (if present), and no atom in 'none' holds. Houses are evaluated in the active house system; planets = Sun..Pluto.",
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/atom"
+          }
+        },
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/atom"
+          }
+        },
+        "none": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/atom"
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "all"
+          ]
+        },
+        {
+          "required": [
+            "any"
+          ]
+        }
+      ]
+    },
+    "atom": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "planet",
+            "house"
+          ],
+          "properties": {
+            "planet": {
+              "enum": [
+                "sun",
+                "moon",
+                "mercury",
+                "venus",
+                "mars",
+                "jupiter",
+                "saturn",
+                "uranus",
+                "neptune",
+                "pluto"
+              ]
+            },
+            "house": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "planet",
+            "sign"
+          ],
+          "properties": {
+            "planet": {
+              "enum": [
+                "sun",
+                "moon",
+                "mercury",
+                "venus",
+                "mars",
+                "jupiter",
+                "saturn",
+                "uranus",
+                "neptune",
+                "pluto"
+              ]
+            },
+            "sign": {
+              "enum": [
+                "aries",
+                "taurus",
+                "gemini",
+                "cancer",
+                "leo",
+                "virgo",
+                "libra",
+                "scorpio",
+                "sagittarius",
+                "capricorn",
+                "aquarius",
+                "pisces"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "point",
+            "sign"
+          ],
+          "properties": {
+            "point": {
+              "enum": [
+                "asc",
+                "mc",
+                "dsc",
+                "ic"
+              ]
+            },
+            "sign": {
+              "enum": [
+                "aries",
+                "taurus",
+                "gemini",
+                "cancer",
+                "leo",
+                "virgo",
+                "libra",
+                "scorpio",
+                "sagittarius",
+                "capricorn",
+                "aquarius",
+                "pisces"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "house",
+            "min_planets",
+            "exclude_outer_only"
+          ],
+          "properties": {
+            "house": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "min_planets": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 10
+            },
+            "exclude_outer_only": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "hemisphere",
+            "min_planets"
+          ],
+          "properties": {
+            "hemisphere": {
+              "enum": [
+                "upper",
+                "lower",
+                "eastern",
+                "western"
+              ]
+            },
+            "min_planets": {
+              "type": "integer",
+              "minimum": 6,
+              "maximum": 10
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "quadrant",
+            "min_planets"
+          ],
+          "properties": {
+            "quadrant": {
+              "enum": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            "min_planets": {
+              "type": "integer",
+              "minimum": 4,
+              "maximum": 10
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "relation",
+            "a",
+            "b"
+          ],
+          "properties": {
+            "relation": {
+              "enum": [
+                "same_house",
+                "same_sign"
+              ]
+            },
+            "a": {
+              "enum": [
+                "sun",
+                "moon",
+                "mercury",
+                "venus",
+                "mars",
+                "jupiter",
+                "saturn",
+                "uranus",
+                "neptune",
+                "pluto",
+                "chart_ruler"
+              ]
+            },
+            "b": {
+              "enum": [
+                "sun",
+                "moon",
+                "mercury",
+                "venus",
+                "mars",
+                "jupiter",
+                "saturn",
+                "uranus",
+                "neptune",
+                "pluto",
+                "chart_ruler"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

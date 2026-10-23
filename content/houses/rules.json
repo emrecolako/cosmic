@@ -1,0 +1,287 @@
+{
+  "version": "1.0.0",
+  "description": "Selection and merge rules for the Star Map houses reading. Implemented by build/compose.py; the app should port this file, not re-derive it.",
+  "library_files": [
+    "library/houses.json",
+    "library/planets-in-houses.json",
+    "library/chart-ruler-in-houses.json",
+    "library/combinations.json"
+  ],
+  "planets": [
+    "sun",
+    "moon",
+    "mercury",
+    "venus",
+    "mars",
+    "jupiter",
+    "saturn",
+    "uranus",
+    "neptune",
+    "pluto"
+  ],
+  "outer_planets": [
+    "uranus",
+    "neptune",
+    "pluto"
+  ],
+  "rulers": {
+    "system": "traditional",
+    "traditional": {
+      "aries": "mars",
+      "taurus": "venus",
+      "gemini": "mercury",
+      "cancer": "moon",
+      "leo": "sun",
+      "virgo": "mercury",
+      "libra": "venus",
+      "scorpio": "mars",
+      "sagittarius": "jupiter",
+      "capricorn": "saturn",
+      "aquarius": "saturn",
+      "pisces": "jupiter"
+    },
+    "modern_co_rulers": {
+      "scorpio": "pluto",
+      "aquarius": "uranus",
+      "pisces": "neptune"
+    },
+    "note": "Chart ruler = traditional ruler of the rising sign; the modern co-ruler is named in brackets only. The existing UI 'Ruling Planet' row is the Sun sign's MODERN ruler and must be relabelled (see ui_labels)."
+  },
+  "house_system": {
+    "default": "whole_sign",
+    "optional": [
+      "placidus"
+    ],
+    "placidus_max_abs_latitude": 66.0,
+    "placidus_fallback": "whole_sign"
+  },
+  "modes": {
+    "full": {
+      "when": "birth time AND birth place known",
+      "label": null,
+      "slots": [
+        "sun_rising",
+        "chart_ruler",
+        "sun_house",
+        "moon_house",
+        "angular",
+        "emphasis",
+        "venus_house",
+        "partnership",
+        "career",
+        "rest"
+      ]
+    },
+    "solar": {
+      "when": "birth time unknown (any place), OR time known but place unknown",
+      "label": "Solar chart: we don't have your birth time and place, so your Sun sign is used as your 1st house. Your rising sign and the exact houses need a birth time.",
+      "house_rule": "solar whole sign: house = ((planet_sign - sun_sign) mod 12) + 1",
+      "slots": [
+        "emphasis",
+        "moon_house",
+        "venus_house",
+        "personal",
+        "rest"
+      ],
+      "excluded": [
+        "sun_rising",
+        "chart_ruler",
+        "sun_house (always 1st)",
+        "angular",
+        "hemisphere",
+        "quadrant",
+        "partnership",
+        "career"
+      ],
+      "unstable_planets": "A planet is used only if its sign is the same across the whole uncertainty window: local 00:00-23:59 when the place is known, otherwise UTC-12 to UTC+14 around the date. Otherwise omit it and say so once.",
+      "time_known_place_unknown": "Same as solar. Do NOT assume UTC: the current engine silently uses offset 0 when geocoding fails (lib/profile.ts + lib/western-astrology.ts:153). Only show the Moon sign if it is stable across UTC-12..+14."
+    }
+  },
+  "slots": {
+    "sun_rising": {
+      "priority": 1,
+      "select": "combinations: subtype sun_rising matching sun.sign + asc.sign",
+      "render": "full"
+    },
+    "chart_ruler": {
+      "priority": 1,
+      "select": "chart_ruler_house_{house of chart ruler}",
+      "render": "full",
+      "bridge": "if combinations.chart_ruler_with_sun matches (ruler in the Sun's house), render the chart ruler entry as its teaser (first teaser_cut sentences) followed by the FIRST sentence of chart_ruler_with_sun, because the sun_house paragraph already covers that house"
+    },
+    "sun_house": {
+      "priority": 2,
+      "select": "sun_house_{HH}",
+      "render": "full"
+    },
+    "moon_house": {
+      "priority": 3,
+      "select": "moon_house_{HH}",
+      "render": "full",
+      "combo": "if combinations sun_moon_house_{sun}_{moon} matches: render moon_house as teaser (first teaser_cut sentences) followed by the combination in full"
+    },
+    "angular": {
+      "priority": 4,
+      "select": "planet_in_house for planets in houses 1, 10, 7, 4 (that order), excluding sun, moon and any planet already used",
+      "max": 2,
+      "render": "full",
+      "order_within": "personal planets (mercury, venus, mars) before social (jupiter, saturn) before outer"
+    },
+    "emphasis": {
+      "priority": 5,
+      "select": "largest matching stellium (tie: the house holding the Sun, then the chart ruler, then the lowest house number); if none, a matching hemisphere entry; if none, a matching quadrant entry",
+      "max": 1,
+      "render": "full",
+      "extra_stelliums": "render as share_line in the 'more' list",
+      "featured_house_rule": "if the stellium's house is the Sun's house or the chart ruler's house, render only its teaser plus the stellium_count template (the house itself is already described)",
+      "demotion_exempt": true
+    },
+    "venus_house": {
+      "priority": 6,
+      "select": "venus_house_{HH} (skip if Venus is already used, e.g. as chart ruler; the free locked card then points at the chart-ruler paragraph)",
+      "render": "full"
+    },
+    "partnership": {
+      "priority": 7,
+      "select": "combinations dsc_{sign}",
+      "render": "full",
+      "bridge_template": "seventh_ruler"
+    },
+    "career": {
+      "priority": 8,
+      "select": "combinations mc_{sign}",
+      "render": "full",
+      "note": "keyed to the MC sign, which in whole sign can fall in the 9th, 10th or 11th house; say 'Midheaven' in titles, not '10th house sign', if MC house != 10"
+    },
+    "rest": {
+      "priority": 9,
+      "select": "remaining planet_in_house entries for mercury, mars, jupiter, saturn, uranus, neptune, pluto not yet used",
+      "render": "share_line"
+    },
+    "personal": {
+      "priority": 7,
+      "modes": [
+        "solar"
+      ],
+      "select": "mercury_house_{HH}, mars_house_{HH} (solar houses) if not already used",
+      "render": "full",
+      "note": "solar mode only, so a no-time reading still has enough paid substance"
+    }
+  },
+  "limits": {
+    "max_full_paragraphs": 10,
+    "max_full_words": 950,
+    "max_more_lines": 8,
+    "overflow": "drop lowest-priority full paragraphs to share_line first; never drop slots priority <= 3",
+    "growth_edge_sentences_kept": 2,
+    "growth_edge_prefixes": [
+      "The growth edge",
+      "The lesson",
+      "The gift",
+      "The invitation",
+      "The challenge",
+      "It tends to go best"
+    ],
+    "min_sentences_after_trim": 3
+  },
+  "dedup": [
+    "Each library entry id appears at most once per reading.",
+    "If a planet is selected by two slots (e.g. Venus is both chart ruler and 7th ruler), render it once in the higher-priority slot and use a connective template in the other.",
+    "Drop a final growth-edge sentence from every paragraph after the first two that keep one (never below min_sentences_after_trim).",
+    "If two full paragraphs share >= 3 tags, demote the lower-priority one to its share_line.",
+    "Sign descriptions already shown by the existing Sun/Moon/Rising cards are not repeated: the library never restates sign traits beyond one clause."
+  ],
+  "tension_pairs": [
+    [
+      "private",
+      "visible"
+    ],
+    [
+      "independent",
+      "partnership"
+    ],
+    [
+      "independent",
+      "relational"
+    ],
+    [
+      "rooted",
+      "adventurous"
+    ],
+    [
+      "calm",
+      "intense"
+    ],
+    [
+      "steady",
+      "intense"
+    ],
+    [
+      "practical",
+      "idealistic"
+    ],
+    [
+      "practical",
+      "dreamy"
+    ],
+    [
+      "private",
+      "sociable"
+    ],
+    [
+      "inward",
+      "sociable"
+    ],
+    [
+      "disciplined",
+      "playful"
+    ]
+  ],
+  "tension_template": "Your chart holds both a {a} streak and a {b} one. Rather than one cancelling the other out, they often take turns, and a lot of your range can come from giving each its own time and place.",
+  "connective_templates": {
+    "seventh_ruler": "The ruler of your 7th house is {planet}, which sits in your {house_ord} house, so partnership themes often play out through {house_theme}.",
+    "seventh_ruler_already_used": "{planet_cap}, already covered above, is also the ruler of your 7th house, so what it says about {house_theme} tends to colour your close relationships too.",
+    "seventh_ruler_is_chart_ruler": "{planet_cap} rules both your rising sign and your 7th house, so how you show up and who you are drawn to tend to be closely linked.",
+    "unstable_omitted": "Your {planet_list} changed sign around your birth date, so we've left {pronoun} out until we have a birth time.",
+    "mc_not_10th": "In whole sign houses your Midheaven falls in your {house_ord} house, which adds {house_theme} to your career themes.",
+    "stellium_count": "In your chart that cluster is {n} planets: {planets}."
+  },
+  "house_themes": {
+    "1": "self-presentation and personal initiative",
+    "2": "resources, values and self-worth",
+    "3": "communication, learning and siblings or neighbours",
+    "4": "home, family and roots",
+    "5": "creativity, play and romance",
+    "6": "daily work, routines and habits",
+    "7": "one-to-one partnerships",
+    "8": "intimacy, shared resources and deep change",
+    "9": "travel, study and belief",
+    "10": "career, reputation and public life",
+    "11": "friends, groups and future hopes",
+    "12": "solitude, rest and the inner life"
+  },
+  "free_paid": {
+    "source": "cmo-guidance.md",
+    "free": [
+      "Existing Rising sign card in full (unchanged app copy).",
+      "One-sentence combined teaser: the share_line of the matching sun_rising entry (solar mode: the share_line of the emphasis entry or, if none, of sun_house_01 replaced by the label).",
+      "Sun's house: title plus the first teaser_cut (2) sentences; the rest locked.",
+      "Locked-card TITLES only, in CMO order: Moon's house, Venus's house, 7th house ruler, 10th house/MC; then '+N more placements'.",
+      "Chart wheel blurred: house divisions visible, no labels or glyphs."
+    ],
+    "paid": "Everything selected by the slots, in priority order, plus the full wheel. Chart ruler card titled 'Your chart ruler: the planet that runs your whole chart'.",
+    "locking": "Locked text is never sent to the client before payment; the server returns only free text + locked titles (see spec).",
+    "cta": "Unlock your full reading, $4.99",
+    "one_cta_per_screen": true
+  },
+  "ui_labels": {
+    "sun_sign_ruler_row": {
+      "old_key": "western.rulingPlanet",
+      "old_en": "Ruling Planet",
+      "new_en": "Sun-sign ruler",
+      "tooltip_en": "The planet linked to your Sun sign. Your chart ruler, which depends on your rising sign, is in your Star Map houses."
+    },
+    "chart_ruler_card_title_en": "Your chart ruler: the planet that runs your whole chart"
+  },
+  "prompt_use": "When passed to the AI master prompt, send the selected entry ids, titles and bodies as grounding with: 'Use these as the only source for house and chart-ruler claims; keep the tendency framing; do not add predictions, health, money or legal claims; do not quote the library verbatim more than one sentence at a time.'"
+}

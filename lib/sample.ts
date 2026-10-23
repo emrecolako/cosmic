@@ -3,8 +3,12 @@ import { atlasCopy } from './i18n/atlas';
 import type { ReadingInput } from './profile';
 import type { ParsedAnalysis } from './analysis-stream';
 
-/** One consistent fictional fixture. Never stored over the visitor's own details. */
-export const SAMPLE_INPUT: ReadingInput = { fullName: 'Alex Morgan', dateOfBirth: '1990-11-04', lifeStages: ['building_career', 'in_relationship'] };
+/**
+ * One consistent fictional fixture. Never stored over the visitor's own details.
+ * The birth time and place are invented too, so the sample can show houses;
+ * the place must be in lib/geocode.ts's offline table.
+ */
+export const SAMPLE_INPUT: ReadingInput = { fullName: 'Alex Morgan', dateOfBirth: '1990-11-04', birthTime: '07:40', birthPlace: 'Lisbon', lifeStages: ['building_career', 'in_relationship'] };
 const stories: Record<Locale, [string, string, string, string[]]> = {
   en: [
     'You’re drawn to what lies beneath the surface. Your numbers and Scorpio Sun suggest a reflective streak; the Horse brings a desire for movement. This chapter may be about making room for both.',

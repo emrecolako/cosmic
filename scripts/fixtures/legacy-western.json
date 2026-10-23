@@ -1,0 +1,218 @@
+{
+ "note": "westernAstro exactly as the pre-chart-key client computed it (main at 42422bf, lib/profile.ts computeProfile). Nominatim answers only for Tromsø.",
+ "cases": [
+  {
+   "input": {
+    "dateOfBirth": "1990-01-01",
+    "birthTime": "01:00",
+    "birthPlace": "Kolkata"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Capricorn",
+     "glyph": "♑",
+     "decan": 2,
+     "element": "Earth",
+     "modality": "Cardinal",
+     "rulingPlanet": "Saturn",
+     "description": "Ambitious, disciplined, and quietly powerful. Capricorn climbs steadily toward mastery, building an enduring legacy through patience, responsibility, and an unwavering focus on long-term goals.",
+     "traits": [
+      "disciplined",
+      "responsible",
+      "ambitious",
+      "patient",
+      "strategic"
+     ]
+    },
+    "moonSign": "Aquarius",
+    "risingSign": "Scorpio"
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "1995-01-15",
+    "birthTime": "09:00",
+    "birthPlace": "Adelaide"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Capricorn",
+     "glyph": "♑",
+     "decan": 3,
+     "element": "Earth",
+     "modality": "Cardinal",
+     "rulingPlanet": "Saturn",
+     "description": "Ambitious, disciplined, and quietly powerful. Capricorn climbs steadily toward mastery, building an enduring legacy through patience, responsibility, and an unwavering focus on long-term goals.",
+     "traits": [
+      "disciplined",
+      "responsible",
+      "ambitious",
+      "patient",
+      "strategic"
+     ]
+    },
+    "moonSign": "Cancer",
+    "risingSign": "Pisces"
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "1975-05-05",
+    "birthTime": "23:50",
+    "birthPlace": "Mumbai"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Taurus",
+     "glyph": "♉",
+     "decan": 2,
+     "element": "Earth",
+     "modality": "Fixed",
+     "rulingPlanet": "Venus",
+     "description": "Steadfast, sensual, and grounded in the physical world. Taurus builds a beautiful life through patience, persistence, and an unwavering connection to what matters most.",
+     "traits": [
+      "reliable",
+      "patient",
+      "practical",
+      "devoted",
+      "sensual"
+     ]
+    },
+    "moonSign": "Pisces",
+    "risingSign": "Capricorn"
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "1993-06-20",
+    "birthTime": "21:15",
+    "birthPlace": "Tromsø, Norway"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Gemini",
+     "glyph": "♊",
+     "decan": 3,
+     "element": "Air",
+     "modality": "Mutable",
+     "rulingPlanet": "Mercury",
+     "description": "Quick-minded, curious, and endlessly versatile. Gemini navigates the world through communication and connection, weaving ideas and people together with intellectual agility.",
+     "traits": [
+      "adaptable",
+      "curious",
+      "communicative",
+      "witty",
+      "versatile"
+     ]
+    },
+    "moonSign": "Cancer",
+    "risingSign": "Sagittarius"
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "2024-01-25",
+    "birthTime": "17:54",
+    "birthPlace": "Nowhere Junction"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Aquarius",
+     "glyph": "♒",
+     "decan": 1,
+     "element": "Air",
+     "modality": "Fixed",
+     "rulingPlanet": "Uranus",
+     "description": "Visionary, independent, and humanistic. Aquarius marches to the beat of their own drum, driven by a passion for progress, innovation, and the betterment of humanity.",
+     "traits": [
+      "progressive",
+      "original",
+      "independent",
+      "humanitarian",
+      "inventive"
+     ]
+    },
+    "moonSign": "Leo",
+    "risingSign": null
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "1986-02-24",
+    "birthTime": "20:30",
+    "birthPlace": "London"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Pisces",
+     "glyph": "♓",
+     "decan": 1,
+     "element": "Water",
+     "modality": "Mutable",
+     "rulingPlanet": "Neptune",
+     "description": "Empathic, artistic, and spiritually attuned. Pisces flows between the seen and unseen worlds, gifted with profound imagination, compassion, and an intuitive understanding of the human experience.",
+     "traits": [
+      "compassionate",
+      "artistic",
+      "intuitive",
+      "gentle",
+      "wise"
+     ]
+    },
+    "moonSign": "Virgo",
+    "risingSign": "Libra"
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "1990-11-04",
+    "birthPlace": "Lisbon"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Scorpio",
+     "glyph": "♏",
+     "decan": 2,
+     "element": "Water",
+     "modality": "Fixed",
+     "rulingPlanet": "Pluto",
+     "description": "Intense, passionate, and profoundly transformative. Scorpio dives into the depths of experience, unafraid of darkness, and emerges with hard-won wisdom and an unshakable inner power.",
+     "traits": [
+      "passionate",
+      "resourceful",
+      "determined",
+      "perceptive",
+      "magnetic"
+     ]
+    },
+    "moonSign": null,
+    "risingSign": null
+   }
+  },
+  {
+   "input": {
+    "dateOfBirth": "1990-11-04"
+   },
+   "westernAstro": {
+    "sunSign": {
+     "sign": "Scorpio",
+     "glyph": "♏",
+     "decan": 2,
+     "element": "Water",
+     "modality": "Fixed",
+     "rulingPlanet": "Pluto",
+     "description": "Intense, passionate, and profoundly transformative. Scorpio dives into the depths of experience, unafraid of darkness, and emerges with hard-won wisdom and an unshakable inner power.",
+     "traits": [
+      "passionate",
+      "resourceful",
+      "determined",
+      "perceptive",
+      "magnetic"
+     ]
+    },
+    "moonSign": null,
+    "risingSign": null
+   }
+  }
+ ]
+}

@@ -29,6 +29,37 @@ function offsetAtInstant(timeZone: string, utcMillis: number): number {
   return sign * (hours + minutes / 60);
 }
 
+/** IANA zone for coordinates, or null when tz-lookup cannot place them. */
+export function timeZoneAt(latitude: number, longitude: number): string | null {
+  try {
+    return tzlookup(latitude, longitude);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * UTC milliseconds for a wall-clock time in `timeZone`. A time skipped by a
+ * DST jump is read with the offset after the jump; a repeated time resolves
+ * to its later occurrence.
+ */
+export function localToUtcMillis(
+  timeZone: string,
+  year: number,
+  month: number,
+  day: number,
+  hours: number,
+  minutes: number
+): number {
+  const wallClockAsUTC = Date.UTC(year, month - 1, day, hours, minutes, 0);
+  let offset = offsetAtInstant(timeZone, wallClockAsUTC);
+  const refined = offsetAtInstant(timeZone, wallClockAsUTC - offset * 3600 * 1000);
+  if (refined !== offset) {
+    offset = offsetAtInstant(timeZone, wallClockAsUTC - refined * 3600 * 1000);
+  }
+  return wallClockAsUTC - offset * 3600 * 1000;
+}
+
 /**
  * Resolve the UTC offset (in hours) in effect at a wall-clock birth moment
  * at the given coordinates, honoring historical rules and DST.
@@ -52,21 +83,10 @@ export function getTimezoneOffsetHours(
   hours: number = 12,
   minutes: number = 0
 ): number | null {
-  let zone: string;
-  try {
-    zone = tzlookup(latitude, longitude);
-  } catch {
-    return null;
-  }
-
+  const zone = timeZoneAt(latitude, longitude);
+  if (!zone) return null;
   // Two-pass resolution: we know the local wall-clock time but need the UTC
-  // instant to ask Intl for the offset. Guess with offset 0, refine, and
-  // re-check once so births near a DST transition resolve correctly.
+  // instant to ask Intl for the offset.
   const wallClockAsUTC = Date.UTC(year, month - 1, day, hours, minutes, 0);
-  let offset = offsetAtInstant(zone, wallClockAsUTC);
-  const refined = offsetAtInstant(zone, wallClockAsUTC - offset * 3600 * 1000);
-  if (refined !== offset) {
-    offset = offsetAtInstant(zone, wallClockAsUTC - refined * 3600 * 1000);
-  }
-  return offset;
+  return (wallClockAsUTC - localToUtcMillis(zone, year, month, day, hours, minutes)) / 3600000;
 }

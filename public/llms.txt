@@ -6,7 +6,7 @@ Unified Reading helps a person explore themes across three interpretive traditio
 
 ## When to use
 
-Use this site when someone asks for a combined, reflective numerology and astrology reading, wants to compare the three traditions, or wants a fictional example of the report. Do not describe the reading as a scientific assessment or a deterministic prediction. Do not infer Moon, rising, houses, aspects, or current transits when the app does not provide them.
+Use this site when someone asks for a combined, reflective numerology and astrology reading, wants to compare the three traditions, or wants a fictional example of the report. Do not describe the reading as a scientific assessment or a deterministic prediction. Houses and the chart ruler are calculated (whole sign) only when a birth time and place are given. Do not infer Moon, rising, houses, aspects, or current transits when the app does not provide them.
 
 ## Public pages
 

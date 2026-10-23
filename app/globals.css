@@ -531,3 +531,31 @@ a:hover { text-decoration:underline; text-underline-offset:5px; }
 .home-header :focus-visible,.dossier-dark :focus-visible { outline-color:#f7f7f7; }
 
 .pricing-heading .page-art { margin-inline:auto; }
+
+/* Star Map houses */
+.houses-block { margin-top:48px; border-top:1px solid var(--border-muted); padding-top:32px; max-width:740px; }
+.houses-heading { font:500 23px/26px var(--font-editorial),serif; margin-bottom:8px; }
+.house-gloss { color:var(--text-muted); font-size:13px; line-height:20px; max-width:640px; }
+.house-card { display:block; width:100%; text-align:left; padding:20px 0; border-top:1px solid var(--border-muted); }
+.house-card-ruler { background:var(--bg-secondary); padding:20px; border:1px solid var(--border-muted); margin:12px 0; }
+.house-title { display:block; font:500 20px/26px var(--font-editorial),serif; color:var(--text); margin-bottom:6px; }
+.house-text { font-size:16px; line-height:26px; color:var(--text-secondary); margin-top:8px; }
+.house-share { margin-top:10px; min-height:36px; font:11px/16px var(--font-mono); text-transform:uppercase; color:var(--text-muted); text-decoration:underline; text-underline-offset:4px; }
+.houses-teaser { margin:8px 0 24px; padding:20px 24px; background:var(--bg-secondary); }
+.houses-teaser blockquote { font:500 22px/28px var(--font-editorial),serif; color:var(--text); margin-top:8px; }
+.house-locked-line { display:inline-flex; align-items:center; gap:8px; min-height:44px; margin-top:8px; font:11px/16px var(--font-mono); text-transform:uppercase; color:var(--text-muted); }
+.house-locked-line:hover,.house-card-locked:hover { color:var(--text); border-color:var(--text-muted); }
+.house-locked-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+.house-card-locked { display:flex; flex-direction:column; gap:8px; height:100%; padding:16px; border:1px dashed var(--border); color:var(--text-muted); cursor:pointer; }
+.house-card-locked .house-title { font-size:17px; line-height:22px; margin:0; }
+.houses-cta { margin-top:28px; scroll-margin:120px; }
+.house-more { margin-top:16px; border-top:1px solid var(--border-muted); }
+.house-more summary { display:flex; align-items:center; min-height:48px; cursor:pointer; list-style:none; font:12px/16px var(--font-mono); text-transform:uppercase; }
+.house-more summary::-webkit-details-marker { display:none; }
+.house-more summary::after { content:"+"; margin-left:12px; }
+.house-more[open] summary::after { content:"−"; }
+.house-more-list { display:grid; gap:10px; color:var(--text-secondary); font-size:15px; line-height:22px; }
+.house-tension { font-style:italic; padding-block:12px; }
+.wheel-legend { display:flex; flex-wrap:wrap; justify-content:center; gap:6px 14px; max-width:320px; margin-top:12px; font:10px/14px var(--font-mono); text-transform:uppercase; color:var(--text-muted); }
+.wheel-legend span { color:var(--text); font-family:Georgia,serif; font-size:12px; margin-right:2px; }
+@media(max-width:640px) { .houses-block { margin-top:32px; } .house-locked-grid { grid-template-columns:1fr; } .houses-teaser { padding:16px; } }

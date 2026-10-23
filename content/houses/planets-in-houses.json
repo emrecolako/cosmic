@@ -1,0 +1,2756 @@
+[
+  {
+    "id": "sun_house_01",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 1,
+    "title": "Sun in the 1st House",
+    "body": "With the Sun in the 1st house, your core self tends to be right on the surface. People often read your energy quickly, and you may feel most alive when you are leading or simply being yourself in full view. Confidence and vitality are common themes. The growth edge is remembering that not every room needs you at its centre to be a good room.",
+    "tags": [
+      "confident",
+      "visible",
+      "self-directed",
+      "vital"
+    ],
+    "share_line": "Sun in the 1st: you're built to lead with who you are.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 65,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_02",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 2,
+    "title": "Sun in the 2nd House",
+    "body": "The Sun in the 2nd house tends to link your identity with what you build and keep. You often shine when you are developing a skill, creating stability, or standing by your values. Feeling secure can be a big part of feeling like yourself. Over time, many people with this placement discover their real wealth is a talent they once took for granted.",
+    "tags": [
+      "steady",
+      "resourceful",
+      "value-driven",
+      "grounded"
+    ],
+    "share_line": "Sun in the 2nd: you shine by building what you value.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 63,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_03",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 3,
+    "title": "Sun in the 3rd House",
+    "body": "With the Sun in the 3rd house, your sense of self tends to come alive through ideas and conversation. You may be the one who explains, connects, writes, or asks the next question. Siblings, neighbours, and your local world can play a central role in your story. Curiosity keeps you young, and a good exchange of ideas can feel like sunlight.",
+    "tags": [
+      "curious",
+      "communicative",
+      "quick-witted",
+      "social"
+    ],
+    "share_line": "Sun in the 3rd: you shine through words, questions and ideas.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_04",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 4,
+    "title": "Sun in the 4th House",
+    "body": "The Sun in the 4th house tends to place your heart at home. Family, roots, and private life often shape your identity more than public achievements do. You may shine brightest with the people who know you best, and building a home can be a life project in itself. Later chapters of life often bring a stronger sense of who you are.",
+    "tags": [
+      "rooted",
+      "private",
+      "protective",
+      "loyal"
+    ],
+    "share_line": "Sun in the 4th: your light starts at home and in your roots.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent. Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_05",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 5,
+    "title": "Sun in the 5th House",
+    "body": "With the Sun in the 5th house, joy is part of your identity. You tend to shine through creativity, romance, performance, games, or time with children. Expressing yourself without holding back can feel essential. People often notice your warmth and playfulness first. The invitation is to make room for delight on purpose, rather than waiting until every serious task is finished.",
+    "tags": [
+      "creative",
+      "playful",
+      "expressive",
+      "warm-hearted"
+    ],
+    "share_line": "Sun in the 5th: you're built to create, play and be adored.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 61,
+    "sentence_count": 5
+  },
+  {
+    "id": "sun_house_06",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 6,
+    "title": "Sun in the 6th House",
+    "body": "The Sun in the 6th house tends to make purpose feel practical. You often shine through craft, service, problem-solving, and doing a job properly. Daily routines can shape your mood and energy more than you expect. Many people with this placement feel most like themselves when they are useful, and learn over time that rest is part of doing good work.",
+    "tags": [
+      "diligent",
+      "helpful",
+      "methodical",
+      "practical"
+    ],
+    "share_line": "Sun in the 6th: you shine by making things work, day after day.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims. Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_07",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 7,
+    "title": "Sun in the 7th House",
+    "body": "With the Sun in the 7th house, your identity tends to unfold through relationships. You often discover who you are by meeting someone else, whether a partner, collaborator, or close friend. Fairness and cooperation come naturally. The balance to strike is between shining alongside another person and shining only for them, so that partnership adds to you rather than replaces you.",
+    "tags": [
+      "relational",
+      "fair-minded",
+      "cooperative",
+      "charming"
+    ],
+    "share_line": "Sun in the 7th: you come alive in partnership.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_08",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 8,
+    "title": "Sun in the 8th House",
+    "body": "The Sun in the 8th house tends to draw your light below the surface. You may be fascinated by psychology, hidden motives, shared resources, or the big transitions of life. Privacy often matters, and you do not give trust easily. People with this placement frequently reinvent themselves several times, and their strength tends to show most clearly after a hard season.",
+    "tags": [
+      "intense",
+      "perceptive",
+      "resilient",
+      "private"
+    ],
+    "share_line": "Sun in the 8th: you're built for depth and reinvention.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions. Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_09",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 9,
+    "title": "Sun in the 9th House",
+    "body": "With the Sun in the 9th house, your sense of self tends to grow through exploration. Travel, study, faith, philosophy, and cultures beyond your own often shape who you become. You may be a natural teacher or a lifelong student. When life feels too small, the answer is usually a new horizon, whether that means a plane ticket or a bigger question.",
+    "tags": [
+      "adventurous",
+      "philosophical",
+      "open-minded",
+      "seeking"
+    ],
+    "share_line": "Sun in the 9th: you shine when you're chasing a bigger horizon.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_10",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 10,
+    "title": "Sun in the 10th House",
+    "body": "The Sun in the 10th house tends to put your identity on public display. Ambition, reputation, and contribution are often central themes, and you may feel driven to be known for something real. Others tend to see you as capable and directed. The work is to make sure the recognition you chase reflects your own values, not just the expectations of others.",
+    "tags": [
+      "ambitious",
+      "visible",
+      "purposeful",
+      "driven"
+    ],
+    "share_line": "Sun in the 10th: you're built to be seen.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_11",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 11,
+    "title": "Sun in the 11th House",
+    "body": "With the Sun in the 11th house, you tend to shine among friends, groups, and shared causes. Community gives you energy, and you may be the one who brings people together around a vision. Hopes for the future are a strong motivator. The growth edge is keeping your own voice clear inside the group, so belonging never costs you your individuality.",
+    "tags": [
+      "sociable",
+      "hopeful",
+      "community-minded",
+      "idealistic"
+    ],
+    "share_line": "Sun in the 11th: you shine brightest with your people.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "sun_house_12",
+    "type": "planet_in_house",
+    "planet": "Sun",
+    "house": 12,
+    "title": "Sun in the 12th House",
+    "body": "The Sun in the 12th house tends to give you a light that works quietly. You may recharge in solitude, feel drawn to creative or spiritual pursuits, or do your best work behind the scenes. Others might not see your full depth at first. Many people with this placement develop deep empathy and learn that being unseen is not the same as being small.",
+    "tags": [
+      "reflective",
+      "intuitive",
+      "compassionate",
+      "private"
+    ],
+    "share_line": "Sun in the 12th: your light works best behind the scenes.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_sun",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Joni Patry (Vedic/sidereal) cross-check used for house themes only; tropical placement assumed.",
+    "word_count": 64,
+    "sentence_count": 4
+  },
+  {
+    "id": "moon_house_01",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 1,
+    "title": "Moon in the 1st House",
+    "body": "With the Moon in the 1st house, your feelings tend to show on your face. You often respond to the world instinctively, and people can sense your moods before you name them. Comfort and care are part of how you present yourself. This placement often brings a nurturing presence, and the lesson is learning to protect your sensitivity without hiding it.",
+    "tags": [
+      "sensitive",
+      "expressive",
+      "nurturing",
+      "instinctive"
+    ],
+    "share_line": "Moon in the 1st: you wear your heart where people can see it.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "moon_house_02",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 2,
+    "title": "Moon in the 2nd House",
+    "body": "The Moon in the 2nd house tends to link emotional security with material comfort. Familiar belongings, a steady routine, and a sense of having enough can calm you deeply. Your values often come from family or early experiences. Moods may shape spending or saving habits. The work is noticing when you are reaching for things to soothe a feeling that needs attention.",
+    "tags": [
+      "comfort-seeking",
+      "steady",
+      "loyal",
+      "sentimental"
+    ],
+    "share_line": "Moon in the 2nd: you feel safest when life feels solid.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_1"
+    ],
+    "word_count": 62,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_03",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 3,
+    "title": "Moon in the 3rd House",
+    "body": "With the Moon in the 3rd house, you tend to process feelings by talking or writing them out. Siblings, neighbours, and familiar local places can carry a lot of emotional weight. A walk around the block or a long phone call with a sibling can settle you faster than anything else. Your mind often responds to mood, so a busy heart can mean a busy head. Journaling, conversation, and short trips frequently help you reset when emotions run high.",
+    "tags": [
+      "communicative",
+      "curious",
+      "responsive",
+      "talkative"
+    ],
+    "share_line": "Moon in the 3rd: you feel things by talking them through.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_1"
+    ],
+    "word_count": 79,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_04",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 4,
+    "title": "Moon in the 4th House",
+    "body": "The Moon in the 4th house is strongly at home. Family, roots, and your private space tend to be central to your emotional life. Familiar smells, old photos, and a favourite chair often do more for your mood than any grand plan. You may need a nest that feels truly yours, and the past can stay vivid in memory. People with this placement often become the emotional anchor of their family, holding traditions and memories close.",
+    "tags": [
+      "rooted",
+      "nurturing",
+      "protective",
+      "nostalgic"
+    ],
+    "share_line": "Moon in the 4th: home is where your heart settles.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_05",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 5,
+    "title": "Moon in the 5th House",
+    "body": "With the Moon in the 5th house, play is how you feel good. Creativity, romance, and fun tend to be emotional needs rather than luxuries. You may feel deeply connected to children or your own inner child. Joy can be your way of healing. The challenge is that your moods may be visible, so learning to let others see you vulnerable helps.",
+    "tags": [
+      "playful",
+      "creative",
+      "affectionate",
+      "expressive"
+    ],
+    "share_line": "Moon in the 5th: joy is how you look after your heart.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_1"
+    ],
+    "word_count": 62,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_06",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 6,
+    "title": "Moon in the 6th House",
+    "body": "The Moon in the 6th house tends to tie your emotional state to daily rhythm. Routines, tidy spaces, and feeling useful can steady you. You may show care through practical acts, like fixing, organising, or showing up. Stress often shows up in your habits first. Building gentle, predictable rituals tends to support your wellbeing and keeps worry from taking over.",
+    "tags": [
+      "helpful",
+      "practical",
+      "attentive",
+      "caring"
+    ],
+    "share_line": "Moon in the 6th: you show love by showing up.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 60,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_07",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 7,
+    "title": "Moon in the 7th House",
+    "body": "With the Moon in the 7th house, you tend to feel most secure in close partnership. You may be very attuned to others' moods and naturally offer care in relationships. Being alone for long stretches can feel unsettling. The lesson is to look after your own needs too, so that closeness comes from choice rather than from a fear of being without someone.",
+    "tags": [
+      "relational",
+      "empathetic",
+      "devoted",
+      "attuned"
+    ],
+    "share_line": "Moon in the 7th: you feel at home in partnership.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_2"
+    ],
+    "word_count": 63,
+    "sentence_count": 4
+  },
+  {
+    "id": "moon_house_08",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 8,
+    "title": "Moon in the 8th House",
+    "body": "The Moon in the 8th house tends to give your emotional life great depth. You may feel things intensely and privately, and need real trust before opening up. Shared intimacy, psychology, and life's big transitions can matter a great deal to you. People often find that hard experiences teach them emotional resilience and a talent for sitting with others in difficult moments.",
+    "tags": [
+      "intense",
+      "private",
+      "perceptive",
+      "resilient"
+    ],
+    "share_line": "Moon in the 8th: you feel deeply and trust slowly.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "moon_house_09",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 9,
+    "title": "Moon in the 9th House",
+    "body": "With the Moon in the 9th house, you tend to feel nourished by meaning and adventure. Travel, study, belief, and other cultures can be emotionally important, not just interesting. You may feel restless when life becomes too predictable. Many people with this placement find comfort in philosophy or faith and feel most at home when they are learning something new.",
+    "tags": [
+      "adventurous",
+      "seeking",
+      "open-minded",
+      "idealistic"
+    ],
+    "share_line": "Moon in the 9th: you feel at home on the road to meaning.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_1"
+    ],
+    "word_count": 60,
+    "sentence_count": 4
+  },
+  {
+    "id": "moon_house_10",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 10,
+    "title": "Moon in the 10th House",
+    "body": "The Moon in the 10th house tends to put your emotional life on public view. You may care deeply about your reputation and feel your work needs to mean something to you personally. Colleagues may come to you for reassurance, and your mood can rise or fall with how your work is received. Many people with this placement are drawn to caring or public-facing roles. The lesson is learning that it is fine to have feelings while being seen.",
+    "tags": [
+      "caring",
+      "visible",
+      "responsive",
+      "ambitious"
+    ],
+    "share_line": "Moon in the 10th: your heart shows up in your work.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_2"
+    ],
+    "word_count": 79,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_11",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 11,
+    "title": "Moon in the 11th House",
+    "body": "With the Moon in the 11th house, friends tend to feel like family. You may draw emotional security from a circle, a community, or a shared cause. Your hopes for the future carry real feeling. You often look after the group's mood without being asked. The balance is making sure the friends you care for know how to care for you, too.",
+    "tags": [
+      "sociable",
+      "loyal",
+      "caring",
+      "community-minded"
+    ],
+    "share_line": "Moon in the 11th: your friends are your home.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_2"
+    ],
+    "word_count": 62,
+    "sentence_count": 5
+  },
+  {
+    "id": "moon_house_12",
+    "type": "planet_in_house",
+    "planet": "Moon",
+    "house": 12,
+    "title": "Moon in the 12th House",
+    "body": "The Moon in the 12th house tends to give you a private emotional world. You may absorb other people's feelings easily and need solitude to sort out what is yours. Dreams, creative work, and quiet reflection can be deeply restoring. Many people with this placement are deeply compassionate, and learn over time that their sensitivity is a gift, not a weakness.",
+    "tags": [
+      "intuitive",
+      "compassionate",
+      "private",
+      "sensitive"
+    ],
+    "share_line": "Moon in the 12th: you feel the world deeply and quietly.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_moon",
+      "src_tap_houses_2"
+    ],
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "mercury_house_01",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 1,
+    "title": "Mercury in the 1st House",
+    "body": "With Mercury in the 1st house, your mind tends to lead. You may come across as quick, curious, and talkative, and people often notice your wit before anything else. You think on your feet and like to name what you see. The growth edge is pausing long enough to listen, so that your sharpness lands as connection rather than speed.",
+    "tags": [
+      "quick-witted",
+      "curious",
+      "articulate",
+      "alert"
+    ],
+    "share_line": "Mercury in the 1st: your mind is the first thing people meet.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 60,
+    "sentence_count": 4
+  },
+  {
+    "id": "mercury_house_02",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 2,
+    "title": "Mercury in the 2nd House",
+    "body": "Mercury in the 2nd house tends to make your thinking practical. You often value ideas that prove useful and may be talented at negotiation, planning, or turning skills into something tangible. Your words can be one of your strongest assets. The lesson is to trust that what you think and say has worth, even before anyone puts a price on it.",
+    "tags": [
+      "practical",
+      "resourceful",
+      "articulate",
+      "sensible"
+    ],
+    "share_line": "Mercury in the 2nd: your words and ideas are real assets.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_1"
+    ],
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "mercury_house_03",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 3,
+    "title": "Mercury in the 3rd House",
+    "body": "With Mercury in the 3rd house, your mind is right at home. You tend to be a natural communicator, quick learner, and lover of information. Writing, teaching, and conversation can come easily, and your local world is full of connections. Restlessness is common. Many people with this placement do best when they have more than one thing to think about.",
+    "tags": [
+      "communicative",
+      "curious",
+      "quick-witted",
+      "versatile"
+    ],
+    "share_line": "Mercury in the 3rd: you were made to talk, write and learn.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_1"
+    ],
+    "word_count": 60,
+    "sentence_count": 5
+  },
+  {
+    "id": "mercury_house_04",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 4,
+    "title": "Mercury in the 4th House",
+    "body": "Mercury in the 4th house tends to turn your thoughts toward home and memory. Family conversations and early learning often shape how you think. You may be the family historian, the one who remembers who said what at the kitchen table years ago. You may enjoy working from home, researching your history, or keeping family stories alive. Your mind is often busiest in private. Talking things through with people you trust tends to bring real clarity.",
+    "tags": [
+      "reflective",
+      "nostalgic",
+      "thoughtful",
+      "private"
+    ],
+    "share_line": "Mercury in the 4th: your best thinking happens at home.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "mercury_house_05",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 5,
+    "title": "Mercury in the 5th House",
+    "body": "With Mercury in the 5th house, your mind tends to love play. You may enjoy games, stories, wordplay, and creative projects that let ideas run wild. Flirting often happens through conversation. Many people with this placement have a gift for making learning fun, especially for others. The challenge is to finish the projects you start, so your bright ideas get their moment.",
+    "tags": [
+      "playful",
+      "witty",
+      "creative",
+      "expressive"
+    ],
+    "share_line": "Mercury in the 5th: your mind is happiest at play.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_1"
+    ],
+    "word_count": 62,
+    "sentence_count": 5
+  },
+  {
+    "id": "mercury_house_06",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 6,
+    "title": "Mercury in the 6th House",
+    "body": "Mercury in the 6th house tends to make your thinking precise and useful. You often notice details others miss and enjoy solving practical problems. Colleagues often bring you the messy spreadsheet, the confusing instructions, or the process nobody else wants to untangle. Lists, systems, and workflows may come naturally. Your mind can get busy with worry when routines fall apart. Giving yourself useful tasks and clear plans often calms the noise and lets your skill shine.",
+    "tags": [
+      "detail-minded",
+      "analytical",
+      "practical",
+      "methodical"
+    ],
+    "share_line": "Mercury in the 6th: you think best when you're fixing things.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "mercury_house_07",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 7,
+    "title": "Mercury in the 7th House",
+    "body": "With Mercury in the 7th house, you tend to think best in dialogue. Conversations with partners, collaborators, and close friends often sharpen your ideas. You may find that a single honest conversation with the right person clears up weeks of private overthinking. You may be skilled at negotiation and at seeing both sides. Communication is often central in your closest relationships. The lesson is to form your own view as well as reflecting other people's.",
+    "tags": [
+      "diplomatic",
+      "communicative",
+      "fair-minded",
+      "cooperative"
+    ],
+    "share_line": "Mercury in the 7th: your best ideas come out in conversation.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_2"
+    ],
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "mercury_house_08",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 8,
+    "title": "Mercury in the 8th House",
+    "body": "Mercury in the 8th house tends to give you a probing mind. You may be drawn to research, psychology, mysteries, and anything hidden. Small talk can feel thin; you would rather get to the heart of things. You may keep your own thoughts private while noticing a lot. Used well, this placement often makes you a trusted listener and an insightful investigator.",
+    "tags": [
+      "perceptive",
+      "probing",
+      "private",
+      "analytical"
+    ],
+    "share_line": "Mercury in the 8th: your mind goes straight to the hidden layer.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 62,
+    "sentence_count": 5
+  },
+  {
+    "id": "mercury_house_09",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 9,
+    "title": "Mercury in the 9th House",
+    "body": "With Mercury in the 9th house, your mind tends to roam far. You may love big ideas, foreign languages, travel, and philosophical debate. A dinner-table argument about ethics or a language app on your phone can keep you entertained for hours. Teaching, writing, or publishing can come naturally. You often want to understand why, not just how. The growth edge is staying open to other views, so your convictions keep growing instead of hardening.",
+    "tags": [
+      "philosophical",
+      "curious",
+      "open-minded",
+      "articulate"
+    ],
+    "share_line": "Mercury in the 9th: your mind is built to wander and teach.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_1"
+    ],
+    "word_count": 74,
+    "sentence_count": 6
+  },
+  {
+    "id": "mercury_house_10",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 10,
+    "title": "Mercury in the 10th House",
+    "body": "Mercury in the 10th house tends to put your ideas in public view. You may be known for how you speak, write, or think, and your career often involves communication. Presenting, writing, advising, or speaking for others can become a signature part of how you build a reputation. Planning your path can come naturally. People tend to see you as capable and articulate. The lesson is to let your public voice reflect what you truly think.",
+    "tags": [
+      "articulate",
+      "strategic",
+      "visible",
+      "ambitious"
+    ],
+    "share_line": "Mercury in the 10th: you're known for how you think and speak.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "mercury_house_11",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 11,
+    "title": "Mercury in the 11th House",
+    "body": "With Mercury in the 11th house, you tend to think in networks. Ideas often come alive in groups, online communities, or with friends who share your interests. Group chats, forums, and friends of friends often hand you the idea or contact that moves a plan forward. You may be the connector who introduces people or spreads useful information. Future plans and big-picture thinking come naturally. The challenge is keeping your own voice distinct in a busy chorus.",
+    "tags": [
+      "sociable",
+      "inventive",
+      "community-minded",
+      "communicative"
+    ],
+    "share_line": "Mercury in the 11th: your ideas grow in good company.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_2"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "mercury_house_12",
+    "type": "planet_in_house",
+    "planet": "Mercury",
+    "house": 12,
+    "title": "Mercury in the 12th House",
+    "body": "Mercury in the 12th house tends to give you an intuitive, private mind. You may think in images or impressions and only later find the words. Your best ideas may arrive in the shower, on a walk, or just before sleep, when no one is asking for them. Writing in private, journaling, or creative work can unlock what you know. You might hold back in conversation, then surprise people with insight. Quiet time often helps your thoughts settle into clarity.",
+    "tags": [
+      "intuitive",
+      "reflective",
+      "imaginative",
+      "private"
+    ],
+    "share_line": "Mercury in the 12th: you know more than you say.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_mercury",
+      "src_tap_houses_2"
+    ],
+    "word_count": 80,
+    "sentence_count": 6
+  },
+  {
+    "id": "venus_house_01",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 1,
+    "title": "Venus in the 1st House",
+    "body": "With Venus in the 1st house, charm tends to come easily. People often find you approachable, warm, and pleasant to be around, and you may care about beauty and style. Your sense of style often says something about you, and people may remember how you made them feel. Harmony matters to you. The growth edge is that likeability can become a habit, so learning to disagree gracefully helps your relationships feel honest as well as sweet.",
+    "tags": [
+      "charming",
+      "warm",
+      "graceful",
+      "sociable"
+    ],
+    "share_line": "Venus in the 1st: you lead with warmth and grace.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "venus_house_02",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 2,
+    "title": "Venus in the 2nd House",
+    "body": "Venus in the 2nd house tends to give you a strong sense of what you value and enjoy. Comfort, beauty, and quality often matter, and you may have an eye for things that last. Artistic or sensual talents can be part of what you offer. The lesson is to remember that what you love most is not always something you can own.",
+    "tags": [
+      "sensual",
+      "grounded",
+      "value-driven",
+      "tasteful"
+    ],
+    "share_line": "Venus in the 2nd: you know exactly what you love.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_1"
+    ],
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "venus_house_03",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 3,
+    "title": "Venus in the 3rd House",
+    "body": "With Venus in the 3rd house, your words tend to carry warmth. You may be a gracious communicator, good at smoothing things over and making people feel heard. You may be the one who sends the thoughtful message, remembers the birthday, or finds exactly the right compliment. Siblings and neighbours can be a source of affection. Writing, art, or music with a light touch might appeal to you. Everyday exchanges often become small moments of connection.",
+    "tags": [
+      "gracious",
+      "communicative",
+      "friendly",
+      "diplomatic"
+    ],
+    "share_line": "Venus in the 3rd: your words make people feel good.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_1"
+    ],
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "venus_house_04",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 4,
+    "title": "Venus in the 4th House",
+    "body": "Venus in the 4th house tends to make home a place of beauty and comfort. You may love decorating, hosting, or creating a space where people feel welcome. Family bonds can be a source of warmth and pleasure. Many people with this placement find that their private life matters most to their happiness, and that it often gets sweeter with time.",
+    "tags": [
+      "homely",
+      "warm",
+      "nurturing",
+      "tasteful"
+    ],
+    "share_line": "Venus in the 4th: you make every home feel beautiful.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 61,
+    "sentence_count": 4
+  },
+  {
+    "id": "venus_house_05",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 5,
+    "title": "Venus in the 5th House",
+    "body": "With Venus in the 5th house, romance and pleasure tend to come naturally. You may enjoy flirting, dating, art, entertaining, and anything that brings delight. A date, a dance class, or an afternoon painting can feel less like a hobby and more like breathing. Creative projects can feel like falling in love. People often find you fun and generous with affection. The lesson is to let love deepen past the exciting beginning when it is worth keeping.",
+    "tags": [
+      "romantic",
+      "playful",
+      "creative",
+      "affectionate"
+    ],
+    "share_line": "Venus in the 5th: you love falling in love.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_1"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "venus_house_06",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 6,
+    "title": "Venus in the 6th House",
+    "body": "Venus in the 6th house tends to bring grace to everyday work. You may enjoy pleasant routines, harmonious colleagues, and making ordinary tasks feel lovely. Fresh flowers on the desk, a kind word to a colleague, or a tidy workspace can genuinely change your day. Showing care through practical help often comes easily. Working in beautiful or caring environments can lift your mood. The lesson is to value your own needs as much as you value being helpful.",
+    "tags": [
+      "helpful",
+      "gracious",
+      "cooperative",
+      "practical"
+    ],
+    "share_line": "Venus in the 6th: you make daily life feel lovely.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 78,
+    "sentence_count": 6
+  },
+  {
+    "id": "venus_house_07",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 7,
+    "title": "Venus in the 7th House",
+    "body": "With Venus in the 7th house, partnership tends to be central to your happiness. You may be drawn to relationships early, and often bring grace, fairness, and charm to them. You often notice what would make things fairer between two people, and you are willing to meet halfway to get there. People may find you easy to be close to. The growth edge is choosing partners for genuine compatibility rather than for peace at any price.",
+    "tags": [
+      "romantic",
+      "fair-minded",
+      "charming",
+      "devoted"
+    ],
+    "share_line": "Venus in the 7th: you're made for partnership.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "venus_house_08",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 8,
+    "title": "Venus in the 8th House",
+    "body": "Venus in the 8th house tends to make love deep and transforming. You may want intensity and real intimacy rather than something light, and you value loyalty highly. Small gestures of trust, like sharing a secret or a key, may mean more to you than grand romantic displays. Shared resources and trust are often important themes in your relationships. Many people with this placement find that relationships change them profoundly, and that vulnerability is where their love grows strongest.",
+    "tags": [
+      "intense",
+      "devoted",
+      "magnetic",
+      "private"
+    ],
+    "share_line": "Venus in the 8th: you love deeply or not at all.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 79,
+    "sentence_count": 5
+  },
+  {
+    "id": "venus_house_09",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 9,
+    "title": "Venus in the 9th House",
+    "body": "With Venus in the 9th house, you tend to fall for big ideas and far places. Travel, other cultures, learning, and philosophy can bring real pleasure. A trip abroad, a course you love, or a partner from another culture can open your heart in unexpected ways. You may be attracted to people with very different backgrounds or worldviews. Shared beliefs often matter in your relationships. Life tends to feel sweetest when it includes both romance and adventure.",
+    "tags": [
+      "adventurous",
+      "romantic",
+      "open-minded",
+      "idealistic"
+    ],
+    "share_line": "Venus in the 9th: you love what widens your world.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_1"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "venus_house_10",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 10,
+    "title": "Venus in the 10th House",
+    "body": "Venus in the 10th house tends to bring charm to your public life. You may be well liked at work and drawn to careers in art, beauty, design, diplomacy, or relationships. Colleagues may describe you as easy to work with, and you are often the one asked to smooth things over. Your reputation often benefits from your grace. Many people with this placement find that the way they treat others becomes part of what they are known for.",
+    "tags": [
+      "charming",
+      "diplomatic",
+      "visible",
+      "graceful"
+    ],
+    "share_line": "Venus in the 10th: your grace is part of your reputation.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_2"
+    ],
+    "word_count": 78,
+    "sentence_count": 5
+  },
+  {
+    "id": "venus_house_11",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 11,
+    "title": "Venus in the 11th House",
+    "body": "With Venus in the 11th house, friendship tends to be a source of real joy. You may have a warm social circle and a talent for bringing people together. You are often the friend who organises the dinner, remembers the inside jokes, and keeps the group feeling close. Friends can become partners, or partners become friends. Shared hopes and creative communities often matter to you. The lesson is to keep choosing friendships that feel mutual and kind.",
+    "tags": [
+      "sociable",
+      "friendly",
+      "generous",
+      "community-minded"
+    ],
+    "share_line": "Venus in the 11th: your friends are your great love story.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_2"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "venus_house_12",
+    "type": "planet_in_house",
+    "planet": "Venus",
+    "house": 12,
+    "title": "Venus in the 12th House",
+    "body": "Venus in the 12th house tends to make love private and tender. You may keep affection close, fall quietly, or feel drawn to compassionate or selfless forms of love. Art, music, and imagination can be deeply soothing. Many people with this placement have a gift for kindness behind the scenes, and learn to make sure their own heart is cared for too.",
+    "tags": [
+      "tender",
+      "compassionate",
+      "imaginative",
+      "private"
+    ],
+    "share_line": "Venus in the 12th: you love quietly and deeply.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_venus",
+      "src_patry_venus",
+      "src_tap_houses_2"
+    ],
+    "word_count": 62,
+    "sentence_count": 4
+  },
+  {
+    "id": "mars_house_01",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 1,
+    "title": "Mars in the 1st House",
+    "body": "With Mars in the 1st house, you tend to meet life head-on. People often see you as energetic, direct, and ready for action. You might be first to volunteer, first to speak, or first through the door when something needs doing. You may move fast and feel restless when things stall. Courage comes naturally, and so can impatience. Learning to pace yourself and pick your battles helps that strong drive work for you rather than against you.",
+    "tags": [
+      "bold",
+      "energetic",
+      "direct",
+      "courageous"
+    ],
+    "share_line": "Mars in the 1st: you meet life head-on.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_02",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 2,
+    "title": "Mars in the 2nd House",
+    "body": "Mars in the 2nd house tends to put your drive into building and protecting what matters to you. You may work hard for independence and stand firm when your values are challenged. Effort and resourcefulness are strengths. The lesson is to notice when the urge to act quickly with your resources comes from passion and when it comes from impatience.",
+    "tags": [
+      "driven",
+      "resourceful",
+      "determined",
+      "independent"
+    ],
+    "share_line": "Mars in the 2nd: you fight for what you value.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_1"
+    ],
+    "word_count": 60,
+    "sentence_count": 4
+  },
+  {
+    "id": "mars_house_03",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 3,
+    "title": "Mars in the 3rd House",
+    "body": "With Mars in the 3rd house, your mind and words tend to move fast. You may enjoy debate, quick decisions, and getting straight to the point. In a meeting or a group chat, you are often the one who cuts through the noise with a clear opinion. Sibling relationships can be lively, even competitive. Your directness is often a gift, especially when something needs saying. The growth edge is to make sure sharp words come with care, not just speed.",
+    "tags": [
+      "direct",
+      "quick-witted",
+      "outspoken",
+      "energetic"
+    ],
+    "share_line": "Mars in the 3rd: you say what others are thinking.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_1"
+    ],
+    "word_count": 80,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_04",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 4,
+    "title": "Mars in the 4th House",
+    "body": "Mars in the 4th house tends to put a lot of energy into home and family. You may feel fiercely protective of your private space and the people in it. Home life can be busy, active, or occasionally heated. Many people with this placement enjoy renovating, moving, or building things. Learning to rest at home, not just work on it, helps.",
+    "tags": [
+      "protective",
+      "energetic",
+      "rooted",
+      "passionate"
+    ],
+    "share_line": "Mars in the 4th: you defend your home fiercely.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 61,
+    "sentence_count": 5
+  },
+  {
+    "id": "mars_house_05",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 5,
+    "title": "Mars in the 5th House",
+    "body": "With Mars in the 5th house, you tend to bring fire to play and romance. You may love sport, competition, performance, or bold creative work. Attraction often runs hot and direct. You probably go after what you want in love. Many people with this placement have huge creative energy and are happiest when they have a passion project on the go.",
+    "tags": [
+      "passionate",
+      "playful",
+      "competitive",
+      "bold"
+    ],
+    "share_line": "Mars in the 5th: you play to win and love out loud.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_1"
+    ],
+    "word_count": 61,
+    "sentence_count": 5
+  },
+  {
+    "id": "mars_house_06",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 6,
+    "title": "Mars in the 6th House",
+    "body": "Mars in the 6th house tends to make you a hard worker. You may tackle tasks quickly, like a challenge, and feel restless without something to do. A to-do list can feel like a race, and you may finish other people's tasks before they have started. Physical activity often helps channel your energy. Friction with colleagues can arise when you see a faster way. The lesson is pacing yourself so drive does not tip into burnout.",
+    "tags": [
+      "diligent",
+      "energetic",
+      "efficient",
+      "determined"
+    ],
+    "share_line": "Mars in the 6th: you get things done, fast.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_07",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 7,
+    "title": "Mars in the 7th House",
+    "body": "With Mars in the 7th house, relationships tend to be lively and energising. You may be attracted to strong, direct people and can thrive on a bit of healthy challenge. You may be drawn to people who challenge you, and a good-natured debate can feel like a form of closeness. Partnerships often push you to act. Disagreements may flare fast. Learning to treat partners as teammates rather than opponents helps that spark build something lasting.",
+    "tags": [
+      "passionate",
+      "direct",
+      "spirited",
+      "relational"
+    ],
+    "share_line": "Mars in the 7th: you want a partner who matches your fire.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_2"
+    ],
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_08",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 8,
+    "title": "Mars in the 8th House",
+    "body": "Mars in the 8th house tends to give you powerful inner drive. You may pursue depth and intensity in relationships and in life, and you rarely do things halfway. You may feel driven to understand what is really going on beneath polite surfaces, in relationships and elsewhere. Crises can bring out your courage. Shared resources and trust are often areas where you assert yourself. Many people with this placement find strength in facing what others avoid.",
+    "tags": [
+      "intense",
+      "courageous",
+      "determined",
+      "resilient"
+    ],
+    "share_line": "Mars in the 8th: you face what others avoid.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_09",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 9,
+    "title": "Mars in the 9th House",
+    "body": "With Mars in the 9th house, you tend to chase ideas and adventures with energy. You may be passionate about your beliefs and ready to argue for them. You might train for a trek, sign up for a course on impulse, or defend a principle in a heated debate. Travel, sport, and study can all fuel you. The growth edge is that conviction can tip into certainty. Staying curious about other views keeps your crusading spirit generous.",
+    "tags": [
+      "adventurous",
+      "passionate",
+      "outspoken",
+      "idealistic"
+    ],
+    "share_line": "Mars in the 9th: you chase horizons and fight for ideas.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_1"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_10",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 10,
+    "title": "Mars in the 10th House",
+    "body": "Mars in the 10th house tends to point your drive at ambition. You may want to lead, build, and be recognised for real achievement. You may set goals early, push for promotions, or start your own venture rather than wait to be noticed. Competition can motivate you. Others often see you as capable and decisive. The lesson is to make sure the energy you put into your career is matched by care for the people you work with.",
+    "tags": [
+      "ambitious",
+      "driven",
+      "decisive",
+      "bold"
+    ],
+    "share_line": "Mars in the 10th: you're built to lead from the front.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_2"
+    ],
+    "word_count": 78,
+    "sentence_count": 6
+  },
+  {
+    "id": "mars_house_11",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 11,
+    "title": "Mars in the 11th House",
+    "body": "With Mars in the 11th house, you tend to put energy into friends and causes. You may be an organiser, a motivator, or the person who rallies the group. Activism or team sport can appeal. Friendships can be lively, with occasional clashes. Your drive tends to shine when it is aimed at a shared goal rather than proving a point.",
+    "tags": [
+      "energetic",
+      "community-minded",
+      "bold",
+      "loyal"
+    ],
+    "share_line": "Mars in the 11th: you rally people around a cause.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_2"
+    ],
+    "word_count": 60,
+    "sentence_count": 5
+  },
+  {
+    "id": "mars_house_12",
+    "type": "planet_in_house",
+    "planet": "Mars",
+    "house": 12,
+    "title": "Mars in the 12th House",
+    "body": "Mars in the 12th house tends to make your drive work quietly. You may act behind the scenes, prefer to work alone, or hold back anger rather than show it. You may be the steady worker nobody sees, quietly finishing what others leave behind without asking for credit. Your energy might come out through creative, spiritual, or caring work. Learning to name frustration early helps, and many people find exercise and solitude help restore their energy.",
+    "tags": [
+      "private",
+      "determined",
+      "reflective",
+      "intuitive"
+    ],
+    "share_line": "Mars in the 12th: your strength works quietly.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_kelly_12th_mars",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "jupiter_house_01",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 1,
+    "title": "Jupiter in the 1st House",
+    "body": "With Jupiter in the 1st house, you tend to give off warmth and optimism. People often see you as generous, open, and larger than life. Strangers may open up to you easily, and you often make new places feel friendly just by arriving. You may be drawn to growth, learning, and big plans. Confidence can be a gift. The growth edge is that enthusiasm can outrun follow-through, so keeping some promises small helps the big ones land.",
+    "tags": [
+      "optimistic",
+      "generous",
+      "open-minded",
+      "warm"
+    ],
+    "share_line": "Jupiter in the 1st: you walk in with optimism.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_02",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 2,
+    "title": "Jupiter in the 2nd House",
+    "body": "Jupiter in the 2nd house tends to bring a generous relationship with resources. You may be optimistic about what you can build and enjoy sharing what you have. You may enjoy treating friends, collecting things of quality, or investing time in skills that grow over years. Your values are often broad and humane. This is not a promise of wealth; it is more an attitude of abundance. Learning when enough is enough helps that generosity stay sustainable.",
+    "tags": [
+      "generous",
+      "optimistic",
+      "grounded",
+      "value-driven"
+    ],
+    "share_line": "Jupiter in the 2nd: you carry an attitude of abundance.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_1"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_03",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 3,
+    "title": "Jupiter in the 3rd House",
+    "body": "With Jupiter in the 3rd house, your curiosity tends to be expansive. You may love learning, reading, conversation, and short trips, and you often have something to share. You may always have a book on the go, a fact to share, or a recommendation for someone who needs one. Siblings or neighbours can be a source of support. Teaching and writing often come naturally. The lesson is listening as generously as you talk, so ideas flow both ways.",
+    "tags": [
+      "curious",
+      "communicative",
+      "optimistic",
+      "sociable"
+    ],
+    "share_line": "Jupiter in the 3rd: your curiosity has no edges.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_1"
+    ],
+    "word_count": 78,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_04",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 4,
+    "title": "Jupiter in the 4th House",
+    "body": "Jupiter in the 4th house tends to make home a place of growth. You may come from, or create, a warm and expansive family life. Your home may be the one where everyone gathers for holidays, with an extra seat always available at the table. A big, welcoming home can matter to you. Many people with this placement feel more settled and content as life goes on, and find that generosity toward family comes back in kind.",
+    "tags": [
+      "nurturing",
+      "generous",
+      "rooted",
+      "warm"
+    ],
+    "share_line": "Jupiter in the 4th: your home is big-hearted.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 77,
+    "sentence_count": 5
+  },
+  {
+    "id": "jupiter_house_05",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 5,
+    "title": "Jupiter in the 5th House",
+    "body": "With Jupiter in the 5th house, joy tends to multiply. You may love creativity, celebration, romance, and play, and bring enthusiasm to everything you enjoy. You may be the one who plans the party, cheers the loudest, or turns a small win into a celebration. Children or creative projects can be a source of great happiness. People often find you fun and generous. The lesson is moderation, because more fun is not always better fun.",
+    "tags": [
+      "playful",
+      "generous",
+      "creative",
+      "joyful"
+    ],
+    "share_line": "Jupiter in the 5th: you make life a celebration.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_1"
+    ],
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_06",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 6,
+    "title": "Jupiter in the 6th House",
+    "body": "Jupiter in the 6th house tends to bring optimism to everyday work. You may enjoy helping others and find meaning in service, craft, or routine. Colleagues may see you as the encouraging one, the person who makes a tough shift feel lighter and more hopeful. Colleagues can be supportive. You might take on too much because you believe you can do it all. Building sustainable habits helps your generous spirit stay energised over the long run.",
+    "tags": [
+      "helpful",
+      "optimistic",
+      "diligent",
+      "generous"
+    ],
+    "share_line": "Jupiter in the 6th: you find meaning in helping.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_07",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 7,
+    "title": "Jupiter in the 7th House",
+    "body": "With Jupiter in the 7th house, relationships tend to be where you grow. You may attract generous, wise, or worldly partners, and you often bring warmth and good faith to them. A partner or close collaborator may introduce you to new worlds, beliefs, or opportunities you would not have found alone. Partnership can open doors. The growth edge is seeing people as they are, not only as their potential, so your optimism is grounded in reality.",
+    "tags": [
+      "relational",
+      "generous",
+      "optimistic",
+      "fair-minded"
+    ],
+    "share_line": "Jupiter in the 7th: partners help you grow.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "jupiter_house_08",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 8,
+    "title": "Jupiter in the 8th House",
+    "body": "Jupiter in the 8th house tends to bring faith to life's deeper passages. You may find meaning in intimacy, transformation, and the hidden side of things. Conversations about life, death, and what truly matters may feel natural to you rather than uncomfortable. Shared resources can be an area of learning and trust. People often trust you in a crisis. Many people with this placement grow wiser through difficult experiences.",
+    "tags": [
+      "resilient",
+      "perceptive",
+      "philosophical",
+      "trusting"
+    ],
+    "share_line": "Jupiter in the 8th: you find faith in the depths.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 69,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_09",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 9,
+    "title": "Jupiter in the 9th House",
+    "body": "With Jupiter in the 9th house, you tend to be a natural seeker. Travel, study, philosophy, faith, and other cultures can be deeply fulfilling. You might collect passport stamps, degrees, or simply big conversations with people who think differently from you. You may love teaching or sharing what you have learned. The world often feels like a classroom. The lesson is to keep humility close, so your big picture stays big enough to include others.",
+    "tags": [
+      "adventurous",
+      "philosophical",
+      "open-minded",
+      "seeking"
+    ],
+    "share_line": "Jupiter in the 9th: the whole world is your classroom.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_1"
+    ],
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "jupiter_house_10",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 10,
+    "title": "Jupiter in the 10th House",
+    "body": "Jupiter in the 10th house tends to bring optimism to your ambitions. You may aim high and feel drawn to roles that let you lead, teach, or contribute widely. Mentors may appear when you need them, and you may later become a generous mentor to others yourself. Others often see you as capable and generous. This is not a promise of success, but a tendency toward growth in public life when effort is put in.",
+    "tags": [
+      "ambitious",
+      "optimistic",
+      "visible",
+      "generous"
+    ],
+    "share_line": "Jupiter in the 10th: you aim high, generously.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_2"
+    ],
+    "word_count": 75,
+    "sentence_count": 5
+  },
+  {
+    "id": "jupiter_house_11",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 11,
+    "title": "Jupiter in the 11th House",
+    "body": "With Jupiter in the 11th house, friendship tends to bring growth. You may have a wide circle, a hopeful outlook, and a talent for bringing people together. Groups and causes often open doors for you. Your hopes for the future tend to be big and generous. The lesson is investing in a few deep friendships as well as many good ones.",
+    "tags": [
+      "sociable",
+      "hopeful",
+      "generous",
+      "community-minded"
+    ],
+    "share_line": "Jupiter in the 11th: your friends open doors.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_2"
+    ],
+    "word_count": 61,
+    "sentence_count": 5
+  },
+  {
+    "id": "jupiter_house_12",
+    "type": "planet_in_house",
+    "planet": "Jupiter",
+    "house": 12,
+    "title": "Jupiter in the 12th House",
+    "body": "Jupiter in the 12th house tends to bring quiet faith and compassion. You may feel supported in ways you cannot always explain, and enjoy spiritual practice, retreat, or helping others privately. You may volunteer quietly, give anonymously, or find that time alone in nature restores your sense of hope. Generosity often happens behind the scenes. Many people with this placement have a gentle optimism that helps them weather solitary seasons with grace.",
+    "tags": [
+      "compassionate",
+      "intuitive",
+      "spiritual",
+      "generous"
+    ],
+    "share_line": "Jupiter in the 12th: your faith works quietly.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_patry_jupiter",
+      "src_tap_houses_2"
+    ],
+    "word_count": 72,
+    "sentence_count": 5
+  },
+  {
+    "id": "saturn_house_01",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 1,
+    "title": "Saturn in the 1st House",
+    "body": "With Saturn in the 1st house, you tend to come across as serious, capable, or older than your years. You may have felt responsible early and learned self-discipline the hard way. People may come to you for steadiness, even when you feel unsure inside, because you seem calm and composed. Confidence often grows with time rather than arriving all at once. The gift is staying power. Learning to be gentle with yourself helps that strength feel lighter.",
+    "tags": [
+      "disciplined",
+      "responsible",
+      "reserved",
+      "steady"
+    ],
+    "share_line": "Saturn in the 1st: you grow stronger with every year.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_kelly_houses_101"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_02",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 2,
+    "title": "Saturn in the 2nd House",
+    "body": "Saturn in the 2nd house tends to make you careful with resources. You may value security, plan ahead, and build slowly but solidly. You may prefer a savings plan to a splurge, and you often take pride in things you have worked hard to earn. Feelings of scarcity, real or imagined, can be a theme. Over time, many people with this placement develop a steady relationship with what they own and value. Patience is your real asset.",
+    "tags": [
+      "prudent",
+      "disciplined",
+      "steady",
+      "practical"
+    ],
+    "share_line": "Saturn in the 2nd: you build slowly and solidly.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_1"
+    ],
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_03",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 3,
+    "title": "Saturn in the 3rd House",
+    "body": "With Saturn in the 3rd house, you tend to think carefully before you speak. You may have felt unsure of your voice when younger, then built real skill through effort. You might draft a message several times before sending it, or prefer to read deeply rather than skim widely. Writing, study, and communication can become strengths you earned. Sibling relationships might carry responsibility. Your words often carry weight because you choose them with care.",
+    "tags": [
+      "thoughtful",
+      "disciplined",
+      "precise",
+      "reserved"
+    ],
+    "share_line": "Saturn in the 3rd: your words carry weight.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_1"
+    ],
+    "word_count": 74,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_04",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 4,
+    "title": "Saturn in the 4th House",
+    "body": "Saturn in the 4th house tends to bring responsibility to home and family. You may have taken on adult roles early or felt that home needed structure. You may be the family member who handles the paperwork, keeps traditions going, or holds things together in hard times. Building a secure private life can be a long, rewarding project. Many people with this placement create the stable foundations they wished they had, and find home life deepens with age.",
+    "tags": [
+      "responsible",
+      "rooted",
+      "protective",
+      "steady"
+    ],
+    "share_line": "Saturn in the 4th: you build the home you needed.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 78,
+    "sentence_count": 5
+  },
+  {
+    "id": "saturn_house_05",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 5,
+    "title": "Saturn in the 5th House",
+    "body": "With Saturn in the 5th house, joy may take practice. You might feel cautious about romance, play, or self-expression, as if fun needs permission. You may hesitate to show unfinished work, or feel shy in romance, until trust has been earned over time. Over time, creative discipline often becomes a strength, and you may master an art slowly. Many people with this placement grow more playful with age and take their pleasures more seriously.",
+    "tags": [
+      "disciplined",
+      "creative",
+      "reserved",
+      "dedicated"
+    ],
+    "share_line": "Saturn in the 5th: your joy grows with practice.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_1"
+    ],
+    "word_count": 74,
+    "sentence_count": 5
+  },
+  {
+    "id": "saturn_house_06",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 6,
+    "title": "Saturn in the 6th House",
+    "body": "Saturn in the 6th house tends to make you dependable at work. You may take routines and responsibilities seriously and hold yourself to high standards. You might be the last to leave the office, or the one who keeps going long after others have stopped. Hard work often comes naturally, and so does self-criticism. Building sustainable habits, rather than punishing ones, helps. Many people with this placement become respected for their reliability and craft.",
+    "tags": [
+      "dependable",
+      "diligent",
+      "methodical",
+      "responsible"
+    ],
+    "share_line": "Saturn in the 6th: people can count on you.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 74,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_07",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 7,
+    "title": "Saturn in the 7th House",
+    "body": "With Saturn in the 7th house, you tend to take relationships seriously. You may commit carefully, attract older or more serious partners, or feel partnership as a responsibility. You may prefer to take your time getting to know someone, and you often expect partners to keep their word. Relationships often deepen slowly. The lesson is that commitment can be a source of support rather than only duty, and many people find lasting partnership grows with time.",
+    "tags": [
+      "committed",
+      "loyal",
+      "serious",
+      "fair-minded"
+    ],
+    "share_line": "Saturn in the 7th: you commit carefully and for keeps.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "saturn_house_08",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 8,
+    "title": "Saturn in the 8th House",
+    "body": "Saturn in the 8th house tends to bring caution around trust and intimacy. You may guard your inner world and take time to share deeply. You may keep a careful eye on shared commitments and prefer clear agreements before you let someone fully in. Shared responsibilities can feel heavy. Facing fears directly is often part of your growth. Many people with this placement build strong boundaries and become wise guides through difficult times.",
+    "tags": [
+      "guarded",
+      "resilient",
+      "serious",
+      "private"
+    ],
+    "share_line": "Saturn in the 8th: you trust slowly and deeply.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 73,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_09",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 9,
+    "title": "Saturn in the 9th House",
+    "body": "With Saturn in the 9th house, you tend to approach beliefs with care. You may want proof, structure, and serious study before you commit to a worldview. You might question teachers, check sources, and build your own philosophy slowly, piece by piece, over many years. Higher education or teaching can be a long, rewarding path. Travel might come later in life. Your philosophy is often hard-won and deeply your own.",
+    "tags": [
+      "thoughtful",
+      "disciplined",
+      "philosophical",
+      "sceptical"
+    ],
+    "share_line": "Saturn in the 9th: your beliefs are hard-won.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_1"
+    ],
+    "word_count": 70,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_10",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 10,
+    "title": "Saturn in the 10th House",
+    "body": "Saturn in the 10th house tends to bring ambition and responsibility to your public life. You may feel driven to build something lasting and be respected for real achievement. You may feel pressure to prove yourself, and career milestones often arrive later than you hoped but feel well deserved. Success often comes through sustained effort over time. The lesson is defining success on your own terms so you are not only living up to others' expectations.",
+    "tags": [
+      "ambitious",
+      "disciplined",
+      "responsible",
+      "purposeful"
+    ],
+    "share_line": "Saturn in the 10th: you're built to climb, steadily.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 5
+  },
+  {
+    "id": "saturn_house_11",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 11,
+    "title": "Saturn in the 11th House",
+    "body": "With Saturn in the 11th house, you tend to choose friends carefully. You may have a small, loyal circle or prefer older or more serious companions. You may be the friend who remembers commitments, shows up on time, and quietly keeps the group organised. Groups can feel like responsibility. Your hopes for the future are often realistic and long-range. Over time, many people with this placement become steady pillars of their communities.",
+    "tags": [
+      "loyal",
+      "selective",
+      "responsible",
+      "community-minded"
+    ],
+    "share_line": "Saturn in the 11th: your friendships are built to last.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_2"
+    ],
+    "word_count": 72,
+    "sentence_count": 6
+  },
+  {
+    "id": "saturn_house_12",
+    "type": "planet_in_house",
+    "planet": "Saturn",
+    "house": 12,
+    "title": "Saturn in the 12th House",
+    "body": "Saturn in the 12th house tends to give you a disciplined inner life. You may be drawn to solitude, quiet responsibility, or behind-the-scenes work. You may carry worries in private, and journaling, meditation, or a trusted listener can help lighten what you hold. Hidden worries can weigh on you until you name them. Spiritual practice or reflection often brings steadiness. Many people with this placement develop deep inner strength that others only discover in hard times.",
+    "tags": [
+      "reflective",
+      "disciplined",
+      "private",
+      "resilient"
+    ],
+    "share_line": "Saturn in the 12th: your strength is quiet and deep.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_saturn",
+      "src_patry_saturn",
+      "src_tap_houses_2"
+    ],
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_01",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 1,
+    "title": "Uranus in the 1st House",
+    "body": "With Uranus in the 1st house, you tend to stand out. People may see you as original, independent, or a little unpredictable. You might dye your hair on a whim, change careers unexpectedly, or simply refuse to explain yourself to anyone. You often resist being labelled and may reinvent your style several times. Freedom matters deeply. The growth edge is that rebellion can become reflexive, so choosing which conventions to break keeps your originality meaningful.",
+    "tags": [
+      "original",
+      "independent",
+      "unconventional",
+      "bold"
+    ],
+    "share_line": "Uranus in the 1st: you were never meant to blend in.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_02",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 2,
+    "title": "Uranus in the 2nd House",
+    "body": "Uranus in the 2nd house tends to bring unconventional ideas about resources and values. You may earn or build in unusual ways, or change what you value as you grow. You may be drawn to side projects, freelance work, or new technology as a way to stay independent and resourceful. Stability can feel restricting at times. Many people with this placement do well when they turn an original idea into a resource. Flexibility is your strength.",
+    "tags": [
+      "inventive",
+      "independent",
+      "unconventional",
+      "adaptable"
+    ],
+    "share_line": "Uranus in the 2nd: you build value in your own way.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_03",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 3,
+    "title": "Uranus in the 3rd House",
+    "body": "With Uranus in the 3rd house, your mind tends to leap. You may think in sudden insights, love technology or new ideas, and say things that surprise people. You might teach yourself a skill online at midnight or rewrite how a group communicates without anyone asking you to. Learning might follow unusual paths. Siblings or neighbours can be quirky or distant. Your gift is seeing what others miss and saying it first.",
+    "tags": [
+      "inventive",
+      "quick-witted",
+      "original",
+      "curious"
+    ],
+    "share_line": "Uranus in the 3rd: your mind works in lightning flashes.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 72,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_04",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 4,
+    "title": "Uranus in the 4th House",
+    "body": "Uranus in the 4th house tends to bring change to home life. You may have moved often, had an unusual upbringing, or crave freedom inside your private world. Your living space may be unusual, from shared houses to frequent moves, or a home that looks unlike anyone else's. Home might look different from the norm. Many people with this placement create a home life on their own terms, and find freedom and belonging can coexist.",
+    "tags": [
+      "independent",
+      "unconventional",
+      "adaptable",
+      "original"
+    ],
+    "share_line": "Uranus in the 4th: you make home on your own terms.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 75,
+    "sentence_count": 5
+  },
+  {
+    "id": "uranus_house_05",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 5,
+    "title": "Uranus in the 5th House",
+    "body": "With Uranus in the 5th house, play tends to be original. You may love experimental art, unusual hobbies, and romance that surprises you. You may get bored with routine dates or hobbies and feel most alive trying something nobody else around you has tried yet. Attractions can arrive suddenly. Your creative ideas often break the mould. The lesson is staying present long enough to let your sparks become something you can share.",
+    "tags": [
+      "creative",
+      "original",
+      "spontaneous",
+      "playful"
+    ],
+    "share_line": "Uranus in the 5th: your creativity breaks the mould.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 72,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_06",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 6,
+    "title": "Uranus in the 6th House",
+    "body": "Uranus in the 6th house tends to resist ordinary routine. You may prefer flexible work, invent better systems, or need variety to stay engaged. You might hack your schedule, automate the boring tasks, or quietly build a better workflow for the whole team. Technology and innovation can be part of your daily life. Restlessness can show up in your habits. Building routines with room for change tends to suit you well.",
+    "tags": [
+      "inventive",
+      "independent",
+      "adaptable",
+      "efficient"
+    ],
+    "share_line": "Uranus in the 6th: you reinvent the daily grind.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 71,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_07",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 7,
+    "title": "Uranus in the 7th House",
+    "body": "With Uranus in the 7th house, relationships tend to need freedom. You may be attracted to unusual, independent people or prefer unconventional partnership styles. You may prefer partners who have full lives of their own, and relationships built on friendship and mutual respect tend to last longer for you. Relationships can start suddenly or change unexpectedly. The lesson is to name your need for space openly, so closeness and independence can grow together.",
+    "tags": [
+      "independent",
+      "unconventional",
+      "spirited",
+      "relational"
+    ],
+    "share_line": "Uranus in the 7th: you need a partner who lets you be free.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 73,
+    "sentence_count": 5
+  },
+  {
+    "id": "uranus_house_08",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 8,
+    "title": "Uranus in the 8th House",
+    "body": "Uranus in the 8th house tends to bring sudden shifts in the deeper parts of life. You may face unexpected transformations or approach intimacy in your own way. Turning points may come without warning, and you often recover by seeing the change as a chance to rebuild differently. Shared resources can see sudden changes. Many people with this placement develop a remarkable ability to adapt and to see crisis as a doorway to reinvention.",
+    "tags": [
+      "adaptable",
+      "intense",
+      "original",
+      "resilient"
+    ],
+    "share_line": "Uranus in the 8th: you reinvent yourself through change.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 74,
+    "sentence_count": 5
+  },
+  {
+    "id": "uranus_house_09",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 9,
+    "title": "Uranus in the 9th House",
+    "body": "With Uranus in the 9th house, your worldview tends to be original. You may question received wisdom and seek truth through unusual paths. You might change faiths, study something unexpected, or travel somewhere on impulse and come home with a completely new perspective on life. Travel or study can bring sudden insights. Your beliefs may shift dramatically over time. Your gift is opening minds, including your own.",
+    "tags": [
+      "original",
+      "open-minded",
+      "adventurous",
+      "inventive"
+    ],
+    "share_line": "Uranus in the 9th: you question everything and find new truths.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 67,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_10",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 10,
+    "title": "Uranus in the 10th House",
+    "body": "Uranus in the 10th house tends to bring independence to your career. You may follow an unusual path, change direction several times, or prefer to work outside traditional structures. You may be the colleague who proposes the radical idea, or the person who leaves a stable job to build something new. You might be seen as a pioneer or a rule-breaker. The lesson is finding a public role that leaves room for your originality.",
+    "tags": [
+      "independent",
+      "original",
+      "pioneering",
+      "visible"
+    ],
+    "share_line": "Uranus in the 10th: you're built to change the field.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 74,
+    "sentence_count": 5
+  },
+  {
+    "id": "uranus_house_11",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 11,
+    "title": "Uranus in the 11th House",
+    "body": "With Uranus in the 11th house, you tend to find your people among the unconventional. You may be drawn to future-focused communities, activism, or technology. You may belong to several very different groups at once and enjoy connecting people who would never otherwise meet one another. Friendships can come and go suddenly. Your ideals are often ahead of their time. Your gift is helping a group imagine something new.",
+    "tags": [
+      "idealistic",
+      "original",
+      "community-minded",
+      "inventive"
+    ],
+    "share_line": "Uranus in the 11th: your tribe is the future.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 69,
+    "sentence_count": 6
+  },
+  {
+    "id": "uranus_house_12",
+    "type": "planet_in_house",
+    "planet": "Uranus",
+    "house": 12,
+    "title": "Uranus in the 12th House",
+    "body": "Uranus in the 12th house tends to bring sudden insights from the unconscious. You may have intuitive flashes, unusual dreams, or a quietly rebellious spirit. You might keep a dream journal or notice that your biggest ideas arrive while you are alone and resting. Your independence might show up in private rather than in public. Many people with this placement find freedom through inner work, and their originality emerges when they feel safe.",
+    "tags": [
+      "intuitive",
+      "original",
+      "reflective",
+      "independent"
+    ],
+    "share_line": "Uranus in the 12th: your genius works in the background.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_uranus",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 73,
+    "sentence_count": 5
+  },
+  {
+    "id": "neptune_house_01",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 1,
+    "title": "Neptune in the 1st House",
+    "body": "With Neptune in the 1st house, you tend to give off a dreamy, gentle presence. People may project onto you, seeing what they want to see. You might feel drained after crowded places and refreshed by water, music, or a quiet room of your own. You can be very sensitive to atmospheres. Imagination and empathy are strengths. Clear boundaries help, so that your openness feels like a gift rather than a drain.",
+    "tags": [
+      "dreamy",
+      "empathetic",
+      "imaginative",
+      "gentle"
+    ],
+    "share_line": "Neptune in the 1st: you carry a little magic with you.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 72,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_02",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 2,
+    "title": "Neptune in the 2nd House",
+    "body": "Neptune in the 2nd house tends to soften your relationship with material things. You may value meaning, beauty, or spirit over possessions. You may give away more than you mean to, or value a beautiful experience over anything with a price tag, so simple budgets and clear agreements help. Resources can feel fluid. Many people with this placement are generous to a fault. Building simple, practical structures helps your idealism and your security support each other.",
+    "tags": [
+      "idealistic",
+      "generous",
+      "imaginative",
+      "gentle"
+    ],
+    "share_line": "Neptune in the 2nd: you value meaning over things.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_03",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 3,
+    "title": "Neptune in the 3rd House",
+    "body": "With Neptune in the 3rd house, your mind tends to think in images and feelings. You may have a poetic way of speaking, strong intuition, or a gift for stories. You might lose track of a conversation's details while remembering exactly how it felt, which often makes you a gifted storyteller. Details can slip away while the bigger picture stays vivid. Writing, music, or art can be natural outlets. Your words often move people.",
+    "tags": [
+      "imaginative",
+      "intuitive",
+      "poetic",
+      "gentle"
+    ],
+    "share_line": "Neptune in the 3rd: you speak in poetry.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 74,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_04",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 4,
+    "title": "Neptune in the 4th House",
+    "body": "Neptune in the 4th house tends to make home feel like a sanctuary or a mystery. Your family story may have elements that are unclear or idealised. Soft lighting, music, and a sense of calm often matter more to you at home than practical details, and family memories may feel slightly dreamlike. You may long for a perfect home. Many people with this placement create a private space that feels spiritual, artistic, or deeply peaceful.",
+    "tags": [
+      "dreamy",
+      "nostalgic",
+      "compassionate",
+      "private"
+    ],
+    "share_line": "Neptune in the 4th: you long for a home like a sanctuary.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 75,
+    "sentence_count": 5
+  },
+  {
+    "id": "neptune_house_05",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 5,
+    "title": "Neptune in the 5th House",
+    "body": "With Neptune in the 5th house, romance and creativity tend to be dreamy. You may fall for ideals, love films and music, and create with deep feeling. You may be drawn to music, acting, or photography, and a single song can carry you back to a romance years later. Romance can be magical, sometimes idealised. Your imagination is a gift. The lesson is to let love and creative work be real as well as beautiful.",
+    "tags": [
+      "romantic",
+      "imaginative",
+      "creative",
+      "dreamy"
+    ],
+    "share_line": "Neptune in the 5th: you love like a film and create like a dream.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_06",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 6,
+    "title": "Neptune in the 6th House",
+    "body": "Neptune in the 6th house tends to bring compassion to everyday work. You may be drawn to caring, healing, or creative roles. You may be the colleague who notices when someone is struggling, and quietly helps without being asked or thanked. Routines can feel hard to keep. You may absorb stress from your surroundings. Gentle, flexible habits often suit you, and work that feels meaningful tends to energise you most.",
+    "tags": [
+      "compassionate",
+      "helpful",
+      "intuitive",
+      "gentle"
+    ],
+    "share_line": "Neptune in the 6th: your work is a form of care.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 70,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_07",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 7,
+    "title": "Neptune in the 7th House",
+    "body": "With Neptune in the 7th house, relationships tend to feel spiritual or idealised. You may seek a soulmate and see the best in partners. You may feel a strong sense of destiny with partners, and you often sense what they need before they say it. Sometimes that means overlooking red flags. Your empathy can be a beautiful gift. The lesson is loving people as they are, which often makes the connection even more magical.",
+    "tags": [
+      "romantic",
+      "empathetic",
+      "devoted",
+      "idealistic"
+    ],
+    "share_line": "Neptune in the 7th: you're looking for a soulmate.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 74,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_08",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 8,
+    "title": "Neptune in the 8th House",
+    "body": "Neptune in the 8th house tends to blur boundaries in deep places. You may feel strong intuitive connections with others and be drawn to mysticism or psychology. People may confide in you without quite knowing why, and you often understand the feeling behind their words. Shared resources may need clear agreements. Many people with this placement have a gift for emotional healing and for understanding what others cannot say.",
+    "tags": [
+      "intuitive",
+      "mystical",
+      "empathetic",
+      "private"
+    ],
+    "share_line": "Neptune in the 8th: you sense what others can't say.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 69,
+    "sentence_count": 5
+  },
+  {
+    "id": "neptune_house_09",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 9,
+    "title": "Neptune in the 9th House",
+    "body": "With Neptune in the 9th house, you tend to seek a spiritual or poetic truth. You may love mythology, faith, or travel to places that feel sacred. You might feel moved by ancient places, sacred music, or a teacher who speaks to something beyond logic, and you often return from journeys changed in quiet ways. Beliefs can be inspiring and sometimes idealised. Your gift is helping others find meaning. Staying grounded helps your inspiration stay clear.",
+    "tags": [
+      "spiritual",
+      "idealistic",
+      "seeking",
+      "imaginative"
+    ],
+    "share_line": "Neptune in the 9th: you seek a truth that feels like poetry.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 76,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_10",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 10,
+    "title": "Neptune in the 10th House",
+    "body": "Neptune in the 10th house tends to bring imagination to your public life. You may be drawn to artistic, caring, or spiritual careers, or to roles where you inspire others. You may be drawn to film, music, healing, charity, or any work that lets you serve a bigger dream. Your public image can feel elusive. Clear goals help. Many people with this placement find their work becomes meaningful when it serves something larger.",
+    "tags": [
+      "inspiring",
+      "imaginative",
+      "compassionate",
+      "visible"
+    ],
+    "share_line": "Neptune in the 10th: your work can inspire people.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 73,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_11",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 11,
+    "title": "Neptune in the 11th House",
+    "body": "With Neptune in the 11th house, you tend to dream big with your friends. You may be drawn to idealistic groups, creative communities, or causes that help others. You might volunteer for causes, join creative collectives, or build communities online around a shared vision of kindness. Friendships can feel spiritual. Sometimes you see friends through a rosy lens. Your gift is inspiring people to believe in a better future.",
+    "tags": [
+      "idealistic",
+      "compassionate",
+      "sociable",
+      "dreamy"
+    ],
+    "share_line": "Neptune in the 11th: you dream big with your people.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 69,
+    "sentence_count": 6
+  },
+  {
+    "id": "neptune_house_12",
+    "type": "planet_in_house",
+    "planet": "Neptune",
+    "house": 12,
+    "title": "Neptune in the 12th House",
+    "body": "Neptune in the 12th house tends to feel at home in the quiet. You may have a rich inner life, strong intuition, and a deep need for solitude. Time near water, meditation, or simply an unscheduled afternoon can feel like coming home to yourself. Dreams, art, and spiritual practice can be deeply nourishing. You may be very compassionate. Learning to protect your energy helps your sensitivity stay a source of strength.",
+    "tags": [
+      "intuitive",
+      "compassionate",
+      "spiritual",
+      "dreamy"
+    ],
+    "share_line": "Neptune in the 12th: your inner world is vast.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 71,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_01",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 1,
+    "title": "Pluto in the 1st House",
+    "body": "With Pluto in the 1st house, you tend to have a powerful presence. People may sense depth or intensity in you even when you are quiet. You might walk into a room and change its mood, or rebuild your whole identity after a single defining experience. You may go through big personal transformations. Control and self-protection can be themes. Learning to trust your strength without hiding it helps you become a force for good change.",
+    "tags": [
+      "intense",
+      "magnetic",
+      "resilient",
+      "perceptive"
+    ],
+    "share_line": "Pluto in the 1st: your presence fills the room.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 75,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_02",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 2,
+    "title": "Pluto in the 2nd House",
+    "body": "Pluto in the 2nd house tends to bring intensity to your relationship with resources and values. You may feel strongly about security and go through deep changes in what you value. You may hold onto what is yours tightly, then later let go of possessions or values that no longer fit who you are becoming. Self-worth can be a powerful theme. Many people with this placement learn to build lasting resources from the inside out.",
+    "tags": [
+      "determined",
+      "resourceful",
+      "intense",
+      "resilient"
+    ],
+    "share_line": "Pluto in the 2nd: you rebuild your worth from the inside out.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 75,
+    "sentence_count": 5
+  },
+  {
+    "id": "pluto_house_03",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 3,
+    "title": "Pluto in the 3rd House",
+    "body": "With Pluto in the 3rd house, your mind tends to probe. You may be drawn to research, psychology, and getting to the bottom of things. You may be the one who asks the uncomfortable question, reads between the lines, or uncovers what others missed in a conversation. Words can carry real power. Sibling relationships may be intense. Your gift is saying the things that matter, and learning when to say them.",
+    "tags": [
+      "probing",
+      "perceptive",
+      "intense",
+      "articulate"
+    ],
+    "share_line": "Pluto in the 3rd: your words have real power.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 71,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_04",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 4,
+    "title": "Pluto in the 4th House",
+    "body": "Pluto in the 4th house tends to bring depth to home and family. You may have experienced powerful family dynamics or a big change in your roots. Family secrets, inherited patterns, or a dramatic move may shape you, and the home you build often looks very different from the one you came from. Home can be a place of transformation. Many people with this placement become the one who heals or changes patterns in their family line.",
+    "tags": [
+      "intense",
+      "protective",
+      "rooted",
+      "resilient"
+    ],
+    "share_line": "Pluto in the 4th: you transform your family story.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_kelly_houses_101"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditional astrology (e.g. Kelly Surtees) links the 4th to the father; modern astrology often links it to the mother/Cancer; Vedic puts the father in the 9th. Copy avoids naming a parent.",
+    "word_count": 77,
+    "sentence_count": 5
+  },
+  {
+    "id": "pluto_house_05",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 5,
+    "title": "Pluto in the 5th House",
+    "body": "With Pluto in the 5th house, passion and creativity tend to run deep. You may love intensely, create with all your heart, and be drawn to powerful experiences. You may throw yourself completely into a creative project or a romance, and you rarely do anything you love halfway. Romance can be transformative. Your creativity often has real depth. The lesson is enjoying pleasure without needing to control it.",
+    "tags": [
+      "passionate",
+      "creative",
+      "intense",
+      "magnetic"
+    ],
+    "share_line": "Pluto in the 5th: you love and create with everything you've got.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 68,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_06",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 6,
+    "title": "Pluto in the 6th House",
+    "body": "Pluto in the 6th house tends to bring intensity to work and routine. You may be driven to improve, fix, or transform systems. You may be called in when a team or system is failing, and you often have the stamina to see a hard job through to the very end. You can work very hard and expect a lot of yourself. Many people with this placement have a gift for turning around situations others gave up on.",
+    "tags": [
+      "determined",
+      "diligent",
+      "perceptive",
+      "intense"
+    ],
+    "share_line": "Pluto in the 6th: you transform whatever you work on.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditionally a difficult house of illness and toil; modern framing is health routines and service. Copy avoids medical claims.",
+    "word_count": 78,
+    "sentence_count": 5
+  },
+  {
+    "id": "pluto_house_07",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 7,
+    "title": "Pluto in the 7th House",
+    "body": "With Pluto in the 7th house, relationships tend to be deep and life-changing. You may be attracted to intense partners or go through big changes through partnership. You may attract partners who bring out your strongest feelings, and relationships often mark the turning points of your life, for better and for growth. Power dynamics can be a theme. The lesson is building trust and equality, which can make your relationships transformative in the best way.",
+    "tags": [
+      "intense",
+      "devoted",
+      "magnetic",
+      "relational"
+    ],
+    "share_line": "Pluto in the 7th: your relationships change you.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 75,
+    "sentence_count": 5
+  },
+  {
+    "id": "pluto_house_08",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 8,
+    "title": "Pluto in the 8th House",
+    "body": "Pluto in the 8th house tends to feel at home in the depths. You may be drawn to psychology, mystery, and the big transitions of life. You may be the person friends call in a crisis, calm when others panic, and unafraid of honest conversations about difficult subjects. Intimacy often matters deeply. You can be remarkably resilient. Many people with this placement develop real wisdom about change and loss.",
+    "tags": [
+      "intense",
+      "perceptive",
+      "resilient",
+      "private"
+    ],
+    "share_line": "Pluto in the 8th: you're at home in the depths.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal. Traditionally death, fear and other people's resources; modern astrology adds intimacy and transformation. Copy avoids financial or mortality predictions.",
+    "word_count": 69,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_09",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 9,
+    "title": "Pluto in the 9th House",
+    "body": "With Pluto in the 9th house, your beliefs tend to go through deep change. You may seek truth intensely and question everything. You might walk away from a belief system you were raised in, or study a subject so deeply that it reshapes how you see the world around you. Travel or study can transform you. Your convictions often run deep. Your gift is helping others look at big questions honestly.",
+    "tags": [
+      "philosophical",
+      "intense",
+      "seeking",
+      "probing"
+    ],
+    "share_line": "Pluto in the 9th: your search for truth changes you.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_1"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 71,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_10",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 10,
+    "title": "Pluto in the 10th House",
+    "body": "Pluto in the 10th house tends to bring intensity to your ambitions. You may feel driven to have real impact and influence. Your relationship with ambition can deepen and change shape over the years, and you may be drawn to roles where your choices carry real weight for others. You may approach work with a strong urge to transform how things are done. Others may see you as formidable. The lesson is using your power with integrity.",
+    "tags": [
+      "ambitious",
+      "powerful",
+      "determined",
+      "visible"
+    ],
+    "share_line": "Pluto in the 10th: you're built for real impact.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 77,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_11",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 11,
+    "title": "Pluto in the 11th House",
+    "body": "With Pluto in the 11th house, friendships and groups tend to be intense. You may be drawn to communities that want to change things. You may be drawn to movements, activist groups, or close-knit circles where loyalty runs deep and the shared mission feels urgent and important. Friends can transform you. Group power dynamics can be a theme. Your gift is helping a group find its real purpose.",
+    "tags": [
+      "intense",
+      "community-minded",
+      "determined",
+      "loyal"
+    ],
+    "share_line": "Pluto in the 11th: you change the groups you join.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 68,
+    "sentence_count": 6
+  },
+  {
+    "id": "pluto_house_12",
+    "type": "planet_in_house",
+    "planet": "Pluto",
+    "house": 12,
+    "title": "Pluto in the 12th House",
+    "body": "Pluto in the 12th house tends to bring depth to your inner life. You may have strong intuition and an interest in the hidden or spiritual. Therapy, journaling, dream work, or long periods of solitude may become important tools that help you understand and release what you carry inside. Private struggles can lead to deep growth. Many people with this placement find great strength through inner work and quiet reflection.",
+    "tags": [
+      "intuitive",
+      "private",
+      "resilient",
+      "perceptive"
+    ],
+    "share_line": "Pluto in the 12th: your power grows in quiet.",
+    "teaser_cut": 2,
+    "source_ids": [
+      "src_tap_pluto",
+      "src_tap_outer_planets",
+      "src_tap_houses_2"
+    ],
+    "tradition_notes": "Outer planet (modern astrology). Traditional astrologers do not use it; it moves slowly, so its sign is generational, but its house is personal.",
+    "word_count": 70,
+    "sentence_count": 5
+  }
+]
