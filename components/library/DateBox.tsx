@@ -14,6 +14,16 @@ export const PREFILL_KEY = "ur:prefill";
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export type DateBoxMode = "compact" | "life-path" | "zodiac" | "chinese";
+export function parseDate(value: string): Date | null {
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  const [year, month, day] = [Number(match[1]), Number(match[2]), Number(match[3])];
+  const date = new Date(year, month - 1, day);
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+  if (year < 1900 || date > new Date()) return null;
+  return date;
+}
+
 type Part = "month" | "day" | "year";
 const PART_SPEC: Record<Part, { label: string; placeholder: string; maxLength: number; autoComplete: string }> = {
   month: { label: "Month", placeholder: "MM", maxLength: 2, autoComplete: "bday-month" },
