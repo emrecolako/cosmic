@@ -1,0 +1,34 @@
+{
+  "scope": "full",
+  "locale": "en",
+  "birthTimeKnown": false,
+  "facts": {
+    "lifePath": 7,
+    "sunSign": "Scorpio",
+    "chineseAnimal": "Horse",
+    "personalYear": 7
+  },
+  "lifeStageTerms": [
+    "career",
+    "work",
+    "leadership"
+  ],
+  "chart": {
+    "mode": "solar",
+    "houses": {
+      "sun": 1,
+      "mercury": 1,
+      "venus": 1,
+      "mars": 8,
+      "jupiter": 10,
+      "saturn": 3,
+      "uranus": 3,
+      "neptune": 3,
+      "pluto": 1
+    },
+    "approximate": false
+  },
+  "birth": {
+    "dateOfBirth": "1990-11-04"
+  }
+}

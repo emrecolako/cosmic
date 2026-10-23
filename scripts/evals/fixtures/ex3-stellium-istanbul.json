@@ -1,0 +1,44 @@
+{
+  "scope": "full",
+  "locale": "en",
+  "birthTimeKnown": true,
+  "facts": {
+    "lifePath": 6,
+    "sunSign": "Aquarius",
+    "chineseAnimal": "Snake",
+    "personalYear": 6,
+    "moonSign": "Sagittarius",
+    "risingSign": "Aquarius"
+  },
+  "lifeStageTerms": [
+    "career",
+    "work",
+    "purpose"
+  ],
+  "chart": {
+    "mode": "full",
+    "houses": {
+      "sun": 1,
+      "moon": 11,
+      "mercury": 12,
+      "venus": 12,
+      "mars": 11,
+      "jupiter": 6,
+      "saturn": 12,
+      "uranus": 12,
+      "neptune": 12,
+      "pluto": 10
+    },
+    "chartRuler": "saturn",
+    "approximate": false
+  },
+  "birth": {
+    "dateOfBirth": "1990-01-22",
+    "birthTime": "07:30",
+    "place": {
+      "latitude": 41.0082,
+      "longitude": 28.9784,
+      "timeZone": "Europe/Istanbul"
+    }
+  }
+}

@@ -16,6 +16,14 @@ export interface EvalFixture {
   };
   /** Words relevant to the selected life context; at least one should appear. */
   lifeStageTerms: string[];
+  /**
+   * Whole sign houses computed by lib/chart for the reading (lowercase planet → house).
+   * Without it, any house or chart-ruler claim fails. In a solar chart every
+   * house claim must say "solar" ("your solar 7th house").
+   */
+  chart?: { mode: "full" | "solar"; houses: Partial<Record<string, number>>; chartRuler?: string; approximate?: boolean };
+  /** Fictional birth details the chart was computed from (lets tests recompute it). */
+  birth?: { dateOfBirth: string; birthTime?: string; place?: { latitude: number; longitude: number; timeZone: string } };
 }
 
 export interface EvalResult {
@@ -28,6 +36,24 @@ export interface EvalResult {
 const MARKER = /^<<<(SNAPSHOT|READING|SEASON|TOOLKIT)>>>$/gm;
 const SIGNS = "Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces";
 const ANIMALS = "Rat|Ox|Tiger|Rabbit|Dragon|Snake|Horse|Goat|Monkey|Rooster|Dog|Pig";
+const PLANETS = "Sun|Moon|Mercury|Venus|Mars|Jupiter|Saturn|Uranus|Neptune|Pluto";
+const NTH = "(\\d{1,2})(?:st|nd|rd|th)";
+
+/** "(the) Venus (sits) in (your) (solar) 6th (house)" and "(solar) 6th-house Venus". */
+function houseClaims(text: string): { planet: string; house: number; solar: boolean; claim: string }[] {
+  const inHouse = new RegExp(`\\b(${PLANETS})\\b(?:,)?\\s+(?:(?:is|sits|falls|lands|placed|also)\\s+)*in\\s+(?:your\\s+|the\\s+|their\\s+)?(solar\\s+)?${NTH}(?:[\\s-]+house)?\\b`, "gi");
+  const houseFirst = new RegExp(`\\b(solar\\s+)?${NTH}[\\s-]house\\s+(${PLANETS})\\b`, "gi");
+  return [
+    ...[...text.matchAll(inHouse)].map((m) => ({ planet: m[1].toLowerCase(), solar: Boolean(m[2]), house: Number(m[3]), claim: m[0] })),
+    ...[...text.matchAll(houseFirst)].map((m) => ({ planet: m[3].toLowerCase(), solar: Boolean(m[1]), house: Number(m[2]), claim: m[0] })),
+  ];
+}
+
+function chartRulerClaims(text: string): { planet: string; claim: string }[] {
+  const after = new RegExp(`\\bchart ruler(?:\\s+is|,|:)?\\s+(?:the\\s+)?(${PLANETS})\\b`, "gi");
+  const before = new RegExp(`\\b(${PLANETS})(?:,)?\\s+(?:is\\s+)?(?:also\\s+)?(?:your|their)\\s+chart ruler\\b`, "gi");
+  return [...text.matchAll(after), ...text.matchAll(before)].map((m) => ({ planet: m[1].toLowerCase(), claim: m[0] }));
+}
 const words = (s: string) => s.trim().match(/[\p{L}\p{N}]+(?:[’'-][\p{L}\p{N}]+)*/gu)?.length ?? 0;
 const contains = (s: string, term: string) => new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(s);
 
@@ -70,12 +96,21 @@ export function evaluateReading(output: string, fixture: EvalFixture): EvalResul
     const wrong = [...all.matchAll(new RegExp(`\\b(?:your |their )?${label} (?:sign )?(?:is|in|as)\\s+(${SIGNS})\\b`, "gi"))].map((m) => m[1]).filter((s) => s.toLowerCase() !== expectedSign.toLowerCase());
     add(`${label}_grounding`, wrong.length === 0, `Incorrect ${label} sign claims: ${wrong.join(", ") || "none"}`);
   }
+  const solar = !fixture.birthTimeKnown || fixture.chart?.mode === "solar";
   if (!fixture.birthTimeKnown) {
     const personalSignClaim = new RegExp(`\\b(?:your|their)?\\s*(?:moon sign|rising sign|ascendant|moon|rising)\\s+(?:is|in|as|:)\\s+(?:an?\\s+)?(${SIGNS})\\b`, "i").test(all);
-    const personalHouseClaim = /\b(?:your|their)\s+(?:\w+\s+){0,2}(?:is|sits|falls|lands)\s+in\s+(?:the\s+)?\d+(?:st|nd|rd|th)\s+house\b/i.test(all);
-    add("unknown_time", !personalSignClaim && !personalHouseClaim, "No personal Moon, rising, ascendant, or house claim when time is unknown");
+    add("unknown_time", !personalSignClaim, "No personal Moon, rising, or ascendant claim when time is unknown");
   }
-  add("no_unsupported_precision", !/\b(?:current|today'?s|this (?:week|month|year)'?s)\s+(?:planetary\s+)?(?:transit|aspect|conjunction|opposition|trine)s?\b|\b(?:in|through|enters?|occupies?)\s+(?:the\s+)?\d+(?:st|nd|rd|th)\s+house\b|\b\d{1,2}°\b/i.test(all), "No uncalculated transits, aspects, house positions, or degrees");
+  const claims = houseClaims(all);
+  const wrongHouses = claims.filter((c) => fixture.chart?.houses[c.planet] !== c.house).map((c) => c.claim);
+  add("house_grounding", wrongHouses.length === 0, fixture.chart ? `House claims that don't match the chart: ${wrongHouses.join("; ") || "none"}` : `House claims without calculated houses: ${wrongHouses.join("; ") || "none"}`);
+  if (solar) {
+    const unqualified = [...claims.filter((c) => !c.solar).map((c) => c.claim), ...[...all.matchAll(new RegExp(`(?<!solar[\\s-])\\b${NTH}[\\s-]house\\b`, "gi"))].map((m) => m[0])];
+    add("solar_houses_qualified", unqualified.length === 0, `Solar chart house claims must say "solar": ${[...new Set(unqualified)].join("; ") || "none"}`);
+  }
+  const wrongRuler = chartRulerClaims(all).filter((c) => c.planet !== fixture.chart?.chartRuler).map((c) => c.claim);
+  add("chart_ruler_grounding", wrongRuler.length === 0, `Chart ruler claims that don't match the chart: ${wrongRuler.join("; ") || "none"}`);
+  add("no_unsupported_precision", !/\b(?:current|today'?s|this (?:week|month|year)'?s)\s+(?:planetary\s+)?(?:transit|aspect|conjunction|opposition|trine)s?\b|\b\d{1,2}°/i.test(all), "No uncalculated transits, aspects, or degrees");
   if (fixture.scope === "full") {
     add("personal_year", new RegExp(`\\b(?:personal year|year)\\s*(?:number\\s*)?${facts.personalYear}\\b`, "i").test(season), `Season should ground timing in Personal Year ${facts.personalYear}`);
     add("life_stage", fixture.lifeStageTerms.length > 0 && fixture.lifeStageTerms.some((term) => contains([reading, toolkitRaw].join(" "), term)), `Expected at least one life-stage term: ${fixture.lifeStageTerms.join(", ")}`);
