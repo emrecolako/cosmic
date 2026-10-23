@@ -2,7 +2,7 @@
 title: Unified Reading
 description: A combined numerology, Western astrology and Chinese zodiac reflection reading.
 canonical: https://unifiedreading.com/
-last-updated: 2026-10-02
+last-updated: 2026-10-23
 ---
 
 # Unified Reading
@@ -13,7 +13,7 @@ Unified Reading is a web app for a combined, personal reflection reading. It con
 
 1. Enter a birth name and date. Birth time, birthplace, gender, and personal context are optional.
 2. Choose the life stages that matter now.
-3. Review the calculated profile and a generated interpretation preview. A one-time checkout for the full interpretation is shown when payments are enabled.
+3. Review the calculated profile and a free interpretation preview. The full interpretation is a one-time purchase through Stripe Checkout.
 
 The public [fictional sample](https://unifiedreading.com/sample) requires no personal details. Numerology values, zodiac signs, and the Chinese zodiac are calculated in the browser. The interpretation is generated through OpenRouter model providers.
 

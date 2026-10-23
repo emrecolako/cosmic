@@ -5,15 +5,15 @@ export const dynamic = "force-dynamic";
 
 export function GET() {
   const paid = paywallEnabled();
-  const fullPrice = paid ? priceLabel() : "Free at present";
+  const fullPrice = paid ? priceLabel() : "Free on this preview deployment";
   const checkout = paid
-    ? "A one-time Stripe Checkout payment unlocks the full reading. Stripe displays the final amount before purchase."
-    : "Checkout is currently disabled, so the full reading is free on this deployment.";
+    ? "A one-time Stripe Checkout payment unlocks the full reading. Stripe displays the final amount before purchase, and promotion codes are entered on the Stripe Checkout page."
+    : "Checkout is not configured on this preview deployment, so the full reading is unlocked here.";
   const markdown = `---
 title: Unified Reading pricing
 description: Current prices, reading options, included features, and checkout terms.
 canonical: https://unifiedreading.com/pricing
-last-updated: 2026-10-02
+last-updated: 2026-10-23
 ---
 
 # Unified Reading pricing
@@ -67,7 +67,7 @@ There is no subscription, account requirement, or recurring charge. The price ap
 - The fictional sample costs $0 and does not require any personal details.
 - The personal calculated profile costs $0.
 - The personal interpretation preview costs $0.
-- The full interpretation costs ${paid ? fullPrice : "$0 at present"}.
+- The full interpretation costs ${paid ? fullPrice : "$0 on this preview deployment"}.
 - There is no monthly plan, annual plan, trial renewal, or usage-based charge.
 - No account is needed to read the sample, view the preview, or receive the full reading.
 
@@ -93,9 +93,9 @@ There is no subscription, account requirement, or recurring charge. The price ap
 
 ### Checkout conditions
 
-- ${paid ? "A one-time Stripe Checkout session is available for the full reading." : "Checkout is off on this deployment, so no payment is required."}
-- If checkout is enabled later, the site and Stripe show the price before a visitor confirms payment.
-- Payment details, when checkout is enabled, are entered into Stripe rather than the reading form.
+- ${paid ? "A one-time Stripe Checkout session is available for the full reading." : "Checkout is not configured on this preview deployment, so no payment is required here."}
+- The site and Stripe show the price before a visitor confirms payment.
+- Payment details are entered into Stripe rather than the reading form.
 - Agents should not collect card data or complete checkout on a visitor's behalf.
 
 ## Scope and limitations

@@ -17,7 +17,7 @@ export default function AboutPage() {
     <h2>How the synthesis works</h2>
     <p>The app calculates these values in your browser. If you ask for an interpretation, it sends your profile and optional life context to a language model through OpenRouter. The generated text looks for shared themes, useful tensions, and practical reflection prompts. These traditions are interpretive frameworks, not verified ways to predict the future or determine personality.</p>
     <h2>Privacy and price</h2>
-    <p>The sample is public and free. The app shows a preview of your own reading before a one-time checkout for the full reading when payments are enabled. See <Link href="/pricing">current pricing</Link> before you start and our <Link href="/privacy">privacy explanation</Link> for the data flow and caching details.</p>
+    <p>The sample is public and free. You see a preview of your own reading first; the full reading is a one-time purchase. See <Link href="/pricing">current pricing</Link> before you start and our <Link href="/privacy">privacy explanation</Link> for the data flow and caching details.</p>
     <p>Questions or product feedback? <Link href="/contact">Contact the project</Link>.</p>
   </article></main>;
 }
