@@ -118,8 +118,9 @@ export async function createCheckoutSession(
   };
 }
 
-/** True when the session is paid, recent, and was bought for this exact reading. */
-export async function isPaidSession(sessionId: string, readingHash: string): Promise<boolean> {
+/** True when the session is paid, recent, and was bought for this exact reading (any of `readingHashes`). */
+export async function isPaidSession(sessionId: string, readingHashes: string | string[]): Promise<boolean> {
+  const accepted = Array.isArray(readingHashes) ? readingHashes : [readingHashes];
   if (!/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)) return false;
   const priceId = process.env.STRIPE_PRICE_ID;
   if (!priceId) return false;
@@ -127,7 +128,7 @@ export async function isPaidSession(sessionId: string, readingHash: string): Pro
     const session = await stripe<OrderSession>(`/checkout/sessions/${sessionId}?expand[]=line_items`);
     return (
       session.payment_status === "paid" &&
-      session.metadata?.readingHash === readingHash &&
+      accepted.includes(session.metadata?.readingHash ?? "") &&
       isReadingOrder({ priceIds: (session.line_items?.data ?? []).flatMap((item) => item.price?.id ? [item.price.id] : []) }, priceId) &&
       Date.now() / 1000 - session.created < PAID_SESSION_MAX_AGE_S
     );

@@ -6,8 +6,10 @@
  * - Sun sign/decan from low-precision solar longitude (~0.01° accuracy),
  *   so cusp dates resolve correctly for every year.
  * - Moon sign from the Meeus lunar longitude algorithm.
- * - Rising sign from the standard ascendant formula.
+ * - Rising sign from the standard ascendant formula (lib/chart/angles.ts).
  */
+
+import { ascendantAndMidheaven, meanObliquity } from "./chart/angles";
 
 export interface ZodiacSign {
   sign: string;
@@ -155,8 +157,8 @@ function birthInstantUTC(
     dateOfBirth.getFullYear(),
     dateOfBirth.getMonth(),
     dateOfBirth.getDate(),
-    hours - tzOffset,
-    minutes,
+    hours,
+    minutes - Math.round(tzOffset * 60),
     0
   ));
 }
@@ -414,7 +416,7 @@ export function getMoonSign(
   const day = dateOfBirth.getDate();
 
   const signAt = (hours: number, minutes: number): string => {
-    const utcDate = new Date(Date.UTC(year, month, day, hours - tzOffset, minutes, 0));
+    const utcDate = new Date(Date.UTC(year, month, day, hours, minutes - Math.round(tzOffset * 60), 0));
     const moonLon = getMoonLongitude(toJulianDay(utcDate));
     return SIGN_ORDER[Math.floor(moonLon / 30) % 12];
   };
@@ -430,6 +432,17 @@ export function getMoonSign(
   const startOfDay = signAt(0, 0);
   const endOfDay = signAt(23, 59);
   return startOfDay === endOfDay ? startOfDay : null;
+}
+
+/** Moon sign for a date when the birth time zone is unknown: null unless it holds from 00:00 UTC+14 to 23:59 UTC−12. */
+export function getMoonSignInAnyZone(dateOfBirth: Date): string | null {
+  const y = dateOfBirth.getFullYear();
+  const m = dateOfBirth.getMonth();
+  const d = dateOfBirth.getDate();
+  const signAt = (utc: Date) => SIGN_ORDER[Math.floor(getMoonLongitude(toJulianDay(utc)) / 30) % 12];
+  const first = signAt(new Date(Date.UTC(y, m, d, -14, 0, 0)));
+  const last = signAt(new Date(Date.UTC(y, m, d, 23 + 12, 59, 0)));
+  return first === last ? first : null;
 }
 
 /**
@@ -459,17 +472,13 @@ export function getRisingSign(
   const [hours, minutes] = birthTime.split(":").map(Number);
   if (isNaN(hours) || isNaN(minutes)) return null;
 
-  // The formula degrades inside the polar circles (signs can never rise);
-  // clamp so extreme-latitude births still get a reasonable estimate.
-  const phi = toRad(Math.max(-66, Math.min(66, latitude)));
-
   const tzOffset = timezoneOffsetHours ?? 0;
   const birthUTC = new Date(Date.UTC(
     dateOfBirth.getFullYear(),
     dateOfBirth.getMonth(),
     dateOfBirth.getDate(),
-    hours - tzOffset,
-    minutes,
+    hours,
+    minutes - Math.round(tzOffset * 60),
     0
   ));
 
@@ -477,18 +486,10 @@ export function getRisingSign(
   const jd = toJulianDay(birthUTC);
   const GMST = normalize360(280.46061837 + 360.98564736629 * (jd - 2451545.0));
 
-  // Right ascension of the midheaven = local sidereal time
-  const ramc = toRad(normalize360(GMST + longitude));
-
-  // Mean obliquity of the ecliptic (J2000)
-  const eps = toRad(23.4393);
-
-  const asc = normalize360(
-    (Math.atan2(
-      Math.cos(ramc),
-      -(Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps))
-    ) * 180) / Math.PI
-  );
+  // Right ascension of the midheaven = local sidereal time. Latitude is not
+  // clamped: inside the polar circles the shared formula keeps the Ascendant
+  // in the east instead.
+  const { asc } = ascendantAndMidheaven(GMST + longitude, meanObliquity((jd - 2451545.0) / 36525), latitude);
 
   return SIGN_ORDER[Math.floor(asc / 30) % 12];
 }
@@ -525,10 +526,16 @@ export function calculateWesternProfile(
   timezoneOffsetHours?: number
 ): WesternAstrologyProfile {
   const sunSign = getSunSign(dateOfBirth, birthTime, timezoneOffsetHours);
-  // Unknown-time reports intentionally omit Moon, rising, and houses.
-  const moonSign = birthTime ? getMoonSign(dateOfBirth, birthTime, timezoneOffsetHours) : null;
+  // Unknown-time reports omit Moon and rising and use a solar chart. With a
+  // time but no resolved time zone, nothing assumes UTC: the Moon is kept only
+  // if it holds across every zone (UTC−12 to UTC+14) and rising is omitted.
+  const moonSign = !birthTime
+    ? null
+    : timezoneOffsetHours === undefined
+      ? getMoonSignInAnyZone(dateOfBirth)
+      : getMoonSign(dateOfBirth, birthTime, timezoneOffsetHours);
   const risingSign =
-    birthTime && latitude !== undefined && longitude !== undefined
+    birthTime && latitude !== undefined && longitude !== undefined && timezoneOffsetHours !== undefined
       ? getRisingSign(dateOfBirth, birthTime, latitude, longitude, timezoneOffsetHours)
       : null;
 

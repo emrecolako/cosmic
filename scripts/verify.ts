@@ -150,6 +150,15 @@ const unknownTime = calculateWesternProfile(new Date(2024, 0, 25), undefined, 51
 check("unknown-time Moon omitted", unknownTime.moonSign, null);
 check("unknown-time rising omitted", unknownTime.risingSign, null);
 check("known-time Moon retained", calculateWesternProfile(new Date(2024, 0, 25), "17:54", 51.5, 0, 0).moonSign, "Leo");
+// Time known but no time zone (place not geocoded): never assume UTC.
+check("unresolved zone omits rising", calculateWesternProfile(new Date(2024, 0, 25), "17:54", 51.5, 0, undefined).risingSign, null);
+check("unresolved zone omits a Moon that changes sign in some zone", calculateWesternProfile(new Date(2024, 0, 25), "17:54").moonSign, null);
+check("unresolved zone keeps a Moon stable in every zone", calculateWesternProfile(new Date(1990, 5, 15), "09:00").moonSign, "Pisces");
+// Above the polar circle the Ascendant stays in the east instead of clamping to 66°.
+// Swiss Ephemeris: Scorpio 26.8°; the old ±66° clamp gave Sagittarius.
+check("rising Tromsø 1993-06-20 21:15 CEST", getRisingSign(new Date(1993, 5, 20), "21:15", 69.6492, 18.9553, 2), "Scorpio");
+// Half-hour zones shift by 30 minutes, not a truncated hour.
+check("rising Adelaide 1995-01-15 09:00 ACDT", getRisingSign(new Date(1995, 0, 15), "09:00", -34.9285, 138.6007, 10.5), "Aquarius");
 check("sample life path", calculateLifePath(new Date(1990, 10, 4)), 7);
 check("sample master expression", calculateExpression("Alex Morgan"), 11);
 check("sample Chinese animal", getChineseZodiac(new Date(1990, 10, 4)).animal, "Horse");

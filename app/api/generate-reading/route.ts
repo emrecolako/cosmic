@@ -10,8 +10,11 @@ import { MODEL_CHAIN, OPENROUTER_URL } from "@/lib/openrouter";
 import { readingCacheKey, cachedReading, cacheReading } from '@/lib/reading-cache';
 import { clientIp, isRateLimited } from "@/lib/rate-limit";
 import { validateReadingBody } from "@/lib/reading-request";
-import { readingHash } from "@/lib/reading-hash";
+import { acceptedReadingHashes, readingHash } from "@/lib/reading-hash";
 import { isPaidSession, paymentsConfigured, paywallEnabled, priceLabel } from "@/lib/stripe";
+import { chartKey } from "@/lib/chart/key";
+import { starMapHousesEnabled } from "@/lib/chart/flags";
+import { chartForReading, RULES_VERSION, starMapGrounding } from "@/lib/chart/star-map";
 
 type ReadingMode = "teaser" | "full";
 
@@ -46,7 +49,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Payments are temporarily unavailable." }, { status: 503 });
       }
       const sessionId = typeof body.checkoutSessionId === "string" ? body.checkoutSessionId : "";
-      if (!(await isPaidSession(sessionId, readingHash(body)))) {
+      if (!(await isPaidSession(sessionId, acceptedReadingHashes(body)))) {
         return NextResponse.json({ error: "Payment required." }, { status: 402 });
       }
     }
@@ -54,7 +57,10 @@ export async function POST(request: NextRequest) {
     const hash = process.env.READING_HASH_SECRET ? readingHash(body) : undefined;
     const headers = readingHeaders(paywall && mode === "teaser", paymentsConfigured(), hash);
 
+    const houses = starMapHousesEnabled(locale);
     const cacheKey = readingCacheKey({
+      chartKey: chartKey(body),
+      rulesVersion: houses ? RULES_VERSION : null,
       fullName: body.fullName,
       dateOfBirth: body.dateOfBirth,
       birthTime: body.birthTime,
@@ -96,6 +102,7 @@ export async function POST(request: NextRequest) {
       chineseZodiac: body.chineseZodiac,
       lifeStageContext: body.lifeStageContext,
       locale,
+      ...(houses && mode === "full" ? { starMapHouses: starMapGrounding(await chartForReading(body)) } : {}),
     };
 
     const prompt = buildAnalysisPrompt(cosmicProfile, { scope: mode === "full" ? "full" : "snapshot" });

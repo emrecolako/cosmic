@@ -1,0 +1,81 @@
+{
+ "mode": "full",
+ "house_system": "whole_sign",
+ "time_known": true,
+ "place_known": true,
+ "sun_decan": 1,
+ "asc": {
+  "sign": "libra",
+  "deg_in_sign": 8.31
+ },
+ "mc": {
+  "sign": "cancer",
+  "deg_in_sign": 10.84,
+  "house": 10
+ },
+ "dsc": {
+  "sign": "aries"
+ },
+ "planets": {
+  "sun": {
+   "sign": "pisces",
+   "deg_in_sign": 5.94,
+   "house": 6
+  },
+  "moon": {
+   "sign": "virgo",
+   "deg_in_sign": 8.83,
+   "house": 12
+  },
+  "mercury": {
+   "sign": "pisces",
+   "deg_in_sign": 23.28,
+   "house": 6
+  },
+  "venus": {
+   "sign": "pisces",
+   "deg_in_sign": 14.67,
+   "house": 6
+  },
+  "mars": {
+   "sign": "sagittarius",
+   "deg_in_sign": 13.09,
+   "house": 3
+  },
+  "jupiter": {
+   "sign": "pisces",
+   "deg_in_sign": 1,
+   "house": 6
+  },
+  "saturn": {
+   "sign": "sagittarius",
+   "deg_in_sign": 9.28,
+   "house": 3
+  },
+  "uranus": {
+   "sign": "sagittarius",
+   "deg_in_sign": 21.96,
+   "house": 3
+  },
+  "neptune": {
+   "sign": "capricorn",
+   "deg_in_sign": 5.33,
+   "house": 4
+  },
+  "pluto": {
+   "sign": "scorpio",
+   "deg_in_sign": 7.29,
+   "house": 2
+  }
+ },
+ "chart_ruler": {
+  "planet": "venus",
+  "modern_co_ruler": null,
+  "house": 6,
+  "sign": "pisces"
+ },
+ "seventh_ruler": {
+  "planet": "mars",
+  "house": 3
+ }
+}

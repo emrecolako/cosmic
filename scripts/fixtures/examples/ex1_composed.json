@@ -1,0 +1,181 @@
+{
+ "mode": "full",
+ "label": null,
+ "selected": [
+  "sun_pisces_rising_libra",
+  "chart_ruler_house_06",
+  "sun_house_06",
+  "moon_house_12",
+  "neptune_house_04",
+  "stellium_house_06",
+  "dsc_aries",
+  "mc_cancer",
+  "stellium_house_03",
+  "mercury_house_06",
+  "mars_house_03",
+  "jupiter_house_06",
+  "saturn_house_03",
+  "uranus_house_03",
+  "pluto_house_02"
+ ],
+ "consumed_bridges": [
+  "chart_ruler_with_sun",
+  "sun_moon_house_06_12"
+ ],
+ "paid": {
+  "paragraphs": [
+   {
+    "slot": "sun_rising",
+    "id": "sun_pisces_rising_libra",
+    "title": "Sun in Pisces, Libra Rising",
+    "text": "Libra rising tends to make your first impression gracious, charming and easy to approach, but with the Sun in Pisces, what drives you underneath is a need for meaning, imagination and emotional connection. Signs this far apart rarely share an approach, so people can be surprised by what sits beneath your first impression. Day to day, people often meet a polished, diplomatic charm first and only later discover deep empathy and a rich inner world. It tends to go best when you let your grace open the door and your intuition do the steering."
+   },
+   {
+    "slot": "chart_ruler",
+    "id": "chart_ruler_house_06",
+    "title": "Your chart ruler: Venus in the 6th house",
+    "text": "With the chart ruler in the 6th house, your sense of purpose tends to come through usefulness. You often feel most like yourself when you are improving something, solving practical problems, or supporting others day to day. When your chart ruler, the planet that rules your rising sign, shares a house with your Sun, your direction in life and your core sense of self tend to point at the same area."
+   },
+   {
+    "slot": "sun_house",
+    "id": "sun_house_06",
+    "title": "Sun in the 6th House",
+    "text": "The Sun in the 6th house tends to make purpose feel practical. You often shine through craft, service, problem-solving, and doing a job properly. Daily routines can shape your mood and energy more than you expect. Many people with this placement feel most like themselves when they are useful, and learn over time that rest is part of doing good work."
+   },
+   {
+    "slot": "moon_house",
+    "id": "moon_house_12",
+    "title": "Moon in the 12th House",
+    "text": "The Moon in the 12th house tends to give you a private emotional world. You may absorb other people's feelings easily and need solitude to sort out what is yours. With your Sun in the 6th house and your Moon in the 12th, your purpose tends to come through useful work and daily routine, while your emotional life needs quiet, solitude and space to dream. You may be highly organised on the outside and private on the inside. Stress often shows up as a need to withdraw. The growth edge is building rest and reflection into the schedule, rather than waiting until you're depleted."
+   },
+   {
+    "slot": "angular",
+    "id": "neptune_house_04",
+    "title": "Neptune in the 4th House",
+    "text": "Neptune in the 4th house tends to make home feel like a sanctuary or a mystery. Your family story may have elements that are unclear or idealised. Soft lighting, music, and a sense of calm often matter more to you at home than practical details, and family memories may feel slightly dreamlike. You may long for a perfect home. Many people with this placement create a private space that feels spiritual, artistic, or deeply peaceful."
+   },
+   {
+    "slot": "emphasis",
+    "id": "stellium_house_06",
+    "title": "Stellium in the 6th House",
+    "text": "A cluster of three or more planets in your 6th house tends to focus energy on work, skill, routine and being useful. You may be the person who keeps everything running. In your chart that cluster is 4 planets: Sun, Mercury, Venus, Jupiter."
+   },
+   {
+    "slot": "partnership",
+    "id": "dsc_aries",
+    "title": "Aries on the 7th House Cusp (Descendant)",
+    "text": "With Aries on the cusp of your 7th house, the Descendant, you tend to be drawn to lively, direct partners who say what they think. In close relationships, both romantic and working, you often look for independence, honesty and a bit of healthy challenge. Astrologers often add that the sign here describes qualities you are still learning to own, which is why partners tend to mirror them back. The ruler of your 7th house is Mars, which sits in your 3rd house, so partnership themes often play out through communication, learning and siblings or neighbours."
+   },
+   {
+    "slot": "career",
+    "id": "mc_cancer",
+    "title": "Cancer on the 10th House Cusp (Midheaven)",
+    "text": "With Cancer on the cusp of your 10th house, the Midheaven, your public image and approach to work tend to be caring, protective and emotionally intelligent. You may become known for looking after people or places. Its ruler, the Moon, acts as a kind of career planet, so the house it occupies often shows where your sense of vocation draws its energy. This describes a style and direction rather than a specific job, and the rest of your chart fills in the detail."
+   }
+  ],
+  "tensions": [
+   {
+    "pair": [
+     "practical",
+     "dreamy"
+    ],
+    "between": [
+     "chart_ruler_house_06",
+     "neptune_house_04"
+    ],
+    "text": "Your chart holds both a practical streak and a dreamy one. Rather than one cancelling the other out, they often take turns, and a lot of your range can come from giving each its own time and place."
+   }
+  ],
+  "more": [
+   {
+    "id": "stellium_house_03",
+    "text": "A 3rd-house stellium: you tend to live in a constant stream of ideas and conversation."
+   },
+   {
+    "id": "mercury_house_06",
+    "text": "Mercury in the 6th: you think best when you're fixing things."
+   },
+   {
+    "id": "mars_house_03",
+    "text": "Mars in the 3rd: you say what others are thinking."
+   },
+   {
+    "id": "jupiter_house_06",
+    "text": "Jupiter in the 6th: you find meaning in helping."
+   },
+   {
+    "id": "saturn_house_03",
+    "text": "Saturn in the 3rd: your words carry weight."
+   },
+   {
+    "id": "uranus_house_03",
+    "text": "Uranus in the 3rd: your mind works in lightning flashes."
+   },
+   {
+    "id": "pluto_house_02",
+    "text": "Pluto in the 2nd: you rebuild your worth from the inside out."
+   }
+  ],
+  "notes": [],
+  "word_count": 664
+ },
+ "free": {
+  "label": null,
+  "blocks": [
+   {
+    "kind": "existing_rising_card",
+    "visibility": "free"
+   },
+   {
+    "kind": "combined_teaser",
+    "visibility": "free",
+    "text": "Pisces Sun, Libra rising: you tend to lead with grace and run on quiet intuition."
+   },
+   {
+    "kind": "sun_house_teaser",
+    "visibility": "free",
+    "title": "Sun in the 6th House",
+    "text": "The Sun in the 6th house tends to make purpose feel practical. You often shine through craft, service, problem-solving, and doing a job properly.",
+    "locked_sentences": 2
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your Moon's house",
+    "title": "Moon in the 12th House"
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your Venus house",
+    "title": "Your chart ruler: Venus in the 6th house"
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your 7th house ruler",
+    "title": "Aries on your Descendant, ruled by Mars in your 3rd house"
+   },
+   {
+    "kind": "locked_card",
+    "visibility": "locked",
+    "label": "Your 10th house and Midheaven",
+    "title": "Cancer on the 10th House Cusp (Midheaven)"
+   },
+   {
+    "kind": "more_count",
+    "visibility": "locked",
+    "text": "+11 more placements"
+   },
+   {
+    "kind": "wheel",
+    "visibility": "free",
+    "state": "blurred, house lines visible, unlabelled"
+   },
+   {
+    "kind": "cta",
+    "text": "Unlock your full reading, $4.99"
+   }
+  ]
+ }
+}
