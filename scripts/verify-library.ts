@@ -25,6 +25,7 @@ import {
 import {
   ALL_ENTRIES,
   FOOTER_LIBRARY_LINKS,
+  LIFE_PATH_PAIRS,
   HOME_LIBRARY_LINKS,
   breadcrumbsFor,
   linkGroupsFor,
@@ -35,6 +36,7 @@ import {
 import { SIGN_ORDER } from "../lib/western-astrology";
 import { ANIMALS } from "../lib/chinese-zodiac";
 import { ALL_COMPARE_VALUES, compareCardKey, compareHeadline, compareOgImagePath, comparePath, compareVideoPath, parseCompare, parseCompareCardKey, pairEntryFor } from "../lib/compare";
+import { LIFE_PATH_PAIR_DISCLAIMER, LIFE_PATH_PAIR_OPENERS } from "./library/copy/life-path-pair-openers";
 
 const failures: string[] = [];
 const fail = (entry: LibraryEntry | string, message: string) =>
@@ -246,6 +248,41 @@ for (const pages of byType.values()) {
       if (score >= MAX_JACCARD) fail(pages[i].entry, `shares ${score.toFixed(2)} of its 5-word shingles with ${pages[j].entry.path}`);
     }
   }
+}
+
+// ---------------------------------------------------------------------------
+// Life Path pair openers: one per pair, all different, no stock line
+// ---------------------------------------------------------------------------
+
+const STOCK_LINE = /often read as complementary/i;
+const pairKeys = LIFE_PATH_PAIRS.map(([a, b]) => `${a}-${b}`);
+for (const key of Object.keys(LIFE_PATH_PAIR_OPENERS)) if (!pairKeys.includes(key)) fail(`life-path-pair-openers.ts`, `opener ${key} has no pair page`);
+const seenOpeners = new Map<string, string>();
+for (const key of pairKeys) {
+  const opener = LIFE_PATH_PAIR_OPENERS[key];
+  if (!opener) {
+    fail(`life-path-pair-openers.ts`, `missing opener for ${key}`);
+    continue;
+  }
+  for (const part of [opener.shared, opener.rub]) {
+    const owner = seenOpeners.get(part.toLowerCase());
+    if (owner) fail(`life-path-pair-openers.ts`, `${key} repeats ${owner}'s opener: "${part}"`);
+    seenOpeners.set(part.toLowerCase(), key);
+  }
+}
+const seenAnswers = new Map<string, string>();
+for (const entry of ALL_ENTRIES) {
+  const content = contents.get(entry.path);
+  if (!content) continue;
+  if (STOCK_LINE.test([content.description, content.ogLine ?? "", bodyText(content)].join("\n"))) fail(entry, `uses the stock line "often read as complementary"`);
+  if (entry.type !== "life-path-pair") continue;
+  const [a, b] = entry.slug.split("-vs-");
+  const opener = LIFE_PATH_PAIR_OPENERS[`${a}-${b}`];
+  if (opener && !(content.answer.includes(opener.shared) && content.answer.includes(opener.rub))) fail(entry, "answer does not use its opener from life-path-pair-openers.ts");
+  if (!content.answer.endsWith(LIFE_PATH_PAIR_DISCLAIMER)) fail(entry, `answer must end with "${LIFE_PATH_PAIR_DISCLAIMER}"`);
+  const owner = seenAnswers.get(content.answer);
+  if (owner) fail(entry, `answer duplicates ${owner}`);
+  seenAnswers.set(content.answer, entry.path);
 }
 
 // ---------------------------------------------------------------------------
