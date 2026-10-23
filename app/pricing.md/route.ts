@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server";
-import { paywallEnabled, priceLabel } from "@/lib/stripe";
+import { priceLabel } from "@/lib/stripe";
 
 export const dynamic = "force-dynamic";
 
 export function GET() {
-  const paid = paywallEnabled();
-  const fullPrice = paid ? priceLabel() : "Free on this preview deployment";
-  const checkout = paid
-    ? "A one-time Stripe Checkout payment unlocks the full reading. Stripe displays the final amount before purchase, and promotion codes are entered on the Stripe Checkout page."
-    : "Checkout is not configured on this preview deployment, so the full reading is unlocked here.";
+  const price = priceLabel();
   const markdown = `---
 title: Unified Reading pricing
 description: Current prices, reading options, included features, and checkout terms.
@@ -18,7 +14,7 @@ last-updated: 2026-10-23
 
 # Unified Reading pricing
 
-The [HTML pricing page](https://unifiedreading.com/pricing) is the human-readable source for this deployment. These options describe the same current offering.
+Summary: the sample and the personal preview are free. The full personal reading costs ${price}, paid once through Stripe Checkout. There is no subscription. The reading can be downloaded right after paying. The [HTML pricing page](https://unifiedreading.com/pricing) describes the same offering.
 
 ## Option 1: fictional sample
 
@@ -41,59 +37,63 @@ Includes:
 - Calculated numerology numbers from the birth name and date.
 - Western Sun sign and Chinese zodiac profile.
 - Moon and rising signs when enough birth data is available.
-- A preview of the generated combined interpretation.
+- A short generated snapshot (2-3 sentences) connecting the systems.
 
 Start at the [reading form](https://unifiedreading.com/#details).
 
 ## Option 3: full personal reading
 
-Price: ${fullPrice}.
+Price: ${price}, one-time payment.
 
 Includes everything in the personal preview, plus:
 
-- A longer combined interpretation across the available traditions.
-- Framing for the selected life stage.
-- Practical reflection prompts and takeaways.
+- An 800-1,200 word reading connecting the numbers, signs, and Chinese zodiac.
+- Where the systems agree and where they pull apart, framed for the selected life stage.
+- What the person's Personal Year number means for them this year.
+- 3-5 practical takeaways.
+- A plain-text download of the full reading.
 
 The full reading is for one person's submitted details. It is not a subscription or compatibility report.
 
 ## Payment and access
 
-${checkout}
-There is no subscription, account requirement, or recurring charge. The price applies to one full personal reading.
+- Payment is a one-time ${price} charge through Stripe Checkout. Stripe shows the final amount before the visitor confirms.
+- Promotion codes, if the visitor has one, are entered on the Stripe Checkout page.
+- There is no subscription, account requirement, or recurring charge.
+- After paying, the visitor returns to the site, the full reading is generated, and it can be downloaded right away.
+- Access lasts 24 hours in the same browser tab, so the visitor should download the reading before closing the tab.
 
 ### Price comparison
 
 - The fictional sample costs $0 and does not require any personal details.
-- The personal calculated profile costs $0.
-- The personal interpretation preview costs $0.
-- The full interpretation costs ${paid ? fullPrice : "$0 on this preview deployment"}.
+- The personal calculated profile and snapshot preview cost $0.
+- The full personal reading costs ${price}, one time.
 - There is no monthly plan, annual plan, trial renewal, or usage-based charge.
-- No account is needed to read the sample, view the preview, or receive the full reading.
+- No account is needed to read the sample, view the preview, or buy the full reading.
 
 ### Feature comparison
 
 | Feature | Fictional sample | Personal preview | Full personal reading |
 | --- | --- | --- | --- |
-| Current price | $0 | $0 | ${paid ? fullPrice : "$0"} |
+| Price | $0 | $0 | ${price}, one time |
 | Visitor's birth details | Not needed | Entered in the browser | Uses the same submitted details |
 | Calculated numerology | Fictional example | Included | Included |
 | Western zodiac and Chinese zodiac | Fictional example | Included | Included |
-| Combined interpretation | Fictional example | Short preview | Longer synthesis |
-| Life-stage framing | Fictional example | Preview | Included |
-| Practical takeaways | Fictional example | Preview | Included |
+| Combined interpretation | Fictional example | 2-3 sentence snapshot | 800-1,200 words |
+| Personal Year section | Fictional example | Number and a brief description | Personalized section |
+| Practical takeaways | Fictional example | Not included | 3-5 takeaways |
+| Download | Not applicable | Not included | Plain-text file |
 | Account or subscription | None | None | None |
 
 ### What each option omits
 
 - The fictional sample is about invented birth details and is not a personal reading.
-- The personal preview is shorter than the full interpretation.
-- The full interpretation does not add professional ephemeris calculations or planetary transits.
-- Neither option includes compatibility between two people, saved accounts, or recurring horoscopes.
+- The personal preview is a short snapshot, not the full interpretation.
+- The full reading does not add professional ephemeris calculations or planetary transits.
+- No option includes compatibility between two people, saved accounts, or recurring horoscopes.
 
 ### Checkout conditions
 
-- ${paid ? "A one-time Stripe Checkout session is available for the full reading." : "Checkout is not configured on this preview deployment, so no payment is required here."}
 - The site and Stripe show the price before a visitor confirms payment.
 - Payment details are entered into Stripe rather than the reading form.
 - Agents should not collect card data or complete checkout on a visitor's behalf.
