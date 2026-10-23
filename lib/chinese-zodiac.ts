@@ -9,7 +9,7 @@
  * Lunar New Year dates from 1924 to 2044.
  * Month is 1-indexed (1 = January, 2 = February).
  */
-const LUNAR_NEW_YEAR_DATES: Record<number, { month: number; day: number }> = {
+export const LUNAR_NEW_YEAR_DATES: Record<number, { month: number; day: number }> = {
   1924: { month: 2, day: 5 },
   1925: { month: 1, day: 24 },
   1926: { month: 2, day: 13 },
@@ -133,12 +133,12 @@ const LUNAR_NEW_YEAR_DATES: Record<number, { month: number; day: number }> = {
   2044: { month: 1, day: 30 },
 };
 
-const ANIMALS = [
+export const ANIMALS = [
   "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
   "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig",
 ] as const;
 
-const ELEMENTS = ["Wood", "Fire", "Earth", "Metal", "Water"] as const;
+export const ELEMENTS = ["Wood", "Fire", "Earth", "Metal", "Water"] as const;
 
 const ANIMAL_EMOJIS: Record<string, string> = {
   Rat: "🐀", Ox: "🐂", Tiger: "🐅", Rabbit: "🐇",
@@ -206,29 +206,56 @@ function getChineseZodiacYear(dateOfBirth: Date): number {
  * - Liu Chong (六冲) clashes: six directly opposing pairs
  * - Liu Hai (六害) harms: six undermining pairs
  */
-const SAN_HE_TRINES: string[][] = [
+export const SAN_HE_TRINES: string[][] = [
   ["Rat", "Dragon", "Monkey"],
   ["Ox", "Snake", "Rooster"],
   ["Tiger", "Horse", "Dog"],
   ["Rabbit", "Goat", "Pig"],
 ];
 
-const LIU_HE_PAIRS: [string, string][] = [
+/** The element each San He trine is traditionally said to form, index-aligned with SAN_HE_TRINES. */
+export const SAN_HE_ELEMENTS = ["Water", "Metal", "Fire", "Wood"] as const;
+
+/**
+ * Each animal's fixed (earthly branch) element, polarity and traditional double hour. These describe
+ * the animal itself; the year element from the heavenly stem changes every
+ * two years and is computed in getChineseZodiac.
+ */
+export const ANIMAL_BRANCHES: Record<string, { branch: string; element: (typeof ELEMENTS)[number]; yinYang: "Yin" | "Yang"; hours: string }> = {
+  Rat: { branch: "Zi", element: "Water", yinYang: "Yang", hours: "11 pm to 1 am" },
+  Ox: { branch: "Chou", element: "Earth", yinYang: "Yin", hours: "1 am to 3 am" },
+  Tiger: { branch: "Yin", element: "Wood", yinYang: "Yang", hours: "3 am to 5 am" },
+  Rabbit: { branch: "Mao", element: "Wood", yinYang: "Yin", hours: "5 am to 7 am" },
+  Dragon: { branch: "Chen", element: "Earth", yinYang: "Yang", hours: "7 am to 9 am" },
+  Snake: { branch: "Si", element: "Fire", yinYang: "Yin", hours: "9 am to 11 am" },
+  Horse: { branch: "Wu", element: "Fire", yinYang: "Yang", hours: "11 am to 1 pm" },
+  Goat: { branch: "Wei", element: "Earth", yinYang: "Yin", hours: "1 pm to 3 pm" },
+  Monkey: { branch: "Shen", element: "Metal", yinYang: "Yang", hours: "3 pm to 5 pm" },
+  Rooster: { branch: "You", element: "Metal", yinYang: "Yin", hours: "5 pm to 7 pm" },
+  Dog: { branch: "Xu", element: "Earth", yinYang: "Yang", hours: "7 pm to 9 pm" },
+  Pig: { branch: "Hai", element: "Water", yinYang: "Yin", hours: "9 pm to 11 pm" },
+};
+
+/** Five-element cycles: each element generates (sheng) the next and controls (ke) the one two steps on. */
+export const ELEMENT_GENERATES: Record<string, string> = { Wood: "Fire", Fire: "Earth", Earth: "Metal", Metal: "Water", Water: "Wood" };
+export const ELEMENT_CONTROLS: Record<string, string> = { Wood: "Earth", Earth: "Water", Water: "Fire", Fire: "Metal", Metal: "Wood" };
+
+export const LIU_HE_PAIRS: [string, string][] = [
   ["Rat", "Ox"], ["Tiger", "Pig"], ["Rabbit", "Dog"],
   ["Dragon", "Rooster"], ["Snake", "Monkey"], ["Horse", "Goat"],
 ];
 
-const LIU_CHONG_PAIRS: [string, string][] = [
+export const LIU_CHONG_PAIRS: [string, string][] = [
   ["Rat", "Horse"], ["Ox", "Goat"], ["Tiger", "Monkey"],
   ["Rabbit", "Rooster"], ["Dragon", "Dog"], ["Snake", "Pig"],
 ];
 
-const LIU_HAI_PAIRS: [string, string][] = [
+export const LIU_HAI_PAIRS: [string, string][] = [
   ["Rat", "Goat"], ["Ox", "Horse"], ["Tiger", "Snake"],
   ["Rabbit", "Dragon"], ["Monkey", "Pig"], ["Rooster", "Dog"],
 ];
 
-const COMPATIBILITY: Record<string, { best: string[]; challenging: string[] }> =
+export const COMPATIBILITY: Record<string, { best: string[]; challenging: string[] }> =
   Object.fromEntries(ANIMALS.map((animal) => [animal, { best: [], challenging: [] }]));
 
 for (const trine of SAN_HE_TRINES) {
@@ -264,6 +291,17 @@ export interface ChineseZodiacProfile {
   };
 }
 
+/** Animal, stem element and polarity of a zodiac year (the year that starts at its Lunar New Year). */
+export function zodiacYearProfile(zodiacYear: number): { animal: (typeof ANIMALS)[number]; element: (typeof ELEMENTS)[number]; yinYang: "Yin" | "Yang" } {
+  // The cycle starts from Rat (1924 is year of the Rat, index 0)
+  const animal = ANIMALS[((zodiacYear - 1924) % 12 + 12) % 12];
+  // Heavenly Stem element: each element covers 2 consecutive years of the 10-year stem cycle
+  const element = ELEMENTS[Math.floor(((zodiacYear - 4) % 10 + 10) % 10 / 2)];
+  // Yin/Yang: even years are Yang, odd years are Yin
+  const yinYang: "Yin" | "Yang" = zodiacYear % 2 === 0 ? "Yang" : "Yin";
+  return { animal, element, yinYang };
+}
+
 /**
  * Calculate the full Chinese zodiac profile for a date of birth.
  * Handles Lunar New Year boundaries for January/February birthdays.
@@ -273,18 +311,7 @@ export interface ChineseZodiacProfile {
  */
 export function getChineseZodiac(dateOfBirth: Date): ChineseZodiacProfile {
   const zodiacYear = getChineseZodiacYear(dateOfBirth);
-
-  // The cycle starts from Rat (1924 is year of the Rat, index 0)
-  const animalIndex = ((zodiacYear - 1924) % 12 + 12) % 12;
-  const animal = ANIMALS[animalIndex];
-
-  // Heavenly Stem element: each element covers 2 consecutive years
-  // The heavenly stem cycle is 10 years. The element index = floor((year - 4) % 10 / 2)
-  const elementIndex = Math.floor(((zodiacYear - 4) % 10 + 10) % 10 / 2);
-  const element = ELEMENTS[elementIndex];
-
-  // Yin/Yang: even years are Yang, odd years are Yin
-  const yinYang: "Yin" | "Yang" = zodiacYear % 2 === 0 ? "Yang" : "Yin";
+  const { animal, element, yinYang } = zodiacYearProfile(zodiacYear);
 
   const compat = COMPATIBILITY[animal] || { best: [], challenging: [] };
 

@@ -41,7 +41,7 @@ function normalizeName(name: string): string {
 /**
  * Reduce a number to a single digit, preserving master numbers (11, 22, 33).
  */
-function reduceToSingleDigit(num: number): number {
+export function reduceToSingleDigit(num: number): number {
   while (num > 9 && num !== 11 && num !== 22 && num !== 33) {
     num = String(num)
       .split("")
