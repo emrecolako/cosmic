@@ -204,6 +204,18 @@ One-time Stripe Checkout unlock per reading, without accounts or a database (`li
 - **Paid:** Unified Reading, the AI season text, the Toolkit, and Download. `/api/generate-reading` with `mode: "full"` re-verifies the Checkout Session with Stripe every time: it must be paid, under 24h old, and its `metadata.readingHash` must match `lib/reading-hash.ts`, an HMAC of the user inputs, so no PII goes to Stripe.
 - The session ID lives in tab sessionStorage (`cosmic:checkout-session`) and is stripped from the URL.
 - If `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, or `READING_HASH_SECRET` is unset, the paywall is off and the full reading is free. `/sample` is always unlocked.
+- Checkout sessions set `allow_promotion_codes`, so per-partner Stripe promotion codes work without code changes.
+
+## Funnel analytics
+
+PostHog events: `reading_started` (wizard submit), `preview_viewed` (teaser finished), `checkout_started` (checkout session created), `order_paid` (server-side from `/api/stripe-webhook`, signature-checked with `STRIPE_WEBHOOK_SECRET`, deduplicated by a UUID derived from the session ID).
+- `lib/attribution.ts` keeps `{ first, last }` touches in localStorage (`ur:attribution`). First touch = first visit with UTMs or an external referrer; a referrer-only first touch is replaced by the next UTM visit. Last touch = most recent UTM visit. Stripe, `*.unifiedreading.com` and `*.vercel.app` referrers are ignored.
+- Both touches go on every client event and, as `first_touch_*` / `last_touch_*`, into Checkout Session and PaymentIntent metadata with `posthog_distinct_id`, `site_host` and `readingHash`.
+- Partner credit (`resolveAttribution`): promotion code with `metadata.partner` > last touch with `utm_medium=partner` > first touch with `utm_medium=partner` (medium case-insensitive, partner lowercased). Codes without `metadata.partner` are recorded as `promo_code` but credit nobody.
+- The Stripe account is shared: the webhook ignores sessions without `metadata.readingHash` (before any API call) and orders without a `STRIPE_PRICE_ID` line item. Covered by `npm run verify:attribution`. The webhook writes `attribution_rule`, `attributed_partner` and `promo_code` back to the session and PaymentIntent metadata.
+- UTM convention: partners `utm_source=<handle>&utm_medium=partner&utm_campaign=oct-sprint`; social `utm_medium=social`; email `utm_medium=email`.
+- `checkout_started` has `placement`: `inline_card` (card after the snapshot), `sticky_bar` (mobile bar shown while the card is off-screen) or `toolkit_link`. CTAs carry `data-attr` labels so autocapture names them (text is masked).
+- Never send form answers (name, birth details, context) to PostHog.
 
 ---
 

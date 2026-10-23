@@ -11,6 +11,7 @@ import Button from "@/components/ui/Button";
 import { atlasCopy } from "@/lib/i18n/atlas";
 import { parseDateOfBirth } from "@/lib/profile";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 interface FormData {
   fullName: string;
@@ -66,6 +67,8 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
   const reduceMotion = useReducedMotion();
   const [editingReview, setEditingReview] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  // State updates lag a fast second Enter; the ref blocks a duplicate submit synchronously.
+  const submittedRef = useRef(false);
   const [step, setStep] = useState(0);
   const [attempted, setAttempted] = useState(false);
   const [formData, setFormData] = useState<FormData>(EMPTY_FORM);
@@ -120,6 +123,7 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
       : currentStep === 1 ? !errors.birthTime : currentStep === 2 ? !errors.lifeStages : true;
 
   const handleNext = () => {
+    if (isLoading || submittedRef.current) return;
     if (!stepValid(step)) {
       setAttempted(true);
       requestAnimationFrame(() => { const invalid = rootRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]'); (invalid ?? rootRef.current?.querySelector<HTMLElement>('[role="checkbox"]'))?.focus(); });
@@ -128,11 +132,17 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
     setAttempted(false);
     if (editingReview) { setEditingReview(false); setStep(4); }
     else if (step < 4) setStep(step + 1);
-    else onSubmit(formData);
+    else {
+      submittedRef.current = true;
+      track("reading_started", { locale });
+      onSubmit(formData);
+    }
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.target instanceof HTMLTextAreaElement) return;
+    if (event.key === "Enter" && event.repeat) { event.preventDefault(); return; }
     if (event.key === "Enter" && event.target instanceof HTMLInputElement && event.target.type !== "checkbox" && event.target.getAttribute("role") !== "combobox") {
       event.preventDefault();
       handleNext();
@@ -387,7 +397,7 @@ export default function InputWizard({ onSubmit, isLoading, onExit }: InputWizard
         >
           ← {t.wizard.back}
         </button>
-        <Button onClick={handleNext} disabled={isLoading} size="lg">
+        <Button onClick={handleNext} disabled={isLoading} size="lg" data-attr={step === 4 ? "wizard-reveal-reading" : "wizard-continue"}>
           {isLoading
             ? t.wizard.loading
             : step === 4

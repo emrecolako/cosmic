@@ -32,5 +32,5 @@ export default function DownloadReading({ profile, ai, name, markers, complete }
     } catch { toast(t.header.shareFailed, 'error'); }
     finally { setTimeout(() => URL.revokeObjectURL(url), 1000); }
   }
-  return <button className="atlas-link disabled:opacity-40" disabled={!complete} onClick={download}>{labels[locale]} ↓</button>;
+  return <button className="atlas-link disabled:opacity-40" disabled={!complete} onClick={download} data-attr="download-reading">{labels[locale]} ↓</button>;
 }

@@ -15,11 +15,12 @@ import { isPaidSession, paymentsConfigured, paywallEnabled, priceLabel } from "@
 
 type ReadingMode = "teaser" | "full";
 
-function readingHeaders(paywall: boolean): HeadersInit {
+function readingHeaders(paywall: boolean, hash?: string): HeadersInit {
   return {
     "Content-Type": "text/plain; charset=utf-8",
     "Cache-Control": "no-store",
     ...(paywall ? { "X-Paywall": "1", "X-Paywall-Price": priceLabel() } : {}),
+    ...(hash ? { "X-Reading-Hash": hash } : {}),
   };
 }
 
@@ -49,7 +50,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Payment required." }, { status: 402 });
       }
     }
-    const headers = readingHeaders(paywall);
+    // Lets the client key analytics to this reading without seeing the inputs' secret.
+    const hash = process.env.READING_HASH_SECRET ? readingHash(body) : undefined;
+    const headers = readingHeaders(paywall, hash);
 
     const cacheKey = readingCacheKey({
       fullName: body.fullName,

@@ -5,7 +5,7 @@ import { Providers } from "@/components/Providers";
 import { LocaleProvider } from "@/components/LocaleProvider";
 import Header from "@/components/Header";
 import { getMessages, negotiateLocale } from "@/lib/i18n";
-import { paywallEnabled } from "@/lib/stripe";
+import { priceLabel } from "@/lib/stripe";
 import { SITE_URL } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,13 +33,15 @@ export default async function RootLayout({
   const [headerStore, cookieStore] = await Promise.all([headers(), cookies()]);
   const locale = negotiateLocale(headerStore.get("accept-language"));
   const theme = cookieStore.get("theme")?.value === "light" ? "light" : "dark";
-  const readingOffer = paywallEnabled() ? undefined : {
+  const readingPrice = priceLabel().replace(/[^0-9.]/g, "");
+  const readingOffer = readingPrice ? {
     "@type": "Offer",
     url: "https://unifiedreading.com/pricing",
-    price: "0",
+    price: readingPrice,
     priceCurrency: "USD",
+    description: "Full personal reading, one-time payment through Stripe Checkout. The preview is free.",
     availability: "https://schema.org/InStock",
-  };
+  } : undefined;
 
   return (
     <html

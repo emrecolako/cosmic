@@ -2,7 +2,7 @@
 
 > A personal reflection web app at https://unifiedreading.com/ that synthesizes numerology, Western astrology, the Chinese zodiac, and life-stage context.
 
-Unified Reading helps a person explore themes across three interpretive traditions in one reading. The free public sample requires no personal data. To create a personal reading, the visitor enters a birth name and date, optionally a birth time and place, and selects current life stages. The site calculates profile values in the browser and uses OpenRouter model providers to write the unified interpretation. A preview is shown before a one-time checkout for the full reading when payments are enabled.
+Unified Reading helps a person explore themes across three interpretive traditions in one reading. The free public sample requires no personal data. To create a personal reading, the visitor enters a birth name and date, optionally a birth time and place, and selects current life stages. The site calculates profile values in the browser and uses OpenRouter model providers to write the unified interpretation. A free preview is shown first. The full reading costs $4.99, paid once through Stripe Checkout, with no subscription, and can be downloaded right after paying. See [pricing](https://unifiedreading.com/pricing.md).
 
 ## When to use
 

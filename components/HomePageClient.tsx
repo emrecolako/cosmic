@@ -3,6 +3,7 @@
 import Link from "next/link";
 import FortuneCards from "@/components/FortuneCards";
 import { atlasCopy } from "@/lib/i18n/atlas";
+import { formatMessage } from "@/lib/i18n";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import InputWizard from "@/components/InputWizard";
@@ -29,7 +30,8 @@ type WebMcpDocument = Document & {
   };
 };
 
-export default function HomePage() {
+/** `price` is null where Checkout isn't configured (local and preview builds). */
+export default function HomePage({ price }: { price: string | null }) {
   const router = useRouter();
   const { locale, t } = useI18n();
   const copy = atlasCopy[locale];
@@ -114,11 +116,12 @@ export default function HomePage() {
             <h1 className="atlas-headline">{copy.headline}{" "}<em>{copy.headlineEnd}</em></h1>
             <p className="hero-description">{copy.description}</p>
             <div className="hero-actions">
-              <button className="atlas-primary" onClick={() => { setShowWizard(true); window.scrollTo(0, 0); }}>{copy.discover}<span aria-hidden="true">↗</span></button>
+              <button className="atlas-primary" onClick={() => { setShowWizard(true); window.scrollTo(0, 0); }} data-attr="hero-start-preview">{copy.discover}<span aria-hidden="true">↗</span></button>
               <form action="/sample" method="get" {...sampleToolAttributes}>
-                <button className="atlas-link" type="submit">{copy.sample}<span aria-hidden="true">→</span></button>
+                <button className="atlas-link" type="submit" data-attr="hero-sample">{copy.sample}<span aria-hidden="true">→</span></button>
               </form>
             </div>
+            {price && <p className="hero-note">{formatMessage(copy.heroNote, { price })}</p>}
           </div>
           <figure className="seal-figure"><FortuneCards labels={[t.sections.numbersTitle, t.sections.starMapTitle, t.sections.easternMirrorTitle]} /><figcaption>{copy.eyebrow}</figcaption></figure>
         </section>
@@ -139,7 +142,7 @@ export default function HomePage() {
           </div>
           <div className="space-y-4">
             <h2 className="text-3xl editorial">What happens next?</h2>
-            <p className="text-ink-secondary leading-relaxed">Enter your birth details and choose the life chapters that fit you. Calculations happen in your browser. When you request the interpretation, your profile is sent to our API and processed by OpenRouter and its model providers. A short preview is available before a one-time checkout for the full reading when payments are enabled. You can <Link className="underline" href="/sample">explore a fictional sample</Link> without sharing your details, and <Link className="underline" href="/pricing">check the current price</Link> before starting.</p>
+            <p className="text-ink-secondary leading-relaxed">Enter your birth details and choose the life chapters that fit you. Calculations happen in your browser. When you request the interpretation, your profile is sent to our API and processed by OpenRouter and its model providers. You get a short preview for free; the full reading is a one-time purchase. You can <Link className="underline" href="/sample">explore a fictional sample</Link> without sharing your details, and <Link className="underline" href="/pricing">check the current price</Link> before starting.</p>
             <p className="text-ink-secondary leading-relaxed">This is an interpretive experience for reflection and practical ideas, not a scientific personality test or a deterministic prediction. Birth time is optional; if you do not know it, Moon, rising, and house claims are omitted. Read more <Link className="underline" href="/about">about the method</Link>, review <Link className="underline" href="/privacy">how your data is handled</Link>, or <Link className="underline" href="/contact">contact the project</Link>.</p>
           </div>
           <div className="space-y-5">

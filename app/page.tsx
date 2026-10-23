@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/components/HomePageClient";
+import { paywallEnabled, priceLabel } from "@/lib/stripe";
 
 export const metadata: Metadata = {
   alternates: {
@@ -23,6 +24,6 @@ export default function HomePage() {
         ],
       }).replace(/</g, "\\u003c") }}
     />
-    <HomePageClient />
+    <HomePageClient price={paywallEnabled() ? priceLabel() : null} />
   </>;
 }
