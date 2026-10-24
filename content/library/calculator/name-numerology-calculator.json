@@ -1,0 +1,61 @@
+{
+  "description": "Free name numerology calculator: find your Expression, Soul Urge and Personality numbers from your birth name, with every letter shown. Runs in your browser.",
+  "answer": "In numerology, your birth name gives three numbers: the Expression from every letter, the Soul Urge from the vowels and the Personality from the consonants. This calculator applies the Pythagorean chart, shows each letter's value and keeps master numbers 11, 22 and 33 whole. Your name never leaves your browser.",
+  "sections": [
+    {
+      "heading": "How the name numbers are calculated",
+      "paragraphs": [
+        "Pythagorean numerology gives every letter a value from 1 to 9 by writing the alphabet in rows of nine: A, J and S are 1; B, K and T are 2; and so on to I and R, which are 9. The calculator turns your full birth name into those values, then adds them in three different ways. All the letters together give the Expression, also called the Destiny number. The vowels A, E, I, O and U give the Soul Urge, or Heart's Desire. The remaining consonants give the Personality number. Each total is reduced by adding its digits until one remains, except that 11, 22 and 33 are kept as master numbers. The result panel lists the letters counted for each number and the reduction, so you can follow the arithmetic and check it by hand. Accented letters count as their base letter, so é counts as E and ø counts as O. Letters from other alphabets are not converted, so names in Cyrillic, Greek or Arabic script need a Latin spelling first."
+      ]
+    },
+    {
+      "heading": "Which name to use",
+      "paragraphs": [
+        "The tradition works from the name on the birth certificate, written out in full: first name, any middle names and the family name, spelled exactly as registered. That is the name Unified Reading uses too. Many people are curious about the name they use now, especially after marriage, a change of surname or adopting a nickname, and it can be interesting to run both and compare. Numerologists usually read the birth name as the foundation and a later name as a layer of style on top of it, rather than a replacement. Spelling matters: Catherine and Katherine give different totals, because C and K have different values. Hyphens, apostrophes and spaces are ignored. Initials should be expanded where you know the full name, since a single letter carries only its own value and can shift a total considerably. If your birth registration used a different alphabet, the transliteration on your first passport is a sensible, consistent choice."
+      ]
+    },
+    {
+      "heading": "Where conventions differ",
+      "paragraphs": [
+        "Two calculators can disagree about the same name, and it is usually because of a convention rather than an error. The most common difference is the letter Y. Some numerologists treat it as a vowel when it sounds like one, as in Lynn or Yvonne; this calculator, like every Unified Reading, always counts Y as a consonant, which changes the Soul Urge and Personality numbers for some names but never the Expression. A second difference is master numbers: some systems reduce 11, 22 and 33 at every step, while Pythagorean practice keeps them whole. A third is the letter chart itself, since Chaldean numerology assigns values by sound and uses the numbers 1 to 8. Knowing which rules a source uses makes comparison much easier, and every number page in this library states its conventions. None of these schools is the single correct one; consistency within one system is what makes the numbers comparable over time."
+      ]
+    },
+    {
+      "heading": "What to do with your numbers",
+      "paragraphs": [
+        "Each result links to its own page, which explains the number in that position: talents and style for the Expression, private motivation for the Soul Urge and first impressions for the Personality. Reading the three together is often more revealing than any one of them. A Soul Urge that differs sharply from the Personality, for example, can describe someone whose inner life is very different from the way others first see them. The name numbers also sit beside the Life Path, which comes from the birth date rather than the name; the Life Path calculator works that out. A Unified Reading brings all of these together with your Sun sign, Chinese zodiac animal and life stage, and explains where they agree and where they pull in different directions. Numerology here is a framework for reflection, not a prediction. Many people find the most value in noticing which description they resist, since that friction often points to something worth thinking about."
+      ]
+    },
+    {
+      "heading": "A worked example",
+      "paragraphs": [
+        "Take the fictional name Ada Rose Lee. Its letters are A, D, A, R, O, S, E, L, E and E, worth 1, 4, 1, 9, 6, 1, 5, 3, 5 and 5. Together they total 40, which reduces to 4, so the Expression number is 4. The vowels A, A, O, E, E and E are worth 1, 1, 6, 5, 5 and 5, totalling 23 and reducing to 5, the Soul Urge. The consonants D, R, S and L are worth 4, 9, 1 and 3, totalling 17 and reducing to 8, the Personality. Notice that the Soul Urge and Personality totals always add up to the Expression total before reduction, here 23 plus 17 making 40, which is a quick way to check any manual calculation. Typing the same name into the calculator above shows exactly these steps, letter by letter, so you can compare your own working against it whenever a result looks surprising. Rerun it with a nickname or married surname afterwards and the differences show which letters carry the change."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Is my name stored or sent anywhere?",
+      "answer": "No. The calculation runs entirely in your browser. The name is not sent to a server, saved, added to the address bar or included in analytics; only the fact that the tool was used is counted."
+    },
+    {
+      "question": "Does Y count as a vowel?",
+      "answer": "Not in this calculator. Y is always treated as a consonant, matching the Unified Reading. Some numerologists count Y as a vowel when it sounds like one, so their Soul Urge and Personality numbers can differ for names such as Lynn."
+    },
+    {
+      "question": "Should I use my married name or my birth name?",
+      "answer": "Use the full birth name for the core numbers. A later name can be run separately and is usually read as an added layer, describing how you present yourself now, rather than as a replacement."
+    },
+    {
+      "question": "Can I calculate numbers for a business or a baby name?",
+      "answer": "Yes. Many people try shortlisted baby names or company names to compare them. Numerologists usually read those totals as the style a name projects, and keep the birth-name numbers for describing a person."
+    },
+    {
+      "question": "What is a master number in a name?",
+      "answer": "If a total reduces to 11, 22 or 33, the number is kept whole instead of being reduced to 2, 4 or 6. Master numbers are read as intensified forms of their roots, with more pressure as well as more potential."
+    }
+  ],
+  "updatedAt": "2026-10-24",
+  "reviewed": false,
+  "reviewer": null
+}

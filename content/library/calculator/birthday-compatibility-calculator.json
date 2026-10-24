@@ -1,0 +1,57 @@
+{
+  "description": "Free birthday compatibility calculator: compare two birth dates by Life Path, Sun sign and Chinese zodiac, with the traditional reading of each pairing. Runs in your browser.",
+  "answer": "In numerology, Western astrology and Chinese astrology, two birth dates can be compared three ways: by Life Path number, by Sun sign and by Chinese zodiac animal. This calculator works out all three for both dates in your browser and links each pairing to its full guide, without a score or a verdict.",
+  "sections": [
+    {
+      "heading": "What the comparison covers",
+      "paragraphs": [
+        "Enter two birth dates and the calculator works out each person's Life Path number, Western Sun sign and Chinese zodiac animal, then sets them side by side. For the Life Paths it shows the combined number and whether the two are odd or even, which numerology reads as active or receptive energy; master numbers 11, 22 and 33 compare through their roots, 2, 4 and 6. For the Sun signs it gives the distance around the zodiac, from neighbouring signs to opposites, and whether the elements match, complement or contrast. For the animals it names any classical relationship: San He, the three harmonies; Liu He, the secret friends; Liu Chong, the clashes; and Liu Hai, the harms. Every pairing links to its own page, and each person's dates also lead to their Life Path and Sun sign combination and their Western and Chinese zodiac combination, the synthesis pages that only this library publishes."
+      ]
+    },
+    {
+      "heading": "How to read the results",
+      "paragraphs": [
+        "The three systems are independent, so they rarely all point the same way, and that is where the comparison gets interesting. Two people might share an element in the Western zodiac while their animals sit in a traditional clash, or have Life Paths that complement each other while their Sun signs are square. A disagreement between systems is not a warning; it usually describes a relationship with more than one rhythm, where some things come easily and others need conversation. Each guide describes how the pairing tends to work in everyday life, under stress and at its best, with practical suggestions rather than predictions. None of this replaces knowing the actual person. Sun sign and Life Path comparisons are deliberately broad, which is why the full guides keep returning to habits, communication and choices that any pair can work on. Friends, siblings, colleagues and business partners can be compared just as usefully as couples."
+      ]
+    },
+    {
+      "heading": "Why there is no single number",
+      "paragraphs": [
+        "Many sites reduce a relationship to a percentage. This calculator does not, for two reasons. First, the traditions themselves do not produce one: numerology, astrology and the Chinese zodiac describe tendencies and dynamics, and turning them into a single figure invents a precision they do not have. Second, a number invites the wrong question. Whether two people are compatible depends on values, timing, effort and circumstance, none of which a birth date can see. What the traditions can offer is a vocabulary for talking about differences: one partner's need for independence, another's need for closeness, a shared stubbornness, a mismatch in pace. The pairing guides use that vocabulary to suggest conversations worth having. Many readers find that useful precisely because it opens a discussion instead of closing one with a verdict. It also avoids the trap of treating an unfavourable label as a reason to give up on someone worth knowing."
+      ]
+    },
+    {
+      "heading": "Private by design",
+      "paragraphs": [
+        "Both dates stay in your browser. Nothing you enter is sent to a server, saved or added to the page address, and the analytics record only that the tool was used, never the dates or results. If you want to compare with someone without exchanging birthdays, the Compare with a friend links on the calculator pages share only a Life Path, sign or animal. For a deeper picture of one person, a Unified Reading adds the name numbers, the Moon and rising sign when a birth time is known, the Chinese element and the life stage you choose, and explains where those systems agree. Unified Reading does not produce two-person chart comparisons, so the pairing guides and this calculator are the place for relationship questions, read as prompts for reflection rather than forecasts about how things will turn out. Nothing here needs an account, an email address or a payment."
+      ]
+    },
+    {
+      "heading": "An example comparison",
+      "paragraphs": [
+        "Suppose one birthday is November 4, 1990 and the other is April 12, 1988. The first gives Life Path 7, a Scorpio Sun and the Metal Horse; the second gives Life Path 6, an Aries Sun and the Earth Dragon. The Life Paths combine as 7 plus 6, which is 13 and reduces to 4, and they mix an odd, inward-looking number with an even, caring one. Scorpio and Aries sit five signs apart, the awkward angle astrologers call a quincunx, and water meets fire. The Horse and the Dragon have no classical pairing at all. Read together, that suggests a relationship with real chemistry and very different instincts about privacy, pace and how to handle conflict, which the three pairing guides each explore from their own angle. Enter any two dates to see the same breakdown for the people you have in mind, whether a partner, a parent, a child or a colleague."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Which matters most: Life Path, Sun sign or Chinese zodiac?",
+      "answer": "None outranks the others. They come from different traditions and calendars. Many readers start with whichever system they know best and treat the others as second opinions, paying most attention where all three agree."
+    },
+    {
+      "question": "Are the dates sent anywhere?",
+      "answer": "No. Everything is calculated in your browser. The dates are not sent to a server, saved, added to the link or included in analytics."
+    },
+    {
+      "question": "Why does a master number compare as 2, 4 or 6?",
+      "answer": "The pairing guides cover Life Paths 1 to 9, so 11, 22 and 33 compare through their roots. The master number's own page explains how its extra intensity can show up in relationships."
+    },
+    {
+      "question": "Can this tell me if a relationship will last?",
+      "answer": "No. Numerology and astrology describe tendencies, not outcomes. The calculator points to how two people's styles may meet and where conversation may help; what happens depends on the people involved."
+    }
+  ],
+  "updatedAt": "2026-10-24",
+  "reviewed": false,
+  "reviewer": null
+}
