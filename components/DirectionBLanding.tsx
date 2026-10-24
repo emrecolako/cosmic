@@ -19,7 +19,7 @@ export default function DirectionBLanding({ price, onStart }: { price: string | 
     <section className="dossier-dark">
       <div className="atlas-shell dossier-hero">
         <div className="dossier-intro">
-          <p className="eyebrow">A personal atlas / Built around you</p>
+          <p className="eyebrow">Unified Reading / Astrology &amp; numerology, together</p>
           <h1 className="editorial">You are<br />not one thing.</h1>
           <p>Neither is your reading. Explore your numbers, zodiac signs, and current life chapter—together.</p>
           <DateBox pageType="home" slug="home" variant="hero" compare="lp" dayFirst={locale !== 'en'} price={price} />
