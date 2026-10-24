@@ -6,7 +6,7 @@ import { entriesOfType, entryFor, type PageType } from "@/lib/library/registry";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-const TYPES: PageType[] = ["life-path", "life-path-pair"];
+const TYPES: PageType[] = ["life-path", "life-path-pair", "life-path-sign"];
 const resolve = (slug: string) => TYPES.map((type) => entryFor(type, slug)).find(Boolean);
 
 export function generateStaticParams() {

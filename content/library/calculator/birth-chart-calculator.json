@@ -1,0 +1,61 @@
+{
+  "description": "Free birth chart calculator: find your Sun sign and decan, Moon sign and rising sign from your birth date, time and place. Calculated in your browser.",
+  "answer": "In Western astrology, the three cornerstones of a birth chart are the Sun, Moon and rising signs. This calculator finds all three in your browser, with the Sun's decan, using the same formulas as the free Unified Reading preview. The date alone gives the Sun; a birth time and place add the Moon's exact sign and the rising sign.",
+  "sections": [
+    {
+      "heading": "What the calculator shows",
+      "paragraphs": [
+        "Enter a birth date and the calculator returns your Sun sign and its decan, the ten-degree third of the sign that tradition links with a sub-ruling planet. The Sun's position is calculated for the actual year, so birthdays on a cusp resolve correctly instead of relying on fixed date ranges. It also checks the Moon: if the Moon stayed in one sign for the whole of that date in every time zone, the date is enough and the sign is shown; if the Moon changed sign that day, it asks for a time. Add a birth time and a place and you get the Moon's exact sign and your rising sign, also called the Ascendant, the sign on the eastern horizon at the moment you were born. Each result links to its own guide in this library, from the Sun sign and decan pages to the Moon and rising pages, so you can read on straight away."
+      ]
+    },
+    {
+      "heading": "Why the birth time and place matter",
+      "paragraphs": [
+        "The Sun moves about one degree a day, so a birth date alone settles the Sun sign except on cusp days. The Moon moves roughly thirteen degrees a day and changes sign every two and a half days, so on many dates its sign depends on the hour. The rising sign changes about every two hours and also depends on latitude and longitude, which is why it needs both a time and a place. The place also fixes the time zone, including historical daylight saving rules, which the calculator works out on your device once you pick a town. If you know your time only roughly, try the earliest and latest possibilities; when the rising sign stays the same, you can rely on it. Birth certificates, hospital records and family memories are the usual sources, and a time recorded to the nearest hour is usually enough for the Moon even when the rising sign remains uncertain."
+      ]
+    },
+    {
+      "heading": "What a full reading adds",
+      "paragraphs": [
+        "The Sun, Moon and rising signs are where interpretation starts, not where it ends. The full chart in a Unified Reading adds the positions of Mercury, Venus, Mars and the outer planets, whole sign houses, in which each house is one complete sign counted from the rising sign, and the chart ruler, the planet that rules the rising sign, along with the house it falls in. The reading then sets those placements beside your Life Path and name numbers, your Chinese zodiac animal and element, and the life stage you choose, and explains where the systems agree and where they pull apart. The free preview shows the calculated profile and a short snapshot. Unified Reading does not calculate planetary aspects or current transits, so they are not shown here either; both are common in other software and are deliberately left out rather than approximated. The preview is free, and the full reading is a single payment with no subscription."
+      ]
+    },
+    {
+      "heading": "Privacy and the place search",
+      "paragraphs": [
+        "The date and time you enter never leave your browser: the signs are calculated on your device, and nothing is saved or added to the page address. The place box is the one exception. As you type a town or city, the letters are sent to Photon, an OpenStreetMap search service, so it can suggest matching places; choosing one gives the calculator coordinates, and the time zone is then worked out locally. If you prefer not to search, leave the place empty and you will still get your Sun sign and, on most dates, your Moon sign. Analytics record only that the tool was used. The same approach runs through the whole library: calculations happen in the browser wherever possible, and personal details are never placed in links. Refreshing the page clears everything you entered. Search suggestions cover towns, cities, villages and regions worldwide, so a small hometown usually appears as readily as a capital."
+      ]
+    },
+    {
+      "heading": "Reading the big three",
+      "paragraphs": [
+        "Astrologers often begin with three placements. The Sun sign describes conscious identity, purpose and vitality, the part of the chart most people already know. The Moon sign describes emotional needs and instinctive reactions: what feels like home, and how feelings show under pressure. The rising sign describes manner and first impressions, the way someone meets new people and situations, and it sets the starting point for the houses. When all three share an element, a chart tends to feel consistent; when they differ, people often recognise different modes in themselves, such as a fiery Sun with a watery Moon that needs more quiet than the Sun suggests, or an earthy rising sign that makes an airy Sun look calmer than it feels. Each result here links to a fuller guide in the library, written for exactly that placement, with strengths, challenges, relationships and practical suggestions for growth. Sharing the three with friends and family is also a gentle way to start a conversation about temperament without anyone feeling labelled."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Why does my Moon say it needs a birth time?",
+      "answer": "On your birth date the Moon moved from one sign into the next. Without the time of birth there is no way to know which side of the change you were born on, so the calculator leaves it open rather than guessing."
+    },
+    {
+      "question": "Which zodiac does the calculator use?",
+      "answer": "The tropical zodiac, measured from the spring equinox, which is standard in Western astrology. Sidereal astrology, used in Vedic practice, places most planets about one sign earlier."
+    },
+    {
+      "question": "Why are the other planets and houses not shown?",
+      "answer": "This free calculator covers the three placements most people ask about. The other planets, whole sign houses and the chart ruler are calculated and interpreted in the full Unified Reading; aspects are not calculated at all."
+    },
+    {
+      "question": "What is a decan?",
+      "answer": "Each sign spans thirty degrees, and a decan is one ten-degree third of it. Tradition gives each decan a sub-ruling planet, so two people with the same Sun sign but different decans are often described with slightly different emphases."
+    },
+    {
+      "question": "How exact is the rising sign?",
+      "answer": "It is as exact as the birth time. The rising sign moves through a whole sign in about two hours, so near a boundary even a few minutes can change it; if you are unsure of your time, try a range of times."
+    }
+  ],
+  "updatedAt": "2026-10-24",
+  "reviewed": false,
+  "reviewer": null
+}

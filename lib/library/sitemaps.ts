@@ -3,7 +3,7 @@ import { entriesOfType, type PageType } from "./registry";
 
 export const CORE_PAGES = ["/", "/about", "/sample", "/privacy", "/pricing", "/contact"];
 export const CORE_LAST_MODIFIED = "2026-10-02";
-export const SITEMAP_IDS = ["core", "hub", "calculator", "life-path", "life-path-pair", "zodiac-pair", "chinese-zodiac", "chinese-zodiac-pair"] as const;
+export const SITEMAP_IDS = ["core", "hub", "calculator", "life-path", "life-path-pair", "zodiac-pair", "chinese-zodiac", "chinese-zodiac-pair", "birthday-month", "birthday", "chinese-zodiac-year", "chinese-zodiac-element", "sign", "moon-sign", "rising-sign", "decan", "life-path-sign", "sign-animal", "expression", "soul-urge", "personality", "birthday-number", "personal-year", "angel-number"] as const;
 export type SitemapId = (typeof SITEMAP_IDS)[number];
 
 /** Indexable pages of one type with the updatedAt from their content JSON. */

@@ -1,0 +1,61 @@
+{
+  "description": "Birthday meanings for all 366 days: Sun sign and decan, cusp dates, birthday number, Life Path by birth year, Chinese zodiac notes and famous birthdays.",
+  "answer": "In Western astrology, your birthday sets your Sun sign and decan, and in numerology the day gives a birthday number while the full date gives the Life Path. These pages cover every date of the year, including February 29, with cusp dates explained and the Chinese zodiac boundary noted.",
+  "sections": [
+    {
+      "heading": "What each birthday page shows",
+      "paragraphs": [
+        "Every date from January 1 to December 31, February 29 included, has its own page. Each one opens with the Sun sign and the decan, the ten-degree third of the sign the Sun occupies on that day, and names the planet tradition links with that decan as well as the sign's own ruler. The key-facts table gives the Sun's approximate position in degrees, the birthday number, the Life Path for several birth years and a Chinese zodiac note. Each page then adds a short interpretation written for that date alone, followed by the decan's character, the meaning of the day as a number and a note on the month. Famous birthdays come from Wikidata, ranked by how many language editions of Wikipedia have an article about the person, so the names are verifiable rather than recalled. Month pages gather every date in one place, with the dates where the sign changes. Nothing on these pages asks for personal details: the date box beneath each answer works out the Sun sign, Life Path and Chinese animal inside your browser, and only carries the date forward if you choose to open the free preview."
+      ]
+    },
+    {
+      "heading": "Cusp dates and why some birthdays have two signs",
+      "paragraphs": [
+        "The Sun does not enter each sign on the same calendar date every year. Leap years, the length of the tropical year and the time zone of the birth all move the change by a day or so, which is why fixed date ranges on many websites are slightly wrong at the edges. These pages work from the Sun's calculated position for every year from 1930 to 2030 and for every time zone, from fourteen hours ahead of Greenwich to twelve hours behind. A date counts as a cusp when the Sun can be in either of two signs on it, and its page names both. In astrology a cusp is not a third sign: you have one Sun sign, and the birth year, time and place decide which. Many people born on these dates still recognise something of both neighbours, and the cusp pages describe that blend as a tendency rather than a rule. Southern hemisphere readers should note that the seasonal imagery traditionally attached to each sign comes from northern latitudes, where Aries arrives with spring; the signs themselves are measured from the equinox, not the weather."
+      ]
+    },
+    {
+      "heading": "Birthday number and Life Path",
+      "paragraphs": [
+        "Numerology reads two numbers from a birth date. The birthday number comes from the day of the month alone: the 21st gives 2 + 1 = 3, and the 29th gives 2 + 9 = 11, which is a master number and stays whole, as do the 11th and the 22nd. Everyone born on the same day of any month shares it, so it is treated as a secondary number describing a particular talent or style. The Life Path uses the month, day and year together, each reduced separately and then combined, so two people with the same birthday but different birth years usually have different Life Paths. That is why each birthday page lists the Life Path for several years, from 1960 to 2020, rather than claiming one number for the date. The Life Path calculator works it out for any full birth date and explains each step of the reduction, so you can check the arithmetic yourself."
+      ]
+    },
+    {
+      "heading": "Reading a birthday page well",
+      "paragraphs": [
+        "A birthday page describes everyone born on one date, which is a large and varied group, so treat it as a sketch rather than a portrait. The Sun sign speaks to conscious identity and vitality, the decan narrows that down to a particular flavour, and the birthday number adds a secondary talent. None of them accounts for the Moon, the rising sign or the houses, which move far faster and need a birth time and place, and none of them knows your circumstances. The most useful way to read a page is to notice which descriptions ring true, which feel foreign, and what that contrast suggests about where you are now. Some readers keep notes over several years and find their reactions change with age and life stage. A Unified Reading takes the same approach further, setting your full numerology profile, Western placements and Chinese animal side by side and adapting the interpretation to the stage of life you select, from exploring options to raising a family or stepping back from work."
+      ]
+    },
+    {
+      "heading": "The Chinese zodiac and January and February birthdays",
+      "paragraphs": [
+        "The Chinese zodiac follows the lunar year, which starts at Lunar New Year rather than on January 1. Lunar New Year falls between January 21 and February 20, so the animal for a birthday in that window depends on the year. Each January and February page says how many years between 1924 and 2044 had already reached the new year by that date, and the year pages give the exact start and end of every Chinese year in that range. Birthdays from January 1 to January 20 always belong to the previous year's animal, and from February 21 onwards the birth year's own animal always applies. Twins born either side of midnight, or travellers born mid-flight, are rare edge cases worth checking against an exact chart. Adopted people and anyone unsure of an official registration date often find the cusp explanations especially helpful, because they show exactly which detail would change the answer. A Unified Reading combines these traditions with the life stage you choose, showing where your Sun sign, your numbers and your Chinese animal agree and where they pull in different directions, and the free preview needs nothing more than a name and a birth date."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "Why does my birthday have two possible zodiac signs?",
+      "answer": "Because it is a cusp date. The Sun changes sign at a slightly different moment each year, so on some dates the sign depends on the year, time and place of birth. The zodiac sign calculator settles it for your exact date."
+    },
+    {
+      "question": "What is a birthday number in numerology?",
+      "answer": "It is the day of the month reduced to a single digit, keeping 11 and 22. It is read as a secondary number beside the Life Path, which uses the full date of birth."
+    },
+    {
+      "question": "Is there a page for February 29?",
+      "answer": "Yes. February 29 has its own page, with the Life Path listed for leap years only and its Sun sign and decan calculated for the years that have that date."
+    },
+    {
+      "question": "Do people born on the same day have the same personality?",
+      "answer": "No. They share a Sun sign and decan in most years and the same birthday number, but their Moon, rising sign, houses, Life Path and Chinese animal can all differ, quite apart from upbringing, culture and choices. A birthday page describes a shared starting point, not a common fate."
+    },
+    {
+      "question": "Where do the famous birthdays come from?",
+      "answer": "From Wikidata, the open database behind Wikipedia. Each date lists the best-known people with a recorded birth date on that day, ranked by the number of Wikipedia language editions with an article about them."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}

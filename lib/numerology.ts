@@ -5,7 +5,7 @@
  * Master numbers (11, 22, 33) are preserved and never reduced.
  */
 
-const PYTHAGOREAN_VALUES: Record<string, number> = {
+export const PYTHAGOREAN_VALUES: Record<string, number> = {
   A: 1, J: 1, S: 1,
   B: 2, K: 2, T: 2,
   C: 3, L: 3, U: 3,
@@ -20,7 +20,7 @@ const PYTHAGOREAN_VALUES: Record<string, number> = {
 // Convention: Y is always treated as a consonant. Some Pythagorean schools
 // count Y as a vowel when it functions as one ("Yvonne"); results for such
 // names may differ from calculators using that convention.
-const VOWELS = new Set(["A", "E", "I", "O", "U"]);
+export const VOWELS = new Set(["A", "E", "I", "O", "U"]);
 
 /** Letters that don't decompose to a base Latin letter under NFD. */
 const LETTER_SUBSTITUTIONS: Record<string, string> = {
@@ -31,7 +31,7 @@ const LETTER_SUBSTITUTIONS: Record<string, string> = {
   "\u0111": "d", "\u0110": "D",
 };
 
-function normalizeName(name: string): string {
+export function normalizeName(name: string): string {
   return name
     .replace(/[\u00f8\u00d8\u00e6\u00c6\u0153\u0152\u0142\u0141\u0111\u0110]/g, (ch) => LETTER_SUBSTITUTIONS[ch])
     .normalize("NFD")

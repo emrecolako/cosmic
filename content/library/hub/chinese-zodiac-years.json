@@ -1,0 +1,61 @@
+{
+  "description": "Every Chinese zodiac year from 1924 to 2044 with its animal, element, yin-yang and exact Lunar New Year start and end dates, plus all sixty element-animal combinations.",
+  "answer": "In Chinese astrology, each year has an animal, an element and a polarity, and it begins at Lunar New Year rather than January 1. This table covers every year from 1924 to 2044, with the exact start and end date of each, and links to all sixty element and animal combinations.",
+  "sections": [
+    {
+      "heading": "How to find your Chinese zodiac year",
+      "paragraphs": [
+        "Find your birth year below, grouped by decade, and open its page. If your birthday is between January 1 and February 20, compare it with the Lunar New Year date on that page: born before it, you belong to the previous year, so a birth on January 20, 1990 is an Earth Snake rather than a Metal Horse, because the 1990 year began on January 27. From February 21 onwards the calendar year and the zodiac year always agree. Each year page states the start date, the last day of the year, the animal born before the new year, the animal's fixed element and the year's numerology number. The Chinese zodiac calculator does the same check automatically for any date in the table, which runs from the Wood Rat of 1924 to the Wood Rat of 2044, three full turns of the Rat across the sixty-year cycle, so every combination appears at least twice."
+      ]
+    },
+    {
+      "heading": "Animals, elements and the sixty-year cycle",
+      "paragraphs": [
+        "Two cycles run together in the Chinese calendar. The twelve animals, or earthly branches, turn once every twelve years, from Rat to Pig. The ten heavenly stems pair the five elements, Wood, Fire, Earth, Metal and Water, with yang and yin, so each element covers two consecutive years, a yang year and then a yin year. Because a yang stem always meets a yang animal, only sixty of the possible combinations occur, and each returns every sixty years: the Metal Horse of 1930 comes back in 1990 and again in 2050. Each animal also has a fixed element of its own, which never changes, so a Metal Horse carries Metal from its year and Fire from the Horse. Readings use the meeting of those two elements, whether one feeds the other or keeps it in check, to describe how comfortable a particular combination feels, and each element-animal page explains its own pairing."
+      ]
+    },
+    {
+      "heading": "Year element, fixed element and polarity",
+      "paragraphs": [
+        "It helps to keep three layers apart. The year element comes from the heavenly stem and changes every two years, so 1990 and 1991 are both Metal years even though one is a Horse and the other a Goat. The fixed element belongs to the animal and never changes: the Rat is always Water, the Tiger always Wood, the Horse always Fire, whatever the year. Polarity alternates every single year, yang then yin, and stem and branch always share it, which is why the Horse is only ever paired with yang stems. When people say they are a Fire Horse or a Water Rabbit they mean the year element plus the animal. Practitioners of Four Pillars astrology go further, building a chart from the stems and branches of the birth year, month, day and hour, which is why a full Chinese chart needs a birth time as well as a date. Unified Reading uses the year layer, which is the one most people know and the one printed on calendars, red envelopes and festival decorations each spring. Shops, banks and families across Singapore, Malaysia, Taiwan and the diaspora decorate with the coming animal weeks ahead of the holiday."
+      ]
+    },
+    {
+      "heading": "Using these pages with other systems",
+      "paragraphs": [
+        "A Chinese year page gives the broad character of a whole birth cohort, much as a generation label does, and grandparents, parents and children rarely share one, so on its own it says little about one individual. Combined with a Western Sun sign and a numerology Life Path it becomes more specific, and the places where the systems echo or contradict one another are often the most interesting part. A Water Rabbit who is also a Pisces Sun and a Life Path 2, for instance, collects three separate descriptions of sensitivity and tact, while a Metal Ox with a Gemini Sun and a Life Path 5 holds a clear tension between persistence and appetite for change. Each year page links to its element-animal page, its animal's general profile and the neighbouring years, and every January and February birthday page says how often Lunar New Year had already arrived by that date. A Unified Reading brings these threads together for one person, with interpretation adapted to their current stage of life."
+      ]
+    },
+    {
+      "heading": "Why Lunar New Year moves",
+      "paragraphs": [
+        "The traditional Chinese calendar is lunisolar. Its months follow the phases of the moon, while leap months keep the year roughly in step with the seasons. Lunar New Year usually falls on the second new moon after the winter solstice, which places it between January 21 and February 20 in the Gregorian calendar. A year with a leap month runs to about 384 days and the following new year comes late; an ordinary lunar year is about 354 days and the next new year comes early. That is why the start dates on these pages jump around: January 27 in 1990, February 15 in 1991 and February 4 in 1992. Since 1929 the calendar has been computed for China Standard Time, eight hours ahead of Greenwich, so a new moon arriving just before or after midnight there decides the date for everyone, wherever they happen to live or celebrate. Some traditions, including the Four Pillars system, start the year at Lichun around February 4 instead, so a few early-February birthdays can be read differently depending on the method. This library and the Unified Reading calculator follow Lunar New Year. Vietnamese, Korean and other East Asian calendars share the same new moon in most years, though Vietnam's Tet occasionally falls a day apart and substitutes the Cat for the Rabbit."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "question": "What Chinese zodiac year is it in 2026?",
+      "answer": "2026 is the Year of the Fire Horse, which began at Lunar New Year on February 17, 2026. People born in 2026 before that date belong to the Wood Snake year that started in 2025."
+    },
+    {
+      "question": "Why is my Chinese zodiac different from my birth year's animal?",
+      "answer": "If you were born in January or early February before that year's Lunar New Year, your animal is the previous year's. The year page for your birth year shows the exact date."
+    },
+    {
+      "question": "How many element and animal combinations are there?",
+      "answer": "Sixty. Each of the twelve animals appears with five elements, because yang stems only pair with yang animals and yin stems with yin animals, and each combination returns every sixty years."
+    },
+    {
+      "question": "Which years are Fire Horse years?",
+      "answer": "In this table, 1966 and 2026. The Fire Horse has a particular reputation in Japanese and Chinese folklore as headstrong and passionate; 1906 was the previous one and 2086 will be the next, sixty years apart in each case."
+    },
+    {
+      "question": "Does the Chinese zodiac year start on February 4?",
+      "answer": "Not in the system used here. The zodiac year starts at Lunar New Year. Some Four Pillars practitioners use Lichun, around February 4, which can change the animal for a few early-February births."
+    }
+  ],
+  "updatedAt": "2026-10-23",
+  "reviewed": false,
+  "reviewer": null
+}
