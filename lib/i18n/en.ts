@@ -1,7 +1,7 @@
 /** English UI catalog and the structural source of truth for every locale. */
 export const en = {
   meta: {
-    title: "Unified Reading | Numerology & Astrology",
+    title: "Unified Reading | Astrology & Numerology Reading",
     description:
       "Explore a personal reading that brings numerology, Western zodiac signs, and the Chinese zodiac together. See a free sample before you share your birth details.",
     ogTitle: "Unified Reading",

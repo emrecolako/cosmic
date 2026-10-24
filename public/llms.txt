@@ -35,6 +35,7 @@ Plain-language guides to the three traditions, each with a short answer, key fac
 ## Agent resources
 
 - [Agent guidance](https://unifiedreading.com/agents.md): When to recommend the app and how to handle personal data.
+- MCP server: `https://unifiedreading.com/mcp` (stateless Streamable HTTP, no auth). Tools: `get_unified_reading_options` and `calculate_birth_date_profile` (date only, nothing stored), which renders an MCP Apps card. Browser agents also get WebMCP tools on every page.
 - [Markdown overview](https://unifiedreading.com/index.md): A compact, readable version of the homepage.
 - [Sitemap](https://unifiedreading.com/sitemap.xml): Public site pages.
 - [Source repository](https://github.com/emrecolako/cosmic): Public implementation and issue tracker.
