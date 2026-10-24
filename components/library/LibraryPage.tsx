@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SampleCta from "@/components/SampleCta";
 import DateBox, { type DateBoxMode } from "@/components/library/DateBox";
+import LibraryArtwork from "@/components/library/LibraryArtwork";
 import PairYou from "@/components/compare/PairYou";
 import BirthChartTool from "@/components/library/tools/BirthChartTool";
 import BirthdayCompatibilityTool from "@/components/library/tools/BirthdayCompatibilityTool";
@@ -77,22 +78,20 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       </nav>
       <p className="eyebrow">{TYPE_LABEL[entry.type] ?? SYSTEM_LABEL[entry.system]}</p>
       <h1 className="library-title">{entry.title}</h1>
+      <LibraryArtwork entry={entry} />
       {pairKind && facts.pair && <PairYou kind={pairKind} pair={facts.pair} />}
+      {/* Directly under the H1 so the date fields (or a tool's fields) fit the first mobile screen; the copy below is unchanged. */}
+      {Tool ? <Tool /> : <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} compare={compare} price={priceLabel()} />}
       <p data-answer className="library-answer">{content.answer}</p>
       <div className="library-byline">
         <span>By Unified Reading editorial</span>
         <LibraryShareButton path={entry.path} title={entry.title} pageType={pageType} slug={entry.slug} />
       </div>
 
-      {Tool && <Tool />}
-      {calculatorMode && <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} compare={compare} />}
-
       <section className="library-facts" aria-labelledby="key-facts">
         <h2 id="key-facts">Key facts</h2>
         <table><tbody>{facts.rows.map((row) => <tr key={row.label} data-side={row.side}><th scope="row">{row.label}</th><td>{row.value}</td></tr>)}</tbody></table>
       </section>
-
-      {!calculatorMode && !Tool && <DateBox pageType={pageType} slug={entry.slug} compare={compare} />}
 
       <div className="library-body">
         {content.sections.map((section) => <section key={section.heading} id={section.id}>

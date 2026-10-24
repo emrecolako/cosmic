@@ -3,7 +3,7 @@ import { SITE_URL } from "./site";
 export type ShareChannel = "native" | "copy" | "download";
 /** Library page types as they appear in analytics (library_viewed, cta_clicked, share_created). */
 export type LibraryPageType = "lp-pair" | "lp-number" | "sign-pair" | "cz-animal" | "cz-pair" | "calculator" | "hub" | "compare" | "birthday" | "birthday-month" | "cz-year" | "cz-element" | "sign" | "moon-sign" | "rising-sign" | "decan" | "lp-sign" | "sign-animal" | "expression" | "soul-urge" | "personality" | "birthday-number" | "personal-year" | "angel-number";
-export type SharePlacement = "sample" | "preview" | "results" | "header" | LibraryPageType | `${LibraryPageType}-result`;
+export type SharePlacement = "sample" | "preview" | "results" | "header" | "result_card" | LibraryPageType | `${LibraryPageType}-result`;
 export type ShareCampaign = "reading-share" | "library-share" | "compare-friend";
 
 /**
