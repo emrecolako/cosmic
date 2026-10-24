@@ -3,9 +3,11 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { renderToStaticMarkup } from 'react-dom/server';
 import FortuneCards from '../components/FortuneCards';
+import LibraryArtwork from '../components/library/LibraryArtwork';
 import { animalArtwork, type ArtworkName } from '../components/ReadingArtwork';
 import { computeProfile, type ReadingInput } from '../lib/profile';
 import type { AnimalName } from '../lib/i18n/content';
+import { ALL_ENTRIES } from '../lib/library/registry';
 
 const animals: AnimalName[] = [
   'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake',
@@ -33,6 +35,33 @@ const cases: Array<{ input: ReadingInput; expectedAnimal: AnimalName }> = [
 ];
 
 async function main() {
+  for (const entry of ALL_ENTRIES) {
+    const html = renderToStaticMarkup(<LibraryArtwork entry={entry} />);
+    const names = [...new Map([...html.matchAll(/%2Fartwork%2F([^&]+)\.(png|webp)/g)]
+      .map((match) => [match[1], { name: match[1], extension: match[2] }] as const)).values()];
+    assert.ok(names.length > 0, `No artwork on ${entry.path}`);
+    for (const { name, extension } of names) {
+      if (extension === 'png') assertPng(name as ArtworkName);
+      else {
+        const file = readFileSync(join(process.cwd(), 'public', 'artwork', `${name}.webp`));
+        assert.equal(file.subarray(0, 4).toString(), 'RIFF', `${name} is not a WebP image`);
+      }
+    }
+    if (entry.type === 'chinese-zodiac') assert.ok(names.some(({ name }) => name === animalArtwork(entry.label as AnimalName)), `Wrong animal on ${entry.path}`);
+    if (entry.type === 'chinese-zodiac-pair') {
+      for (const animal of entry.slug.split('-and-')) {
+        const expected = animalArtwork((animal[0].toUpperCase() + animal.slice(1)) as AnimalName);
+        assert.ok(names.some(({ name }) => name === expected), `Missing ${expected} on ${entry.path}`);
+      }
+    }
+    if (entry.type === 'zodiac-pair') {
+      assert.equal((html.match(/<img /g) ?? []).length, 2, `Expected two rendered sign images on ${entry.path}`);
+      assert.equal(names.length, entry.slug.split('-and-')[0] === entry.slug.split('-and-')[1] ? 1 : 2, `Expected both sign illustrations on ${entry.path}`);
+      for (const sign of entry.slug.split('-and-')) {
+        assert.ok(names.some(({ name, extension }) => name === `western-${sign}` && extension === 'webp'), `Missing ${sign} on ${entry.path}`);
+      }
+    }
+  }
   for (const { input, expectedAnimal } of cases) {
     const profile = await computeProfile(input);
     assert.ok(profile, `No profile for ${input.dateOfBirth}`);
@@ -45,7 +74,7 @@ async function main() {
     assert.ok(html.includes(profile.westernAstro.sunSign.glyph), `Summary card missed ${profile.westernAstro.sunSign.sign} glyph`);
     console.log(`${input.dateOfBirth}: ${profile.westernAstro.sunSign.sign} / ${expectedAnimal} / ${art}`);
   }
-  console.log(`Verified ${chapterArt.length + animals.length} artwork files and ${cases.length} profile combinations.`);
+  console.log(`Verified ${chapterArt.length + animals.length} artwork files, ${cases.length} profile combinations, and illustrations on ${ALL_ENTRIES.length} library pages.`);
 }
 
 main().catch((error) => { console.error(error); process.exitCode = 1; });

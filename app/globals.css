@@ -568,6 +568,14 @@ a:hover { text-decoration:underline; text-underline-offset:5px; }
 .library-breadcrumb li:not(:last-child)::after { content:"/"; margin-left:8px; color:var(--border); }
 .library-breadcrumb a { text-decoration:underline; text-underline-offset:4px; }
 .library-title { font:500 clamp(36px,5vw,52px)/1.08 var(--font-editorial),serif; color:var(--text); margin:16px 0 24px; }
+.library-artwork { position:relative; display:flex; align-items:center; justify-content:center; gap:24px; min-height:240px; margin:0 0 32px; padding:16px 24px 36px; border-top:1px solid var(--border-muted); border-bottom:1px solid var(--border-muted); overflow:hidden; }
+.library-artwork-image { width:220px; height:190px; object-fit:contain; filter:grayscale(1); flex:none; }
+.library-artwork figcaption { position:absolute; bottom:13px; left:0; right:0; font:11px/16px var(--font-mono); text-align:center; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); }
+.library-artwork-pair .library-artwork-image { width:min(38%,220px); }
+.library-artwork-divider { font:500 38px/1 var(--font-editorial),serif; color:var(--text-muted); }
+.library-artwork-number { font:500 clamp(54px,9vw,96px)/1 var(--font-editorial),serif; color:var(--text); white-space:nowrap; }
+.library-artwork-overview { gap:4px; }
+.library-artwork-overview .library-artwork-image { width:min(30%,180px); height:170px; }
 .library-answer { font-size:20px; line-height:1.55; color:var(--text); border-left:2px solid var(--gold); padding-left:20px; }
 .library-byline { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; margin:28px 0 8px; font:11px/16px var(--font-mono); text-transform:uppercase; color:var(--text-muted); }
 .library-share { border:1px solid var(--border); padding:10px 14px; min-height:44px; font:11px/16px var(--font-mono); text-transform:uppercase; color:var(--text); }
@@ -622,6 +630,11 @@ a:hover { text-decoration:underline; text-underline-offset:5px; }
 .site-footer-library { flex-basis:100%; }
 @media (max-width:720px) {
   .library-shell { padding-block:24px 72px; }
+  .library-artwork { min-height:170px; gap:12px; padding:8px 8px 30px; margin-bottom:24px; }
+  .library-artwork-image { width:132px; height:132px; }
+  .library-artwork-pair .library-artwork-image { width:min(38%,132px); }
+  .library-artwork-divider { font-size:28px; }
+  .library-artwork-overview .library-artwork-image { height:120px; }
   .library-answer { font-size:18px; }
   .library-datebox { padding:20px; margin-inline:-16px; }
   .library-datebox-hero { padding:0; margin-inline:0; }
