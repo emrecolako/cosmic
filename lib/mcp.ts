@@ -116,13 +116,19 @@ function render(result){
    +'</div><p>'+esc(d.lifePath.brief)+'</p><div><a class="cta" href="'+esc(d.fullReading)+'" target="_blank" rel="noopener">Get the combined reading ↗</a></div>';
   resize();
 }
+// Sandboxed hosts block iframe popups, so links open through the host.
+document.addEventListener("click",function(e){
+  var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;
+  e.preventDefault();
+  request("ui/open-link",{url:a.href}).then(function(m){if(m.error)window.open(a.href,"_blank","noopener")});
+});
 window.addEventListener("message",function(e){
   var m=e.data;if(!m||m.jsonrpc!=="2.0")return;
-  if(m.id!=null&&pending[m.id]){pending[m.id](m.result);delete pending[m.id];return}
+  if(m.id!=null&&pending[m.id]){pending[m.id](m);delete pending[m.id];return}
   if(m.method==="ui/notifications/tool-result")render(m.params);
   else if(m.method==="ui/notifications/host-context-changed")theme(m.params);
 });
-request("ui/initialize",{protocolVersion:"2026-01-26",clientInfo:{name:"unified-reading-profile",version:"1.0.0"},appCapabilities:{}}).then(function(r){theme(r&&r.hostContext);notify("ui/notifications/initialized")});
+request("ui/initialize",{protocolVersion:"2026-01-26",clientInfo:{name:"unified-reading-profile",version:"1.0.0"},appCapabilities:{}}).then(function(m){var r=m.result;theme(r&&r.hostContext);notify("ui/notifications/initialized")});
 })();
 </script></body></html>`;
 }
