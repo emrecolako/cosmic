@@ -30,7 +30,8 @@ export default function NameNumerologyTool() {
       const counted = letters.filter((ch) => position.pick(ch));
       const values = counted.map((ch) => PYTHAGOREAN_VALUES[ch]);
       const n = position.calc(name);
-      return { ...position, n, counted, total: values.reduce((sum, v) => sum + v, 0), title: INTERPRETATIONS[position.interpretation][n]?.title };
+      // A name with no vowels (Rhys, Lynn: Y is a consonant here) or no consonants (Ao) has no number in that position.
+      return { ...position, n, available: counted.length > 0, counted, total: values.reduce((sum, v) => sum + v, 0), title: INTERPRETATIONS[position.interpretation][n]?.title };
     });
   }, [letters, name]);
 
@@ -52,12 +53,14 @@ export default function NameNumerologyTool() {
       <dl>
         {results.map((r) => <div key={r.key}>
           <dt>{r.label}</dt>
-          <dd><Link href={`/numerology/${r.key}-${r.n}`}>{r.n}</Link></dd>
+          <dd>{r.available ? <Link href={`/numerology/${r.key}-${r.n}`}>{r.n}</Link> : "—"}</dd>
         </div>)}
       </dl>
       <ul className="library-tool-steps">
         {results.map((r) => <li key={r.key}>
-          <strong>{r.label} {r.n}{r.title ? ` · ${r.title}` : ""}</strong> ({r.meaning}). {r.counted.join(" ")} = {r.total}{r.total === r.n ? "" : ` → ${r.n}`}{[11, 22, 33].includes(r.n) ? ", a master number kept whole" : ""}.
+          {r.available
+            ? <><strong>{r.label} {r.n}{r.title ? ` · ${r.title}` : ""}</strong> ({r.meaning}). {r.counted.join(" ")} = {r.total}{r.total === r.n ? "" : ` → ${r.n}`}{[11, 22, 33].includes(r.n) ? ", a master number kept whole" : ""}.</>
+            : <><strong>{r.label}: not available</strong> ({r.meaning}). This name has no {r.key === "soul-urge" ? "vowels (A, E, I, O, U; Y counts as a consonant here)" : "consonants"}, so there is nothing to add up.</>}
         </li>)}
       </ul>
       <p className="library-datebox-detail">Y counts as a consonant, as in every Unified Reading. Your Life Path comes from your birth date instead; the <Link href="/life-path-calculator">Life Path calculator</Link> works it out.</p>

@@ -77,7 +77,8 @@ export default function BirthChartTool() {
     if (!date) return null;
     const known = Boolean(time) && offset !== undefined;
     return {
-      sun: getSunSign(date, time || undefined, offset),
+      // A time is only meaningful with a zone; until then the Sun stays on the noon fallback rather than reading the time as UTC.
+      sun: getSunSign(date, known ? time : undefined, offset),
       // Without a time and zone, the Moon is shown only if it holds all day everywhere.
       moon: known ? getMoonSign(date, time, offset) : getMoonSignInAnyZone(date),
       rising: known && place ? getRisingSign(date, time, place.latitude, place.longitude, offset) : null,
