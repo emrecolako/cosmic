@@ -181,6 +181,11 @@ export function getSunSign(
   return sunSignAt(birthInstantUTC(dateOfBirth, birthTime, timezoneOffsetHours));
 }
 
+/** The Sun's tropical ecliptic longitude (0-360°) at a UTC instant. */
+export function sunLongitudeAt(utc: Date): number {
+  return getSunLongitude(toJulianDay(utc));
+}
+
 /** Sun sign, decan and sign details at a UTC instant. */
 export function sunSignAt(utc: Date): ZodiacSign {
   const sunLon = getSunLongitude(toJulianDay(utc));

@@ -14,6 +14,7 @@ export type FunnelEvent =
   | "unlock_clicked"
   | "library_viewed"
   | "library_date_entered"
+  | "library_tool_used"
   | "compare_link_created"
   | "compare_landed"
   | "compare_completed";

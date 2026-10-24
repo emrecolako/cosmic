@@ -6,7 +6,7 @@ import { entriesOfType, entryFor, type PageType } from "@/lib/library/registry";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-const TYPES: PageType[] = ["chinese-zodiac"];
+const TYPES: PageType[] = ["chinese-zodiac", "chinese-zodiac-year", "chinese-zodiac-element"];
 const resolve = (slug: string) => TYPES.map((type) => entryFor(type, slug)).find(Boolean);
 
 export function generateStaticParams() {

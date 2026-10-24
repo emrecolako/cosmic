@@ -7,6 +7,11 @@ import { ALL_ENTRIES, reversePairRedirects } from "./lib/library/registry";
 // workspace root, so `@import "tailwindcss"` resolves outside the project.
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
+// Markdown twins are routed by pattern, not one rewrite per page: with well over
+// a thousand library pages, per-page rules would pass Vercel's 2,048-route cap.
+// The first path segments are listed so public files like /index.md are untouched.
+const sections = [...new Set(ALL_ENTRIES.map((entry) => entry.path.split("/")[1]))].join("|");
+
 const nextConfig: NextConfig = {
   async redirects() {
     return [
@@ -25,7 +30,9 @@ const nextConfig: NextConfig = {
       beforeFiles: [
         // sitemap.ts uses generateSitemaps (/sitemap/{id}.xml), which leaves /sitemap.xml to the index.
         { source: "/sitemap.xml", destination: "/sitemap-index.xml" },
-        ...ALL_ENTRIES.map((entry) => ({ source: `${entry.path}.md`, destination: `/library-md${entry.path}` })),
+        { source: `/:section(${sections}).md`, destination: "/library-md/:section" },
+        { source: `/:section(${sections})/:slug.md`, destination: "/library-md/:section/:slug" },
+        { source: `/:section(${sections})/:group/:slug.md`, destination: "/library-md/:section/:group/:slug" },
       ],
       afterFiles: [],
       fallback: [],
@@ -40,10 +47,6 @@ const nextConfig: NextConfig = {
           value: '</sitemap.xml>; rel="sitemap", </llms.txt>; rel="describedby"; type="text/plain", </index.md>; rel="alternate"; type="text/markdown"',
         }],
       },
-      ...ALL_ENTRIES.map((entry) => ({
-        source: entry.path,
-        headers: [{ key: "Link", value: `<${entry.path}.md>; rel="alternate"; type="text/markdown"` }],
-      })),
     ];
   },
   outputFileTracingIncludes: {

@@ -8,7 +8,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Unified Reading library";
 
-const TYPES: PageType[] = ["chinese-zodiac"];
+const TYPES: PageType[] = ["chinese-zodiac", "chinese-zodiac-year", "chinese-zodiac-element"];
 const resolve = (slug: string) => TYPES.map((type) => entryFor(type, slug)).find(Boolean);
 
 export function generateStaticParams() {

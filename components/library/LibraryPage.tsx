@@ -2,6 +2,9 @@ import Link from "next/link";
 import SampleCta from "@/components/SampleCta";
 import DateBox, { type DateBoxMode } from "@/components/library/DateBox";
 import PairYou from "@/components/compare/PairYou";
+import BirthChartTool from "@/components/library/tools/BirthChartTool";
+import BirthdayCompatibilityTool from "@/components/library/tools/BirthdayCompatibilityTool";
+import NameNumerologyTool from "@/components/library/tools/NameNumerologyTool";
 import type { CompareType } from "@/lib/compare";
 import { LibraryShareButton, LibraryViewTracker } from "@/components/library/LibraryClient";
 import { loadContent } from "@/lib/library/content";
@@ -17,10 +20,23 @@ const SYSTEM_LABEL: Record<LibraryEntry["system"], string> = {
   mixed: "Numerology · Western astrology · Chinese zodiac",
 };
 
+/** Cross-system pages name only the two traditions they combine. */
+const TYPE_LABEL: Partial<Record<LibraryEntry["type"], string>> = {
+  "life-path-sign": "Numerology · Western astrology",
+  "sign-animal": "Western astrology · Chinese zodiac",
+};
+
 const CALCULATOR_MODE: Record<string, DateBoxMode> = {
   "life-path-calculator": "life-path",
   "zodiac-sign-calculator": "zodiac",
   "chinese-zodiac-calculator": "chinese",
+};
+
+/** Calculators that are their own interactive tool rather than a date box. */
+const TOOLS: Record<string, () => React.ReactNode> = {
+  "name-numerology-calculator": NameNumerologyTool,
+  "birthday-compatibility-calculator": BirthdayCompatibilityTool,
+  "birth-chart-calculator": BirthChartTool,
 };
 
 /** "Compare with a friend" shows on Life Path number pages, pair pages and calculators. */
@@ -48,6 +64,7 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
   const { prev, next } = prevNextFor(entry);
   const spokes = linkGroupsFor(entry);
   const calculatorMode = CALCULATOR_MODE[entry.slug];
+  const Tool = TOOLS[entry.slug];
   const pageType = ANALYTICS_PAGE_TYPE[entry.type];
   const compare = compareTypeFor(entry);
   const pairKind = PAIR_KIND[entry.type];
@@ -58,7 +75,7 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
       <nav aria-label="Breadcrumb" className="library-breadcrumb">
         <ol>{crumbs.map((crumb, i) => <li key={crumb.path}>{i === crumbs.length - 1 ? <span aria-current="page">{crumb.name}</span> : <Link href={crumb.path}>{crumb.name}</Link>}</li>)}</ol>
       </nav>
-      <p className="eyebrow">{SYSTEM_LABEL[entry.system]}</p>
+      <p className="eyebrow">{TYPE_LABEL[entry.type] ?? SYSTEM_LABEL[entry.system]}</p>
       <h1 className="library-title">{entry.title}</h1>
       {pairKind && facts.pair && <PairYou kind={pairKind} pair={facts.pair} />}
       <p data-answer className="library-answer">{content.answer}</p>
@@ -67,6 +84,7 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
         <LibraryShareButton path={entry.path} title={entry.title} pageType={pageType} slug={entry.slug} />
       </div>
 
+      {Tool && <Tool />}
       {calculatorMode && <DateBox pageType={pageType} slug={entry.slug} mode={calculatorMode} compare={compare} />}
 
       <section className="library-facts" aria-labelledby="key-facts">
@@ -74,7 +92,7 @@ export default function LibraryPage({ entry }: { entry: LibraryEntry }) {
         <table><tbody>{facts.rows.map((row) => <tr key={row.label} data-side={row.side}><th scope="row">{row.label}</th><td>{row.value}</td></tr>)}</tbody></table>
       </section>
 
-      {!calculatorMode && <DateBox pageType={pageType} slug={entry.slug} compare={compare} />}
+      {!calculatorMode && !Tool && <DateBox pageType={pageType} slug={entry.slug} compare={compare} />}
 
       <div className="library-body">
         {content.sections.map((section) => <section key={section.heading} id={section.id}>

@@ -3,10 +3,14 @@
  *
  * - content JSON exists for every registry entry, matches the schema, and no stray files
  * - answer is 40-60 words and credits its tradition
- * - 3-5 sections of 150-250 words, 3-5 FAQs, body of at least 400 unique words
- * - facts quoted in the copy match lib/library/facts.ts
+ * - meaning pages: 3-5 sections of 150-250 words, body of at least 400 unique words
+ * - data pages (birthdays, months, Chinese years): 2-4 sections of 120-250 words,
+ *   at least 250 unique words and 5+ key facts; their computed facts carry the page
+ * - 3-5 FAQs
+ * - facts quoted in the copy match lib/library/facts.ts and lib/library/date-facts.ts
  * - banned terms (out-of-scope systems, invented evidence, certainty claims)
- * - 5-word-shingle Jaccard similarity below 0.35 against every sibling page
+ * - 5-word-shingle Jaccard similarity against every sibling page below 0.35
+ *   (meaning pages) or 0.5 (data pages)
  * - 8-12 related links, and at least 8 internal pages linking in
  */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -34,9 +38,46 @@ import {
 } from "../lib/library/registry";
 import { SIGN_ORDER } from "../lib/western-astrology";
 import { ANIMALS } from "../lib/chinese-zodiac";
+import { calculateLifePath } from "../lib/numerology";
+import { elementAnimalYears, parseBirthdaySlug } from "../lib/library/calendar";
+import { birthdayFacts, zodiacYearFacts } from "../lib/library/date-facts";
+import { decanRuler } from "../lib/library/facts";
+import { animalOfSlug, numberOfSlug, signOfSlug, yearOfSlug, type PageType } from "../lib/library/registry";
+import { angelFacts, nameTitle, personalYearFacts } from "../lib/library/number-facts";
 import { comparePath, parseCompare, pairEntryFor } from "../lib/compare";
 
 const failures: string[] = [];
+type Tier = "meaning" | "data";
+const TIER: Record<PageType, Tier> = {
+  hub: "meaning",
+  calculator: "meaning",
+  "life-path": "meaning",
+  "life-path-pair": "meaning",
+  "zodiac-pair": "meaning",
+  "chinese-zodiac": "meaning",
+  "chinese-zodiac-pair": "meaning",
+  "chinese-zodiac-element": "meaning",
+  sign: "meaning",
+  "moon-sign": "meaning",
+  "rising-sign": "meaning",
+  decan: "meaning",
+  "life-path-sign": "meaning",
+  "sign-animal": "meaning",
+  expression: "meaning",
+  "soul-urge": "meaning",
+  personality: "meaning",
+  "birthday-number": "meaning",
+  "personal-year": "meaning",
+  "angel-number": "meaning",
+  birthday: "data",
+  "birthday-month": "data",
+  "chinese-zodiac-year": "data",
+};
+const RULES: Record<Tier, { sections: [number, number]; sectionWords: [number, number]; uniqueWords: number; minFacts: number; maxJaccard: number }> = {
+  meaning: { sections: [3, 5], sectionWords: [150, 250], uniqueWords: 400, minFacts: 3, maxJaccard: 0.35 },
+  data: { sections: [2, 4], sectionWords: [120, 250], uniqueWords: 250, minFacts: 5, maxJaccard: 0.5 },
+};
+
 const fail = (entry: LibraryEntry | string, message: string) =>
   failures.push(`${typeof entry === "string" ? entry : entry.path}: ${message}`);
 
@@ -106,7 +147,7 @@ function checkFacts(entry: LibraryEntry, content: LibraryContent): void {
       const meta = signMeta(m[1]);
       if (meta.modality.toLowerCase() !== m[2].toLowerCase() || meta.element.toLowerCase() !== m[3].toLowerCase()) fail(entry, `"${m[0]}" contradicts ${meta.sign}: ${meta.modality} ${meta.element}`);
     }
-    for (const m of sentence.matchAll(new RegExp(`\\b(${alt(SIGNS)})\\b[^.;]{0,60}?\\bruled by (?:the )?(${alt(PLANETS)})\\b`, "g"))) {
+    for (const m of sentence.matchAll(new RegExp(`\\b(${alt(SIGNS)})\\b[^.;]{0,60}?(?<!sub-)\\bruled by (?:the )?(${alt(PLANETS)})\\b`, "g"))) {
       const between = m[0].slice(m[1].length);
       if (new RegExp(`\\b(${alt(SIGNS)})\\b`).test(between)) continue;
       if (signMeta(m[1]).rulingPlanet !== m[2]) fail(entry, `"${m[0]}" contradicts ${m[1]} ruled by ${signMeta(m[1]).rulingPlanet}`);
@@ -124,7 +165,8 @@ function checkFacts(entry: LibraryEntry, content: LibraryContent): void {
   }
 
   const facts = factsFor(entry);
-  if (facts.rows.length < 3) fail(entry, "fewer than 3 key facts");
+  const minFacts = RULES[TIER[entry.type]].minFacts;
+  if (facts.rows.length < minFacts) fail(entry, `fewer than ${minFacts} key facts`);
 
   switch (entry.type) {
     case "life-path": {
@@ -158,6 +200,95 @@ function checkFacts(entry: LibraryEntry, content: LibraryContent): void {
       if (relations[0] !== "same animal" && relations[0] !== "no classical pairing" && !named.includes(relations[0])) fail(entry, `answer must name ${relations[0]}`);
       break;
     }
+    case "birthday": {
+      const date = parseBirthdaySlug(entry.slug)!;
+      const f = birthdayFacts(date);
+      for (const name of f.cusp ? f.signs : [f.sign]) if (!content.answer.includes(name)) fail(entry, `answer must name ${name}`);
+      for (const other of SIGNS) if (!f.signs.includes(other) && new RegExp(`\\b${other}\\b`).test(content.answer)) fail(entry, `answer names ${other}, which is never the Sun sign on ${f.label}`);
+      if (!f.cusp && !content.answer.includes(`${["", "first", "second", "third"][f.decan]} decan`)) fail(entry, `answer must name the ${f.decan} decan`);
+      for (const m of text.matchAll(/birthday number (\d+)/g)) if (Number(m[1]) !== f.birthdayNumber) fail(entry, `"${m[0]}" should be ${f.birthdayNumber}`);
+      for (const m of text.matchAll(/\b(\d{1,2}) (?:in|for) ((?:19|20)\d{2})\b/g)) {
+        const year = Number(m[2]);
+        if (Number(m[1]) !== calculateLifePath(new Date(year, date.month - 1, date.day))) fail(entry, `Life Path "${m[0]}" is wrong`);
+      }
+      break;
+    }
+    case "chinese-zodiac-year": {
+      const y = zodiacYearFacts(Number(entry.slug));
+      for (const part of [`Year of the ${y.element} ${y.animal}`, y.start, y.end]) if (!content.answer.includes(part)) fail(entry, `answer must state "${part}"`);
+      for (const m of text.matchAll(/\b(?:Lunar New Year on|began on|started on|opened [^.]{0,40}? on) ((?:January|February) \d{1,2}, (\d{4}))/g)) {
+        if (Number(m[2]) >= 1924 && Number(m[2]) <= 2044 && m[1] !== zodiacYearFacts(Number(m[2])).start) fail(entry, `"${m[0]}" is not that year's Lunar New Year (${zodiacYearFacts(Number(m[2])).start})`);
+      }
+      break;
+    }
+    case "sign":
+      if (!content.answer.includes(entry.label)) fail(entry, `answer must name ${entry.label}`);
+      break;
+    case "moon-sign": {
+      const name = signOfSlug(entry.slug);
+      if (!content.answer.includes(`Moon in ${name}`)) fail(entry, `answer must name the Moon in ${name}`);
+      break;
+    }
+    case "rising-sign": {
+      const ruler = signMeta(signOfSlug(entry.slug)).rulingPlanet;
+      for (const m of text.matchAll(new RegExp(`chart ruler (?:is|would be) (?:the )?(${alt(PLANETS)})\\b`, "g"))) if (m[1] !== ruler) fail(entry, `"${m[0]}" should be ${ruler}`);
+      if (!content.answer.includes(ruler)) fail(entry, `answer must name the chart ruler ${ruler}`);
+      break;
+    }
+    case "life-path-sign": {
+      const n = Number(entry.slug.split("-")[0]);
+      const name = signOfSlug(entry.slug);
+      if (!content.answer.includes(`Life Path ${n} is ${lifePathMeaning(n).title}`)) fail(entry, `answer must say Life Path ${n} is ${lifePathMeaning(n).title}`);
+      if (!content.answer.includes(name)) fail(entry, `answer must name ${name}`);
+      break;
+    }
+    case "expression":
+    case "soul-urge":
+    case "personality": {
+      const title = nameTitle(entry.type, numberOfSlug(entry.slug)).title;
+      if (!content.answer.includes(title)) fail(entry, `answer must name the traditional title ${title}`);
+      break;
+    }
+    case "birthday-number": {
+      const day = numberOfSlug(entry.slug);
+      if (!content.answer.includes(`Birthday number ${day}`)) fail(entry, `answer must name Birthday number ${day}`);
+      break;
+    }
+    case "personal-year": {
+      const f = personalYearFacts(numberOfSlug(entry.slug), yearOfSlug(entry.slug));
+      if (!content.answer.includes(f.title.title)) fail(entry, `answer must name the title ${f.title.title}`);
+      for (const m of text.matchAll(/\b(\d+) of (?:the )?366\b/g)) if (Number(m[1]) !== f.count) fail(entry, `"${m[0]}" should be ${f.count}`);
+      break;
+    }
+    case "angel-number": {
+      const f = angelFacts(entry.slug);
+      // Only the computed answer: the copy also (correctly) reduces partial sums such as "12 reduces to 3".
+      for (const m of content.answer.matchAll(/\breduces to (\d+)\b(?! \+)/g)) if (Number(m[1]) !== f.root) fail(entry, `"${m[0]}" should be ${f.root}`);
+      break;
+    }
+    case "sign-animal": {
+      const name = signOfSlug(entry.slug);
+      const animal = animalOfSlug(entry.slug);
+      if (!content.answer.includes(`${name} ${animal}`)) fail(entry, `answer must name the ${name} ${animal}`);
+      break;
+    }
+    case "decan": {
+      const name = signOfSlug(entry.slug);
+      const decan = Number(entry.slug.split("-").pop());
+      if (!content.answer.includes(decanRuler(name, decan))) fail(entry, `answer must name the sub-ruler ${decanRuler(name, decan)}`);
+      break;
+    }
+    case "chinese-zodiac-element": {
+      const [element, animal] = entry.label.split(" ");
+      const years = elementAnimalYears(element, animal);
+      // "between 1924 and 2044" names the table's range, not a year of this combination.
+      for (const m of text.replace(/\b1924 (?:and|to) 2044\b/g, "").matchAll(/\b((?:19|20)\d{2})\b/g)) {
+        const year = Number(m[1]);
+        if (year >= 1924 && year <= 2044 && !years.includes(year) && !years.includes(year + 1) && !years.includes(year - 1)) fail(entry, `mentions ${year}, which is not a ${element} ${animal} year`);
+      }
+      for (const year of years) if (!content.answer.includes(String(year))) fail(entry, `answer must list ${year}`);
+      break;
+    }
   }
 }
 
@@ -186,17 +317,20 @@ for (const entry of ALL_ENTRIES) {
   // The share image quotes this line, so it must be the page's own words.
   if (content.ogLine && !bodyText(content).toLowerCase().includes(content.ogLine.replace(/[.!?]$/, "").toLowerCase())) fail(entry, `ogLine is not quoted from the page copy: "${content.ogLine}"`);
 
+  const rules = RULES[TIER[entry.type]];
   const answerWords = wordsOf(content.answer).length;
   if (answerWords < 40 || answerWords > 60) fail(entry, `answer has ${answerWords} words (40-60)`);
   if (!/^In (numerology|Western astrology|Chinese astrology)\b/.test(content.answer)) fail(entry, "answer must open by crediting its tradition (In numerology/Western astrology/Chinese astrology...)");
-  if (content.sections.length < 3 || content.sections.length > 5) fail(entry, `${content.sections.length} sections (3-5)`);
+  const [minSections, maxSections] = rules.sections;
+  if (content.sections.length < minSections || content.sections.length > maxSections) fail(entry, `${content.sections.length} sections (${minSections}-${maxSections})`);
   for (const section of content.sections) {
     const words = wordsOf(section.paragraphs.join(" ")).length;
-    if (words < 150 || words > 250) fail(entry, `section "${section.heading}" has ${words} words (150-250)`);
+    const [min, max] = rules.sectionWords;
+    if (words < min || words > max) fail(entry, `section "${section.heading}" has ${words} words (${min}-${max})`);
   }
   if (content.faq.length < 3 || content.faq.length > 5) fail(entry, `${content.faq.length} FAQs (3-5)`);
   const unique = new Set(wordsOf(bodyText(content))).size;
-  if (unique < 400) fail(entry, `body has ${unique} unique words (400+)`);
+  if (unique < rules.uniqueWords) fail(entry, `body has ${unique} unique words (${rules.uniqueWords}+)`);
   const text = [content.description, bodyText(content)].join("\n");
   for (const [pattern, label] of BANNED) {
     const match = text.match(pattern);
@@ -219,7 +353,6 @@ for (const type of readdirSync(CONTENT_ROOT)) {
 // Near-duplicate copy between siblings
 // ---------------------------------------------------------------------------
 
-const MAX_JACCARD = 0.35;
 function shingles(text: string): Set<string> {
   const words = wordsOf(text);
   const set = new Set<string>();
@@ -243,7 +376,7 @@ for (const pages of byType.values()) {
       for (const s of x) if (y.has(s)) shared++;
       const score = shared / (x.size + y.size - shared);
       if (score > worst.score) worst = { score, pair: `${pages[i].entry.path} ~ ${pages[j].entry.path}` };
-      if (score >= MAX_JACCARD) fail(pages[i].entry, `shares ${score.toFixed(2)} of its 5-word shingles with ${pages[j].entry.path}`);
+      if (score >= RULES[TIER[pages[i].entry.type]].maxJaccard) fail(pages[i].entry, `shares ${score.toFixed(2)} of its 5-word shingles with ${pages[j].entry.path}`);
     }
   }
 }

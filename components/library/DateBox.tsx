@@ -99,8 +99,8 @@ export default function DateBox({ pageType, slug, mode = "compact", compare, onR
     {result && <div className="library-datebox-result" aria-live="polite">
       <dl>
         <div><dt>Life Path</dt><dd><Link href={`/life-path/${result.lifePath}`}>{result.lifePath}</Link></dd></div>
-        <div><dt>Sun sign</dt><dd><Link href={`/zodiac#${result.sun.sign.toLowerCase()}`}>{result.sun.glyph} {result.sun.sign}</Link></dd></div>
-        <div><dt>Chinese zodiac</dt><dd><Link href={`/chinese-zodiac/${result.chinese.animal.toLowerCase()}`}>{result.chinese.element} {result.chinese.animal}</Link></dd></div>
+        <div><dt>Sun sign</dt><dd><Link href={`/zodiac/${result.sun.sign.toLowerCase()}`}>{result.sun.glyph} {result.sun.sign}</Link></dd></div>
+        <div><dt>Chinese zodiac</dt><dd><Link href={`/chinese-zodiac/${result.chinese.element.toLowerCase()}-${result.chinese.animal.toLowerCase()}`}>{result.chinese.element} {result.chinese.animal}</Link></dd></div>
       </dl>
       {mode === "life-path" && <p className="library-datebox-detail">{lifePathSteps(date!)} {[11, 22, 33].includes(result.lifePath) ? `${result.lifePath} is a master number, so it is kept whole.` : ""}</p>}
       {mode === "zodiac" && <p className="library-datebox-detail">{result.sun.sign} is a {result.sun.modality} {result.sun.element} sign ruled by {result.sun.rulingPlanet}; this date falls in its {["first", "second", "third"][result.sun.decan - 1]} decan. The sign comes from the Sun&apos;s calculated position at noon on that day, so dates near a cusp resolve for the specific year. Moon and rising signs need a birth time and place.</p>}
