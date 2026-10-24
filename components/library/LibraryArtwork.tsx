@@ -50,7 +50,8 @@ export default function LibraryArtwork({ entry }: { entry: LibraryEntry }) {
     </figure>;
   }
 
-  if (entry.slug === "library") {
+  // The library hub and pages that combine traditions (birthdays, cross-system pages) show all three.
+  if (entry.slug === "library" || entry.system === "mixed") {
     return <figure className="library-artwork library-artwork-overview">
       {image("numbers-abacus", "Abacus for numerology")}
       {image("zodiac-armillary", "Armillary instrument for Western astrology")}
